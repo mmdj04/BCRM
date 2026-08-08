@@ -46,7 +46,7 @@ export function PricingCards({ plans }: PricingCardsProps) {
         </span>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="flex flex-col gap-6">
         {plans.map((plan) => (
           <Card key={plan.id} className={`flex flex-col ${plan.highlighted ? "border-primary shadow-md" : ""}`}>
             <CardHeader className="pb-4">
