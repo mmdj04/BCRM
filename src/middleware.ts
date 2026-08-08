@@ -3,6 +3,10 @@ import type { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
+  // Check for demo session cookie
+  const demoCookie = request.cookies.get("bcrm_demo_session");
+  const isDemo = !!demoCookie;
+
   const { supabase, supabaseResponse } = createClient(request);
 
   // Refresh session if expired - required for Server Components
@@ -14,7 +18,7 @@ export async function middleware(request: NextRequest) {
   const protectedPaths = ["/dashboard", "/chat", "/mail"];
   const isProtected = protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path));
 
-  if (isProtected && !user) {
+  if (isProtected && !user && !isDemo) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/v1/login";
     url.searchParams.set("redirect", request.nextUrl.pathname);
@@ -25,7 +29,7 @@ export async function middleware(request: NextRequest) {
   const authPaths = ["/auth"];
   const isAuth = authPaths.some((path) => request.nextUrl.pathname.startsWith(path));
 
-  if (isAuth && user) {
+  if (isAuth && (user || isDemo)) {
     const url = request.nextUrl.clone();
     const redirectTo = request.nextUrl.searchParams.get("redirect");
     url.pathname = redirectTo || "/dashboard/default";

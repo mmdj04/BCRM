@@ -24,6 +24,19 @@ const AuthContext = createContext<AuthContextType>({
   },
 });
 
+function getDemoSession(): { user: User; isDemo: boolean } | null {
+  if (typeof window === "undefined") return null;
+  const cookies = document.cookie.split(";");
+  const demoCookie = cookies.find((c) => c.trim().startsWith("bcrm_demo_session="));
+  if (!demoCookie) return null;
+  try {
+    const value = demoCookie.split("=").slice(1).join("=");
+    return JSON.parse(decodeURIComponent(value));
+  } catch {
+    return null;
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -32,18 +45,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
 
   const signOut = useCallback(async () => {
-    // Clear demo session if exists
+    // Clear demo session cookie
+    document.cookie = "bcrm_demo_session=; path=/; max-age=0";
     localStorage.removeItem("bcrm_demo_session");
     await supabase.auth.signOut();
     window.location.href = "/auth/v1/login";
   }, [supabase]);
 
   useEffect(() => {
-    // Check for demo session first
-    const demoSession = localStorage.getItem("bcrm_demo_session");
+    // Check for demo session cookie first
+    const demoSession = getDemoSession();
     if (demoSession) {
-      const parsed = JSON.parse(demoSession);
-      setUser(parsed.user as User);
+      setUser(demoSession.user);
       setIsDemo(true);
       setLoading(false);
       return;

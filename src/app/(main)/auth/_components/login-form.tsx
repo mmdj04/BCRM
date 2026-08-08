@@ -45,11 +45,11 @@ export function LoginForm() {
         data.email === DEMO_CONFIG.credentials.email &&
         data.password === DEMO_CONFIG.credentials.password
       ) {
-        // Store demo session in localStorage
-        localStorage.setItem("bcrm_demo_session", JSON.stringify({
+        // Store demo session in cookie (7 days)
+        document.cookie = `bcrm_demo_session=${JSON.stringify({
           user: DEMO_CONFIG.user,
           isDemo: true,
-        }));
+        })}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
         toast.success("Demo mode activated!");
         router.push("/dashboard/default");
         router.refresh();
