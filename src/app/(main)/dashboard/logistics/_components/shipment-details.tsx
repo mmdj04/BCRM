@@ -18,23 +18,23 @@ const modeIcons = {
 } as const;
 
 const progressRingClasses: Record<Shipment["status"], string> = {
-  Scheduled: "text-muted-foreground",
-  "In Transit": "text-primary",
-  "Out for Delivery": "text-primary",
-  Delivered: "text-green-600",
-  Delayed: "text-destructive",
-  "On Hold": "text-amber-500",
-  "Customs Hold": "text-amber-500",
+  Agendado: "text-muted-foreground",
+  "Em Trânsito": "text-primary",
+  "Saiu para Entrega": "text-primary",
+  Entregue: "text-green-600",
+  Atrasado: "text-destructive",
+  "Em Espera": "text-amber-500",
+  "Retido na Alfândega": "text-amber-500",
 };
 
 const statusBadgeClasses: Record<Shipment["status"], string> = {
-  Scheduled: "border-muted bg-muted/50 text-muted-foreground",
-  "In Transit": "border-primary/20 bg-primary/10 text-primary",
-  "Out for Delivery": "border-primary/20 bg-primary/10 text-primary",
-  Delivered: "border-green-600/20 bg-green-600/10 text-green-600",
-  Delayed: "border-destructive/20 bg-destructive/10 text-destructive",
-  "On Hold": "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  "Customs Hold": "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  Agendado: "border-muted bg-muted/50 text-muted-foreground",
+  "Em Trânsito": "border-primary/20 bg-primary/10 text-primary",
+  "Saiu para Entrega": "border-primary/20 bg-primary/10 text-primary",
+  Entregue: "border-green-600/20 bg-green-600/10 text-green-600",
+  Atrasado: "border-destructive/20 bg-destructive/10 text-destructive",
+  "Em Espera": "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  "Retido na Alfândega": "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
 };
 
 type ShipmentDetailsProps = {

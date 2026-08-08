@@ -8,31 +8,31 @@ const upcomingEvents = [
   {
     dayOffset: 6,
     title: "Exposição de Ciências",
-    time: "08:30 AM - 12:30 PM",
+    time: "08:30 - 12:30",
     type: "No Campus",
   },
   {
     dayOffset: 9,
     title: "Noite dos Pais",
-    time: "02:00 PM - 05:00 PM",
+    time: "14:00 - 17:00",
     type: "Reunião",
   },
   {
     dayOffset: 12,
     title: "Dia Esportivo Inter-Casas",
-    time: "09:00 AM - 04:00 PM",
+    time: "09:00 - 16:00",
     type: "Esportes",
   },
   {
     dayOffset: 15,
     title: "Simulado do 11º Ano",
-    time: "09:00 AM - 12:00 PM",
+    time: "09:00 - 12:00",
     type: "Prova",
   },
   {
     dayOffset: 18,
     title: "Planejamento do Departamento",
-    time: "03:30 PM - 04:30 PM",
+    time: "15:30 - 16:30",
     type: "Reunião",
   },
 ];

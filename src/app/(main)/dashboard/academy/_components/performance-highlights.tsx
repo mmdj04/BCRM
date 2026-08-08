@@ -131,7 +131,7 @@ export function PerformanceHighlights() {
       <CardHeader>
         <CardTitle className="text-sm">Destaques de Desempenho</CardTitle>
         <CardAction className="flex items-center gap-1 text-muted-foreground text-xs">
-          Ver Insights <ArrowRight className="size-4" />
+          Ver Análises <ArrowRight className="size-4" />
         </CardAction>
       </CardHeader>
       <CardContent>

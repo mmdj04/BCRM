@@ -16,13 +16,13 @@ const modeIcons = {
 } as const;
 
 const progressRingClasses: Record<Shipment["status"], string> = {
-  Scheduled: "text-muted-foreground",
-  "In Transit": "text-primary",
-  "Out for Delivery": "text-primary",
-  Delivered: "text-green-600",
-  Delayed: "text-destructive",
-  "On Hold": "text-amber-500",
-  "Customs Hold": "text-amber-500",
+  Agendado: "text-muted-foreground",
+  "Em Trânsito": "text-primary",
+  "Saiu para Entrega": "text-primary",
+  Entregue: "text-green-600",
+  Atrasado: "text-destructive",
+  "Em Espera": "text-amber-500",
+  "Retido na Alfândega": "text-amber-500",
 };
 
 function getProgressRingClass(status: Shipment["status"]) {
