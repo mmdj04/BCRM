@@ -90,9 +90,9 @@ export const conversations: Conversation[] = [
       website: "railway.co",
       location: "San Francisco, CA, EUA",
       timezone: "PDT (UTC-7)",
-      status: "Lead",
+      status: "Prospecto",
       qualifiedAt: "5 de mar. de 2026",
-      tags: ["DevOps", "Enterprise", "P0"],
+      tags: ["DevOps", "Empresarial", "P0"],
     },
     messages: [
       {
@@ -150,7 +150,7 @@ export const conversations: Conversation[] = [
       timezone: "CDT (UTC-5)",
       status: "Cliente",
       qualifiedAt: "18 de jan. de 2026",
-      tags: ["Cobrança", "Enterprise"],
+      tags: ["Cobrança", "Empresarial"],
     },
     messages: [
       {
@@ -208,7 +208,7 @@ export const conversations: Conversation[] = [
       timezone: "IST (UTC+5:30)",
       status: "Qualificado",
       qualifiedAt: "2 de abr. de 2026",
-      tags: ["IAM", "Enterprise", "Alto Valor"],
+      tags: ["IAM", "Empresarial", "Alto Valor"],
     },
     messages: [
       {
@@ -267,7 +267,7 @@ export const conversations: Conversation[] = [
       timezone: "PDT (UTC-7)",
       status: "Qualificado",
       qualifiedAt: "22 de jan. de 2026",
-      tags: ["Sustentabilidade", "Enterprise", "FinServ"],
+      tags: ["Sustentabilidade", "Empresarial", "Finanças"],
     },
     messages: [
       {
@@ -317,7 +317,7 @@ export const conversations: Conversation[] = [
       website: "harborops.com",
       location: "Seattle, WA, EUA",
       timezone: "PDT (UTC-7)",
-      status: "Lead",
+      status: "Prospecto",
       qualifiedAt: "10 de mai. de 2026",
       tags: ["Dados", "Desempenho"],
     },
@@ -370,7 +370,7 @@ export const conversations: Conversation[] = [
       timezone: "CEST (UTC+2)",
       status: "Cliente",
       qualifiedAt: "14 de out. de 2025",
-      tags: ["Cobrança", "SMB"],
+      tags: ["Cobrança", "PME"],
     },
     messages: [
       {
@@ -472,7 +472,7 @@ export const conversations: Conversation[] = [
       timezone: "MDT (UTC-6)",
       status: "Em Risco",
       qualifiedAt: "1 de dez. de 2025",
-      tags: ["Risco de Evasão", "Enterprise", "Downgrade"],
+      tags: ["Risco de Evasão", "Empresarial", "Downgrade"],
     },
     messages: [
       {
@@ -520,9 +520,9 @@ export const conversations: Conversation[] = [
       website: "ledgerloop.io",
       location: "Dublin, Irlanda",
       timezone: "IST (UTC+1)",
-      status: "Lead",
+      status: "Prospecto",
       qualifiedAt: "19 de abr. de 2026",
-      tags: ["API", "Escalabilidade", "Enterprise"],
+      tags: ["API", "Escalabilidade", "Empresarial"],
     },
     messages: [
       {
@@ -572,7 +572,7 @@ export const conversations: Conversation[] = [
       timezone: "PDT (UTC-7)",
       status: "Cliente",
       qualifiedAt: "2 de jun. de 2026",
-      tags: ["Urgente", "SMB", "SSL"],
+      tags: ["Urgente", "PME", "SSL"],
     },
     messages: [
       {
@@ -623,7 +623,7 @@ export const conversations: Conversation[] = [
       timezone: "AST (UTC+3)",
       status: "Qualificado",
       qualifiedAt: "28 de mai. de 2026",
-      tags: ["Atualização", "Enterprise", "Mídia"],
+      tags: ["Atualização", "Empresarial", "Mídia"],
     },
     messages: [
       {
@@ -722,7 +722,7 @@ export const conversations: Conversation[] = [
       website: "bridgework.io",
       location: "Atlanta, GA, EUA",
       timezone: "EDT (UTC-4)",
-      status: "Lead",
+      status: "Prospecto",
       qualifiedAt: "8 de abr. de 2026",
       tags: ["Integrações", "Plataforma", "Zapier"],
     },
@@ -774,7 +774,7 @@ export const conversations: Conversation[] = [
       timezone: "JST (UTC+9)",
       status: "Qualificado",
       qualifiedAt: "9 de fev. de 2026",
-      tags: ["RBAC", "Enterprise", "Solicitação de Recurso"],
+      tags: ["RBAC", "Empresarial", "Solicitação de Recurso"],
     },
     messages: [
       {
@@ -873,7 +873,7 @@ export const conversations: Conversation[] = [
       website: "nexodigital.mx",
       location: "Cidade do México, México",
       timezone: "CST (UTC-6)",
-      status: "Lead",
+      status: "Prospecto",
       qualifiedAt: "15 de mai. de 2026",
       tags: ["Parceria", "LATAM", "Revendedor"],
     },
@@ -925,7 +925,7 @@ export const conversations: Conversation[] = [
       timezone: "BST (UTC+1)",
       status: "Cliente",
       qualifiedAt: "8 de nov. de 2025",
-      tags: ["Conformidade", "FinServ", "Auditoria"],
+      tags: ["Conformidade", "Finanças", "Auditoria"],
     },
     messages: [
       {
@@ -1025,7 +1025,7 @@ export const conversations: Conversation[] = [
       timezone: "COT (UTC-5)",
       status: "Qualificado",
       qualifiedAt: "30 de mar. de 2026",
-      tags: ["Segurança", "Enterprise", "MFA"],
+      tags: ["Segurança", "Empresarial", "MFA"],
     },
     messages: [
       {
@@ -1123,9 +1123,9 @@ export const conversations: Conversation[] = [
       website: "firstatlanticbank.ng",
       location: "Abuja, Nigéria",
       timezone: "WAT (UTC+1)",
-      status: "Lead",
+      status: "Prospecto",
       qualifiedAt: "20 de mai. de 2026",
-      tags: ["Demonstração", "FinServ", "Enterprise"],
+      tags: ["Demonstração", "Finanças", "Empresarial"],
     },
     messages: [
       {
@@ -1175,7 +1175,7 @@ export const conversations: Conversation[] = [
       timezone: "CEST (UTC+2)",
       status: "Qualificado",
       qualifiedAt: "14 de fev. de 2026",
-      tags: ["SSO", "Azure", "Enterprise"],
+      tags: ["SSO", "Azure", "Empresarial"],
     },
     messages: [
       {
@@ -1225,7 +1225,7 @@ export const conversations: Conversation[] = [
       timezone: "CDT (UTC-5)",
       status: "Em Risco",
       qualifiedAt: "15 de jun. de 2025",
-      tags: ["Risco de Evasão", "Conta", "SMB"],
+      tags: ["Risco de Evasão", "Conta", "PME"],
     },
     messages: [
       {

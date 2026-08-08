@@ -75,7 +75,7 @@ export function PatientDetail({ hasActiveAlarm, patient }: PatientDetailProps) {
       <div className="min-w-0 border-border after:hidden xl:grid xl:grid-rows-6 xl:border-r xl:after:block xl:after:border-border xl:after:border-b">
         <TraceRow calibration="25 mm/s · 10 mm/mV" kind="ecg" label="ECG II" lead="II" patient={patient} />
         <TraceRow calibration="25 mm/s · 10 mm/mV" kind="ecg" label="ECG V5" lead="V5" patient={patient} />
-        <TraceRow kind="pleth" label="Pleth" patient={patient} />
+        <TraceRow kind="pleth" label="Pletismo" patient={patient} />
         <TraceRow calibration="10 mm/mV" kind="respiration" label="Resp" patient={patient} />
         <TraceRow calibration="mmHg" kind="arterial" label="ART" patient={patient} />
       </div>

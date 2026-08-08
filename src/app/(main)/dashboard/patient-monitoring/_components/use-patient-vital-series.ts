@@ -172,7 +172,7 @@ export function usePatientTrendSeries({ kind, patient }: PatientTrendSeriesOptio
   const data = useMemo(() => createTrendWindow(patient, definition, tick), [definition, patient, tick]);
 
   return {
-    ariaLabel: `${patient.bed} ${kind} trend`,
+    ariaLabel: `${patient.bed} ${kind} tendência`,
     data,
     domain: definition.domain,
     ticks: definition.ticks,
@@ -194,7 +194,7 @@ export function usePatientWaveformSeries({
   );
 
   return {
-    ariaLabel: `${patient.bed} ${lead} ${kind} waveform`,
+    ariaLabel: `${patient.bed} ${lead} ${kind} forma de onda`,
     data,
     domain: getSignalDomain(patient, kind),
   };

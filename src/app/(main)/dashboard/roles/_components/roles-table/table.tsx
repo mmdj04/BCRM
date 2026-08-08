@@ -182,7 +182,7 @@ function TableBodyGroup({
         <TableCell className="px-4 text-foreground/60 text-sm" colSpan={colCount}>
           {group.label}{" "}
           <Badge variant="outline" className="ml-2 rounded-sm bg-transparent text-muted-foreground text-xs">
-            {group.rows.length} of {totalCount}
+            {group.rows.length} de {totalCount}
           </Badge>
         </TableCell>
       </TableRow>

@@ -77,8 +77,8 @@ export function Roles({ roles }: { roles: Role[] }) {
   const search = (table.getColumn("search")?.getFilterValue() as string | undefined) ?? "";
   const groupFilter = (table.getColumn("group")?.getFilterValue() as string | undefined) ?? "";
   const typeFilter = getRoleTypeFilter(groupFilter);
-  const ownerFilter = (table.getColumn("owner")?.getFilterValue() as string | undefined) ?? "All";
-  const statusFilter = (table.getColumn("status")?.getFilterValue() as string | undefined) ?? "All";
+  const ownerFilter = (table.getColumn("owner")?.getFilterValue() as string | undefined) ?? "Todos";
+  const statusFilter = (table.getColumn("status")?.getFilterValue() as string | undefined) ?? "Todos";
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -173,7 +173,7 @@ export function Roles({ roles }: { roles: Role[] }) {
                     <SelectContent position="popper" align="start">
                       <SelectGroup>
                         <SelectItem value="All">Todos</SelectItem>
-                        <SelectItem value="System">System</SelectItem>
+                        <SelectItem value="System">Sistema</SelectItem>
                         <SelectItem value="Jane Doe">Jane Doe</SelectItem>
                         <SelectItem value="Alex Kim">Alex Kim</SelectItem>
                         <SelectItem value="Chris Lee">Chris Lee</SelectItem>

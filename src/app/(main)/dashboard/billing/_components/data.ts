@@ -15,7 +15,7 @@ export type Plan = {
 export const plans: Plan[] = [
   {
     id: "starter",
-    name: "Starter",
+    name: "Inicial",
     description: "Para projetos pequenos e exploração.",
     monthlyPrice: 789.90,
     yearlyPrice: 9478.80,
@@ -62,7 +62,7 @@ export const plans: Plan[] = [
   },
   {
     id: "team",
-    name: "Team",
+    name: "Equipe",
     description: "Para equipes que precisam de segurança e conformidade.",
     monthlyPrice: 7989.90,
     yearlyPrice: 95878.80,
@@ -86,7 +86,7 @@ export const plans: Plan[] = [
   },
   {
     id: "enterprise",
-    name: "Enterprise",
+    name: "Empresarial",
     description: "Para grandes organizações com necessidades customizadas.",
     monthlyPrice: null,
     yearlyPrice: null,
@@ -126,11 +126,11 @@ export const featureComparison: FeatureCategory[] = [
       { name: "Tamanho do banco", starter: "500 MB", pro: "8 GB", team: "8 GB", enterprise: "Personalizado" },
       { name: "Configuração de disco avançada", starter: "-", pro: "Incluso", team: "Incluso", enterprise: "Incluso" },
       { name: "Backups automáticos", starter: "-", pro: "7 dias", team: "14 dias", enterprise: "Personalizado" },
-      { name: "Recuperação ponto a ponto", starter: "-", pro: "R$ 500/mo por 7 dias", team: "R$ 500/mo por 7 dias", enterprise: "R$ 500/mo por 7 dias" },
+      { name: "Recuperação ponto a ponto", starter: "-", pro: "R$ 500/mês por 7 dias", team: "R$ 500/mês por 7 dias", enterprise: "R$ 500/mês por 7 dias" },
       { name: "Pausa", starter: "Após 1 semana", pro: "Nunca", team: "Nunca", enterprise: "Nunca" },
-      { name: "Branching", starter: "-", pro: "R$ 0,07/hr", team: "R$ 0,07/hr", enterprise: "Personalizado" },
+      { name: "Branching", starter: "-", pro: "R$ 0,07/hora", team: "R$ 0,07/hora", enterprise: "Personalizado" },
       { name: "Egress", starter: "5 GB", pro: "250 GB", team: "250 GB", enterprise: "Personalizado" },
-      { name: "Pipelines", starter: "-", pro: "R$ 0,27/hr + R$ 15/GB", team: "R$ 0,27/hr + R$ 15/GB", enterprise: "Personalizado" },
+      { name: "Pipelines", starter: "-", pro: "R$ 0,27/hora + R$ 15/GB", team: "R$ 0,27/hora + R$ 15/GB", enterprise: "Personalizado" },
     ],
   },
   {
@@ -144,7 +144,7 @@ export const featureComparison: FeatureCategory[] = [
       { name: "Remover marca BCRM", starter: "-", pro: "Incluso", team: "Incluso", enterprise: "Incluso" },
       { name: "Logs de auditoria de autenticação", starter: "1 hora", pro: "7 dias", team: "28 dias", enterprise: "Incluso" },
       { name: "MFA básico", starter: "Incluso", pro: "Incluso", team: "Incluso", enterprise: "Incluso" },
-      { name: "MFA avançado (Telefone)", starter: "-", pro: "R$ 375/mo primeiro projeto", team: "R$ 375/mo primeiro projeto", enterprise: "Personalizado" },
+      { name: "MFA avançado (Telefone)", starter: "-", pro: "R$ 375/mês primeiro projeto", team: "R$ 375/mês primeiro projeto", enterprise: "Personalizado" },
       { name: "MAUs de terceiros", starter: "50.000", pro: "100.000", team: "100.000", enterprise: "Personalizado" },
       { name: "Single Sign-On (SAML 2.0)", starter: "-", pro: "50 incluídos", team: "50 incluídos", enterprise: "Fale Conosco" },
       { name: "Proteção contra senhas vazadas", starter: "-", pro: "Incluso", team: "Incluso", enterprise: "Incluso" },
@@ -190,7 +190,7 @@ export const featureComparison: FeatureCategory[] = [
     features: [
       { name: "BYO cloud", starter: "-", pro: "-", team: "-", enterprise: "Incluso" },
       { name: "Retenção de logs (API e Banco)", starter: "1 dia", pro: "7 dias", team: "28 dias", enterprise: "90 dias" },
-      { name: "Log Drain", starter: "-", pro: "R$ 300/drain/mo", team: "R$ 300/drain/mo", enterprise: "Personalizado" },
+      { name: "Log Drain", starter: "-", pro: "R$ 300/drain/mês", team: "R$ 300/drain/mês", enterprise: "Personalizado" },
       { name: "Logs de auditoria da plataforma", starter: "-", pro: "-", team: "Incluso", enterprise: "Incluso" },
       { name: "Endpoint de métricas", starter: "-", pro: "Incluso", team: "Incluso", enterprise: "Incluso" },
       { name: "SOC2", starter: "-", pro: "-", team: "Incluso", enterprise: "Incluso" },
@@ -201,7 +201,7 @@ export const featureComparison: FeatureCategory[] = [
       { name: "SLAs de uptime", starter: "-", pro: "-", team: "-", enterprise: "Incluso" },
       { name: "Funções de acesso", starter: "Proprietário, Admin, Dev", pro: "Proprietário, Admin, Dev", team: "Proprietário, Admin, Dev, Somente Leitura", enterprise: "Personalizado" },
       { name: "URLs personalizadas", starter: "-", pro: "Incluso", team: "Incluso", enterprise: "Incluso" },
-      { name: "Domínios personalizados", starter: "-", pro: "R$ 50/domínio/mo", team: "R$ 50/domínio/mo", enterprise: "1 incluso" },
+      { name: "Domínios personalizados", starter: "-", pro: "R$ 50/domínio/mês", team: "R$ 50/domínio/mês", enterprise: "1 incluso" },
     ],
   },
   {
@@ -244,16 +244,16 @@ export type ComputeOption = {
 };
 
 export const computeOptions: ComputeOption[] = [
-  { size: "Micro", price: 60, cpu: "2-core ARM", dedicated: false, ram: "1 GB", directConnections: 60, poolerConnections: 200 },
-  { size: "Small", price: 90, cpu: "2-core ARM", dedicated: false, ram: "2 GB", directConnections: 90, poolerConnections: 400 },
-  { size: "Medium", price: 360, cpu: "2-core ARM", dedicated: false, ram: "4 GB", directConnections: 120, poolerConnections: 600 },
-  { size: "Large", price: 660, cpu: "2-core ARM", dedicated: true, ram: "8 GB", directConnections: 160, poolerConnections: 800 },
-  { size: "XL", price: 1260, cpu: "4-core ARM", dedicated: true, ram: "16 GB", directConnections: 240, poolerConnections: 1000 },
-  { size: "2XL", price: 2460, cpu: "8-core ARM", dedicated: true, ram: "32 GB", directConnections: 380, poolerConnections: 1500 },
-  { size: "4XL", price: 5760, cpu: "16-core ARM", dedicated: true, ram: "64 GB", directConnections: 480, poolerConnections: 3000 },
-  { size: "8XL", price: 11220, cpu: "32-core ARM", dedicated: true, ram: "128 GB", directConnections: 490, poolerConnections: 6000 },
-  { size: "12XL", price: 16800, cpu: "48-core ARM", dedicated: true, ram: "192 GB", directConnections: 500, poolerConnections: 9000 },
-  { size: "16XL", price: 22380, cpu: "64-core ARM", dedicated: true, ram: "256 GB", directConnections: 500, poolerConnections: 12000 },
+  { size: "Micro", price: 60, cpu: "2 núcleos ARM", dedicated: false, ram: "1 GB", directConnections: 60, poolerConnections: 200 },
+  { size: "Pequeno", price: 90, cpu: "2 núcleos ARM", dedicated: false, ram: "2 GB", directConnections: 90, poolerConnections: 400 },
+  { size: "Médio", price: 360, cpu: "2 núcleos ARM", dedicated: false, ram: "4 GB", directConnections: 120, poolerConnections: 600 },
+  { size: "Grande", price: 660, cpu: "2 núcleos ARM", dedicated: true, ram: "8 GB", directConnections: 160, poolerConnections: 800 },
+  { size: "XL", price: 1260, cpu: "4 núcleos ARM", dedicated: true, ram: "16 GB", directConnections: 240, poolerConnections: 1000 },
+  { size: "2XL", price: 2460, cpu: "8 núcleos ARM", dedicated: true, ram: "32 GB", directConnections: 380, poolerConnections: 1500 },
+  { size: "4XL", price: 5760, cpu: "16 núcleos ARM", dedicated: true, ram: "64 GB", directConnections: 480, poolerConnections: 3000 },
+  { size: "8XL", price: 11220, cpu: "32 núcleos ARM", dedicated: true, ram: "128 GB", directConnections: 490, poolerConnections: 6000 },
+  { size: "12XL", price: 16800, cpu: "48 núcleos ARM", dedicated: true, ram: "192 GB", directConnections: 500, poolerConnections: 9000 },
+  { size: "16XL", price: 22380, cpu: "64 núcleos ARM", dedicated: true, ram: "256 GB", directConnections: 500, poolerConnections: 12000 },
 ];
 
 export type FaqItem = {

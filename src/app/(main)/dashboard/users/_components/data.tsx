@@ -32,7 +32,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Plataforma",
     workspace: ["Weblabs Studio", "Ferramentas Internas"],
-    joinedDate: "24 Jun 2024, 9:23 AM",
+    joinedDate: "24 de jun. de 2024, 9:23",
     lastActive: 0,
   },
   {
@@ -42,7 +42,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Crescimento",
     workspace: ["Weblabs Studio"],
-    joinedDate: "15 Mar 2023, 2:45 PM",
+    joinedDate: "15 de mar. de 2023, 14:45",
     lastActive: 5,
   },
   {
@@ -52,7 +52,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Receita",
     workspace: ["Acme Inc."],
-    joinedDate: "10 Apr 2022, 11:30 AM",
+    joinedDate: "10 de abr. de 2022, 11:30",
     lastActive: 14 * 24 * 60,
   },
   {
@@ -62,7 +62,7 @@ export const users: UserRow[] = [
     status: "Bloqueado",
     team: "Ferramentas Internas",
     workspace: ["Weblabs Studio", "Ferramentas Internas"],
-    joinedDate: "28 Feb 2023, 6:15 PM",
+    joinedDate: "28 de fev. de 2023, 18:15",
     lastActive: 60,
   },
   {
@@ -72,7 +72,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Operações de Cliente",
     workspace: ["Sandbox"],
-    joinedDate: "19 May 2024, 7:55 AM",
+    joinedDate: "19 de mai. de 2024, 7:55",
     lastActive: 2 * 60,
   },
   {
@@ -82,7 +82,7 @@ export const users: UserRow[] = [
     status: "Convite pendente",
     team: "Conformidade",
     workspace: ["Weblabs Studio"],
-    joinedDate: "03 Jan 2024, 12:05 PM",
+    joinedDate: "03 de jan. de 2024, 12:05",
     lastActive: 90 * 24 * 60,
   },
   {
@@ -92,7 +92,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Ferramentas Internas",
     workspace: ["Ferramentas Internas"],
-    joinedDate: "21 Jul 2023, 8:40 PM",
+    joinedDate: "21 de jul. de 2023, 20:40",
     lastActive: 3 * 60,
   },
   {
@@ -102,7 +102,7 @@ export const users: UserRow[] = [
     status: "Desativado",
     team: "Receita",
     workspace: ["Acme Inc."],
-    joinedDate: "16 Sep 2023, 3:25 PM",
+    joinedDate: "16 de set. de 2023, 15:25",
     lastActive: 6,
   },
   {
@@ -112,7 +112,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Operações de Pessoal",
     workspace: ["Weblabs Studio", "Sandbox"],
-    joinedDate: "04 Nov 2022, 9:50 AM",
+    joinedDate: "04 de nov. de 2022, 9:50",
     lastActive: 12,
   },
   {
@@ -122,7 +122,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Plataforma",
     workspace: ["Weblabs Studio"],
-    joinedDate: "30 Dec 2023, 4:35 PM",
+    joinedDate: "30 de dez. de 2023, 16:35",
     lastActive: 30,
   },
   {
@@ -132,7 +132,7 @@ export const users: UserRow[] = [
     status: "Suspenso",
     team: "Ferramentas Internas",
     workspace: ["Ferramentas Internas"],
-    joinedDate: "12 Feb 2024, 10:20 AM",
+    joinedDate: "12 de fev. de 2024, 10:20",
     lastActive: 8 * 24 * 60,
   },
   {
@@ -142,7 +142,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Crescimento",
     workspace: ["Weblabs Studio"],
-    joinedDate: "08 Aug 2023, 1:10 PM",
+    joinedDate: "08 de ago. de 2023, 13:10",
     lastActive: 24 * 60,
   },
   {
@@ -152,7 +152,7 @@ export const users: UserRow[] = [
     status: "Convite pendente",
     team: "Operações de Cliente",
     workspace: ["Sandbox"],
-    joinedDate: "17 Jan 2024, 5:45 PM",
+    joinedDate: "17 de jan. de 2024, 17:45",
     lastActive: 90 * 24 * 60,
   },
   {
@@ -162,7 +162,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Financeiro",
     workspace: ["Acme Inc."],
-    joinedDate: "02 Oct 2023, 11:15 AM",
+    joinedDate: "02 de out. de 2023, 11:15",
     lastActive: 45,
   },
   {
@@ -172,7 +172,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Ferramentas Internas",
     workspace: ["Weblabs Studio", "Ferramentas Internas"],
-    joinedDate: "22 May 2024, 8:30 AM",
+    joinedDate: "22 de mai. de 2024, 8:30",
     lastActive: 10,
   },
   {
@@ -182,7 +182,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Conformidade",
     workspace: ["Ferramentas Internas"],
-    joinedDate: "14 Jul 2023, 6:05 PM",
+    joinedDate: "14 de jul. de 2023, 18:05",
     lastActive: 4 * 60,
   },
   {
@@ -192,7 +192,7 @@ export const users: UserRow[] = [
     status: "Desativado",
     team: "Plataforma",
     workspace: ["Weblabs Studio"],
-    joinedDate: "26 Nov 2022, 3:40 PM",
+    joinedDate: "26 de nov. de 2022, 15:40",
     lastActive: 21 * 24 * 60,
   },
   {
@@ -202,7 +202,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Receita",
     workspace: ["Acme Inc."],
-    joinedDate: "11 Apr 2024, 9:05 AM",
+    joinedDate: "11 de abr. de 2024, 9:05",
     lastActive: 18,
   },
   {
@@ -212,7 +212,7 @@ export const users: UserRow[] = [
     status: "Bloqueado",
     team: "Crescimento",
     workspace: ["Sandbox"],
-    joinedDate: "09 Sep 2023, 12:25 PM",
+    joinedDate: "09 de set. de 2023, 12:25",
     lastActive: 2 * 24 * 60,
   },
   {
@@ -222,7 +222,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Ferramentas Internas",
     workspace: ["Weblabs Studio", "Ferramentas Internas"],
-    joinedDate: "05 Dec 2023, 2:15 PM",
+    joinedDate: "05 de dez. de 2023, 14:15",
     lastActive: 0,
   },
   {
@@ -232,7 +232,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Plataforma",
     workspace: ["Weblabs Studio"],
-    joinedDate: "18 Jun 2024, 4:50 PM",
+    joinedDate: "18 de jun. de 2024, 16:50",
     lastActive: 7,
   },
   {
@@ -242,7 +242,7 @@ export const users: UserRow[] = [
     status: "Suspenso",
     team: "Financeiro",
     workspace: ["Acme Inc."],
-    joinedDate: "01 Mar 2023, 10:10 AM",
+    joinedDate: "01 de mar. de 2023, 10:10",
     lastActive: 30 * 24 * 60,
   },
   {
@@ -252,7 +252,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Ferramentas Internas",
     workspace: ["Ferramentas Internas"],
-    joinedDate: "07 Feb 2024, 7:20 PM",
+    joinedDate: "07 de fev. de 2024, 19:20",
     lastActive: 60,
   },
   {
@@ -262,7 +262,7 @@ export const users: UserRow[] = [
     status: "Convite pendente",
     team: "Financeiro",
     workspace: ["Weblabs Studio"],
-    joinedDate: "29 Apr 2024, 11:55 AM",
+    joinedDate: "29 de abr. de 2024, 11:55",
     lastActive: 90 * 24 * 60,
   },
   {
@@ -272,7 +272,7 @@ export const users: UserRow[] = [
     status: "Ativo",
     team: "Operações de Cliente",
     workspace: ["Sandbox", "Ferramentas Internas"],
-    joinedDate: "13 May 2024, 6:35 PM",
+    joinedDate: "13 de mai. de 2024, 18:35",
     lastActive: 25,
   },
 ];

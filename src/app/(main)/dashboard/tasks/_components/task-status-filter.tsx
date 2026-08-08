@@ -57,7 +57,7 @@ export function TaskStatusFilter<TData>({ table }: TaskStatusFilterProps<TData>)
           className={cn("border-dashed", selectedValues.size > 0 && "border-solid bg-muted text-foreground")}
         >
           <ListFilter data-icon="inline-start" />
-          Status
+          Estado
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-50">

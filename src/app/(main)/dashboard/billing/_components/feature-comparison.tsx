@@ -59,10 +59,10 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
                     <TableHead className="w-[200px]">Recurso</TableHead>
-                    <TableHead className="text-center">Starter</TableHead>
+                    <TableHead className="text-center">Inicial</TableHead>
                     <TableHead className="text-center">Pro</TableHead>
-                    <TableHead className="text-center">Team</TableHead>
-                    <TableHead className="text-center">Enterprise</TableHead>
+                    <TableHead className="text-center">Equipe</TableHead>
+                    <TableHead className="text-center">Empresarial</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
