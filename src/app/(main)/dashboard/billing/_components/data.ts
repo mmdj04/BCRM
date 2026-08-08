@@ -8,7 +8,9 @@ export type Plan = {
   highlighted?: boolean;
   cta: string;
   features: string[];
+  supabasePlan: string;
   supabaseCost: number;
+  ourMarkup: number;
 };
 
 export const plans: Plan[] = [
@@ -16,32 +18,37 @@ export const plans: Plan[] = [
     id: "starter",
     name: "Starter",
     description: "For small teams getting started with essential features.",
-    monthlyPrice: 134.99,
-    yearlyPrice: 1295.9,
+    monthlyPrice: 29.99,
+    yearlyPrice: 287.9,
     cta: "Get Started",
+    supabasePlan: "Pro",
     supabaseCost: 25,
+    ourMarkup: 4.99,
     features: [
       "5 active projects",
-      "50,000 monthly active users",
-      "2 GB database per project",
-      "50 GB bandwidth",
-      "25 GB file storage",
+      "100,000 monthly active users",
+      "8 GB database per project",
+      "250 GB bandwidth",
+      "100 GB file storage",
       "Email support",
-      "Weekly backups (7 days)",
+      "Daily backups (7 days)",
       "Custom SMTP server",
       "Basic MFA",
+      "7-day log retention",
     ],
   },
   {
     id: "pro",
     name: "Pro",
     description: "For production apps and growing teams.",
-    monthlyPrice: 349.99,
-    yearlyPrice: 3359.9,
+    monthlyPrice: 49.99,
+    yearlyPrice: 479.9,
     badge: "Popular",
     highlighted: true,
     cta: "Start Free Trial",
+    supabasePlan: "Pro",
     supabaseCost: 25,
+    ourMarkup: 24.99,
     features: [
       "Unlimited projects",
       "100,000 monthly active users",
@@ -54,16 +61,19 @@ export const plans: Plan[] = [
       "SSO for dashboard",
       "Advanced MFA",
       "7-day log retention",
+      "Image transformations",
     ],
   },
   {
     id: "team",
     name: "Team",
     description: "For teams that need security and compliance.",
-    monthlyPrice: 899.99,
-    yearlyPrice: 8639.9,
+    monthlyPrice: 749.99,
+    yearlyPrice: 7199.9,
     cta: "Start Free Trial",
+    supabasePlan: "Team",
     supabaseCost: 599,
+    ourMarkup: 150.99,
     features: [
       "Everything in Pro",
       "SOC2 & ISO 27001",
@@ -83,7 +93,9 @@ export const plans: Plan[] = [
     description: "For large organizations with custom needs.",
     monthlyPrice: null,
     yearlyPrice: null,
+    supabasePlan: "Enterprise",
     supabaseCost: 0,
+    ourMarkup: 0,
     cta: "Contact Sales",
     features: [
       "Everything in Team",
@@ -115,17 +127,17 @@ export const featureComparison: FeatureCategory[] = [
     features: [
       { name: "Dedicated Postgres", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
       { name: "Unlimited API requests", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
-      { name: "Database size", starter: "2 GB", pro: "8 GB", team: "8 GB", enterprise: "Custom" },
+      { name: "Database size", starter: "8 GB", pro: "8 GB", team: "8 GB", enterprise: "Custom" },
       { name: "Automatic backups", starter: "7 days", pro: "14 days", team: "14 days", enterprise: "Custom" },
       { name: "Point-in-time recovery", starter: "-", pro: "$100/mo", team: "$100/mo", enterprise: "$100/mo" },
-      { name: "Egress", starter: "50 GB", pro: "250 GB", team: "250 GB", enterprise: "Custom" },
+      { name: "Egress", starter: "250 GB", pro: "250 GB", team: "250 GB", enterprise: "Custom" },
       { name: "Branching", starter: "-", pro: "$0.013/hr", team: "$0.013/hr", enterprise: "Custom" },
     ],
   },
   {
     category: "Auth",
     features: [
-      { name: "Monthly active users", starter: "50,000", pro: "100,000", team: "100,000", enterprise: "Custom" },
+      { name: "Monthly active users", starter: "100,000", pro: "100,000", team: "100,000", enterprise: "Custom" },
       { name: "Social OAuth providers", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
       { name: "Custom SMTP", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
       { name: "Multi-Factor Auth", starter: "Basic", pro: "Advanced", team: "Advanced", enterprise: "Advanced" },
@@ -138,11 +150,11 @@ export const featureComparison: FeatureCategory[] = [
   {
     category: "Storage",
     features: [
-      { name: "File storage", starter: "25 GB", pro: "100 GB", team: "100 GB", enterprise: "Custom" },
+      { name: "File storage", starter: "100 GB", pro: "100 GB", team: "100 GB", enterprise: "Custom" },
       { name: "Max file upload", starter: "50 MB", pro: "500 GB", team: "500 GB", enterprise: "Custom" },
       { name: "CDN", starter: "Basic", pro: "Smart CDN", team: "Smart CDN", enterprise: "Smart CDN" },
       { name: "Image transformations", starter: "-", pro: "100 free", team: "100 free", enterprise: "Custom" },
-      { name: "Cached egress", starter: "5 GB", pro: "250 GB", team: "250 GB", enterprise: "Custom" },
+      { name: "Cached egress", starter: "250 GB", pro: "250 GB", team: "250 GB", enterprise: "Custom" },
     ],
   },
   {
@@ -153,7 +165,7 @@ export const featureComparison: FeatureCategory[] = [
       { name: "ISO 27001", starter: "-", pro: "-", team: "Included", enterprise: "Included" },
       { name: "HIPAA", starter: "-", pro: "-", team: "Add-on", enterprise: "Add-on" },
       { name: "SSO", starter: "-", pro: "-", team: "Contact Us", enterprise: "Contact Us" },
-      { name: "Log retention", starter: "3 days", pro: "7 days", team: "28 days", enterprise: "90 days" },
+      { name: "Log retention", starter: "7 days", pro: "7 days", team: "28 days", enterprise: "90 days" },
       { name: "Uptime SLAs", starter: "-", pro: "-", team: "-", enterprise: "Included" },
       { name: "Platform audit logs", starter: "-", pro: "-", team: "Included", enterprise: "Included" },
       { name: "Custom access roles", starter: "-", pro: "-", team: "Included", enterprise: "Custom" },
@@ -181,8 +193,8 @@ export type BillingHistoryEntry = {
 };
 
 export const billingHistory: BillingHistoryEntry[] = [
-  { id: "inv_001", date: "Aug 1, 2026", description: "Pro Plan - Monthly", amount: 349.99, status: "paid" },
-  { id: "inv_002", date: "Jul 1, 2026", description: "Pro Plan - Monthly", amount: 349.99, status: "paid" },
-  { id: "inv_003", date: "Jun 1, 2026", description: "Starter Plan - Monthly", amount: 134.99, status: "paid" },
-  { id: "inv_004", date: "May 1, 2026", description: "Starter Plan - Monthly", amount: 134.99, status: "paid" },
+  { id: "inv_001", date: "Aug 1, 2026", description: "Pro Plan - Monthly", amount: 49.99, status: "paid" },
+  { id: "inv_002", date: "Jul 1, 2026", description: "Pro Plan - Monthly", amount: 49.99, status: "paid" },
+  { id: "inv_003", date: "Jun 1, 2026", description: "Starter Plan - Monthly", amount: 29.99, status: "paid" },
+  { id: "inv_004", date: "May 1, 2026", description: "Starter Plan - Monthly", amount: 29.99, status: "paid" },
 ];
