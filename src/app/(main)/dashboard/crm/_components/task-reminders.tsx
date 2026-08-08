@@ -58,9 +58,9 @@ export function TaskReminders() {
                   </div>
                   <div className="min-w-0">
                     <div className="truncate font-medium text-primary-foreground text-xs leading-none">
-                      Demo de produto com Tim
+                      Demonstração de produto com o cliente
                     </div>
-                    <div className="truncate text-[10px] text-primary-foreground/75">Weblabs Studio</div>
+                    <div className="truncate text-[10px] text-primary-foreground/75">Estúdio Weblabs</div>
                   </div>
                 </div>
               </div>

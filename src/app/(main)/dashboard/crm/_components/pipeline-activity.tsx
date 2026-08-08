@@ -16,8 +16,8 @@ const pipelineChartConfig = {
   },
 } satisfies ChartConfig;
 
-const axisMonthFormatter = new Intl.DateTimeFormat("en-US", { month: "short" });
-const tooltipMonthFormatter = new Intl.DateTimeFormat("en-US", { month: "short", year: "2-digit" });
+const axisMonthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "short" });
+const tooltipMonthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "short", year: "2-digit" });
 
 function getRollingMonthData(values: readonly number[]) {
   return values.map((qualified, index) => {
@@ -112,7 +112,7 @@ export function PipelineActivity() {
             <div className="flex flex-col gap-5 rounded-lg p-4 lg:col-span-4">
               <div className="flex flex-col gap-1">
                 <div className="font-medium text-4xl tabular-nums leading-none">
-                  {totalQualified} <span className="font-normal text-lg text-muted-foreground">leads</span>
+                  {totalQualified} <span className="font-normal text-lg text-muted-foreground">oportunidades</span>
                 </div>
                 <p className="text-muted-foreground text-sm">Total de leads qualificados capturados nos últimos 12 meses.</p>
               </div>

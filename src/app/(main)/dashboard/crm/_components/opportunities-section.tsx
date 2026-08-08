@@ -40,8 +40,8 @@ import { opportunitiesColumns } from "./opportunities-table/columns";
 import opportunitiesData from "./opportunities-table/data.json";
 import { opportunitiesSchema } from "./opportunities-table/schema";
 
-const stageOptions = ["all", "Proposal Sent", "Discovery", "Negotiation", "Qualified"] as const;
-const healthOptions = ["all", "On Track", "Needs Review", "At Risk", "On Hold"] as const;
+const stageOptions = ["all", "Proposta Enviada", "Descoberta", "Negociação", "Qualificado"] as const;
+const healthOptions = ["all", "No Ritmo", "Precisa de Revisão", "Em Risco", "Em Espera"] as const;
 const opportunities = opportunitiesSchema.parse(opportunitiesData);
 
 function preventPaginationNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
