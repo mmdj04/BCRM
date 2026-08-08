@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability
+    url: https://github.com/mmdj04/BCRM/security
+    about: Report security vulnerabilities privately
+  - name: Documentation
+    url: https://github.com/mmdj04/BCRM/blob/main/README.md
+    about: Read the project documentation

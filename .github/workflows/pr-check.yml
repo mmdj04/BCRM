@@ -1,0 +1,87 @@
+name: Check
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check:
+    name: PR Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check PR size
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            const additions = pr.additions;
+            const deletions = pr.deletions;
+            const total = additions + deletions;
+            
+            let sizeLabel = 'XS';
+            if (total > 100) sizeLabel = 'S';
+            if (total > 300) sizeLabel = 'M';
+            if (total > 1000) sizeLabel = 'L';
+            if (total > 3000) sizeLabel = 'XL';
+            
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: [`size/${sizeLabel.toLowerCase()}`]
+            });
+            
+            if (total > 1000) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `⚠️ This is a large PR (${total} lines changed). Please break it into smaller PRs if possible.`
+              });
+            }
+
+      - name: Check for lock file changes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            const lockFiles = files.filter(f => 
+              f.filename === 'package-lock.json' || 
+              f.filename === 'yarn.lock' || 
+              f.filename === 'pnpm-lock.yaml'
+            );
+            
+            if (lockFiles.length > 0) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `📦 Lock file changes detected. This may cause merge conflicts. Please rebase and resolve conflicts before merging.`
+              });
+            }

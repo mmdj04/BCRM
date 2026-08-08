@@ -1,0 +1,93 @@
+name: Scheduled Audit
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Monthly
+
+jobs:
+  audit:
+    name: Security & Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --json > audit-report.json || true
+
+      - name: Check for outdated dependencies
+        run: npm outdated --json > outdated-report.json || true
+
+      - name: Upload audit reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-reports-${{ github.run_id }}
+          path: |
+            audit-report.json
+            outdated-report.json
+
+      - name: Comment on latest PR if issues found
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let auditReport = {};
+            let outdatedReport = {};
+            
+            try {
+              auditReport = JSON.parse(fs.readFileSync('audit-report.json', 'utf8'));
+            } catch {}
+            
+            try {
+              outdatedReport = JSON.parse(fs.readFileSync('outdated-report.json', 'utf8'));
+            } catch {}
+            
+            const hasVulnerabilities = Object.keys(auditReport.vulnerabilities || {}).length > 0;
+            const hasOutdated = Object.keys(outdatedReport).length > 0;
+            
+            if (hasVulnerabilities || hasOutdated) {
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                sort: 'updated',
+                direction: 'desc',
+                per_page: 1
+              });
+              
+              if (prs.length > 0) {
+                let body = '🔍 **Monthly Security & Dependency Audit**\n\n';
+                
+                if (hasVulnerabilities) {
+                  body += '❌ **Vulnerabilities found:**\n';
+                  for (const [pkg, vuln] of Object.entries(auditReport.vulnerabilities || {})) {
+                    body += `- ${pkg}: ${vuln.severity} (${vuln.via.map(v => v.title || v).join(', ')})\n`;
+                  }
+                  body += '\n';
+                }
+                
+                if (hasOutdated) {
+                  body += '📦 **Outdated dependencies:**\n';
+                  for (const [pkg, info] of Object.entries(outdatedReport)) {
+                    body += `- ${pkg}: ${info.current} → ${info.latest}\n`;
+                  }
+                }
+                
+                await github.rest.issues.createComment({
+                  issue_number: prs[0].number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body
+                });
+              }
+            }
