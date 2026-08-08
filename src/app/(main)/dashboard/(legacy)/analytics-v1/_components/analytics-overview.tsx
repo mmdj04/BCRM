@@ -60,7 +60,7 @@ const RISK_SUMMARY_METRICS = [
   {
     key: "risk",
     label: "Revenue at Risk",
-    value: "$1,151,000",
+    value: "R$ 1.151.000",
     comparatorLabel: "vs previous period",
   },
   {

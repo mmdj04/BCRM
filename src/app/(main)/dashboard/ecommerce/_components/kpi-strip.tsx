@@ -82,7 +82,7 @@ function formatTooltipLabel(value: string) {
 }
 
 function formatCurrencyTooltipValue(value: unknown) {
-  return typeof value === "number" ? `$${value.toLocaleString()}` : String(value ?? "");
+  return typeof value === "number" ? `R$ ${value.toLocaleString()}` : String(value ?? "");
 }
 
 export function KpiStrip() {
@@ -95,7 +95,7 @@ export function KpiStrip() {
               <CardHeader>
                 <CardTitle className="font-normal text-sm">Vendas Totais</CardTitle>
                 <CardDescription className="text-3xl text-foreground tabular-nums leading-none tracking-tight">
-                  $48,560.00
+                  R$ 48.560,00
                 </CardDescription>
                 <CardAction className="grid size-6 place-items-center rounded-sm bg-muted">
                   <DollarSign className="size-3 text-foreground" />
@@ -149,7 +149,7 @@ export function KpiStrip() {
               <CardHeader>
                 <CardTitle className="font-normal text-sm">Pedido Médio</CardTitle>
                 <CardDescription className="text-3xl text-foreground tabular-nums leading-none tracking-tight">
-                  $128
+                  R$ 128
                 </CardDescription>
                 <CardAction className="grid size-6 place-items-center rounded-sm bg-muted">
                   <ReceiptText className="size-3 text-foreground" />
@@ -157,7 +157,7 @@ export function KpiStrip() {
               </CardHeader>
               <CardContent>
                 <div className="text-sm">
-                  <span className="text-destructive">-$4.20</span>
+                  <span className="text-destructive">-R$ 4,20</span>
                   <span className="text-muted-foreground"> vs semana passada</span>
                 </div>
               </CardContent>

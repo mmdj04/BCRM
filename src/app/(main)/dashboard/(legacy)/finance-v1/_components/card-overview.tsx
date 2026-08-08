@@ -98,11 +98,11 @@ export function CardOverview() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Limite do Cartão</span>
-              <span className="font-medium tabular-nums">$62,000.00</span>
+              <span className="font-medium tabular-nums">R$ 62.000,00</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Saldo Disponível</span>
-              <span className="font-medium tabular-nums">$13,100.06</span>
+              <span className="font-medium tabular-nums">R$ 13.100,06</span>
             </div>
           </div>
 

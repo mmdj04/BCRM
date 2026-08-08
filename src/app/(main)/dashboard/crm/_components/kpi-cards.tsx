@@ -23,7 +23,7 @@ export function KpiCards() {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="text-3xl leading-none tracking-tight">$284,500</span>
+              <span className="text-3xl leading-none tracking-tight">R$ 284.500</span>
 
               <Badge
                 variant="outline"
@@ -34,7 +34,7 @@ export function KpiCards() {
               </Badge>
             </div>
             <p className="text-sm">
-              <span className="font-medium text-foreground">$254,200</span>{" "}
+              <span className="font-medium text-foreground">R$ 254.200</span>{" "}
               <span className="text-muted-foreground">mês passado</span>
             </p>
           </CardContent>
