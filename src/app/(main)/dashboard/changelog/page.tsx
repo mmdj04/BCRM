@@ -13,20 +13,24 @@ function parseChangelog(markdown: string) {
   let current: { version: string; date: string; content: string } | null = null;
 
   for (const line of lines) {
-    const versionMatch = line.match(/^## \[(.+?)\]\s*(?:-\s*(\d{4}-\d{2}-\d{2}))?/);
+    // Match "## Versão 1.0.0 — BCRM: ..." or "## Versão Agosto de 2026"
+    const versionMatch = line.match(/^## Versão\s+(.+)/);
     if (versionMatch) {
       if (current) {
         entries.push(current);
       }
+      const raw = versionMatch[1].trim();
+      // Extract date if present (e.g. "Agosto de 2026" or "1.0.0 — BCRM: ...")
+      const dateMatch = raw.match(/(\w+ de \d{4})/);
       current = {
-        version: versionMatch[1],
-        date: versionMatch[2] || "Em desenvolvimento",
+        version: raw,
+        date: dateMatch?.[1] || "Versão atual",
         content: "",
       };
       continue;
     }
 
-    if (current && !line.startsWith("# Changelog") && !line.startsWith("---")) {
+    if (current && !line.startsWith("# ") && line !== "---") {
       current.content += `${line}\n`;
     }
   }
