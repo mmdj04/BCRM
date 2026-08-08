@@ -2,6 +2,7 @@
 "use no memo";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/lib/data-table-features";
 import { format, parseISO } from "date-fns";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
@@ -54,7 +55,7 @@ function accountById(id: string) {
   return accounts.find((account) => account.id === id);
 }
 
-export const transactionsColumns: ColumnDef<TransactionRow>[] = [
+export const transactionsColumns: ColumnDef<DataTableFeatures, TransactionRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -100,7 +101,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
         </div>
       );
     },
-    sortingFn: "datetime",
+    sortFn: "datetime",
   },
   {
     accessorKey: "description",
@@ -182,7 +183,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
         </div>
       );
     },
-    sortingFn: "basic",
+    sortFn: "alphanumeric",
   },
   {
     accessorKey: "status",

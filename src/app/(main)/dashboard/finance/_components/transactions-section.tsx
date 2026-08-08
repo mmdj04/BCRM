@@ -6,14 +6,9 @@ import * as React from "react";
 import {
   type ColumnFiltersState,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   type PaginationState,
   type SortingState,
-  useReactTable,
-  type VisibilityState,
+  useTable,
 } from "@tanstack/react-table";
 import { ChevronDownIcon, ListFilter } from "lucide-react";
 
@@ -37,6 +32,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { dataTableFeatures } from "@/lib/data-table-features";
 
 import { accounts } from "./accounts";
 import { transactionsColumns } from "./transactions-table/columns";
@@ -64,7 +60,7 @@ function getAriaSort(canSort: boolean, state: false | "asc" | "desc") {
   return "none" as const;
 }
 
-const hiddenColumns: VisibilityState = { type: false };
+const hiddenColumns: Record<string, boolean> = { type: false };
 
 type TransactionsSectionProps = {
   initialAccountFilter?: string;
@@ -76,12 +72,13 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(() =>
     initialAccountFilter ? [{ id: "accountId", value: initialAccountFilter }] : [],
   );
-  const [columnVisibility] = React.useState<VisibilityState>(hiddenColumns);
+  const [columnVisibility] = React.useState<Record<string, boolean>>(hiddenColumns);
   const [sorting, setSorting] = React.useState<SortingState>([{ id: "date", desc: true }]);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [pagination, setPagination] = React.useState<PaginationState>({ pageIndex: 0, pageSize: 10 });
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data: transactions,
     columns: transactionsColumns,
     state: { rowSelection, columnFilters, columnVisibility, sorting, globalFilter, pagination },
@@ -92,10 +89,6 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     globalFilterFn: "includesString",
   });
 
@@ -106,11 +99,11 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
     onAccountFilterConsumed?.();
   }, [initialAccountFilter, table, onAccountFilterConsumed]);
 
-  const searchQuery = table.getState().globalFilter ?? "";
+  const searchQuery = table.state.globalFilter ?? "";
   const accountFilter = (table.getColumn("accountId")?.getFilterValue() as string) ?? "all";
   const categoryFilter = (table.getColumn("category")?.getFilterValue() as string) ?? "all";
   const typeFilter = (table.getColumn("type")?.getFilterValue() as string) ?? "all";
-  const currentPage = table.getState().pagination.pageIndex + 1;
+  const currentPage = table.state.pagination.pageIndex + 1;
   const pageCount = Math.max(1, table.getPageCount());
   const filteredTransactionCount = table.getFilteredRowModel().rows.length;
   const visibleTransactionCount = table.getRowModel().rows.length;
@@ -276,7 +269,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
                 <PaginationItem key={`page-${pageNumber}`}>
                   <PaginationLink
                     href="#"
-                    isActive={table.getState().pagination.pageIndex === pageNumber - 1}
+                    isActive={table.state.pagination.pageIndex === pageNumber - 1}
                     onClick={(event) => {
                       preventPaginationNavigation(event);
                       table.setPageIndex(pageNumber - 1);

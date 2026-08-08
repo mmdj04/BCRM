@@ -23,7 +23,7 @@ function formatOrderDate(date: string) {
 }
 
 function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
-  if (status === "Paid") {
+  if (status === "Pago") {
     return (
       <Badge
         className="border-green-700/25 text-green-700 dark:border-green-300/25 dark:text-green-300"
@@ -35,7 +35,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
     );
   }
 
-  if (status === "Refunded") {
+  if (status === "Reembolsado") {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
@@ -56,7 +56,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
 }
 
 function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
-  if (status === "Fulfilled") {
+  if (status === "Enviado") {
     return (
       <Badge
         className="border-green-700/25 text-green-700 dark:border-green-300/25 dark:text-green-300"
@@ -68,7 +68,7 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
     );
   }
 
-  if (status === "Returned") {
+  if (status === "Devolvido") {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
@@ -148,25 +148,25 @@ export const recentOrdersColumns: ColumnDef<DataTableFeatures, OrderRow>[] = [
       </div>
     ),
     filterFn: (row, _columnId, value) => {
-      if (value === "Needs action") {
+      if (value === "Necessita ação") {
         return (
-          row.original.payment === "Pending" ||
-          row.original.payment === "Refunded" ||
-          row.original.fulfillment === "Unfulfilled" ||
-          row.original.fulfillment === "Returned"
+          row.original.payment === "Pendente" ||
+          row.original.payment === "Reembolsado" ||
+          row.original.fulfillment === "Não Enviado" ||
+          row.original.fulfillment === "Devolvido"
         );
       }
 
-      if (value === "Unfulfilled") {
-        return row.original.fulfillment === "Unfulfilled";
+      if (value === "Não Atendido") {
+        return row.original.fulfillment === "Não Enviado";
       }
 
-      if (value === "Unpaid") {
-        return row.original.payment === "Pending";
+      if (value === "Não pago") {
+        return row.original.payment === "Pendente";
       }
 
-      if (value === "Returns") {
-        return row.original.payment === "Refunded" || row.original.fulfillment === "Returned";
+      if (value === "Devoluções") {
+        return row.original.payment === "Reembolsado" || row.original.fulfillment === "Devolvido";
       }
 
       return true;
