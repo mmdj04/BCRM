@@ -16,30 +16,30 @@ const upcomingPayments = [
   {
     id: 1,
     icon: Home,
-    title: "Apartment Rent",
+    title: "Aluguel do Apartamento",
     amount: 1200,
-    date: `Due on ${format(addDays(now, 2), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 2), "do MMMM yyyy")}`,
   },
   {
     id: 2,
     icon: Zap,
-    title: "Electricity Bill",
+    title: "Conta de Eletricidade",
     amount: 75,
-    date: `Due on ${format(addDays(now, 2), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 2), "do MMMM yyyy")}`,
   },
   {
     id: 3,
     icon: Sparkles,
     title: "ChatGPT Plus",
     amount: 20,
-    date: `Due on ${format(addDays(now, 7), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 7), "do MMMM yyyy")}`,
   },
   {
     id: 4,
     icon: Receipt,
-    title: "Credit Card Payment",
+    title: "Pagamento do Cartão de Crédito",
     amount: 420,
-    date: `Due on ${format(addDays(now, 9), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 9), "do MMMM yyyy")}`,
   },
 ];
 
@@ -47,8 +47,8 @@ export function CardOverview() {
   return (
     <Card className="shadow-xs">
       <CardHeader className="items-center">
-        <CardTitle>My Card</CardTitle>
-        <CardDescription>1 of 4 cards added · Overview of your primary card and upcoming payments</CardDescription>
+        <CardTitle>Meu Cartão</CardTitle>
+        <CardDescription>1 de 4 cartões adicionados · Visão geral do seu cartão principal e pagamentos próximos</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -71,7 +71,7 @@ export function CardOverview() {
                   </p>
                   <div className="flex gap-6">
                     <div>
-                      <p className="text-[10px] text-primary-foreground/80 uppercase tracking-wider">Valid Thru</p>
+                      <p className="text-[10px] text-primary-foreground/80 uppercase tracking-wider">Validade</p>
                       <p className="font-mono text-primary-foreground/80 text-xs">06/30</p>
                     </div>
                     <div>
@@ -87,36 +87,36 @@ export function CardOverview() {
 
           <div className="space-y-2 text-sm">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Card type</span>
+              <span className="text-muted-foreground">Tipo de cartão</span>
               <span className="font-medium tabular-nums">Virtual</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Billing cycle</span>
-              <span className="font-medium tabular-nums">21st monthly</span>
+              <span className="text-muted-foreground">Ciclo de faturamento</span>
+              <span className="font-medium tabular-nums">21º mensal</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Card Limit</span>
+              <span className="text-muted-foreground">Limite do Cartão</span>
               <span className="font-medium tabular-nums">$62,000.00</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Available Balance</span>
+              <span className="text-muted-foreground">Saldo Disponível</span>
               <span className="font-medium tabular-nums">$13,100.06</span>
             </div>
           </div>
 
           <div className="space-y-1">
             <Button className="w-full" size="sm">
-              Manage Card
+              Gerenciar Cartão
             </Button>
 
             <Button className="w-full" variant="outline" size="sm">
-              Add Card
+              Adicionar Cartão
             </Button>
           </div>
           <Separator />
 
           <div className="space-y-4">
-            <h6 className="text-muted-foreground text-sm uppercase">Upcoming Payments</h6>
+            <h6 className="text-muted-foreground text-sm uppercase">Pagamentos Próximos</h6>
 
             <div className="space-y-4">
               {upcomingPayments.map((transaction) => (
@@ -142,7 +142,7 @@ export function CardOverview() {
             </div>
 
             <Button className="w-full" size="sm" variant="outline">
-              View All Payments
+              Ver Todos os Pagamentos
             </Button>
           </div>
         </div>

@@ -49,8 +49,8 @@ export default function ChangelogPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Changelog</h1>
-        <p className="text-muted-foreground text-sm">All notable changes to this project are documented here.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Registro de Alterações</h1>
+        <p className="text-muted-foreground text-sm">Todas as alterações notáveis neste projeto são documentadas aqui.</p>
       </div>
 
       <ChangelogList entries={entries} />

@@ -53,15 +53,15 @@ export function NotificationsList({ notifications: initialNotifications }: Notif
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-lg">Notifications</CardTitle>
+            <CardTitle className="text-lg">Notificações</CardTitle>
             <CardDescription>
-              {unreadCount > 0 ? `You have ${unreadCount} unread notification${unreadCount > 1 ? "s" : ""}` : "All caught up!"}
+              {unreadCount > 0 ? `Você tem ${unreadCount} notificação(ões) não lida(s)` : "Tudo em dia!"}
             </CardDescription>
           </div>
           {unreadCount > 0 && (
             <Button variant="outline" size="sm" onClick={markAllAsRead}>
               <CheckCheck className="mr-2 size-4" />
-              Mark all as read
+              Marcar todas como lidas
             </Button>
           )}
         </div>
@@ -70,7 +70,7 @@ export function NotificationsList({ notifications: initialNotifications }: Notif
         {notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <Bell className="text-muted-foreground mb-3 size-10" />
-            <p className="text-muted-foreground text-sm">No notifications</p>
+            <p className="text-muted-foreground text-sm">Sem notificações</p>
           </div>
         ) : (
           notifications.map((notification) => (
@@ -90,7 +90,7 @@ export function NotificationsList({ notifications: initialNotifications }: Notif
                     {notification.title}
                   </p>
                   {!notification.read && (
-                    <Badge variant="secondary" className="text-xs">New</Badge>
+                    <Badge variant="secondary" className="text-xs">Novo</Badge>
                   )}
                 </div>
                 <p className="text-muted-foreground mt-0.5 text-sm">{notification.description}</p>

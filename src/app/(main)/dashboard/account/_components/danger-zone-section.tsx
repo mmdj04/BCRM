@@ -46,41 +46,41 @@ export function DangerZoneSection() {
   return (
     <Card className="border-destructive/50">
       <CardHeader>
-        <CardTitle className="text-destructive text-lg">Danger Zone</CardTitle>
+        <CardTitle className="text-destructive text-lg">Zona de Perigo</CardTitle>
         <CardDescription>
-          Irreversible actions. Please be certain before proceeding.
+          Ações irreversíveis. Por favor, tenha certeza antes de prosseguir.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {/* Delete All Data */}
         <div className="flex items-center justify-between rounded-lg border border-destructive/20 p-4">
           <div className="flex flex-col gap-1">
-            <p className="font-medium">Delete All Data</p>
+            <p className="font-medium">Excluir Todos os Dados</p>
             <p className="text-muted-foreground text-sm">
-              Remove all your projects, databases, and files. This cannot be undone.
+              Remova todos os seus projetos, bancos de dados e arquivos. Esta ação não pode ser desfeita.
             </p>
           </div>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="destructive" size="sm">
                 <Trash2 className="mr-2 size-4" />
-                Delete Data
+                Excluir Dados
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <AlertTriangle className="text-destructive size-5" />
-                  Delete All Data
+                  Excluir Todos os Dados
                 </DialogTitle>
                 <DialogDescription>
-                  This will permanently delete all your projects, databases, files, and
-                  configurations. This action cannot be undone.
+                  Isso excluirá permanentemente todos os seus projetos, bancos de dados, arquivos e
+                  configurações. Esta ação não pode ser desfeita.
                 </DialogDescription>
               </DialogHeader>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="delete-data-confirm">
-                  Type <span className="font-mono font-bold">DELETE</span> to confirm:
+                  Digite <span className="font-mono font-bold">DELETE</span> para confirmar:
                 </Label>
                 <Input
                   id="delete-data-confirm"
@@ -91,14 +91,14 @@ export function DangerZoneSection() {
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button variant="outline">Cancelar</Button>
                 </DialogClose>
                 <Button
                   variant="destructive"
                   disabled={deleteDataConfirm !== "DELETE" || deleting}
                   onClick={handleDeleteAllData}
                 >
-                  {deleting ? "Deleting..." : "Delete All Data"}
+                  {deleting ? "Excluindo..." : "Excluir Todos os Dados"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -108,9 +108,9 @@ export function DangerZoneSection() {
         {/* Delete Account */}
         <div className="flex items-center justify-between rounded-lg border border-destructive/20 p-4">
           <div className="flex flex-col gap-1">
-            <p className="font-medium">Delete Account</p>
+            <p className="font-medium">Excluir Conta</p>
             <p className="text-muted-foreground text-sm">
-              Permanently delete your account and all associated data.
+              Exclua permanentemente sua conta e todos os dados associados.
             </p>
           </div>
           <Dialog>
@@ -124,17 +124,17 @@ export function DangerZoneSection() {
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <AlertTriangle className="text-destructive size-5" />
-                  Delete Account
+                  Excluir Conta
                 </DialogTitle>
                 <DialogDescription>
-                  This will permanently delete your account, all your data, projects,
-                  and configurations. You will be logged out immediately. This action
-                  cannot be undone.
+                  Isso excluirá permanentemente sua conta, todos os seus dados, projetos
+                  e configurações. Você será desconectado imediatamente. Esta ação
+                  não pode ser desfeita.
                 </DialogDescription>
               </DialogHeader>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="delete-account-confirm">
-                  Type <span className="font-mono font-bold">DELETE MY ACCOUNT</span> to confirm:
+                  Digite <span className="font-mono font-bold">DELETE MY ACCOUNT</span> para confirmar:
                 </Label>
                 <Input
                   id="delete-account-confirm"
@@ -145,14 +145,14 @@ export function DangerZoneSection() {
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button variant="outline">Cancelar</Button>
                 </DialogClose>
                 <Button
                   variant="destructive"
                   disabled={deleteAccountConfirm !== "DELETE MY ACCOUNT" || deleting}
                   onClick={handleDeleteAccount}
                 >
-                  {deleting ? "Deleting..." : "Delete My Account"}
+                  {deleting ? "Excluindo..." : "Minha Conta"}
                 </Button>
               </DialogFooter>
             </DialogContent>

@@ -44,7 +44,7 @@ export function GitHubRepositoriesMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Project versions</DropdownMenuLabel>
+          <DropdownMenuLabel>Versões do projeto</DropdownMenuLabel>
           {repositories.map((repository) => (
             <DropdownMenuItem key={repository.href} asChild>
               <Link prefetch={false} href={repository.href} target="_blank" rel="noreferrer">

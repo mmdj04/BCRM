@@ -36,7 +36,7 @@ export function ChangelogList({ entries }: ChangelogListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Changelog</CardTitle>
+        <CardTitle className="text-lg">Registro de Alterações</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-0 p-0">
         {entries.map((entry) => (

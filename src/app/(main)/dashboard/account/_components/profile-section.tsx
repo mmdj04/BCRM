@@ -38,8 +38,8 @@ export function ProfileSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Profile</CardTitle>
-        <CardDescription>Manage your personal information.</CardDescription>
+        <CardTitle className="text-lg">Perfil</CardTitle>
+        <CardDescription>Gerencie suas informações pessoais.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         <div className="flex items-center gap-4">
@@ -55,19 +55,19 @@ export function ProfileSection() {
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="name">Full Name</Label>
+            <Label htmlFor="name">Nome Completo</Label>
             <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="email">Email Address</Label>
+            <Label htmlFor="email">Endereço de E-mail</Label>
             <Input id="email" value={email} disabled />
-            <p className="text-muted-foreground text-xs">Contact support to change your email address.</p>
+            <p className="text-muted-foreground text-xs">Entre em contato com o suporte para alterar seu endereço de e-mail.</p>
           </div>
         </div>
 
         <div className="flex justify-end">
           <Button onClick={handleSave} disabled={saving}>
-            {saving ? "Saving..." : "Save Changes"}
+            {saving ? "Salvando..." : "Salvar Alterações"}
           </Button>
         </div>
       </CardContent>

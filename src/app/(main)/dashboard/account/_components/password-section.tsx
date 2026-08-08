@@ -22,17 +22,17 @@ export function PasswordSection() {
     setSuccess("");
 
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setError("Please fill in all fields.");
+      setError("Por favor, preencha todos os campos.");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("New passwords do not match.");
+      setError("As senhas não coincidem.");
       return;
     }
 
     if (newPassword.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError("A senha deve ter pelo menos 6 caracteres.");
       return;
     }
 
@@ -40,7 +40,7 @@ export function PasswordSection() {
     // Simulate password change
     await new Promise((f) => setTimeout(f, 1000));
     setSaving(false);
-    setSuccess("Password updated successfully.");
+    setSuccess("Senha atualizada com sucesso.");
     setCurrentPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -49,12 +49,12 @@ export function PasswordSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Password</CardTitle>
-        <CardDescription>Change your password to keep your account secure.</CardDescription>
+        <CardTitle className="text-lg">Senha</CardTitle>
+        <CardDescription>Altere sua senha para manter sua conta segura.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="current-password">Current Password</Label>
+          <Label htmlFor="current-password">Senha Atual</Label>
           <Input
             id="current-password"
             type="password"
@@ -63,7 +63,7 @@ export function PasswordSection() {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="new-password">New Password</Label>
+          <Label htmlFor="new-password">Nova Senha</Label>
           <Input
             id="new-password"
             type="password"
@@ -72,7 +72,7 @@ export function PasswordSection() {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="confirm-password">Confirm New Password</Label>
+          <Label htmlFor="confirm-password">Confirmar Nova Senha</Label>
           <Input
             id="confirm-password"
             type="password"
@@ -87,7 +87,7 @@ export function PasswordSection() {
         <div className="flex justify-end">
           <Button onClick={handlePasswordChange} disabled={saving}>
             <Lock className="mr-2 size-4" />
-            {saving ? "Updating..." : "Update Password"}
+            {saving ? "Atualizando..." : "Atualizar Senha"}
           </Button>
         </div>
       </CardContent>

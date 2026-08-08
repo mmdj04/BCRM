@@ -175,7 +175,7 @@ const priorityTone: Record<Exclude<LedgerPriority, null>, string> = {
 const ledgerColumns: ColumnDef<LedgerRow>[] = [
   {
     accessorKey: "account",
-    header: "Account",
+    header: "Conta",
     cell: ({ row }) => (
       <div className="flex flex-col gap-1">
         <p className="font-medium text-sm">{row.original.account}</p>
@@ -187,27 +187,27 @@ const ledgerColumns: ColumnDef<LedgerRow>[] = [
   },
   {
     accessorKey: "blocker",
-    header: "Blocker",
+    header: "Bloqueador",
     cell: ({ row }) => <div className="max-w-44 whitespace-normal text-xs">{row.original.blocker}</div>,
   },
   {
     accessorKey: "owner",
-    header: "Owner",
+    header: "Proprietário",
     cell: ({ row }) => <span className="text-xs">{row.original.owner}</span>,
   },
   {
     accessorKey: "idleDays",
-    header: "Idle (days)",
+    header: "Inativo (dias)",
     cell: ({ row }) => <span className="text-xs tabular-nums">{row.original.idleDays}d</span>,
   },
   {
     accessorKey: "closeVariance",
-    header: "Close variance",
+    header: "Variância de fechamento",
     cell: ({ row }) => <span className="text-xs tabular-nums">{row.original.closeVariance}</span>,
   },
   {
     accessorKey: "nextAction",
-    header: "Next action",
+    header: "Próxima ação",
     cell: ({ row }) => (
       <div className="flex max-w-64 flex-col gap-1 whitespace-normal">
         {row.original.priority ? (
@@ -229,7 +229,7 @@ const ledgerColumns: ColumnDef<LedgerRow>[] = [
           className="-mr-2 h-8 px-2 text-xs"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Risk Ladder
+          Escada de Risco
         </Button>
       </div>
     ),
@@ -268,24 +268,24 @@ export function ActionsRiskLedger() {
   return (
     <Card className="min-w-0 shadow-xs">
       <CardHeader>
-        <CardTitle>Revenue Risk Ledger</CardTitle>
-        <CardDescription>Accounts under pressure with blocker, next action, and owner responsibility.</CardDescription>
+        <CardTitle>Livro de Risco de Receita</CardTitle>
+        <CardDescription>Contas sob pressão com bloqueador, próxima ação e responsabilidade do proprietário.</CardDescription>
         <CardAction>
           <Badge variant="outline" className="font-medium tabular-nums">
-            {LEDGER_ROWS.length} Accounts
+            {LEDGER_ROWS.length} Contas
           </Badge>
         </CardAction>
       </CardHeader>
 
       <CardContent className="space-y-4">
         <div className="grid gap-3 rounded-lg border bg-muted/20 p-3 text-sm sm:grid-cols-4 sm:divide-x sm:divide-border/60">
-          <LedgerStat label="Critical accounts" value="1" detail="Risk Ladder >= 80 (current window)" />
-          <LedgerStat label="Escalations due" value="1" detail="Next 7 days" />
-          <LedgerStat label="Median inactivity" value="31d" detail="Current filter window" />
+          <LedgerStat label="Contas críticas" value="1" detail="Risk Ladder >= 80 (janela atual)" />
+          <LedgerStat label="Escalamentos pendentes" value="1" detail="Próximos 7 dias" />
+          <LedgerStat label="Inatividade mediana" value="31d" detail="Janela de filtro atual" />
           <LedgerStat
-            label="Overdue revenue"
+            label="Receita em atraso"
             value={formatCurrency(1084000, { noDecimals: true })}
-            detail="Close date already exceeded"
+            detail="Data de fechamento já ultrapassada"
           />
         </div>
 

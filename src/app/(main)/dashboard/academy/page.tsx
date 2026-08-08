@@ -13,24 +13,24 @@ export default function Page() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-1">
-          <h1 className="text-3xl tracking-tight">Academy Dashboard</h1>
+          <h1 className="text-3xl tracking-tight">Painel da Academia</h1>
           <p className="text-muted-foreground text-sm">
-            Good morning, Teacher. Here's a quick overview of today's activity.
+            Bom dia, Professor. Aqui está um resumo rápido da atividade de hoje.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 lg:w-fit">
           <Button size="sm">
             <Megaphone />
-            New Announcement
+            Novo Anúncio
           </Button>
           <Button size="sm" variant="outline">
             <BookOpenCheck />
-            Gradebook
+            Livro de Notas
           </Button>
           <Button size="sm" variant="outline">
             <Plus />
-            Add Assignment
+            Adicionar Tarefa
           </Button>
         </div>
       </div>

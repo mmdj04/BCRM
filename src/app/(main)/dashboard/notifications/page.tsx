@@ -5,8 +5,8 @@ export default function NotificationsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Notifications</h1>
-        <p className="text-muted-foreground text-sm">Stay updated with the latest activity and alerts.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Notificações</h1>
+        <p className="text-muted-foreground text-sm">Mantenha-se atualizado com as últimas atividades e alertas.</p>
       </div>
 
       <NotificationsList notifications={notifications} />

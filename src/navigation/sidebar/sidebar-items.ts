@@ -65,11 +65,11 @@ export interface NavGroup {
 export const sidebarItems: NavGroup[] = [
   {
     id: 1,
-    label: "Dashboards",
+    label: "Painéis",
     items: [
       {
         id: "default",
-        title: "Default",
+        title: "Principal",
         url: "/dashboard/default",
         icon: LayoutDashboard,
       },
@@ -81,19 +81,19 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         id: "finance",
-        title: "Finance",
+        title: "Finanças",
         url: "/dashboard/finance",
         icon: Banknote,
       },
       {
         id: "analytics",
-        title: "Analytics",
+        title: "Análises",
         url: "/dashboard/analytics",
         icon: Gauge,
       },
       {
         id: "productivity",
-        title: "Productivity",
+        title: "Produtividade",
         url: "/dashboard/productivity",
         icon: ListTodo,
       },
@@ -105,32 +105,32 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         id: "academy",
-        title: "Academy",
+        title: "Academia",
         url: "/dashboard/academy",
         icon: GraduationCap,
       },
       {
         id: "logistics",
-        title: "Logistics",
+        title: "Logística",
         url: "/dashboard/logistics",
         icon: Forklift,
       },
       {
         id: "infrastructure",
-        title: "Infrastructure",
+        title: "Infraestrutura",
         url: "/dashboard/infrastructure",
         icon: Server,
       },
       {
         id: "file-manager",
-        title: "File Manager",
+        title: "Gerenciador de Arquivos",
         url: "/dashboard/file-manager",
         icon: FolderOpen,
         badge: "new",
       },
       {
         id: "patient-monitoring",
-        title: "Patient Monitoring",
+        title: "Monitoramento de Pacientes",
         url: "/dashboard/patient-monitoring",
         icon: HeartPulse,
         badge: "new",
@@ -139,11 +139,11 @@ export const sidebarItems: NavGroup[] = [
   },
   {
     id: 2,
-    label: "Pages",
+    label: "Páginas",
     items: [
       {
         id: "email",
-        title: "Email",
+        title: "E-mail",
         url: "/dashboard/mail",
         icon: Mail,
       },
@@ -155,7 +155,7 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         id: "calendar",
-        title: "Calendar",
+        title: "Calendário",
         url: "/dashboard/calendar",
         icon: Calendar,
       },
@@ -167,50 +167,50 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         id: "tasks",
-        title: "Tasks",
+        title: "Tarefas",
         url: "/dashboard/tasks",
         icon: CheckSquare,
       },
       {
         id: "invoice",
-        title: "Invoice",
+        title: "Fatura",
         url: "/dashboard/invoice",
         icon: ReceiptText,
       },
       {
         id: "billing",
-        title: "Billing",
+        title: "Faturamento",
         url: "/dashboard/billing",
         icon: CreditCard,
       },
       {
         id: "users",
-        title: "Users",
+        title: "Usuários",
         url: "/dashboard/users",
         icon: Users,
       },
       {
         id: "roles",
-        title: "Roles",
+        title: "Funções",
         url: "/dashboard/roles",
         icon: Lock,
       },
       {
         id: "authentication",
-        title: "Authentication",
+        title: "Autenticação",
         icon: Fingerprint,
         subItems: [
           { id: "auth-login-v1", title: "Login v1", url: "/auth/v1/login", newTab: true },
           { id: "auth-login-v2", title: "Login v2", url: "/auth/v2/login", newTab: true },
-          { id: "auth-register-v1", title: "Register v1", url: "/auth/v1/register", newTab: true },
-          { id: "auth-register-v2", title: "Register v2", url: "/auth/v2/register", newTab: true },
+          { id: "auth-register-v1", title: "Registro v1", url: "/auth/v1/register", newTab: true },
+          { id: "auth-register-v2", title: "Registro v2", url: "/auth/v2/register", newTab: true },
         ],
       },
     ],
   },
   {
     id: 3,
-    label: "Legacy",
+    label: "Legado",
     items: [
       {
         id: "legacy-dashboards",
@@ -218,19 +218,19 @@ export const sidebarItems: NavGroup[] = [
         subItems: [
           { id: "legacy-default", title: "Default V1", url: "/dashboard/default-v1" },
           { id: "legacy-crm", title: "CRM V1", url: "/dashboard/crm-v1" },
-          { id: "legacy-finance", title: "Finance V1", url: "/dashboard/finance-v1" },
-          { id: "legacy-analytics", title: "Analytics V1", url: "/dashboard/analytics-v1" },
+          { id: "legacy-finance",         title: "Finanças V1", url: "/dashboard/finance-v1" },
+          { id: "legacy-analytics",         title: "Análises V1", url: "/dashboard/analytics-v1" },
         ],
       },
     ],
   },
   {
     id: 4,
-    label: "Misc",
+    label: "Diversos",
     items: [
       {
         id: "others",
-        title: "Others",
+        title: "Outros",
         url: "/dashboard/coming-soon",
         icon: SquareArrowUpRight,
         badge: "soon",

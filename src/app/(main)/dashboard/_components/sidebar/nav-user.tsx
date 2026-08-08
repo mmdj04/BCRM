@@ -78,32 +78,32 @@ export function NavUser({
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/account" className="flex items-center gap-2">
                   <CircleUser />
-                  Account
+                  Conta
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/billing" className="flex items-center gap-2">
                   <CreditCard />
-                  Billing
+                  Faturamento
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/notifications" className="flex items-center gap-2">
                   <MessageSquareDot />
-                  Notifications
+                  Notificações
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/changelog" className="flex items-center gap-2">
                   <FileText />
-                  Changelog
+                  Registro de Alterações
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut()}>
               <LogOut />
-              Log out
+              Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
