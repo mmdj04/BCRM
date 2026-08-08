@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { ChevronDown } from "lucide-react";
+import Markdown from "react-markdown";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -59,8 +60,17 @@ export function ChangelogList({ entries }: ChangelogListProps) {
               </button>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <div className="px-6 pb-4 text-sm text-muted-foreground whitespace-pre-wrap">
-                {entry.content}
+              <div className="px-6 pt-2 pb-6 text-sm text-muted-foreground">
+                <Markdown
+                  components={{
+                    h3: ({ children }) => <h3 className="mt-4 mb-2 font-semibold text-foreground">{children}</h3>,
+                    ul: ({ children }) => <ul className="ml-4 list-disc space-y-1">{children}</ul>,
+                    li: ({ children }) => <li>{children}</li>,
+                    strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+                  }}
+                >
+                  {entry.content}
+                </Markdown>
               </div>
             </CollapsibleContent>
           </Collapsible>

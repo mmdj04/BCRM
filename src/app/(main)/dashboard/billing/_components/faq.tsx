@@ -52,7 +52,7 @@ export function Faq({ items }: FaqProps) {
               </button>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <div className="px-6 pb-4 text-sm text-muted-foreground">{item.answer}</div>
+              <div className="px-6 pt-2 pb-6 text-sm text-muted-foreground">{item.answer}</div>
             </CollapsibleContent>
           </Collapsible>
         ))}

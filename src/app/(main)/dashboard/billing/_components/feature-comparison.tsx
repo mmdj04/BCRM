@@ -54,6 +54,7 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
               </button>
             </CollapsibleTrigger>
             <CollapsibleContent>
+              <div className="px-6 pb-4">
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
@@ -76,6 +77,7 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             </CollapsibleContent>
           </Collapsible>
         ))}
