@@ -13,7 +13,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- =====================================================
 
 -- Users table (extends Supabase auth.users)
-CREATE TABLE public.users (
+CREATE TABLE IF NOT EXISTS public.users (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   username TEXT UNIQUE,
@@ -39,12 +39,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- Platform users (extended user profiles)
-CREATE TABLE public.platform_users (
+CREATE TABLE IF NOT EXISTS public.platform_users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4() REFERENCES public.users(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
@@ -57,7 +58,7 @@ CREATE TABLE public.platform_users (
 );
 
 -- Roles & permissions
-CREATE TABLE public.roles (
+CREATE TABLE IF NOT EXISTS public.roles (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   role TEXT NOT NULL,
   "group" TEXT NOT NULL,
@@ -74,7 +75,7 @@ CREATE TABLE public.roles (
 -- 2. CUSTOMERS (Default Dashboard)
 -- =====================================================
 
-CREATE TABLE public.customers (
+CREATE TABLE IF NOT EXISTS public.customers (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   email TEXT,
@@ -89,7 +90,7 @@ CREATE TABLE public.customers (
 -- 3. E-COMMERCE
 -- =====================================================
 
-CREATE TABLE public.orders (
+CREATE TABLE IF NOT EXISTS public.orders (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   order_number TEXT UNIQUE NOT NULL,
   date DATE DEFAULT CURRENT_DATE,
@@ -105,7 +106,7 @@ CREATE TABLE public.orders (
 -- 4. CRM
 -- =====================================================
 
-CREATE TABLE public.opportunities (
+CREATE TABLE IF NOT EXISTS public.opportunities (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   account TEXT NOT NULL,
   stage TEXT DEFAULT 'lead',
@@ -121,7 +122,7 @@ CREATE TABLE public.opportunities (
 -- 5. TASKS
 -- =====================================================
 
-CREATE TABLE public.tasks (
+CREATE TABLE IF NOT EXISTS public.tasks (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
   status TEXT DEFAULT 'todo' CHECK (status IN ('todo', 'in_progress', 'done')),
@@ -130,13 +131,13 @@ CREATE TABLE public.tasks (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE public.kanban_columns (
+CREATE TABLE IF NOT EXISTS public.kanban_columns (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
   user_id UUID REFERENCES public.users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE public.kanban_tasks (
+CREATE TABLE IF NOT EXISTS public.kanban_tasks (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
   description TEXT,
@@ -158,7 +159,7 @@ CREATE TABLE public.kanban_tasks (
 -- 6. CHAT
 -- =====================================================
 
-CREATE TABLE public.contacts (
+CREATE TABLE IF NOT EXISTS public.contacts (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   role TEXT,
@@ -175,7 +176,7 @@ CREATE TABLE public.contacts (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE public.conversations (
+CREATE TABLE IF NOT EXISTS public.conversations (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   group_name TEXT,
   name TEXT NOT NULL,
@@ -189,7 +190,7 @@ CREATE TABLE public.conversations (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE public.messages (
+CREATE TABLE IF NOT EXISTS public.messages (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   conversation_id UUID REFERENCES public.conversations(id) ON DELETE CASCADE,
   sender_id UUID REFERENCES public.users(id),
@@ -204,7 +205,7 @@ CREATE TABLE public.messages (
 -- 7. MAIL
 -- =====================================================
 
-CREATE TABLE public.emails (
+CREATE TABLE IF NOT EXISTS public.emails (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   account_id TEXT,
   from_name TEXT NOT NULL,
@@ -221,7 +222,7 @@ CREATE TABLE public.emails (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE public.email_recipients (
+CREATE TABLE IF NOT EXISTS public.email_recipients (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email_id UUID REFERENCES public.emails(id) ON DELETE CASCADE,
   name TEXT,
@@ -229,7 +230,7 @@ CREATE TABLE public.email_recipients (
   type TEXT DEFAULT 'to' CHECK (type IN ('to', 'cc', 'bcc'))
 );
 
-CREATE TABLE public.email_attachments (
+CREATE TABLE IF NOT EXISTS public.email_attachments (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email_id UUID REFERENCES public.emails(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
@@ -241,7 +242,7 @@ CREATE TABLE public.email_attachments (
 -- 8. LOGISTICS
 -- =====================================================
 
-CREATE TABLE public.shipments (
+CREATE TABLE IF NOT EXISTS public.shipments (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   tracking_number TEXT UNIQUE NOT NULL,
   customer_id UUID,
@@ -273,7 +274,7 @@ CREATE TABLE public.shipments (
 -- 9. INVOICES
 -- =====================================================
 
-CREATE TABLE public.invoice_clients (
+CREATE TABLE IF NOT EXISTS public.invoice_clients (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   email TEXT,
@@ -282,7 +283,7 @@ CREATE TABLE public.invoice_clients (
   user_id UUID REFERENCES public.users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE public.invoices (
+CREATE TABLE IF NOT EXISTS public.invoices (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   reference_number TEXT UNIQUE NOT NULL,
   issued_date DATE DEFAULT CURRENT_DATE,
@@ -298,7 +299,7 @@ CREATE TABLE public.invoices (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE public.invoice_line_items (
+CREATE TABLE IF NOT EXISTS public.invoice_line_items (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   invoice_id UUID REFERENCES public.invoices(id) ON DELETE CASCADE,
   description TEXT NOT NULL,
@@ -311,7 +312,7 @@ CREATE TABLE public.invoice_line_items (
 -- 10. CALENDAR
 -- =====================================================
 
-CREATE TABLE public.calendar_events (
+CREATE TABLE IF NOT EXISTS public.calendar_events (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
   start TIMESTAMPTZ NOT NULL,
@@ -328,7 +329,7 @@ CREATE TABLE public.calendar_events (
 -- 11. FILE MANAGER
 -- =====================================================
 
-CREATE TABLE public.folders (
+CREATE TABLE IF NOT EXISTS public.folders (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   file_count INTEGER DEFAULT 0,
@@ -338,7 +339,7 @@ CREATE TABLE public.folders (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE public.files (
+CREATE TABLE IF NOT EXISTS public.files (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   kind TEXT DEFAULT 'document',
@@ -357,7 +358,7 @@ CREATE TABLE public.files (
 -- 12. INFRASTRUCTURE
 -- =====================================================
 
-CREATE TABLE public.infrastructure_environments (
+CREATE TABLE IF NOT EXISTS public.infrastructure_environments (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   group_name TEXT NOT NULL,
   organization TEXT,
@@ -380,7 +381,7 @@ CREATE TABLE public.infrastructure_environments (
 -- 13. PATIENT MONITORING
 -- =====================================================
 
-CREATE TABLE public.patients (
+CREATE TABLE IF NOT EXISTS public.patients (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   age INTEGER,
@@ -403,7 +404,7 @@ CREATE TABLE public.patients (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE public.patient_events (
+CREATE TABLE IF NOT EXISTS public.patient_events (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   patient_id UUID REFERENCES public.patients(id) ON DELETE CASCADE,
   label TEXT NOT NULL,
@@ -414,7 +415,7 @@ CREATE TABLE public.patient_events (
 -- 14. PREFERENCES (Cookie-based → DB migration)
 -- =====================================================
 
-CREATE TABLE public.user_preferences (
+CREATE TABLE IF NOT EXISTS public.user_preferences (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
   key TEXT NOT NULL,
@@ -477,140 +478,180 @@ ALTER TABLE public.patient_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_preferences ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies: Users can read their own data
+DROP POLICY IF EXISTS "Users can view own profile" ON public.users;
 CREATE POLICY "Users can view own profile" ON public.users
   FOR SELECT USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update own profile" ON public.users;
 CREATE POLICY "Users can update own profile" ON public.users
   FOR UPDATE USING (auth.uid() = id);
 
 -- Platform users: authenticated users can view all, admins can manage
+DROP POLICY IF EXISTS "Authenticated users can view platform users" ON public.platform_users;
 CREATE POLICY "Authenticated users can view platform users" ON public.platform_users
   FOR SELECT TO authenticated USING (true);
 
 -- Roles: authenticated users can view
+DROP POLICY IF EXISTS "Authenticated users can view roles" ON public.roles;
 CREATE POLICY "Authenticated users can view roles" ON public.roles
   FOR SELECT TO authenticated USING (true);
 
 -- Customers: authenticated users can view all
+DROP POLICY IF EXISTS "Authenticated users can view customers" ON public.customers;
 CREATE POLICY "Authenticated users can view customers" ON public.customers
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can insert customers" ON public.customers;
 CREATE POLICY "Authenticated users can insert customers" ON public.customers
   FOR INSERT TO authenticated WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Authenticated users can update customers" ON public.customers;
 CREATE POLICY "Authenticated users can update customers" ON public.customers
   FOR UPDATE TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can delete customers" ON public.customers;
 CREATE POLICY "Authenticated users can delete customers" ON public.customers
   FOR DELETE TO authenticated USING (true);
 
 -- Orders: authenticated users can view all
+DROP POLICY IF EXISTS "Authenticated users can view orders" ON public.orders;
 CREATE POLICY "Authenticated users can view orders" ON public.orders
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can insert orders" ON public.orders;
 CREATE POLICY "Authenticated users can insert orders" ON public.orders
   FOR INSERT TO authenticated WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Authenticated users can update orders" ON public.orders;
 CREATE POLICY "Authenticated users can update orders" ON public.orders
   FOR UPDATE TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can delete orders" ON public.orders;
 CREATE POLICY "Authenticated users can delete orders" ON public.orders
   FOR DELETE TO authenticated USING (true);
 
 -- Opportunities: authenticated users can view all
+DROP POLICY IF EXISTS "Authenticated users can view opportunities" ON public.opportunities;
 CREATE POLICY "Authenticated users can view opportunities" ON public.opportunities
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage opportunities" ON public.opportunities;
 CREATE POLICY "Authenticated users can manage opportunities" ON public.opportunities
   FOR ALL TO authenticated USING (true);
 
 -- Tasks: users can manage their own
+DROP POLICY IF EXISTS "Authenticated users can view tasks" ON public.tasks;
 CREATE POLICY "Authenticated users can view tasks" ON public.tasks
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage tasks" ON public.tasks;
 CREATE POLICY "Authenticated users can manage tasks" ON public.tasks
   FOR ALL TO authenticated USING (true);
 
 -- Kanban: users can manage their own
+DROP POLICY IF EXISTS "Users can view own kanban columns" ON public.kanban_columns;
 CREATE POLICY "Users can view own kanban columns" ON public.kanban_columns
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can view own kanban tasks" ON public.kanban_tasks;
 CREATE POLICY "Users can view own kanban tasks" ON public.kanban_tasks
   FOR ALL USING (auth.uid() = user_id);
 
 -- Contacts: authenticated users can view all
+DROP POLICY IF EXISTS "Authenticated users can view contacts" ON public.contacts;
 CREATE POLICY "Authenticated users can view contacts" ON public.contacts
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage contacts" ON public.contacts;
 CREATE POLICY "Authenticated users can manage contacts" ON public.contacts
   FOR ALL TO authenticated USING (true);
 
 -- Conversations & Messages: users manage their own
+DROP POLICY IF EXISTS "Users can view own conversations" ON public.conversations;
 CREATE POLICY "Users can view own conversations" ON public.conversations
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can view conversation messages" ON public.messages;
 CREATE POLICY "Users can view conversation messages" ON public.messages
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can send messages" ON public.messages;
 CREATE POLICY "Authenticated users can send messages" ON public.messages
   FOR INSERT TO authenticated WITH CHECK (true);
 
 -- Emails: users manage their own
+DROP POLICY IF EXISTS "Users can view own emails" ON public.emails;
 CREATE POLICY "Users can view own emails" ON public.emails
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Authenticated can view email recipients" ON public.email_recipients;
 CREATE POLICY "Authenticated can view email recipients" ON public.email_recipients
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated can manage email recipients" ON public.email_recipients;
 CREATE POLICY "Authenticated can manage email recipients" ON public.email_recipients
   FOR ALL TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated can manage email attachments" ON public.email_attachments;
 CREATE POLICY "Authenticated can manage email attachments" ON public.email_attachments
   FOR ALL TO authenticated USING (true);
 
 -- Shipments: users manage their own
+DROP POLICY IF EXISTS "Users can manage own shipments" ON public.shipments;
 CREATE POLICY "Users can manage own shipments" ON public.shipments
   FOR ALL USING (auth.uid() = user_id);
 
 -- Invoices: users manage their own
+DROP POLICY IF EXISTS "Users can manage own invoice clients" ON public.invoice_clients;
 CREATE POLICY "Users can manage own invoice clients" ON public.invoice_clients
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage own invoices" ON public.invoices;
 CREATE POLICY "Users can manage own invoices" ON public.invoices
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage own invoice line items" ON public.invoice_line_items;
 CREATE POLICY "Users can manage own invoice line items" ON public.invoice_line_items
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage invoice items" ON public.invoice_line_items;
 CREATE POLICY "Authenticated users can manage invoice items" ON public.invoice_line_items
   FOR ALL TO authenticated USING (true);
 
 -- Calendar: users manage their own
+DROP POLICY IF EXISTS "Users can manage own calendar events" ON public.calendar_events;
 CREATE POLICY "Users can manage own calendar events" ON public.calendar_events
   FOR ALL USING (auth.uid() = user_id);
 
 -- Files: users manage their own
+DROP POLICY IF EXISTS "Users can manage own folders" ON public.folders;
 CREATE POLICY "Users can manage own folders" ON public.folders
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage own files" ON public.files;
 CREATE POLICY "Users can manage own files" ON public.files
   FOR ALL USING (auth.uid() = user_id);
 
 -- Infrastructure: users manage their own
+DROP POLICY IF EXISTS "Users can manage own infrastructure" ON public.infrastructure_environments;
 CREATE POLICY "Users can manage own infrastructure" ON public.infrastructure_environments
   FOR ALL USING (auth.uid() = user_id);
 
 -- Patients: users manage their own
+DROP POLICY IF EXISTS "Users can manage own patients" ON public.patients;
 CREATE POLICY "Users can manage own patients" ON public.patients
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage own patient events" ON public.patient_events;
 CREATE POLICY "Users can manage own patient events" ON public.patient_events
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage patient events" ON public.patient_events;
 CREATE POLICY "Authenticated users can manage patient events" ON public.patient_events
   FOR ALL TO authenticated USING (true);
 
 -- Preferences: users manage their own
+DROP POLICY IF EXISTS "Users can manage own preferences" ON public.user_preferences;
 CREATE POLICY "Users can manage own preferences" ON public.user_preferences
   FOR ALL USING (auth.uid() = user_id);
 
@@ -626,30 +667,37 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS update_users_updated_at ON public.users;
 CREATE TRIGGER update_users_updated_at
   BEFORE UPDATE ON public.users
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_opportunities_updated_at ON public.opportunities;
 CREATE TRIGGER update_opportunities_updated_at
   BEFORE UPDATE ON public.opportunities
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_kanban_tasks_updated_at ON public.kanban_tasks;
 CREATE TRIGGER update_kanban_tasks_updated_at
   BEFORE UPDATE ON public.kanban_tasks
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_shipments_updated_at ON public.shipments;
 CREATE TRIGGER update_shipments_updated_at
   BEFORE UPDATE ON public.shipments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_invoices_updated_at ON public.invoices;
 CREATE TRIGGER update_invoices_updated_at
   BEFORE UPDATE ON public.invoices
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_infrastructure_updated_at ON public.infrastructure_environments;
 CREATE TRIGGER update_infrastructure_updated_at
   BEFORE UPDATE ON public.infrastructure_environments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_patients_updated_at ON public.patients;
 CREATE TRIGGER update_patients_updated_at
   BEFORE UPDATE ON public.patients
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
