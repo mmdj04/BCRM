@@ -4,6 +4,125 @@ Todas as alterações notáveis neste projeto são documentadas aqui, organizada
 
 ---
 
+## Versão 1.0.0 — BCRM: Painel Administrativo SaaS para o Brasil
+
+**67 commits** | Período: 08/08/2026 - 09/08/2026
+
+### Resumo da Versão
+
+Esta é a primeira versão oficial do **BCRM** — um painel administrativo SaaS completo, traduzido para Português Brasileiro, com operações CRUD reais, integração com Stripe para cobrança em Reais (BRL) e modo de demonstração permanente.
+
+O projeto é baseado no [next-shadcn-admin-dashboard](https://github.com/arhamkhnz/next-shadcn-admin-dashboard) e foi transformado em um produto SaaS funcional e pronto para o mercado brasileiro.
+
+### O que foi construído
+
+#### Infraestrutura e Backend
+- **Supabase completo**: Autenticação, banco de dados com 26 tabelas, RLS (Row Level Security), índices e triggers
+- **Stripe integrado**: Checkout, webhook e portal de clientes — tudo em Reais (BRL)
+- **Modo de demonstração**: Credenciais permanentes via cookie (`admin@bcrm.com` / `10092004m`), sem depender de autenticação do Supabase
+- **CRUD funcional**: Todas as páginas possuem operações Create, Read, Update e Delete reais com fallback para dados mock
+
+#### Interface e Design
+- **100% em PT-BR**: Tradução completa de todos os textos, dados mock, navegação, componentes e páginas
+- **Diacríticos corretos**: Uso adequado de ç, á, é, ê, í, ó, ú, ã, õ em todo o projeto
+- **Moeda em Reais**: Formatação brasileira (R$ 1.234,56) com ponto para milhares e vírgula para decimais
+- **20+ páginas funcionais**: Dashboard, Finance, CRM, Analytics, E-commerce, Academy, Logistics, Infrastructure, File Manager, Patient Monitoring, Mail, Chat, Kanban, Calendar, Tasks, Invoice, Billing, Users, Roles, Productivity
+- **Todas com dados mock alinhados ao template original**
+
+#### Financeiras
+- **Planos de assinatura em BRL**: Inicial R$ 789,90/mês, Pro R$ 1.889,90/mês, Empresarial R$ 7.989,90/mês
+- **Comparação de recursos** detalhada entre os planos
+- **Página de faturamento** completa com portal de clientes
+
+#### Segurança e CI/CD
+- **Dependabot** configurado para dependências npm e GitHub Actions
+- **GitHub Actions** para CI, CodeQL e deploy
+- **Schema idempotente** com `IF NOT EXISTS` para implantações seguras
+
+#### Migrações e Atualizações
+- **Tanstack Table v9**: Migração completa de `useReactTable` para `useTable` com `dataTableFeatures`
+- **Dnd Kit atualizado**: Migração para implementação e pacotes mais recentes
+- **Upstream sincronizado**: Merge de todos os commits do repositório original (628 commits)
+
+---
+
+### Funcionalidades
+
+- feat: configuração inicial — painel administrativo Next.js com autenticação e banco de dados Supabase
+- feat: abas de contas e transações na seção de finanças
+- feat: página de faturamento com planos de assinatura
+- feat: redesign do faturamento com 4 planos e comparação de recursos expansível
+- feat: atualização de preços com custos Supabase + lucro, layout em grade vertical
+- feat: alinhamento de preços com camadas Supabase — Inicial 5, Pro 35, Equipe 650
+- feat: atualização de preços 0/50/200, adição de seções Ajuste Fino e Perguntas Frequentes
+- feat: páginas de Conta e Notificações, atualização de CTAs para Agora
+- feat: página de Changelog sincronizada com CHANGELOG.md
+- feat: integração Stripe com preços em BRL e modo de demonstração
+- feat: migração do dnd kit para implementação e pacotes mais recentes
+- feat: migração da tabela de dados para usar tanstack table v9
+- feat: tradução PT-BR completa em todas as páginas do painel
+- feat: tradução dos componentes de barra lateral, cabeçalhos, conta, notificações e interface para PT-BR
+- feat: tradução dos dados mock Padrão e CRM para PT-BR
+- feat: tradução dos dados mock e componentes de Finanças para PT-BR
+- feat: tradução dos dados mock de Produtividade e E-commerce para PT-BR
+- feat: tradução dos dados mock de Academia e Logística para PT-BR
+- feat: tradução dos dados mock de Infraestrutura e Gerenciador de Arquivos para PT-BR
+- feat: tradução completa de todos os dados mock restantes para PT-BR
+- feat: substituição de USD por BRL em todas as exibições de moeda
+
+### Correções
+
+- fix: esquema idempotente com IF NOT EXISTS
+- fix: adição de IF NOT EXISTS aos índices
+- fix: correção dos caminhos de importação nos componentes de faturamento
+- fix: resolução de erros TypeScript nos componentes de gráfico
+- fix: conexão de logout + links de navegação de faturamento, atualização de preços para 45+ planos
+- fix: ajuste de preços com markups inteligentes baseados no Supabase
+- fix: alinhamento da Comparação de Recursos exatamente com os preços do Supabase
+- fix: renderização de markdown no Changelog, adição de espaçamento accordion
+- fix: correção dos diacríticos do português brasileiro
+- fix: modo de demonstração usando cookies para compatibilidade com middleware
+- fix: correção da comparação Pinned no chat-conversation-list.tsx
+- fix: atualização das colunas de transações financeiras para corresponder ao esquema PT-BR
+- fix: pontuação de saúde do CRM usando valores PT-BR
+- fix: migração tanstack table v9 e pacotes ausentes
+- fix: resolução de todos os erros de lint, avisos e problemas de formatação
+
+### Manutenção
+
+- chore: atualização de dependências
+- ci(deps): atualização de actions/checkout de 4 para 7
+- ci(deps): atualização de recharts no grupo de produção
+- ci(deps): atualização de github/codeql-action de 3 para 4
+- ci(deps): atualização de @types/node de 22.20.1 para 26.1.2
+- ci(deps): atualização de actions/dependency-review-action de 4 para 5
+- ci(deps): atualização de lint-staged de 16.4.0 para 17.3.0
+- ci(deps): atualização de actions/upload-artifact de 4 para 7
+- ci(deps): atualização de actions/github-script de 7 para 9
+- ci(deps): atualização de softprops/action-gh-release de 2 para 3
+- ci(deps): atualização de actions/stale de 9 para 11
+- ci(deps): adição de configuração do Dependabot
+- docs: adição de arquivos comunitários de código aberto e GitHub Actions
+- docs: tradução do changelog para PT-BR com acentos corretos
+- docs: conclusão do changelog com todos os 628 commits organizados por mês
+
+### Mesclagens
+
+- Merge pull request #1 from mmdj04/dependabot/github_actions/actions/checkout-7
+- Merge pull request #2 from mmdj04/dependabot/npm_and_yarn/production-d71c4100fc
+- Merge pull request #3 from mmdj04/dependabot/github_actions/github/codeql-action-4
+- Merge pull request #5 from mmdj04/dependabot/npm_and_yarn/types/node-26.1.2
+- Merge pull request #6 from mmdj04/dependabot/github_actions/actions/dependency-review-action-5
+- Merge pull request #7 from mmdj04/dependabot/github_actions/actions/setup-node-7
+- Merge pull request #8 from mmdj04/dependabot/npm_and_yarn/lint-staged-17.3.0
+- Merge pull request #10 from mmdj04/dependabot/github_actions/actions/upload-artifact-7
+- Merge pull request #11 from mmdj04/dependabot/github_actions/actions/github-script-9
+- Merge pull request #12 from mmdj04/dependabot/softprops/action-gh-release-3
+- Merge pull request #13 from mmdj04/dependabot/github_actions/actions/stale-11
+- merge: sincronização com upstream arhamkhnz/next-shadcn-admin-dashboard
+
+---
+
 ## Versão Agosto de 2026
 
 **25 commits** | Período: 01/08/2026 - 09/08/2026
