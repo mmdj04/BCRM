@@ -1,7 +1,9 @@
 import { BillingHistory } from "./_components/billing-history";
 import { CurrentPlan } from "./_components/current-plan";
-import { billingHistory, featureComparison, plans } from "./_components/data";
+import { billingHistory, computeOptions, featureComparison, faqItems, plans } from "./_components/data";
+import { Faq } from "./_components/faq";
 import { FeatureComparison } from "./_components/feature-comparison";
+import { FineTune } from "./_components/fine-tune";
 import { PricingCards } from "./_components/pricing-cards";
 
 export default function BillingPage() {
@@ -15,8 +17,10 @@ export default function BillingPage() {
       <PricingCards plans={plans} />
 
       <div className="flex flex-col gap-4 xl:grid xl:grid-cols-12">
-        <div className="xl:col-span-8">
+        <div className="flex flex-col gap-6 xl:col-span-8">
           <FeatureComparison categories={featureComparison} />
+          <FineTune options={computeOptions} />
+          <Faq items={faqItems} />
         </div>
         <div className="flex flex-col gap-4 xl:col-span-4">
           <CurrentPlan />

@@ -17,8 +17,8 @@ export const plans: Plan[] = [
     id: "starter",
     name: "Starter",
     description: "For hobby projects and exploration.",
-    monthlyPrice: 75,
-    yearlyPrice: 720,
+    monthlyPrice: 50,
+    yearlyPrice: 600,
     cta: "Get Started",
     supabasePlan: "Free",
     supabaseCost: 0,
@@ -37,8 +37,8 @@ export const plans: Plan[] = [
     id: "pro",
     name: "Pro",
     description: "For production apps and growing teams.",
-    monthlyPrice: 235,
-    yearlyPrice: 2256,
+    monthlyPrice: 150,
+    yearlyPrice: 1800,
     badge: "Popular",
     highlighted: true,
     cta: "Start Free Trial",
@@ -64,8 +64,8 @@ export const plans: Plan[] = [
     id: "team",
     name: "Team",
     description: "For teams that need security and compliance.",
-    monthlyPrice: 1650,
-    yearlyPrice: 15840,
+    monthlyPrice: 1200,
+    yearlyPrice: 14400,
     cta: "Start Free Trial",
     supabasePlan: "Team",
     supabaseCost: 599,
@@ -227,8 +227,79 @@ export type BillingHistoryEntry = {
 };
 
 export const billingHistory: BillingHistoryEntry[] = [
-  { id: "inv_001", date: "Aug 1, 2026", description: "Pro Plan - Monthly", amount: 235, status: "paid" },
-  { id: "inv_002", date: "Jul 1, 2026", description: "Pro Plan - Monthly", amount: 235, status: "paid" },
-  { id: "inv_003", date: "Jun 1, 2026", description: "Starter Plan - Monthly", amount: 75, status: "paid" },
-  { id: "inv_004", date: "May 1, 2026", description: "Starter Plan - Monthly", amount: 75, status: "paid" },
+  { id: "inv_001", date: "Aug 1, 2026", description: "Pro Plan - Monthly", amount: 150, status: "paid" },
+  { id: "inv_002", date: "Jul 1, 2026", description: "Pro Plan - Monthly", amount: 150, status: "paid" },
+  { id: "inv_003", date: "Jun 1, 2026", description: "Starter Plan - Monthly", amount: 50, status: "paid" },
+  { id: "inv_004", date: "May 1, 2026", description: "Starter Plan - Monthly", amount: 50, status: "paid" },
+];
+
+export type ComputeOption = {
+  size: string;
+  price: number;
+  cpu: string;
+  dedicated: boolean;
+  ram: string;
+  directConnections: number;
+  poolerConnections: number;
+};
+
+export const computeOptions: ComputeOption[] = [
+  { size: "Micro", price: 10, cpu: "2-core ARM", dedicated: false, ram: "1 GB", directConnections: 60, poolerConnections: 200 },
+  { size: "Small", price: 15, cpu: "2-core ARM", dedicated: false, ram: "2 GB", directConnections: 90, poolerConnections: 400 },
+  { size: "Medium", price: 60, cpu: "2-core ARM", dedicated: false, ram: "4 GB", directConnections: 120, poolerConnections: 600 },
+  { size: "Large", price: 110, cpu: "2-core ARM", dedicated: true, ram: "8 GB", directConnections: 160, poolerConnections: 800 },
+  { size: "XL", price: 210, cpu: "4-core ARM", dedicated: true, ram: "16 GB", directConnections: 240, poolerConnections: 1000 },
+  { size: "2XL", price: 410, cpu: "8-core ARM", dedicated: true, ram: "32 GB", directConnections: 380, poolerConnections: 1500 },
+  { size: "4XL", price: 960, cpu: "16-core ARM", dedicated: true, ram: "64 GB", directConnections: 480, poolerConnections: 3000 },
+  { size: "8XL", price: 1870, cpu: "32-core ARM", dedicated: true, ram: "128 GB", directConnections: 490, poolerConnections: 6000 },
+  { size: "12XL", price: 2800, cpu: "48-core ARM", dedicated: true, ram: "192 GB", directConnections: 500, poolerConnections: 9000 },
+  { size: "16XL", price: 3730, cpu: "64-core ARM", dedicated: true, ram: "256 GB", directConnections: 500, poolerConnections: 12000 },
+];
+
+export type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+export const faqItems: FaqItem[] = [
+  {
+    question: "Can I cap my usage so my bill doesn't run over?",
+    answer: "Yes. Spend caps are on by default on the Pro Plan. You can turn spend caps off for usage beyond the Plan limits to pay as you grow.",
+  },
+  {
+    question: "I'm worried I could end up with a huge bill at the end of the month.",
+    answer: "Spend caps are on by default and you need to toggle them off from your dashboard to enable pay as you grow pricing.",
+  },
+  {
+    question: "When will I be billed?",
+    answer: "Our Pro Plan is charged up front, and billed on a monthly basis. Additional usage costs are also billed at the end of the month.",
+  },
+  {
+    question: "Does BCRM charge sales tax, VAT or GST?",
+    answer: "BCRM applies sales tax, VAT, GST, and other indirect taxes where required by law, based on your billing address.",
+  },
+  {
+    question: "Are you going to change your pricing in the future?",
+    answer: "Pricing may change in the future, however as a team of developers we are committed to pricing being as developer friendly as possible.",
+  },
+  {
+    question: "What happens if I cancel my subscription?",
+    answer: "The organization is allocated credits for unused time during the billing month. Those credits can be used for other projects.",
+  },
+  {
+    question: "Do I get a notification if I am approaching my usage limits?",
+    answer: "Yes, we will email you when you are within 20% of your Plan limits.",
+  },
+  {
+    question: "What if I need one project for development and one for production?",
+    answer: "You can create a separate project for your development backend and production backend. Our Free Plan gives you 2 free projects.",
+  },
+  {
+    question: "Can I self-host BCRM for free?",
+    answer: "Yes, you can use the Docker setup or the BCRM CLI. BCRM Studio is also available in the Docker setup.",
+  },
+  {
+    question: "Can I pause a free project?",
+    answer: "Yes, you can pause a project at any time. Our Starter Plan gives you 2 projects, but you can have as many paused projects as you want.",
+  },
 ];

@@ -35,15 +35,7 @@ export function PricingCards({ plans }: PricingCardsProps) {
             }`}
           />
         </button>
-        <span className={`text-sm ${annual ? "font-medium" : "text-muted-foreground"}`}>
-          Annual
-          <Badge
-            variant="outline"
-            className="ml-1.5 border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
-          >
-            Save 20%
-          </Badge>
-        </span>
+        <span className={`text-sm ${annual ? "font-medium" : "text-muted-foreground"}`}>Annual</span>
       </div>
 
       <div className="flex flex-col gap-6">
