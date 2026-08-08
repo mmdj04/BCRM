@@ -6,7 +6,7 @@ const currentPlan = {
   name: "Pro",
   status: "active",
   nextBilling: "Sep 1, 2026",
-  amount: 49.99,
+  amount: 235,
   usage: {
     storage: { used: 42, total: 100, unit: "GB" },
     teamMembers: { used: 12, total: 25 },
