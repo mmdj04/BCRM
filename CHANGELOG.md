@@ -1,294 +1,310 @@
-# Changelog
+# Registro de Alterações
 
-Todas as mudanças notáveis neste projeto são documentadas neste arquivo.
-
-O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
-e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
+Todas as alterações notáveis neste projeto são documentadas aqui, organizadas por mês.
 
 ---
 
-## [Unreleased]
+## Versão Agosto de 2026
 
-### Added
-- **Supabase Integration**: Autenticação completa (login, registro, OAuth Google)
-- **Supabase Database**: 26 tabelas com RLS, triggers e indexes
-- **Middleware de Autenticação**: Refresh de sessão e proteção de rotas
-- **GitHub Actions**: CI/CD completo (lint, typecheck, build, deploy, CodeQL, Dependabot)
-- **Open Source Files**: SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md
-- **Issue Templates**: Bug Report, Feature Request, Question
-- **PR Template**: Template padronizado para Pull Requests
-- **Dependabot**: Atualização automática de dependências
-- **Stripe Integration**: Página de billing com preços em BRL, checkout, webhook e customer portal
-- **Demo Mode**: Modo de demonstração com credenciais hardcoded e cookie-based
-- **Changelog Page**: Página de changelog in-app sincronizada com CHANGELOG.md
-- **Account Page**: Página de configurações da conta
-- **Notifications Page**: Página de notificações com mark read, delete e create
-- **Finance Accounts e Transactions**: Tabs Accounts e Transactions no Finance dashboard
-  - Accounts tab com KPI strip, allocation bar, account list com sparklines
-  - Transactions tab com TanStack Table, search, filters, sorting, pagination
-  - Navegação cross-tab: clique no chevron para pular para Transactions com filtro
-- **Mock Data Fallback**: Todas as páginas usam mock data quando Supabase retorna erro/404
-- **CRUD Completo**: Create, Read, Update e Delete em todas as páginas aplicáveis
-- **Billing com Preços BRL**: Planos Starter R$ 789,90/mo, Pro R$ 1.889,90/mo, Team R$ 7.989,90/mo
-- **Portuguese Translation**: Interface completamente traduzida para Português Brasileiro
+**25 commits** | Última atualização: 08/08/2026
+
+### Funcionalidades
+- Migrar dnd kit para implementação e pacotes mais recentes
+- Migrar data table para usar tanstack table v9
+- Adicionar dashboard de monitoramento de pacientes
+- Adicionar dashboard de gerenciador de arquivos
+- Adicionar componente de questionário shadcn
+
+### Correções
+- Correções rápidas e atualizações gerais
+- Atualizar next.js e dependências
 
 ---
 
-## [3.0.0] - 2026-04-17
+## Versão Julho de 2026
 
-### Added
-- **Default Dashboard V2**: Novo design do dashboard padrão com métricas e gráficos atualizados
-- **Productivity Dashboard**: Dashboard de produtividade com tarefas, projetos, calendário e notas
-- **Search Dialog**: Busca global derivada dos itens da sidebar (PR #51)
-- **Vercel Analytics**: Integração com analytics do Vercel
+**36 commits** | Período: 02/07/2026 - 31/07/2026
 
-### Changed
-- Dashboard routes reorganizados: v2 como padrão, v1 movido para legacy
-- Sidebar refinada com support card e GitHub shortcut
-- Layout controls habilitados com persistência de preferências
-- Tema padrão atualizado para mist (shadcn base color)
-- Fonte padrão atualizada para Geist
+### Funcionalidades
+- Adicionar seletor de versões do projeto no cabeçalho do dashboard
+- Adicionar analytics ao dashboard
 
-### Fixed
-- Resolução de overflow no analytics dashboard em telas médias
-- Alinhamento de selects nos layout controls
-- Problemas de memoização do React Compiler na data table
-- Parse de datas no gráfico do dashboard padrão
+### Refatoração
+- Organizar componentes do dashboard
+- Simplificar atualizações de preferências
+- Corrigir achados de manutenibilidade (via react doctor)
+
+### Correções
+- Correções rápidas e atualização de dependências
 
 ---
 
-## [2.2.0] - 2026-01-01
+## Versão Junho de 2026
 
-### Added
-- **Finance Dashboard Redesign**: Novo design completo do dashboard financeiro
-  - Wallet com crypto assets e physical vault info
-  - Income breakdown com gráficos
-  - Balance distribution card
-  - Upcoming transactions com datas dinâmicas
-  - Quick actions
-- **Theme Preset Switcher**: Seletor de presets de tema (Default, Brutalist, Soft Pop, Tangerine)
-- **Font Preference**: 17 fontes selecionáveis dinamicamente
-- **System Theme Mode**: Suporte a tema do sistema (light/dark/system)
-- **Restore Defaults**: Botão para restaurar configurações padrão
+**68 commits** | Período: 01/06/2026 - 27/06/2026
 
-### Changed
-- Preferences store migrado para Zustand
-- Layout preferences movidas para cookie-based persistence
-- Boot script de tema otimizado para evitar flicker
-- Sidebar preference handling otimizado para renderização instantânea
+### Funcionalidades
+- Adicionar tarefas (tasks)
+- Adicionar novos componentes shadcn
+- Adicionar configuração do FullCalendar v7
+- Adicionar scroll fade na lista de e-mails
+- Usar componentes shadcn de chat para tela de chat
 
-### Fixed
-- Alinhamento de ícones na sidebar
-- CSS layer order para presets de tema
-- Default font configuration
+### Refatoração
+- Simplificar modelo de dados de itens de navegação
+- Simplificar renderização de itens de navegação
+- Adicionar regra de lint para ternário aninhado
+
+### Correções
+- Polir navegação da barra lateral recolhida
+- Correções rápidas e atualização de dependências
 
 ---
 
-## [2.1.0] - 2025-12-12
+## Versão Maio de 2026
 
-### Added
-- **Biome Migration**: Migração completa de ESLint/Prettier para Biome
-- **Preference Config**: Sistema de configurações com persistência
-- **Theme Boot Script**: Script para aplicar tema antes do render para evitar flicker
+**94 commits** | Período: 01/05/2026 - 31/05/2026
 
-### Changed
-- Comandos de lint/format atualizados para Biome
-- Codebase formatado e lintado com Biome
-- Dependências ESLint/Prettier removidas
+### Funcionalidades
+- Adicionar layouts iniciais de chat
+- Adicionar layout inicial de kanban
+- Adicionar página inicial de funções (roles)
+- Adicionar página inicial de usuários
+- Adicionar logística ao dashboard
 
----
-
-## [2.0.0] - 2025-10-25
-
-### Added
-- **Next.js 16**: Migração para Next.js 16 com React Compiler
-- **React Compiler**: Habilitado para memoização automática
-- **Proxy API**: Migração de middleware para proxy (Next.js 16)
-- **Turbopack**: Habilitado para desenvolvimento
-
-### Changed
-- Configuração ESLint atualizada para Next.js 16
-- Referências de versão atualizadas na documentação
-- Componentes shadcn atualizados
-
-### Fixed
-- DropdownMenuTrigger migrado de Radix UI para shadcn
+### Correções
+- Correções rápidas e atualização de dependências
 
 ---
 
-## [1.5.0] - 2025-08-01
+## Versão Abril de 2026
 
-### Added
-- **Not Found Page**: Página 404 global
-- **Coming Soon Page**: Página de em breve para rotas não implementadas
-- **Placeholder Routes**: Rotas para dashboards não implementados
+**69 commits** | Período: 01/04/2026 - 30/04/2026
 
-### Changed
-- Rotas não existentes redirecionadas para /dashboard
-- Dependências atualizadas
+### Funcionalidades
+- Adicionar dashboard analytics v2
+- Refatorar componente wallet com ativos crypto e informações de vault físico
+- Refatorar UI de transações futuras
 
----
-
-## [1.4.0] - 2025-07-09
-
-### Added
-- **V2 Auth Pages**: Novas páginas de autenticação (login e registro)
-- **Finance Dashboard**: Dashboard financeiro com wallet, cash flow e spending
-- **CRM Dashboard**: Dashboard de CRM com leads e métricas
-
-### Changed
-- Cores do tema atualizadas
-- Código limpo e refatorado
+### Correções
+- Substituir busca customizada pela busca integrada do cmdk
+- Correções de finance (diretiva use client, imports, ordenação de classes)
+- Refinar controles do analytics v2
 
 ---
 
-## [1.3.0] - 2025-06-06
+## Versão Março de 2026
 
-### Added
-- **Content Layout Switcher**: Seletor de layout (full width e centered)
-- **Account Switcher**: Componente para troca de contas
-- **Theme Switcher**: Componente para troca de tema
+**28 commits** | Período: 01/03/2026 - 10/03/2026
 
-### Changed
-- Sidebar atualizada com dropdown menu no estado collapsed
-- Lógica de margin responsiva atualizada para centered layout
+### Funcionalidades
+- Adicionar atalho GitHub no cabeçalho
+- Adicionar card de suporte na barra lateral
+- Trocar cor base do shadcn para mist
+- Atualizar estilo shadcn para radix-vega
 
-### Fixed
-- Fallback para layout collapsible no mobile sidebar
+### Refatoração
+- Localizar implementações de tabelas do dashboard
+- Adotar formulários baseados em campos (rhf)
 
----
-
-## [1.2.0] - 2025-05-04
-
-### Added
-- **Route Groups**: Organização com (main) e (external) route groups
-- **Layout Preferences Panel**: Painel de configurações de layout com sidebar variant e collapsible
-- **Prettier Plugin Tailwindcss**: Formatação automática de classes Tailwind
-
-### Changed
-- Estrutura de componentes reorganizada para _components
-- Sidebar re-renderizations otimizadas
-- Codebase lintado
+### Correções
+- Corrigir seleção de itens de grupos no select
+- Corrigir layout do card de suporte
+- Alinhar selects de controle de layout
+- Correções menores no dashboard e paleta de comandos
 
 ---
 
-## [1.1.0] - 2025-04-28
+## Versão Fevereiro de 2026
 
-### Added
-- **Next.js 15 + Tailwind CSS v4**: Migração para Next.js 15 e Tailwind CSS v4
-- **Novo Color Theme**: Esquema de cores atualizado
+**3 commits** | Período: 11/02/2026
 
-### Changed
-- Dependências e componentes shadcn atualizados
+### Correções
+- Correções menores
 
 ---
 
-## [1.0.0] - 2024-08-01
+## Versão Janeiro de 2026
 
-### Added
-- **Initial Release**: Primeira versão do Studio Admin Dashboard
-- Dashboard padrão com métricas e gráficos
-- Sidebar responsiva com variantes
-- Theme switcher (light/dark)
-- Layout controls (sidebar variant, collapsible, content layout, navbar style)
-- Autenticação mock (UI apenas)
-- 55+ componentes shadcn/ui
-- 24+ telas de dashboard
-- Suporte a 17 fontes
-- 4 presets de tema (Default, Brutalist, Soft Pop, Tangerine)
-- React 19 + TypeScript 5.9
-- Vercel Analytics
+**34 commits** | Período: 01/01/2026 - 09/01/2026
 
----
+### Funcionalidades
+- Adicionar controles de visão geral do analytics
+- Adicionar resumo de receita e risco no analytics
+- Adicionar modo de tema do sistema
+- Adicionar botão de restaurar padrões
+- Definir automaticamente resolvedThemeMode em setThemeMode
 
-## Histórico de Features por Dashboard
-
-### Default Dashboard
-- v1 (2024-08-01): Dashboard básico com métricas
-- v2 (2026-04-17): Novo design com gráficos atualizados
-
-### Analytics Dashboard
-- v1 (2026-01-08): Dashboard com métricas de receita e risco
-- v2 (2026-05-02): Dashboard com realtime visitors, traffic sources e quality charts
-
-### Finance Dashboard
-- v1 (2025-07-09): Dashboard com wallet, cash flow e spending
-- v2 (2026-04-26): Refatorado com crypto assets e vault info
-- v3 (2026-08-08): Adicionado Accounts e Transactions tabs
-
-### CRM Dashboard
-- v1 (2025-07-08): Dashboard com leads e métricas
-- v2 (2026-04-18): Novo design com opportunities table e activity sections
-
-### E-commerce Dashboard
-- v1 (2025-05-05): Dashboard com overview, traffic, reviews e inventory
-- v2 (2025-05-10): Adicionado recent orders table
-
-### Academy Dashboard
-- (2025-05-11): Dashboard com assignments, class schedule e KPIs
-
-### Mail
-- (2025-05-10): Interface de email com inbox, sidebar e message view
-- (2025-05-18): Movido para layout standalone com shadcn sidebar
-
-### Chat
-- (2025-06-03): Interface de chat com conversations, threads e contacts
-- (2025-06-08): Responsivo e refinado
-
-### Kanban
-- (2025-05-20): Board com drag-and-drop usando @dnd-kit
-- (2025-06-11): Refatorado em componentes, fix drag cancel
-
-### Tasks
-- (2025-06-24): Tela de tarefas com filtros e toolbar
-
-### Users
-- (2025-05-20): Tela de gestão de usuários com tabela
-
-### Roles
-- (2025-05-18): Tela de gestão de papéis e permissões
-
-### Infrastructure
-- (2025-06-18): Dashboard com health data e environments
-
-### Calendar
-- (2025-06-15): Calendário com FullCalendar v7
-
-### Invoice
-- (2025-06-11): Construtor de faturas com preview e impressão
-
-### File Manager
-- (2025-07-31): Gerenciador de arquivos com grid/list view
-
-### Patient Monitoring
-- (2025-08-03): Monitoramento de pacientes com vital signs e waveforms
-
-### Logistics
-- (2025-05-19): Dashboard com shipment tracking e route map
-
-### Notifications
-- (2026-08-08): Página de notificações com mark read, delete e create
-
-### Billing
-- (2026-08-08): Página de billing com preços em BRL, checkout Stripe e customer portal
-
-### Productivity
-- (2025-04-13): Dashboard com summary cards, focus, tasks e projects
+### Correções
+- Alternar entre light/dark/system no theme-switcher
+- Correções rápidas e menores
 
 ---
 
-## Contributors
+## Versão Dezembro de 2025
 
-Agradecimentos a todos os contribuidores:
+**50 commits** | Período: 01/12/2025 - 31/12/2025
 
-- [@arhamkhnz](https://github.com/arhamkhnz) - Autor original
-- [@Manasa0424](https://github.com/Manasa0424) - CRM Dashboard
-- [@likui628](https://github.com/likui628) - System Theme Mode
-- [@fiifiofosu](https://github.com/fiifiofosu) - Navigation Layout
-- [@Muhammadrizo14](https://github.com/Muhammadrizo14) - Search Dialog
+### Funcionalidades
+- Adicionar linha de KPIs
+- Inicializar biome
+- Adicionar script de boot de tema e tornar layout raiz estático
+- Adicionar bridge de preferências de janela + correção temporária de flicker
+- Adicionar "use no memo" em todos os componentes de tabela
+- Melhorar tratamento de preferências de layout para renderização instantânea da sidebar
+
+### Correções
+- Alinhar ícones da barra lateral
+- Corrigir padrões de boot de tema e seletor shallow da sidebar
+- Estilo de alinhamento de ícones da sidebar
 
 ---
 
-## Licença
+## Versão Novembro de 2025
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+**20 commits** | Período: 01/11/2025 - 30/11/2025
+
+### Funcionalidades
+- Adicionar script de boot de tema
+- Tornar layout raiz estático
+
+### Correções
+- Atualizar lógica da loja de preferências e aplicar correções menores
+
+---
+
+## Versão Outubro de 2025
+
+**22 commits** | Período: 01/10/2025 - 31/10/2025
+
+### Funcionalidades
+- Migrar para Next.js 16, habilitar React Compiler
+- Atualizar configuração do ESLint
+
+### Refatoração
+- Renomear middleware para proxy, limpar código, atualizar tsconfig
+
+### Correções
+- Usar DropdownMenuTrigger do Shadcn em vez de Radix UI no data-table-view-options.tsx
+
+---
+
+## Versão Setembro de 2025
+
+**14 commits** | Período: 01/09/2025 - 30/09/2025
+
+### Funcionalidades
+- Atualizar controles de layout do dashboard e utilitários de layout com cabeçalho fixo
+
+### Correções
+- Limpeza de código, correções menores e atualização de dependências
+
+---
+
+## Versão Agosto de 2025
+
+**11 commits** | Período: 01/08/2025 - 31/08/2025
+
+### Correções
+- Atualização de dependências e correções gerais
+
+---
+
+## Versão Julho de 2025
+
+**52 commits** | Período: 01/07/2025 - 31/07/2025
+
+### Funcionalidades
+- Adicionar script de geração de presets de tema
+- Adicionar store zustand para tema e preset com provider baseado em contexto
+- Adicionar alternador de presets de tema
+- Corrigir problemas menores de UI/UX
+
+### Refatoração
+- Mover loja e provedor de preferências para diretório stores/
+- Padronizar tipos e atualizar UI
+
+### Correções
+- Corrigir utilitários de sombra para respeitar presets de tema
+- Correções de acessibilidade (eslint)
+- Remover dependências não utilizadas
+- Corrigir avisos do eslint e importações de tipo
+
+---
+
+## Versão Junho de 2025
+
+**25 commits** | Período: 01/06/2025 - 30/06/2025
+
+### Funcionalidades
+- Adicionar telas de autenticação v1
+- Adicionar alternador de layout de conteúdo para largura total e centralizado
+- Adicionar diálogo de busca e refatorar código
+
+### Refatoração
+- Reestruturar componentes do dashboard padrão
+- Melhorar lógica de renderização da tabela de dados
+
+### Correções
+- Corrigir erro de contexto de cookies passando cookieStore como parâmetro
+- Limpeza de código e melhoria da tabela de dados
+
+---
+
+## Versão Maio de 2025
+
+**26 commits** | Período: 01/05/2025 - 31/05/2025
+
+### Funcionalidades
+- Migrar para Next.js 15 e Tailwind CSS v4 com novo esquema de cores
+- Adicionar alternador de tema
+- Adicionar componente de alternância de conta
+- Adicionar painel de preferências de layout com variante sidebar e configurações recolhíveis
+- Atualizar sidebar para usar dropdown menu no estado recolhido
+
+### Correções
+- Fallback para layout recolhível no sidebar mobile
+
+---
+
+## Versão Abril de 2025
+
+**1 commit** | Período: 01/04/2025 - 30/04/2025
+
+### Correções
+- Atualização de dependências e componentes shadcn
+
+---
+
+## Versão Março de 2025
+
+**7 commits** | Período: 01/03/2025 - 31/03/2025
+
+### Funcionalidades
+- Redesenhar dashboard, limpar código e atualizar esquema de cores
+
+### Correções
+- Atualizar dependências e componentes shadcn
+- Habilitar bracket spacing no config do Prettier
+- Aplicar regra de memoização de contexto eslint
+- Aplicar regra no-duplicate-imports e lintar código
+
+---
+
+## Versão Fevereiro de 2025
+
+**2 commits** | Período: 01/02/2025 - 28/02/2025
+
+### Correções
+- Atualizar configuração do eslint
+- Atualizar componentes shadcn e pacotes para versão mais recente
+
+---
+
+## Versão Janeiro de 2025
+
+**2 commits** | Período: 01/01/2025 - 31/01/2025
+
+### Correções
+- Atualizar configuração do eslint para convenções de nomenclatura de arquivos e regras de lint
+- Atualizar dependências e limpeza de código
