@@ -18,13 +18,13 @@ const healthStripSlots = Array.from({ length: 18 }, (_, index) => ({
 
 function getHealthScore(health: OpportunityRow["health"]) {
   switch (health) {
-    case "On Track":
+    case "No Ritmo":
       return 18;
-    case "Needs Review":
+    case "Precisa de Revisão":
       return 11;
-    case "At Risk":
+    case "Em Risco":
       return 7;
-    case "On Hold":
+    case "Em Espera":
       return 4;
     default:
       return 0;
