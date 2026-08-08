@@ -5,10 +5,10 @@
     "description": "Tesco Express · Camden",
     "reference": "POS·8821",
     "accountId": "revolut-premium",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -42.15,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2079",
@@ -16,32 +16,32 @@
     "description": "Pret a Manger",
     "reference": "POS·8804",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -6.95,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2078",
     "date": "2026-05-17T22:48:00Z",
-    "description": "Spot buy · BTC",
+    "description": "Compra-spot · BTC",
     "reference": "EX·BNC·4421",
     "accountId": "binance-btc",
-    "category": "Crypto",
+    "category": "Cripto",
     "type": "debit",
     "amount": -1500,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2077",
     "date": "2026-05-17T19:04:00Z",
-    "description": "Uber · Trip to Soho",
+    "description": "Uber · Viagem ao Soho",
     "reference": "POS·8771",
     "accountId": "revolut-premium",
-    "category": "Travel",
+    "category": "Viagem",
     "type": "debit",
     "amount": -18.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2076",
@@ -49,54 +49,54 @@
     "description": "Sainsbury's",
     "reference": "POS·8762",
     "accountId": "barclays-checking",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -68.22,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2075",
     "date": "2026-05-17T09:02:00Z",
-    "description": "Transfer to savings",
+    "description": "Transferência para poupança",
     "reference": "TRF·9001",
     "accountId": "revolut-savings",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "credit",
     "amount": 500,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2074",
     "date": "2026-05-17T09:02:00Z",
-    "description": "Transfer to savings",
+    "description": "Transferência para poupança",
     "reference": "TRF·9001",
     "accountId": "revolut-premium",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "debit",
     "amount": -500,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2073",
     "date": "2026-05-16T18:31:00Z",
-    "description": "Pending · Apple Pay",
+    "description": "Pendente · Apple Pay",
     "reference": "POS·8748",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -2.99,
-    "status": "Pending"
+    "status": "Pendente"
   },
   {
     "id": "TXN-2072",
     "date": "2026-05-16T09:00:00Z",
-    "description": "Standing order · Rent",
+    "description": "Ordem permanente · Aluguel",
     "reference": "STO·1185",
     "accountId": "hsbc-checking",
-    "category": "Rent",
+    "category": "Aluguel",
     "type": "debit",
     "amount": -1180,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2071",
@@ -104,10 +104,10 @@
     "description": "Spotify Family",
     "reference": "SUB·SP·44",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -17.99,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2070",
@@ -115,54 +115,54 @@
     "description": "Pizza Express",
     "reference": "POS·8721",
     "accountId": "barclays-checking",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -34.5,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2069",
     "date": "2026-05-15T16:14:00Z",
-    "description": "Refund · Returned shoes",
+    "description": "Reembolso · Sapatos devolvidos",
     "reference": "REF·1042",
     "accountId": "revolut-premium",
-    "category": "Other",
+    "category": "Outro",
     "type": "credit",
     "amount": 82.5,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2068",
     "date": "2026-05-15T11:38:00Z",
-    "description": "Withdrawal · ATM",
+    "description": "Saque · Caixa eletrônico",
     "reference": "ATM·0091",
     "accountId": "hsbc-checking",
-    "category": "Other",
+    "category": "Outro",
     "type": "debit",
     "amount": -120,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2067",
     "date": "2026-05-14T16:00:00Z",
-    "description": "Dividend · VWRL",
+    "description": "Dividendo · VWRL",
     "reference": "DIV·VWRL",
     "accountId": "investment-brokerage",
-    "category": "Income",
+    "category": "Receita",
     "type": "credit",
     "amount": 86.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2066",
     "date": "2026-05-14T13:21:00Z",
-    "description": "Ocado weekly shop",
+    "description": "Compras semanais Ocado",
     "reference": "POS·8688",
     "accountId": "barclays-checking",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -88.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2065",
@@ -170,21 +170,21 @@
     "description": "TfL Pay-as-you-go",
     "reference": "POS·8682",
     "accountId": "revolut-premium",
-    "category": "Travel",
+    "category": "Viagem",
     "type": "debit",
     "amount": -12.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2064",
     "date": "2026-05-13T23:10:00Z",
-    "description": "Failed · Stripe top-up",
+    "description": "Falhou · Recarga Stripe",
     "reference": "ERR·1003",
     "accountId": "revolut-premium",
-    "category": "Other",
+    "category": "Outro",
     "type": "credit",
     "amount": 200,
-    "status": "Failed"
+    "status": "Falhou"
   },
   {
     "id": "TXN-2063",
@@ -192,10 +192,10 @@
     "description": "Deliveroo · Dishoom",
     "reference": "POS·8659",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -28.6,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2062",
@@ -203,21 +203,21 @@
     "description": "Octopus Energy",
     "reference": "DD·OCT·07",
     "accountId": "hsbc-checking",
-    "category": "Utilities",
+    "category": "Utilidades",
     "type": "debit",
     "amount": -94.2,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2061",
     "date": "2026-05-12T18:00:00Z",
-    "description": "Stake · ETH staking reward",
+    "description": "Stake · Recompensa de staking ETH",
     "reference": "STK·ETH·12",
     "accountId": "metamask-eth",
-    "category": "Crypto",
+    "category": "Cripto",
     "type": "credit",
     "amount": 38.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2060",
@@ -225,10 +225,10 @@
     "description": "Amazon UK",
     "reference": "POS·8612",
     "accountId": "barclays-checking",
-    "category": "Other",
+    "category": "Outro",
     "type": "debit",
     "amount": -59.99,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2059",
@@ -236,10 +236,10 @@
     "description": "Marks & Spencer",
     "reference": "POS·8607",
     "accountId": "revolut-premium",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -22.18,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2058",
@@ -247,65 +247,65 @@
     "description": "Netflix",
     "reference": "SUB·NFX·05",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -15.99,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2057",
     "date": "2026-05-11T13:08:00Z",
-    "description": "Hotel · Lisboa weekender",
+    "description": "Hotel · Fim de semana em Lisboa",
     "reference": "POS·8584",
     "accountId": "barclays-checking",
-    "category": "Travel",
+    "category": "Viagem",
     "type": "debit",
     "amount": -342.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2056",
     "date": "2026-05-11T09:00:00Z",
-    "description": "ISA contribution",
+    "description": "Contribuição ISA",
     "reference": "TRF·9012",
     "accountId": "barclays-isa",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "credit",
     "amount": 400,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2055",
     "date": "2026-05-11T09:00:00Z",
-    "description": "ISA contribution",
+    "description": "Contribuição ISA",
     "reference": "TRF·9012",
     "accountId": "barclays-checking",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "debit",
     "amount": -400,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2054",
     "date": "2026-05-10T21:36:00Z",
-    "description": "Spot sell · ETH",
+    "description": "Venda-spot · ETH",
     "reference": "EX·MM·9182",
     "accountId": "metamask-eth",
-    "category": "Crypto",
+    "category": "Cripto",
     "type": "credit",
     "amount": 620,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2053",
     "date": "2026-05-10T15:18:00Z",
-    "description": "Boots pharmacy",
+    "description": "Farmácia Boots",
     "reference": "POS·8541",
     "accountId": "revolut-premium",
-    "category": "Other",
+    "category": "Outro",
     "type": "debit",
     "amount": -11.6,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2052",
@@ -313,10 +313,10 @@
     "description": "Tesco Metro",
     "reference": "POS·8536",
     "accountId": "revolut-premium",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -31.42,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2051",
@@ -324,32 +324,32 @@
     "description": "Cinema · Picturehouse",
     "reference": "POS·8520",
     "accountId": "barclays-checking",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -24,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2050",
     "date": "2026-05-09T08:24:00Z",
-    "description": "Salary · Acme Corp",
+    "description": "Salário · Acme Corp",
     "reference": "PAY·ACME·05",
     "accountId": "hsbc-checking",
-    "category": "Income",
+    "category": "Receita",
     "type": "credit",
     "amount": 4560,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2049",
     "date": "2026-05-08T22:00:00Z",
-    "description": "Upwork payout",
+    "description": "Pagamento Upwork",
     "reference": "PAY·UPW·44",
     "accountId": "revolut-premium",
-    "category": "Income",
+    "category": "Receita",
     "type": "credit",
     "amount": 1412,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2048",
@@ -357,10 +357,10 @@
     "description": "Sainsbury's",
     "reference": "POS·8489",
     "accountId": "barclays-checking",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -54.18,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2047",
@@ -368,21 +368,21 @@
     "description": "Claude Pro",
     "reference": "SUB·CLD·05",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -20,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2046",
     "date": "2026-05-07T18:30:00Z",
-    "description": "Tube · Oyster top-up",
+    "description": "Metrô · Recarga Oyster",
     "reference": "POS·8462",
     "accountId": "revolut-premium",
-    "category": "Travel",
+    "category": "Viagem",
     "type": "debit",
     "amount": -30,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2045",
@@ -390,10 +390,10 @@
     "description": "BT Broadband",
     "reference": "DD·BT·05",
     "accountId": "hsbc-checking",
-    "category": "Utilities",
+    "category": "Utilidades",
     "type": "debit",
     "amount": -42,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2044",
@@ -401,43 +401,43 @@
     "description": "Honest Burgers",
     "reference": "POS·8431",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -19.5,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2043",
     "date": "2026-05-06T09:12:00Z",
-    "description": "Spot buy · BTC",
+    "description": "Compra-spot · BTC",
     "reference": "EX·BNC·4380",
     "accountId": "binance-btc",
-    "category": "Crypto",
+    "category": "Cripto",
     "type": "debit",
     "amount": -750,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2042",
     "date": "2026-05-05T22:30:00Z",
-    "description": "Pending · Foreign card",
+    "description": "Pendente · Cartão estrangeiro",
     "reference": "INTL·77",
     "accountId": "barclays-checking",
-    "category": "Other",
+    "category": "Outro",
     "type": "debit",
     "amount": -118,
-    "status": "Pending"
+    "status": "Pendente"
   },
   {
     "id": "TXN-2041",
     "date": "2026-05-05T15:00:00Z",
-    "description": "Council tax",
+    "description": "Imposto municipal",
     "reference": "DD·LBC·05",
     "accountId": "hsbc-checking",
-    "category": "Utilities",
+    "category": "Utilidades",
     "type": "debit",
     "amount": -156,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2040",
@@ -445,10 +445,10 @@
     "description": "Greggs",
     "reference": "POS·8392",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -4.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2039",
@@ -456,10 +456,10 @@
     "description": "Whole Foods",
     "reference": "POS·8378",
     "accountId": "barclays-checking",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -72.6,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2038",
@@ -467,54 +467,54 @@
     "description": "Adobe CC",
     "reference": "SUB·ADB·05",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -54.99,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2037",
     "date": "2026-05-03T19:55:00Z",
-    "description": "BrewDog · pub night",
+    "description": "BrewDog · noite de pub",
     "reference": "POS·8344",
     "accountId": "barclays-checking",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -38.2,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2036",
     "date": "2026-05-03T09:00:00Z",
-    "description": "Brokerage buy · VWRL",
+    "description": "Compra de corretora · VWRL",
     "reference": "TRD·VWRL·05",
     "accountId": "investment-brokerage",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "credit",
     "amount": 600,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2035",
     "date": "2026-05-03T09:00:00Z",
-    "description": "Brokerage buy · VWRL",
+    "description": "Compra de corretora · VWRL",
     "reference": "TRD·VWRL·05",
     "accountId": "hsbc-checking",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "debit",
     "amount": -600,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2034",
     "date": "2026-05-02T16:20:00Z",
-    "description": "Refund · Train ticket",
+    "description": "Reembolso · Passagem de trem",
     "reference": "REF·TRN·09",
     "accountId": "revolut-premium",
-    "category": "Travel",
+    "category": "Viagem",
     "type": "credit",
     "amount": 24.5,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2033",
@@ -522,32 +522,32 @@
     "description": "Costa Coffee",
     "reference": "POS·8298",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -3.85,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2032",
     "date": "2026-05-01T19:00:00Z",
-    "description": "Salary · top-up bonus",
+    "description": "Salário · bônus de recarga",
     "reference": "PAY·ACME·BN",
     "accountId": "hsbc-checking",
-    "category": "Income",
+    "category": "Receita",
     "type": "credit",
     "amount": 220,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2031",
     "date": "2026-05-01T08:00:00Z",
-    "description": "Gym membership",
+    "description": "Academia",
     "reference": "SUB·GYM·05",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -42,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2030",
@@ -555,32 +555,32 @@
     "description": "Tesco Express",
     "reference": "POS·8240",
     "accountId": "revolut-premium",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -28.99,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2029",
     "date": "2026-04-30T11:24:00Z",
-    "description": "Pension contribution",
+    "description": "Contribuição previdenciária",
     "reference": "TRF·9036",
     "accountId": "investment-brokerage",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "credit",
     "amount": 450,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2028",
     "date": "2026-04-30T11:24:00Z",
-    "description": "Pension contribution",
+    "description": "Contribuição previdenciária",
     "reference": "TRF·9036",
     "accountId": "hsbc-checking",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "debit",
     "amount": -450,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2027",
@@ -588,10 +588,10 @@
     "description": "Five Guys",
     "reference": "POS·8211",
     "accountId": "barclays-checking",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -16.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2026",
@@ -599,21 +599,21 @@
     "description": "Thames Water",
     "reference": "DD·TW·04",
     "accountId": "hsbc-checking",
-    "category": "Utilities",
+    "category": "Utilidades",
     "type": "debit",
     "amount": -31.2,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2025",
     "date": "2026-04-28T22:14:00Z",
-    "description": "Failed · Crypto withdrawal",
+    "description": "Falhou · Saque de cripto",
     "reference": "ERR·BNC·07",
     "accountId": "binance-btc",
-    "category": "Crypto",
+    "category": "Cripto",
     "type": "credit",
     "amount": 200,
-    "status": "Failed"
+    "status": "Falhou"
   },
   {
     "id": "TXN-2024",
@@ -621,10 +621,10 @@
     "description": "Lidl",
     "reference": "POS·8176",
     "accountId": "barclays-checking",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -38.62,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2023",
@@ -632,32 +632,32 @@
     "description": "Wagamama",
     "reference": "POS·8154",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -41.2,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2022",
     "date": "2026-04-27T09:00:00Z",
-    "description": "Standing order · Rent",
+    "description": "Ordem permanente · Aluguel",
     "reference": "STO·1184",
     "accountId": "hsbc-checking",
-    "category": "Rent",
+    "category": "Aluguel",
     "type": "debit",
     "amount": -1180,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2021",
     "date": "2026-04-26T15:00:00Z",
-    "description": "Airbnb · weekend",
+    "description": "Airbnb · fim de semana",
     "reference": "POS·8128",
     "accountId": "barclays-checking",
-    "category": "Travel",
+    "category": "Viagem",
     "type": "debit",
     "amount": -218.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2020",
@@ -665,10 +665,10 @@
     "description": "Sainsbury's",
     "reference": "POS·8121",
     "accountId": "barclays-checking",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -62.85,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2019",
@@ -676,32 +676,32 @@
     "description": "Apple Store",
     "reference": "POS·8098",
     "accountId": "revolut-premium",
-    "category": "Other",
+    "category": "Outro",
     "type": "debit",
     "amount": -149,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2018",
     "date": "2026-04-25T10:48:00Z",
-    "description": "ETH gas refund",
+    "description": "Reembolso de gas ETH",
     "reference": "GAS·ETH·22",
     "accountId": "metamask-eth",
-    "category": "Crypto",
+    "category": "Cripto",
     "type": "credit",
     "amount": 4.85,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2017",
     "date": "2026-04-24T18:00:00Z",
-    "description": "Salary · Acme Corp",
+    "description": "Salário · Acme Corp",
     "reference": "PAY·ACME·04",
     "accountId": "hsbc-checking",
-    "category": "Income",
+    "category": "Receita",
     "type": "credit",
     "amount": 4560,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2016",
@@ -709,10 +709,10 @@
     "description": "Disney+",
     "reference": "SUB·DSN·04",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -8.99,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2015",
@@ -720,10 +720,10 @@
     "description": "Pret a Manger",
     "reference": "POS·8054",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -7.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2014",
@@ -731,10 +731,10 @@
     "description": "TfL Pay-as-you-go",
     "reference": "POS·8048",
     "accountId": "revolut-premium",
-    "category": "Travel",
+    "category": "Viagem",
     "type": "debit",
     "amount": -9.6,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2013",
@@ -742,21 +742,21 @@
     "description": "Marks & Spencer",
     "reference": "POS·8019",
     "accountId": "barclays-checking",
-    "category": "Groceries",
+    "category": "Mercearia",
     "type": "debit",
     "amount": -45.7,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2012",
     "date": "2026-04-22T09:00:00Z",
-    "description": "ISA dividend reinvest",
+    "description": "Reinvestimento de dividendo ISA",
     "reference": "DIV·ISA·04",
     "accountId": "barclays-isa",
-    "category": "Income",
+    "category": "Receita",
     "type": "credit",
     "amount": 42.6,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2011",
@@ -764,43 +764,43 @@
     "description": "Honest Burgers",
     "reference": "POS·7991",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -21.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2010",
     "date": "2026-04-21T08:42:00Z",
-    "description": "Notion plan",
+    "description": "Plano Notion",
     "reference": "SUB·NTN·04",
     "accountId": "revolut-premium",
-    "category": "Subscriptions",
+    "category": "Assinaturas",
     "type": "debit",
     "amount": -10,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2009",
     "date": "2026-04-20T21:55:00Z",
-    "description": "Failed · Refund attempt",
+    "description": "Falhou · Tentativa de reembolso",
     "reference": "ERR·1002",
     "accountId": "barclays-checking",
-    "category": "Other",
+    "category": "Outro",
     "type": "credit",
     "amount": 60,
-    "status": "Failed"
+    "status": "Falhou"
   },
   {
     "id": "TXN-2008",
     "date": "2026-04-20T14:08:00Z",
-    "description": "Spot buy · BTC",
+    "description": "Compra-spot · BTC",
     "reference": "EX·BNC·4218",
     "accountId": "binance-btc",
-    "category": "Crypto",
+    "category": "Cripto",
     "type": "debit",
     "amount": -1200,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2007",
@@ -808,32 +808,32 @@
     "description": "Cinema · IMAX",
     "reference": "POS·7942",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -18,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2006",
     "date": "2026-04-19T10:00:00Z",
-    "description": "Brokerage deposit",
+    "description": "Depósito de corretora",
     "reference": "TRF·8989",
     "accountId": "investment-brokerage",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "credit",
     "amount": 800,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2005",
     "date": "2026-04-19T10:00:00Z",
-    "description": "Brokerage deposit",
+    "description": "Depósito de corretora",
     "reference": "TRF·8989",
     "accountId": "revolut-premium",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "debit",
     "amount": -800,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2004",
@@ -841,10 +841,10 @@
     "description": "Deliveroo · Bao",
     "reference": "POS·7902",
     "accountId": "revolut-premium",
-    "category": "Dining",
+    "category": "Alimentação",
     "type": "debit",
     "amount": -26.5,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2003",
@@ -852,10 +852,10 @@
     "description": "British Gas",
     "reference": "DD·BG·04",
     "accountId": "hsbc-checking",
-    "category": "Utilities",
+    "category": "Utilidades",
     "type": "debit",
     "amount": -64,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2002",
@@ -863,31 +863,31 @@
     "description": "Decathlon",
     "reference": "POS·7869",
     "accountId": "barclays-checking",
-    "category": "Other",
+    "category": "Outro",
     "type": "debit",
     "amount": -88.4,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2001",
     "date": "2026-04-17T08:30:00Z",
-    "description": "Upwork payout",
+    "description": "Pagamento Upwork",
     "reference": "PAY·UPW·43",
     "accountId": "revolut-premium",
-    "category": "Income",
+    "category": "Receita",
     "type": "credit",
     "amount": 1212,
-    "status": "Posted"
+    "status": "Compensado"
   },
   {
     "id": "TXN-2000",
     "date": "2026-04-16T15:14:00Z",
-    "description": "Cold storage rebalance",
+    "description": "Rebalanceamento de frio",
     "reference": "TRF·9100",
     "accountId": "ledger-vault",
-    "category": "Transfers",
+    "category": "Transferências",
     "type": "credit",
     "amount": 2200,
-    "status": "Posted"
+    "status": "Compensado"
   }
 ]

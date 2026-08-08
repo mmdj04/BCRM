@@ -13,18 +13,18 @@ type ActivityEntry = {
 };
 
 const activity: ActivityEntry[] = [
-  { accountId: "revolut-premium", description: "Tesco Express", date: "Today · 14:32", amount: -42.15 },
-  { accountId: "revolut-premium", description: "Apple Pay top-up", date: "Yesterday · 09:11", amount: 250 },
-  { accountId: "hsbc-checking", description: "Standing order · Rent", date: "May 16 · 09:00", amount: -1180 },
-  { accountId: "binance-btc", description: "Spot buy · BTC", date: "May 15 · 22:48", amount: -1500 },
-  { accountId: "investment-brokerage", description: "Dividend · VWRL", date: "May 14 · 16:00", amount: 86.4 },
+  { accountId: "revolut-premium", description: "Tesco Express", date: "Hoje · 14:32", amount: -42.15 },
+  { accountId: "revolut-premium", description: "Recarga Apple Pay", date: "Ontem · 09:11", amount: 250 },
+  { accountId: "hsbc-checking", description: "Ordem permanente · Aluguel", date: "16 de mai. · 09:00", amount: -1180 },
+  { accountId: "binance-btc", description: "Compra-spot · BTC", date: "15 de mai. · 22:48", amount: -1500 },
+  { accountId: "investment-brokerage", description: "Dividendo · VWRL", date: "14 de mai. · 16:00", amount: 86.4 },
 ];
 
 export function RecentAccountActivity() {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="font-normal">Recent activity</CardTitle>
+        <CardTitle className="font-normal">Atividade recente</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col gap-3">

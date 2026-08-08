@@ -6,7 +6,7 @@ import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { formatCurrency } from "@/lib/utils";
 
 const chartConfig = {
-  value: { color: "var(--chart-1)", label: "Balance" },
+  value: { color: "var(--chart-1)", label: "Saldo" },
 } satisfies ChartConfig;
 
 type AccountSparklineProps = {
@@ -22,9 +22,9 @@ export function AccountSparkline({ data, positive = true, className, label }: Ac
   const min = data.length ? Math.min(...data) : 0;
   const max = data.length ? Math.max(...data) : 0;
   const direction = data.length > 1 && data[data.length - 1] >= data[0] ? "up" : "down";
-  const summary = `${label ?? "Balance trend"}: ${formatCurrency(min, { noDecimals: true })} to ${formatCurrency(max, {
+  const summary = `${label ?? "Tendência do saldo"}: ${formatCurrency(min, { noDecimals: true })} a ${formatCurrency(max, {
     noDecimals: true,
-  })}, trending ${direction}`;
+  })}, tendência ${direction}`;
 
   return (
     <div role="img" aria-label={summary} className={className ?? "h-8 w-24"}>

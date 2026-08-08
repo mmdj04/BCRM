@@ -58,7 +58,7 @@ export const accounts: Account[] = [
   {
     id: "revolut-savings",
     name: "Revolut Savings",
-    detail: "High-yield · 4.50% APY",
+    detail: "Alta renda · 4,50% a.a.",
     type: "savings",
     balance: 28400,
     monthlyDelta: 1200,
@@ -68,7 +68,7 @@ export const accounts: Account[] = [
   {
     id: "barclays-isa",
     name: "Barclays ISA",
-    detail: "Tax-free savings",
+    detail: "Poupança isenta de impostos",
     type: "savings",
     balance: 19920,
     monthlyDelta: 320,
@@ -78,7 +78,7 @@ export const accounts: Account[] = [
   {
     id: "investment-brokerage",
     name: "Brokerage Account",
-    detail: "Index portfolio · 78% equities",
+    detail: "Carteira de índice · 78% ações",
     type: "investment",
     balance: 36780,
     monthlyDelta: 2140,
@@ -112,7 +112,7 @@ export const accounts: Account[] = [
   {
     id: "ledger-vault",
     name: "Cold Storage Vault",
-    detail: "Ledger Nano X · Air-gapped",
+    detail: "Ledger Nano X · Sem conexão",
     type: "reserve",
     balance: 27256,
     monthlyDelta: 0,

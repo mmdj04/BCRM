@@ -26,7 +26,7 @@ export function AllocationByType() {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="font-normal">Allocation by type</CardTitle>
+        <CardTitle className="font-normal">Alocação por tipo</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-4">
         <div className="flex items-baseline justify-between">
@@ -70,7 +70,7 @@ export function AllocationByType() {
         </ul>
 
         <p className="mt-auto text-muted-foreground text-xs tabular-nums">
-          Liquid {Math.round(liquidPct * 100)}% <span className="text-muted-foreground/60">·</span> Locked{" "}
+          Líquido {Math.round(liquidPct * 100)}% <span className="text-muted-foreground/60">·</span> Bloqueado{" "}
           {Math.round(lockedPct * 100)}%
         </p>
       </CardContent>

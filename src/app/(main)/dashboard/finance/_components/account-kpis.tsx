@@ -6,7 +6,7 @@ import { accounts, accountTypeLabels, getAccountsByType, totalBalance, totalMont
 
 function deltaBadge(amount: number) {
   if (amount === 0) {
-    return <Badge variant="secondary">Flat</Badge>;
+    return <Badge variant="secondary">Estável</Badge>;
   }
   if (amount > 0) {
     return (
@@ -36,21 +36,21 @@ export function AccountKpis() {
       <div className="grid grid-cols-1 xl:grid-cols-12">
         <Card className="gap-5 overflow-hidden rounded-none border-0 border-foreground/10 border-b ring-0 xl:col-span-3 xl:border-r xl:border-b-0">
           <CardHeader>
-            <CardTitle className="font-normal">Total balance</CardTitle>
+            <CardTitle className="font-normal">Saldo total</CardTitle>
           </CardHeader>
           <CardContent className="flex items-end justify-between">
             <div className="space-y-1">
               <div className="text-3xl tabular-nums leading-none tracking-tight">
                 {formatCurrency(totalBalance, { noDecimals: true })}
               </div>
-              <p className="text-muted-foreground text-xs">Across {accounts.length} linked accounts</p>
+              <p className="text-muted-foreground text-xs">Em {accounts.length} contas vinculadas</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="gap-5 overflow-hidden rounded-none border-0 border-foreground/10 border-b ring-0 xl:col-span-3 xl:border-r xl:border-b-0">
           <CardHeader>
-            <CardTitle className="font-normal">Accounts</CardTitle>
+            <CardTitle className="font-normal">Contas</CardTitle>
           </CardHeader>
           <CardContent className="flex items-end justify-between">
             <div className="space-y-1">
@@ -70,7 +70,7 @@ export function AccountKpis() {
 
         <Card className="gap-5 overflow-hidden rounded-none border-0 border-foreground/10 border-b ring-0 xl:col-span-3 xl:border-r xl:border-b-0">
           <CardHeader>
-            <CardTitle className="font-normal">Largest account</CardTitle>
+            <CardTitle className="font-normal">Maior conta</CardTitle>
           </CardHeader>
           <CardContent className="flex items-end justify-between">
             <div className="space-y-1">
@@ -80,10 +80,10 @@ export function AccountKpis() {
               <p className="text-muted-foreground text-xs">
                 {largest ? (
                   <>
-                    <span className="text-foreground">{largest.name}</span> · {Math.round(largestShare * 100)}% of total
+                    <span className="text-foreground">{largest.name}</span> · {Math.round(largestShare * 100)}% do total
                   </>
                 ) : (
-                  "No linked accounts"
+                  "Nenhuma conta vinculada"
                 )}
               </p>
             </div>
@@ -92,7 +92,7 @@ export function AccountKpis() {
 
         <Card className="gap-5 overflow-hidden rounded-none border-0 ring-0 xl:col-span-3">
           <CardHeader>
-            <CardTitle className="font-normal">30-day net flow</CardTitle>
+            <CardTitle className="font-normal">Fluxo líquido de 30 dias</CardTitle>
           </CardHeader>
           <CardContent className="flex items-end justify-between">
             <div className="space-y-1">
@@ -100,7 +100,7 @@ export function AccountKpis() {
                 {totalMonthlyDelta >= 0 ? "+" : ""}
                 {formatCurrency(totalMonthlyDelta, { noDecimals: true })}
               </div>
-              <p className="text-muted-foreground text-xs">Inflows minus outflows across all accounts</p>
+              <p className="text-muted-foreground text-xs">Entradas menos saídas em todas as contas</p>
             </div>
             {deltaBadge(totalMonthlyDelta)}
           </CardContent>

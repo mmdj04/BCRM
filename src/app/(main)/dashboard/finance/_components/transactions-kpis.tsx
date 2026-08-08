@@ -23,7 +23,7 @@ export function TransactionsKpis() {
       <div className="grid grid-cols-1 xl:grid-cols-12">
         <Card className="gap-5 overflow-hidden rounded-none border-0 border-foreground/10 border-b ring-0 xl:col-span-4 xl:border-r xl:border-b-0">
           <CardHeader>
-            <CardTitle className="font-normal">Inflow this month</CardTitle>
+            <CardTitle className="font-normal">Entradas este mês</CardTitle>
           </CardHeader>
           <CardContent className="flex items-end justify-between">
             <div className="space-y-1">
@@ -31,7 +31,7 @@ export function TransactionsKpis() {
                 {formatCurrency(inflow, { noDecimals: true })}
               </div>
               <p className="text-muted-foreground text-xs">
-                {monthRows.filter((row) => row.amount > 0).length} credits
+                {monthRows.filter((row) => row.amount > 0).length} créditos
               </p>
             </div>
           </CardContent>
@@ -39,21 +39,21 @@ export function TransactionsKpis() {
 
         <Card className="gap-5 overflow-hidden rounded-none border-0 border-foreground/10 border-b ring-0 xl:col-span-4 xl:border-r xl:border-b-0">
           <CardHeader>
-            <CardTitle className="font-normal">Outflow this month</CardTitle>
+            <CardTitle className="font-normal">Saídas este mês</CardTitle>
           </CardHeader>
           <CardContent className="flex items-end justify-between">
             <div className="space-y-1">
               <div className="text-3xl tabular-nums leading-none tracking-tight">
                 {formatCurrency(outflow, { noDecimals: true })}
               </div>
-              <p className="text-muted-foreground text-xs">{monthRows.filter((row) => row.amount < 0).length} debits</p>
+              <p className="text-muted-foreground text-xs">{monthRows.filter((row) => row.amount < 0).length} débitos</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="gap-5 overflow-hidden rounded-none border-0 ring-0 xl:col-span-4">
           <CardHeader>
-            <CardTitle className="font-normal">Net this month</CardTitle>
+            <CardTitle className="font-normal">Líquido este mês</CardTitle>
           </CardHeader>
           <CardContent className="flex items-end justify-between">
             <div className="space-y-1">
@@ -66,7 +66,7 @@ export function TransactionsKpis() {
                 {net >= 0 ? "+" : ""}
                 {formatCurrency(net, { noDecimals: true })}
               </div>
-              <p className="text-muted-foreground text-xs">{monthRows.length} transactions to date</p>
+              <p className="text-muted-foreground text-xs">{monthRows.length} transações até hoje</p>
             </div>
           </CardContent>
         </Card>

@@ -16,9 +16,9 @@ type Inflow = {
 };
 
 const inflows: Inflow[] = [
-  { accountId: "hsbc-checking", source: "Acme Corp · Salary", amount: 4560, expected: "May 25" },
-  { accountId: "revolut-premium", source: "Upwork · Project payout", amount: 1412, expected: "May 28" },
-  { accountId: "investment-brokerage", source: "VWRL · Quarterly dividend", amount: 86.4, expected: "Jun 12" },
+  { accountId: "hsbc-checking", source: "Acme Corp · Salário", amount: 4560, expected: "25 de mai." },
+  { accountId: "revolut-premium", source: "Upwork · Pagamento de projeto", amount: 1412, expected: "28 de mai." },
+  { accountId: "investment-brokerage", source: "VWRL · Dividendo trimestral", amount: 86.4, expected: "12 de jun." },
 ];
 
 const total = inflows.reduce((sum, inflow) => sum + inflow.amount, 0);
@@ -27,7 +27,7 @@ export function UpcomingInflows() {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="font-normal">Upcoming inflows</CardTitle>
+        <CardTitle className="font-normal">Entradas previstas</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-3">
         <div className="flex flex-col gap-1">
@@ -35,12 +35,12 @@ export function UpcomingInflows() {
             <span className="font-normal">{formatCurrency(total, { noDecimals: true })}</span>
           </h2>
           <p className="text-muted-foreground text-sm leading-none">
-            <span className="font-medium text-foreground">{inflows.length}</span> deposits expected this cycle
+            <span className="font-medium text-foreground">{inflows.length}</span> depósitos esperados neste ciclo
           </p>
         </div>
         <Badge className="w-max gap-1.5 rounded-md border border-border bg-muted/70 px-2 py-1.5 text-muted-foreground text-sm">
           <ArrowDownLeft aria-hidden="true" className="size-4 text-green-600 dark:text-green-400" />
-          Net positive cash flow forecast
+          Previsão de fluxo de caixa positivo líquido
         </Badge>
 
         <div className="flex flex-col gap-3">

@@ -1,18 +1,18 @@
 import z from "zod";
 
-export const transactionStatuses = ["Posted", "Pending", "Failed"] as const;
+export const transactionStatuses = ["Compensado", "Pendente", "Falhou"] as const;
 export const transactionTypes = ["credit", "debit"] as const;
 export const transactionCategories = [
-  "Income",
-  "Groceries",
-  "Rent",
-  "Subscriptions",
-  "Transfers",
-  "Crypto",
-  "Dining",
-  "Utilities",
-  "Travel",
-  "Other",
+  "Receita",
+  "Mercearia",
+  "Aluguel",
+  "Assinaturas",
+  "Transferências",
+  "Cripto",
+  "Alimentação",
+  "Utilidades",
+  "Viagem",
+  "Outro",
 ] as const;
 
 export const transactionSchema = z.object({
