@@ -186,7 +186,8 @@ export function MailView({ mail, onClose }: MailDisplayProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="text-muted-foreground text-xs">
-                    Para: <span className="text-foreground">{mail.to.map((recipient) => recipient.name).join(", ")}</span>
+                    Para:{" "}
+                    <span className="text-foreground">{mail.to.map((recipient) => recipient.name).join(", ")}</span>
                   </div>
 
                   {mail.cc?.length ? (

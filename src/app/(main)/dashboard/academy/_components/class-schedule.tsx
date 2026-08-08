@@ -50,7 +50,9 @@ export function ClassSchedule() {
 
             <div className="flex min-w-0 flex-col gap-1">
               <div className="truncate font-medium text-foreground text-sm leading-none">Literatura Inglesa</div>
-              <div className="truncate text-muted-foreground text-xs leading-none">Turma 11B • Sala de Seminários 3</div>
+              <div className="truncate text-muted-foreground text-xs leading-none">
+                Turma 11B • Sala de Seminários 3
+              </div>
             </div>
 
             <Badge
@@ -72,7 +74,9 @@ export function ClassSchedule() {
 
             <div className="flex min-w-0 flex-col gap-1">
               <div className="truncate font-medium text-foreground text-sm leading-none">Física</div>
-              <div className="truncate text-muted-foreground text-xs leading-none">Turma 11C • Laboratório de Física</div>
+              <div className="truncate text-muted-foreground text-xs leading-none">
+                Turma 11C • Laboratório de Física
+              </div>
             </div>
 
             <Badge
@@ -116,7 +120,9 @@ export function ClassSchedule() {
 
             <div className="flex min-w-0 flex-col gap-1">
               <div className="truncate font-medium text-foreground text-sm leading-none">Ciência da Computação</div>
-              <div className="truncate text-muted-foreground text-xs leading-none">Turma 11B • Laboratório de Informática</div>
+              <div className="truncate text-muted-foreground text-xs leading-none">
+                Turma 11B • Laboratório de Informática
+              </div>
             </div>
 
             <Badge

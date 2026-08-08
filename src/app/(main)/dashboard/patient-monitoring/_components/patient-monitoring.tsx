@@ -105,7 +105,9 @@ export function PatientMonitoring({ patients }: PatientMonitoringProps) {
             value="real-time"
           >
             <p className="font-medium text-sm">Monitoramento ao vivo está ativo</p>
-            <p className="text-muted-foreground text-xs">Formas de onda e sinais vitais são atualizados continuamente acima.</p>
+            <p className="text-muted-foreground text-xs">
+              Formas de onda e sinais vitais são atualizados continuamente acima.
+            </p>
           </TabsContent>
           <TabsContent className="m-0" value="events">
             <div className="min-h-44">

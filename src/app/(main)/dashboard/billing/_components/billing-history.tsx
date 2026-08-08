@@ -43,7 +43,9 @@ export function BillingHistory({ entries }: BillingHistoryProps) {
               <TableRow key={entry.id}>
                 <TableCell className="text-muted-foreground">{entry.date}</TableCell>
                 <TableCell>{entry.description}</TableCell>
-                <TableCell className="text-right font-medium">R$ {entry.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</TableCell>
+                <TableCell className="text-right font-medium">
+                  R$ {entry.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                </TableCell>
                 <TableCell className="text-right">
                   <Badge variant="outline" className={statusStyles[entry.status]}>
                     {statusLabels[entry.status]}

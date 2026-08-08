@@ -35,7 +35,8 @@ const tasksData = [
   },
   {
     id: "TASK-5562",
-    title: "A interface SAS está fora, contorne o pixel de código aberto para podermos fazer backup da largura de banda PNG!",
+    title:
+      "A interface SAS está fora, contorne o pixel de código aberto para podermos fazer backup da largura de banda PNG!",
     status: "backlog",
     label: "funcionalidade",
     priority: "media",

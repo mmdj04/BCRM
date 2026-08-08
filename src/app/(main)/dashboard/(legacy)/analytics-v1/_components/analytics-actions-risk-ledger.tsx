@@ -262,7 +262,9 @@ export function ActionsRiskLedger() {
     <Card className="min-w-0 shadow-xs">
       <CardHeader>
         <CardTitle>Livro de Risco de Receita</CardTitle>
-        <CardDescription>Contas sob pressão com bloqueador, próxima ação e responsabilidade do proprietário.</CardDescription>
+        <CardDescription>
+          Contas sob pressão com bloqueador, próxima ação e responsabilidade do proprietário.
+        </CardDescription>
         <CardAction>
           <Badge variant="outline" className="font-medium tabular-nums">
             {LEDGER_ROWS.length} Contas

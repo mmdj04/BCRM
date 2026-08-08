@@ -48,7 +48,9 @@ export function CardOverview() {
     <Card className="shadow-xs">
       <CardHeader className="items-center">
         <CardTitle>Meu Cartão</CardTitle>
-        <CardDescription>1 de 4 cartões adicionados · Visão geral do seu cartão principal e pagamentos próximos</CardDescription>
+        <CardDescription>
+          1 de 4 cartões adicionados · Visão geral do seu cartão principal e pagamentos próximos
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

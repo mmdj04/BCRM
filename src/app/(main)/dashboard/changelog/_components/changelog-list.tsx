@@ -48,19 +48,19 @@ export function ChangelogList({ entries }: ChangelogListProps) {
             <CollapsibleTrigger asChild>
               <button
                 type="button"
-                className="hover:bg-muted/50 flex w-full items-center justify-between border-b px-6 py-4 text-left text-sm font-medium transition-colors"
+                className="flex w-full items-center justify-between border-b px-6 py-4 text-left font-medium text-sm transition-colors hover:bg-muted/50"
               >
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold">{entry.version}</span>
+                  <span className="font-bold font-mono">{entry.version}</span>
                   <span className="text-muted-foreground text-xs">{entry.date}</span>
                 </div>
                 <ChevronDown
-                  className={`text-muted-foreground size-4 transition-transform ${openEntries.has(entry.version) ? "rotate-180" : ""}`}
+                  className={`size-4 text-muted-foreground transition-transform ${openEntries.has(entry.version) ? "rotate-180" : ""}`}
                 />
               </button>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <div className="px-6 pt-2 pb-6 text-sm text-muted-foreground">
+              <div className="px-6 pt-2 pb-6 text-muted-foreground text-sm">
                 <Markdown
                   components={{
                     h3: ({ children }) => <h3 className="mt-4 mb-2 font-semibold text-foreground">{children}</h3>,

@@ -74,11 +74,14 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                 {plan.monthlyPrice !== null ? (
                   <>
                     <span className="text-muted-foreground text-sm">R$</span>
-                    <span className="text-4xl font-bold">{formatPrice(annual ? plan.yearlyPrice! : plan.monthlyPrice)}</span>
+                    <span className="font-bold text-4xl">
+                      {/* biome-ignore lint/style/noNonNullAssertion: yearlyPrice is always defined when annual is true */}
+                      {formatPrice(annual ? plan.yearlyPrice! : plan.monthlyPrice)}
+                    </span>
                     <span className="text-muted-foreground text-sm">/{annual ? "ano" : "mês"}</span>
                   </>
                 ) : (
-                  <span className="text-4xl font-bold">Personalizado</span>
+                  <span className="font-bold text-4xl">Personalizado</span>
                 )}
               </div>
               <Separator />

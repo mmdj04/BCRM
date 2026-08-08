@@ -405,7 +405,8 @@ export const conversations: Conversation[] = [
     group: "Hoje",
     name: "Drew Cano",
     subject: "Documentos de integração para novo funcionário — por onde começar?",
-    preview: "Temos um novo desenvolvedor backend começando na segunda. Preciso da lista de verificação padrão e etapas de acesso ao repositório.",
+    preview:
+      "Temos um novo desenvolvedor backend começando na segunda. Preciso da lista de verificação padrão e etapas de acesso ao repositório.",
     time: "9:32 AM",
     isUnread: false,
     isOnline: true,
@@ -758,7 +759,8 @@ export const conversations: Conversation[] = [
     group: "Hoje",
     name: "Lori Bryson",
     subject: "Solicitação: RBAC granular para líderes de equipe",
-    preview: "Nossos líderes de engenharia precisam de acesso somente leitura em produção, mas acesso total de escrita no staging.",
+    preview:
+      "Nossos líderes de engenharia precisam de acesso somente leitura em produção, mas acesso total de escrita no staging.",
     time: "5:44 AM",
     isUnread: false,
     isOnline: false,
@@ -859,7 +861,8 @@ export const conversations: Conversation[] = [
     group: "Ontem",
     name: "Josh Miller",
     subject: "Proposta de parceria para o mercado latino-americano",
-    preview: "Estamos expandindo para México e Brasil no próximo trimestre. Adoraríamos explorar um acordo de revendedor.",
+    preview:
+      "Estamos expandindo para México e Brasil no próximo trimestre. Adoraríamos explorar um acordo de revendedor.",
     time: "Ontem",
     isUnread: false,
     isOnline: false,
@@ -909,7 +912,8 @@ export const conversations: Conversation[] = [
     group: "Ontem",
     name: "Mollie Hall",
     subject: "Exportação de dados — preciso de todos os logs de maio",
-    preview: "Nossa auditoria de conformidade começa na próxima semana. Preciso de um dump completo de log de atividade para os auditores.",
+    preview:
+      "Nossa auditoria de conformidade começa na próxima semana. Preciso de um dump completo de log de atividade para os auditores.",
     time: "Ontem",
     isUnread: false,
     isOnline: true,
@@ -1009,7 +1013,8 @@ export const conversations: Conversation[] = [
     group: "Ontem",
     name: "Rylee Howard",
     subject: "Implantação de obrigatoriedade de MFA — dúvidas",
-    preview: "Nossa equipe de segurança quer saber se o fallback por SMS ainda é suportado após a data de obrigatoriedade.",
+    preview:
+      "Nossa equipe de segurança quer saber se o fallback por SMS ainda é suportado após a data de obrigatoriedade.",
     time: "Ontem",
     isUnread: false,
     isOnline: false,
@@ -1059,7 +1064,8 @@ export const conversations: Conversation[] = [
     group: "Ontem",
     name: "Sienna Hewitt",
     subject: "Itens de linha faltando na exportação CSV",
-    preview: "A exportação da fatura de janeiro está com três itens de linha a menos. A versão PDF está correta, porém.",
+    preview:
+      "A exportação da fatura de janeiro está com três itens de linha a menos. A versão PDF está correta, porém.",
     time: "Ontem",
     isUnread: false,
     isOnline: true,
@@ -1109,7 +1115,8 @@ export const conversations: Conversation[] = [
     group: "Ontem",
     name: "Noah Pierre",
     subject: "Solicitação de demonstração para equipe de procurement — sexta-feira",
-    preview: "Preciso de uma visita de 30 minutos ao portal de fornecedores para nossos líderes financeiros nesta sexta-feira.",
+    preview:
+      "Preciso de uma visita de 30 minutos ao portal de fornecedores para nossos líderes financeiros nesta sexta-feira.",
     time: "Ontem",
     isUnread: true,
     isOnline: false,
@@ -1209,7 +1216,8 @@ export const conversations: Conversation[] = [
     group: "Ontem",
     name: "Zahir McClure",
     subject: "Solicitação de cancelamento — proprietário da conta saiu",
-    preview: "Nosso líder de operações renunciou na semana passada. Preciso transferir a propriedade para mim antes de podermos cancelar.",
+    preview:
+      "Nosso líder de operações renunciou na semana passada. Preciso transferir a propriedade para mim antes de podermos cancelar.",
     time: "Ontem",
     isUnread: true,
     isOnline: true,

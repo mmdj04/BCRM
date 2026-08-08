@@ -21,7 +21,11 @@ export default function Page() {
         </Button>
       </div>
 
-      <iframe src="/mail" title="Pré-visualização de e-mail" className="min-h-0 flex-1 rounded-lg border bg-background" />
+      <iframe
+        src="/mail"
+        title="Pré-visualização de e-mail"
+        className="min-h-0 flex-1 rounded-lg border bg-background"
+      />
     </div>
   );
 }

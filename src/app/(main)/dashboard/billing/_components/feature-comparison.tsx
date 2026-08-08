@@ -45,38 +45,38 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
             <CollapsibleTrigger asChild>
               <button
                 type="button"
-                className="hover:bg-muted/50 flex w-full items-center justify-between border-b px-6 py-3 text-left text-sm font-medium transition-colors"
+                className="flex w-full items-center justify-between border-b px-6 py-3 text-left font-medium text-sm transition-colors hover:bg-muted/50"
               >
                 {cat.category}
                 <ChevronDown
-                  className={`text-muted-foreground size-4 transition-transform ${openCategories.has(cat.category) ? "rotate-180" : ""}`}
+                  className={`size-4 text-muted-foreground transition-transform ${openCategories.has(cat.category) ? "rotate-180" : ""}`}
                 />
               </button>
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="px-6 pb-4">
-              <Table>
-                <TableHeader>
-                  <TableRow className="hover:bg-transparent">
-                    <TableHead className="w-[200px]">Recurso</TableHead>
-                    <TableHead className="text-center">Inicial</TableHead>
-                    <TableHead className="text-center">Pro</TableHead>
-                    <TableHead className="text-center">Equipe</TableHead>
-                    <TableHead className="text-center">Empresarial</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {cat.features.map((feature) => (
-                    <TableRow key={feature.name}>
-                      <TableCell className="text-muted-foreground">{feature.name}</TableCell>
-                      <TableCell className="text-center text-sm">{feature.starter}</TableCell>
-                      <TableCell className="text-center text-sm">{feature.pro}</TableCell>
-                      <TableCell className="text-center text-sm">{feature.team}</TableCell>
-                      <TableCell className="text-center text-sm">{feature.enterprise}</TableCell>
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="w-[200px]">Recurso</TableHead>
+                      <TableHead className="text-center">Inicial</TableHead>
+                      <TableHead className="text-center">Pro</TableHead>
+                      <TableHead className="text-center">Equipe</TableHead>
+                      <TableHead className="text-center">Empresarial</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {cat.features.map((feature) => (
+                      <TableRow key={feature.name}>
+                        <TableCell className="text-muted-foreground">{feature.name}</TableCell>
+                        <TableCell className="text-center text-sm">{feature.starter}</TableCell>
+                        <TableCell className="text-center text-sm">{feature.pro}</TableCell>
+                        <TableCell className="text-center text-sm">{feature.team}</TableCell>
+                        <TableCell className="text-center text-sm">{feature.enterprise}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
             </CollapsibleContent>
           </Collapsible>

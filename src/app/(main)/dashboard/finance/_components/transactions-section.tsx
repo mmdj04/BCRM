@@ -100,8 +100,11 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
   }, [initialAccountFilter, table, onAccountFilterConsumed]);
 
   const searchQuery = table.state.globalFilter ?? "";
+  // biome-ignore lint/suspicious/noUnnecessaryConditions: Defensive coding for filter defaults
   const accountFilter = (table.getColumn("accountId")?.getFilterValue() as string) ?? "all";
+  // biome-ignore lint/suspicious/noUnnecessaryConditions: Defensive coding for filter defaults
   const categoryFilter = (table.getColumn("category")?.getFilterValue() as string) ?? "all";
+  // biome-ignore lint/suspicious/noUnnecessaryConditions: Defensive coding for filter defaults
   const typeFilter = (table.getColumn("type")?.getFilterValue() as string) ?? "all";
   const currentPage = table.state.pagination.pageIndex + 1;
   const pageCount = Math.max(1, table.getPageCount());
@@ -121,11 +124,11 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
         <CardDescription>Todos os créditos e débitos nas suas contas vinculadas.</CardDescription>
         <CardAction>
           <div className="flex flex-wrap items-center gap-2">
-              <Input
-                aria-label="Buscar transações"
-                className="h-7 w-44 md:w-52"
-                placeholder="Buscar transações..."
-                value={searchQuery}
+            <Input
+              aria-label="Buscar transações"
+              className="h-7 w-44 md:w-52"
+              placeholder="Buscar transações..."
+              value={searchQuery}
               onChange={(event) => {
                 table.setGlobalFilter(event.target.value || undefined);
                 table.setPageIndex(0);

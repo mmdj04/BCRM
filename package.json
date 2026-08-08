@@ -14,9 +14,7 @@
     "generate:presets": "ts-node -P tsconfig.scripts.json src/scripts/generate-theme-presets.ts"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
-      "biome check --write --no-errors-on-unmatched"
-    ]
+    "*.{js,ts,jsx,tsx}": ["biome check --write --no-errors-on-unmatched"]
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -28,6 +26,7 @@
     "@shadcn/react": "^0.3.0",
     "@stripe/stripe-js": "^9.13.0",
     "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.2",
     "@tanstack/react-table": "^9.1.1",
     "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",

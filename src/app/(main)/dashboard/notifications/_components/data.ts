@@ -19,7 +19,8 @@ export const notifications: Notification[] = [
   {
     id: "2",
     title: "Novo recurso: Gerenciador de Arquivos",
-    description: "Adicionamos um novo Gerenciador de Arquivos para ajudá-lo a gerenciar seus arquivos de forma mais eficiente.",
+    description:
+      "Adicionamos um novo Gerenciador de Arquivos para ajudá-lo a gerenciar seus arquivos de forma mais eficiente.",
     date: "2026-08-03",
     read: true,
     type: "info",

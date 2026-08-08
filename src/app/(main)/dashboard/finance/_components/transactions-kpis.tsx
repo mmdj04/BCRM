@@ -46,7 +46,9 @@ export function TransactionsKpis() {
               <div className="text-3xl tabular-nums leading-none tracking-tight">
                 {formatCurrency(outflow, { noDecimals: true })}
               </div>
-              <p className="text-muted-foreground text-xs">{monthRows.filter((row) => row.amount < 0).length} débitos</p>
+              <p className="text-muted-foreground text-xs">
+                {monthRows.filter((row) => row.amount < 0).length} débitos
+              </p>
             </div>
           </CardContent>
         </Card>

@@ -16,7 +16,9 @@ export function SubscriberOverview() {
     <Card>
       <CardHeader>
         <CardTitle className="leading-none">18,426 Clientes</CardTitle>
-        <CardDescription>Registros recentes de clientes com plano, faturamento, status e atividade de cadastro.</CardDescription>
+        <CardDescription>
+          Registros recentes de clientes com plano, faturamento, status e atividade de cadastro.
+        </CardDescription>
         <CardAction>
           <Button variant="outline" size="sm">
             <Download />

@@ -35,24 +35,20 @@ export function Faq({ items }: FaqProps) {
       </CardHeader>
       <CardContent className="flex flex-col gap-0 p-0">
         {items.map((item, index) => (
-          <Collapsible
-            key={index}
-            open={openItems.has(index)}
-            onOpenChange={() => toggleItem(index)}
-          >
+          <Collapsible key={item.question} open={openItems.has(index)} onOpenChange={() => toggleItem(index)}>
             <CollapsibleTrigger asChild>
               <button
                 type="button"
-                className="hover:bg-muted/50 flex w-full items-center justify-between border-b px-6 py-4 text-left text-sm font-medium transition-colors"
+                className="flex w-full items-center justify-between border-b px-6 py-4 text-left font-medium text-sm transition-colors hover:bg-muted/50"
               >
                 {item.question}
                 <ChevronDown
-                  className={`text-muted-foreground size-4 shrink-0 transition-transform ${openItems.has(index) ? "rotate-180" : ""}`}
+                  className={`size-4 shrink-0 text-muted-foreground transition-transform ${openItems.has(index) ? "rotate-180" : ""}`}
                 />
               </button>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <div className="px-6 pt-2 pb-6 text-sm text-muted-foreground">{item.answer}</div>
+              <div className="px-6 pt-2 pb-6 text-muted-foreground text-sm">{item.answer}</div>
             </CollapsibleContent>
           </Collapsible>
         ))}

@@ -6,7 +6,7 @@ const currentPlan = {
   name: "Pro",
   status: "ativo",
   nextBilling: "Set 1, 2026",
-  amount: 1889.90,
+  amount: 1889.9,
   usage: {
     storage: { used: 42, total: 100, unit: "GB" },
     teamMembers: { used: 12, total: 25 },
@@ -34,16 +34,18 @@ export function CurrentPlan() {
       <CardContent className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">Plano</p>
-            <p className="text-lg font-medium">{currentPlan.name}</p>
+            <p className="text-muted-foreground text-sm">Plano</p>
+            <p className="font-medium text-lg">{currentPlan.name}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-muted-foreground">Próximo faturamento</p>
-            <p className="text-lg font-medium">{currentPlan.nextBilling}</p>
+            <p className="text-muted-foreground text-sm">Próximo faturamento</p>
+            <p className="font-medium text-lg">{currentPlan.nextBilling}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-muted-foreground">Valor</p>
-            <p className="text-lg font-medium">R$ {currentPlan.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês</p>
+            <p className="text-muted-foreground text-sm">Valor</p>
+            <p className="font-medium text-lg">
+              R$ {currentPlan.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+            </p>
           </div>
         </div>
 

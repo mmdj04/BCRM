@@ -33,7 +33,9 @@ export function MailComponent({ mails, defaultLayout = [...DEFAULT_MAIL_LAYOUT] 
 
   if (!isMounted) {
     return (
-      <div className="flex size-full items-center justify-center text-muted-foreground text-sm">Carregando e-mails...</div>
+      <div className="flex size-full items-center justify-center text-muted-foreground text-sm">
+        Carregando e-mails...
+      </div>
     );
   }
 

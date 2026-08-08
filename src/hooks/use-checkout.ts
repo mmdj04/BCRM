@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import { getStripe } from "@/lib/stripe/client";
-
 interface UseCheckoutOptions {
   plan: string;
   interval?: "monthly" | "yearly";

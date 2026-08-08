@@ -17,6 +17,7 @@ export async function POST(request: Request) {
   let event: Stripe.Event;
 
   try {
+    // biome-ignore lint/style/noNonNullAssertion: STRIPE_WEBHOOK_SECRET must be set for webhooks to work
     event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
   } catch (err) {
     console.error("Webhook signature verification failed:", err);

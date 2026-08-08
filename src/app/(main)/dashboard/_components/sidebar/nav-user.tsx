@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { CircleUser, CreditCard, EllipsisVertical, FileText, LogOut, MessageSquareDot } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -30,7 +30,6 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const { signOut, isDemo } = useAuth();
-  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -67,7 +66,11 @@ export function NavUser({
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <div className="flex items-center gap-2">
                     <span className="truncate font-medium">{user.name}</span>
-                    {isDemo && <Badge variant="secondary" className="text-[10px] px-1 py-0">Demo</Badge>}
+                    {isDemo && (
+                      <Badge variant="secondary" className="px-1 py-0 text-[10px]">
+                        Demo
+                      </Badge>
+                    )}
                   </div>
                   <span className="truncate text-muted-foreground text-xs">{user.email}</span>
                 </div>

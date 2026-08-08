@@ -2,21 +2,9 @@
 
 import { useState } from "react";
 
-import { AlertTriangle, Trash2, User } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/supabase/auth-context";
@@ -61,7 +49,9 @@ export function ProfileSection() {
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">Endereço de E-mail</Label>
             <Input id="email" value={email} disabled />
-            <p className="text-muted-foreground text-xs">Entre em contato com o suporte para alterar seu endereço de e-mail.</p>
+            <p className="text-muted-foreground text-xs">
+              Entre em contato com o suporte para alterar seu endereço de e-mail.
+            </p>
           </div>
         </div>
 

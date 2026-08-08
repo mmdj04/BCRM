@@ -100,7 +100,8 @@ export const initialBoard: BoardState = {
     {
       id: "work-order-allocation-model",
       title: "Modelo de alocação de ordens de serviço",
-      description: "Esboçar como ordens de serviço adjudicadas se conectam a alocações de funcionários e meses de salário.",
+      description:
+        "Esboçar como ordens de serviço adjudicadas se conectam a alocações de funcionários e meses de salário.",
       priority: "Média",
       dueDate: "19 de jun.",
       progress: 5,
@@ -114,7 +115,8 @@ export const initialBoard: BoardState = {
     {
       id: "future-sync-notes",
       title: "Notas de sincronização futura",
-      description: "Capturar premissas de sincronização local-first antes de decidir sobre PostgreSQL em nuvem e armazenamento de arquivos.",
+      description:
+        "Capturar premissas de sincronização local-first antes de decidir sobre PostgreSQL em nuvem e armazenamento de arquivos.",
       priority: "Baixa",
       dueDate: "21 de jun.",
       progress: 0,
@@ -264,7 +266,8 @@ export const initialBoard: BoardState = {
     {
       id: "architecture-rule",
       title: "Regra de arquitetura bloqueada",
-      description: "Renderer permanece apenas UI; pré-carregamento, IPC, serviços e banco de dados permanecem separados.",
+      description:
+        "Renderer permanece apenas UI; pré-carregamento, IPC, serviços e banco de dados permanecem separados.",
       priority: "Alta",
       dueDate: "8 de jun.",
       progress: 100,
@@ -278,7 +281,8 @@ export const initialBoard: BoardState = {
     {
       id: "private-mvp-scope",
       title: "Escopo do MVP privado",
-      description: "Iniciar com fonte privada primeiro, depois revisitar open-core após validação do fluxo de trabalho.",
+      description:
+        "Iniciar com fonte privada primeiro, depois revisitar open-core após validação do fluxo de trabalho.",
       priority: "Média",
       dueDate: "10 de jun.",
       progress: 100,
@@ -292,7 +296,8 @@ export const initialBoard: BoardState = {
     {
       id: "mvp-module-priorities",
       title: "Prioridades dos módulos MVP",
-      description: "Geração de holerite é prioridade, mas o modelo de dados suporta operações de licitação mais amplas.",
+      description:
+        "Geração de holerite é prioridade, mas o modelo de dados suporta operações de licitação mais amplas.",
       priority: "Média",
       dueDate: "12 de jun.",
       progress: 100,

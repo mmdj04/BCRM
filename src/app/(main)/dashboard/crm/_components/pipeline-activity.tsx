@@ -114,7 +114,9 @@ export function PipelineActivity() {
                 <div className="font-medium text-4xl tabular-nums leading-none">
                   {totalQualified} <span className="font-normal text-lg text-muted-foreground">oportunidades</span>
                 </div>
-                <p className="text-muted-foreground text-sm">Total de leads qualificados capturados nos últimos 12 meses.</p>
+                <p className="text-muted-foreground text-sm">
+                  Total de leads qualificados capturados nos últimos 12 meses.
+                </p>
               </div>
 
               <div className="flex flex-col gap-3 rounded-lg border border-border/60 p-3">

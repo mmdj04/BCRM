@@ -13,8 +13,8 @@ export function FineTune({ options }: FineTuneProps) {
       <CardHeader>
         <CardTitle className="text-lg">Ajuste seu projeto</CardTitle>
         <CardDescription>
-          Todos os projetos rodam em uma instância de computação. Os planos Pro e Team incluem compute Micro no preço base.
-          Projetos adicionais adicionam seu próprio custo de computação.
+          Todos os projetos rodam em uma instância de computação. Os planos Pro e Team incluem compute Micro no preço
+          base. Projetos adicionais adicionam seu próprio custo de computação.
         </CardDescription>
       </CardHeader>
       <CardContent>

@@ -70,14 +70,14 @@ export function ProjectEnvironments({ group }: { group: InfrastructureGroup }) {
                     Logs de Atividade
                   </DropdownMenuItem>
                 ) : null}
-                 <DropdownMenuItem>
-                   <Terminal />
-                   Abrir Console
-                 </DropdownMenuItem>
-                 <DropdownMenuItem>
-                   <Settings />
-                   Configurações do Projeto
-                 </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Terminal />
+                  Abrir Console
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings />
+                  Configurações do Projeto
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                   <RefreshCw />
                   Sincronizar Status
@@ -221,10 +221,10 @@ function EnvironmentTable({ rows }: { rows: InfrastructureEnvironment[] }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-40" align="end">
                     <DropdownMenuGroup>
-                       <DropdownMenuItem>
-                         <FileText />
-                         Ver Logs
-                       </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <FileText />
+                        Ver Logs
+                      </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Terminal />
                         Abrir Console

@@ -39,7 +39,9 @@ export function FileGridView({ files }: FileGridViewProps) {
                     "absolute top-2 right-2 opacity-0 focus-visible:opacity-100 group-hover/file:opacity-100",
                     file.starred && "opacity-100",
                   )}
-                  aria-label={file.starred ? `Remover dos favoritos ${file.name}` : `Adicionar aos favoritos ${file.name}`}
+                  aria-label={
+                    file.starred ? `Remover dos favoritos ${file.name}` : `Adicionar aos favoritos ${file.name}`
+                  }
                   onClick={() => toggleStar(file.id)}
                 >
                   <Star className={cn(file.starred && "fill-current")} />

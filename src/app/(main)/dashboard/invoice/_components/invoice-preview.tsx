@@ -33,7 +33,7 @@ export function InvoicePreview({ invoice }: { invoice: InvoiceFormValues }) {
           <ButtonGroup>
             <Button type="button" variant="outline" onClick={handlePrint}>
               <Printer data-icon="inline-start" />
-Imprimir
+              Imprimir
             </Button>
             <Button type="button" variant="outline">
               <Download data-icon="inline-start" />

@@ -71,7 +71,9 @@ export function FileListView({ files }: FileListViewProps) {
                   <Button
                     variant="ghost"
                     size="icon-sm"
-                    aria-label={file.starred ? `Remover dos favoritos ${file.name}` : `Adicionar aos favoritos ${file.name}`}
+                    aria-label={
+                      file.starred ? `Remover dos favoritos ${file.name}` : `Adicionar aos favoritos ${file.name}`
+                    }
                     onClick={() => toggleStar(file.id)}
                   >
                     <Star className={cn(file.starred && "fill-current")} />

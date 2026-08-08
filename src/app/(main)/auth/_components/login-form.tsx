@@ -13,8 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { createClient } from "@/lib/supabase/client";
 import { DEMO_CONFIG } from "@/config/demo-config";
+import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
   email: z.email({ message: "Por favor, digite um endereço de e-mail válido." }),
@@ -40,12 +40,10 @@ export function LoginForm() {
     setLoading(true);
     try {
       // Check for demo credentials first
-      if (
-        DEMO_CONFIG.enabled &&
-        data.email === DEMO_CONFIG.credentials.email &&
-        data.password === DEMO_CONFIG.credentials.password
-      ) {
+      // biome-ignore lint/suspicious/noUnnecessaryConditions: DEMO_CONFIG.enabled is a runtime config flag
+      if (DEMO_CONFIG.enabled && data.email === DEMO_CONFIG.credentials.email && data.password === DEMO_CONFIG.credentials.password) {
         // Store demo session in cookie (7 days)
+        // biome-ignore lint/suspicious/noDocumentCookie: Demo session cookie must be set client-side
         document.cookie = `bcrm_demo_session=${JSON.stringify({
           user: DEMO_CONFIG.user,
           isDemo: true,

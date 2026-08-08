@@ -46,6 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = useCallback(async () => {
     // Clear demo session cookie
+    // biome-ignore lint/suspicious/noDocumentCookie: Demo session cookie must be cleared client-side
     document.cookie = "bcrm_demo_session=; path=/; max-age=0";
     localStorage.removeItem("bcrm_demo_session");
     await supabase.auth.signOut();

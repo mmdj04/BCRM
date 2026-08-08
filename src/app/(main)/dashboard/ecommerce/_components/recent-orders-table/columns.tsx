@@ -189,7 +189,7 @@ export const recentOrdersColumns: ColumnDef<DataTableFeatures, OrderRow>[] = [
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex w-full justify-end">
-            <Button               aria-label="Abrir ações do pedido" size="icon-sm" variant="ghost">
+            <Button aria-label="Abrir ações do pedido" size="icon-sm" variant="ghost">
               <MoreHorizontal />
             </Button>
           </div>

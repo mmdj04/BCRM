@@ -2,7 +2,6 @@
 "use no memo";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { DataTableFeatures } from "@/lib/data-table-features";
 import { format, parseISO } from "date-fns";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
@@ -16,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { DataTableFeatures } from "@/lib/data-table-features";
 import { cn, formatCurrency } from "@/lib/utils";
 
 import { accounts } from "../accounts";

@@ -1,7 +1,6 @@
+import { ChangelogList } from "./_components/changelog-list";
 import fs from "node:fs";
 import path from "node:path";
-
-import { ChangelogList } from "./_components/changelog-list";
 
 function getChangelog(): string {
   const filePath = path.join(process.cwd(), "CHANGELOG.md");
@@ -28,7 +27,7 @@ function parseChangelog(markdown: string) {
     }
 
     if (current && !line.startsWith("# Changelog") && !line.startsWith("---")) {
-      current.content += line + "\n";
+      current.content += `${line}\n`;
     }
   }
 
@@ -49,8 +48,10 @@ export default function ChangelogPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Registro de Alterações</h1>
-        <p className="text-muted-foreground text-sm">Todas as alterações notáveis neste projeto são documentadas aqui.</p>
+        <h1 className="font-bold text-3xl tracking-tight">Registro de Alterações</h1>
+        <p className="text-muted-foreground text-sm">
+          Todas as alterações notáveis neste projeto são documentadas aqui.
+        </p>
       </div>
 
       <ChangelogList entries={entries} />

@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import { Bell, Check, CheckCheck, Info, AlertTriangle, AlertCircle, Trash2 } from "lucide-react";
+import { AlertCircle, AlertTriangle, Bell, Check, CheckCheck, Info, Trash2 } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 import type { Notification } from "./data";
@@ -35,9 +35,7 @@ export function NotificationsList({ notifications: initialNotifications }: Notif
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
   };
 
   const markAllAsRead = () => {
@@ -69,7 +67,7 @@ export function NotificationsList({ notifications: initialNotifications }: Notif
       <CardContent className="flex flex-col gap-0 p-0">
         {notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <Bell className="text-muted-foreground mb-3 size-10" />
+            <Bell className="mb-3 size-10 text-muted-foreground" />
             <p className="text-muted-foreground text-sm">Sem notificações</p>
           </div>
         ) : (
@@ -78,39 +76,34 @@ export function NotificationsList({ notifications: initialNotifications }: Notif
               key={notification.id}
               className={cn(
                 "flex items-start gap-3 border-b px-6 py-4 transition-colors",
-                !notification.read && "bg-muted/30"
+                !notification.read && "bg-muted/30",
               )}
             >
               <div className={cn("mt-0.5 rounded-full p-1.5", typeStyles[notification.type])}>
                 {typeIcons[notification.type]}
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className={cn("text-sm font-medium", !notification.read && "font-bold")}>
-                    {notification.title}
-                  </p>
+                  <p className={cn("font-medium text-sm", !notification.read && "font-bold")}>{notification.title}</p>
                   {!notification.read && (
-                    <Badge variant="secondary" className="text-xs">Novo</Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      Novo
+                    </Badge>
                   )}
                 </div>
-                <p className="text-muted-foreground mt-0.5 text-sm">{notification.description}</p>
-                <p className="text-muted-foreground mt-1 text-xs">{notification.date}</p>
+                <p className="mt-0.5 text-muted-foreground text-sm">{notification.description}</p>
+                <p className="mt-1 text-muted-foreground text-xs">{notification.date}</p>
               </div>
               <div className="flex items-center gap-1">
                 {!notification.read && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="size-8"
-                    onClick={() => markAsRead(notification.id)}
-                  >
+                  <Button variant="ghost" size="icon" className="size-8" onClick={() => markAsRead(notification.id)}>
                     <Check className="size-4" />
                   </Button>
                 )}
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-destructive size-8"
+                  className="size-8 text-destructive"
                   onClick={() => deleteNotification(notification.id)}
                 >
                   <Trash2 className="size-4" />

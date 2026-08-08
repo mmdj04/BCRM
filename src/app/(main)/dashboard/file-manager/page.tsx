@@ -24,7 +24,9 @@ export default async function Page({ searchParams }: PageProps) {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl leading-none tracking-tight">Meus arquivos</h1>
-          <p className="text-muted-foreground text-sm">Organize, compartilhe e encontre arquivos do espaço de trabalho.</p>
+          <p className="text-muted-foreground text-sm">
+            Organize, compartilhe e encontre arquivos do espaço de trabalho.
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline">
