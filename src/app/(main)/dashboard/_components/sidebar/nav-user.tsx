@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CircleUser, CreditCard, EllipsisVertical, LogOut, MessageSquareDot } from "lucide-react";
+import { CircleUser, CreditCard, EllipsisVertical, FileText, LogOut, MessageSquareDot } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -87,6 +87,12 @@ export function NavUser({
                 <Link href="/dashboard/notifications" className="flex items-center gap-2">
                   <MessageSquareDot />
                   Notifications
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/changelog" className="flex items-center gap-2">
+                  <FileText />
+                  Changelog
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
