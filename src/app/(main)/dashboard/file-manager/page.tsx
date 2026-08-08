@@ -23,17 +23,17 @@ export default async function Page({ searchParams }: PageProps) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl leading-none tracking-tight">My files</h1>
-          <p className="text-muted-foreground text-sm">Organize, share, and find workspace files.</p>
+          <h1 className="text-3xl leading-none tracking-tight">Meus arquivos</h1>
+          <p className="text-muted-foreground text-sm">Organize, compartilhe e encontre arquivos do espaço de trabalho.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline">
             <FolderPlus data-icon="inline-start" />
-            New folder
+            Nova pasta
           </Button>
           <Button>
             <Upload data-icon="inline-start" />
-            Upload
+            Enviar
           </Button>
         </div>
       </div>
@@ -41,18 +41,18 @@ export default async function Page({ searchParams }: PageProps) {
       <FoldersSection folders={folders} />
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="font-medium text-lg">All files</h2>
+          <h2 className="font-medium text-lg">Todos os arquivos</h2>
           <ToggleGroup type="single" variant="outline" size="sm" spacing={0} value={activeView} aria-label="File view">
             <ToggleGroupItem value="grid" asChild>
               <Link href="?view=grid" replace scroll={false}>
                 <Grid2X2 />
-                Grid View
+                Visualização em Grade
               </Link>
             </ToggleGroupItem>
             <ToggleGroupItem value="list" asChild>
               <Link href="?view=list" replace scroll={false}>
                 <List />
-                List View
+                Visualização em Lista
               </Link>
             </ToggleGroupItem>
           </ToggleGroup>

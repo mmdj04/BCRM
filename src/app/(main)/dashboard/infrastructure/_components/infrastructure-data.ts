@@ -7,8 +7,8 @@ export interface InfrastructureEnvironment {
     name: string;
     icon: SimpleIcon;
   };
-  environment: "Expirado" | "Produção" | "Staging";
-  status: "Online" | "Unhealthy";
+  environment: "Expirado" | "Produção" | "Homologação";
+  status: "Online" | "Instável";
   latency: string;
   uptime: string;
   server: string;
@@ -29,8 +29,8 @@ export interface InfrastructureGroup {
 
 export const infrastructureGroups: InfrastructureGroup[] = [
   {
-    name: "Admin Console",
-    organization: "Weblabs Studio",
+    name: "Painel de Administração",
+    organization: "Estúdio Weblabs",
     rows: [
       {
         domain: "next-shadcn-admin-dashboard.vercel.app/dashboard",
@@ -39,7 +39,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
           icon: siNextdotjs,
         },
         environment: "Expirado",
-        status: "Unhealthy",
+        status: "Instável",
         latency: "86ms",
         uptime: "8d 23h",
         server: "Hetzner Cloud",
@@ -50,7 +50,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
     ],
   },
   {
-    name: "Analytics",
+    name: "Análises",
     organization: "Aiy Cap",
     rows: [
       {
@@ -65,7 +65,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
         uptime: "9d 23h",
         server: "AWS",
         countryCode: "NL",
-        plan: "eu-west-1, Amsterdam",
+        plan: "eu-west-1, Amsterdã",
         resources: { cpu: 49, ram: 42, disk: 44 },
       },
       {
@@ -74,13 +74,13 @@ export const infrastructureGroups: InfrastructureGroup[] = [
           name: "Remix",
           icon: siRemix,
         },
-        environment: "Staging",
+        environment: "Homologação",
         status: "Online",
         latency: "110ms",
         uptime: "9d 23h",
         server: "Azure",
         countryCode: "EE",
-        plan: "North Europe, Tallinn",
+        plan: "Norte da Europa, Tallinn",
         resources: { cpu: 37, ram: 46, disk: 64 },
       },
     ],
@@ -99,7 +99,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
         status: "Online",
         latency: "25ms",
         uptime: "10d 23h",
-        server: "Bare Metal / Custom",
+        server: "Servidor Dedicado / Personalizado",
         countryCode: "DE",
         plan: "EX101, Falkenstein",
         resources: { cpu: 1, ram: 21, disk: 4 },
@@ -107,7 +107,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
     ],
   },
   {
-    name: "Inbox",
+    name: "Caixa de Entrada",
     organization: "Acme Corp",
     rows: [],
   },

@@ -158,7 +158,7 @@ function EnvironmentTable({ rows }: { rows: InfrastructureEnvironment[] }) {
                   className={cn(
                     "rounded-sm px-1.5 py-0.5",
                     row.environment === "Produção" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-                    row.environment === "Staging" && "bg-sky-500/10 text-sky-600 dark:text-sky-400",
+                    row.environment === "Homologação" && "bg-sky-500/10 text-sky-600 dark:text-sky-400",
                   )}
                 >
                   {row.environment}
@@ -197,7 +197,7 @@ function EnvironmentTable({ rows }: { rows: InfrastructureEnvironment[] }) {
                 <div className="grid grid-cols-3 gap-4">
                   <ResourceMeter label="CPU" value={row.resources.cpu} />
                   <ResourceMeter label="RAM" value={row.resources.ram} />
-                  <ResourceMeter label="Disk" value={row.resources.disk} />
+                  <ResourceMeter label="Disco" value={row.resources.disk} />
                 </div>
               </TableCell>
               <TableCell>
