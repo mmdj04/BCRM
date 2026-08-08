@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
+import { DEMO_CONFIG } from "@/config/demo-config";
 
 const formSchema = z.object({
   email: z.email({ message: "Please enter a valid email address." }),
@@ -38,6 +39,23 @@ export function LoginForm() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
+      // Check for demo credentials first
+      if (
+        DEMO_CONFIG.enabled &&
+        data.email === DEMO_CONFIG.credentials.email &&
+        data.password === DEMO_CONFIG.credentials.password
+      ) {
+        // Store demo session in localStorage
+        localStorage.setItem("bcrm_demo_session", JSON.stringify({
+          user: DEMO_CONFIG.user,
+          isDemo: true,
+        }));
+        toast.success("Demo mode activated!");
+        router.push("/dashboard/default");
+        router.refresh();
+        return;
+      }
+
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,

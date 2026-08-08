@@ -15,20 +15,26 @@ const statusStyles: Record<string, string> = {
   overdue: "border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300",
 };
 
+const statusLabels: Record<string, string> = {
+  paid: "pago",
+  pending: "pendente",
+  overdue: "atrasado",
+};
+
 export function BillingHistory({ entries }: BillingHistoryProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Billing History</CardTitle>
-        <CardDescription>View your past invoices and payments.</CardDescription>
+        <CardTitle className="text-lg">Historico de Faturamento</CardTitle>
+        <CardDescription>Veja suas faturas e pagamentos anteriores.</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead>Data</TableHead>
+              <TableHead>Descricao</TableHead>
+              <TableHead className="text-right">Valor</TableHead>
               <TableHead className="text-right">Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -37,10 +43,10 @@ export function BillingHistory({ entries }: BillingHistoryProps) {
               <TableRow key={entry.id}>
                 <TableCell className="text-muted-foreground">{entry.date}</TableCell>
                 <TableCell>{entry.description}</TableCell>
-                <TableCell className="text-right font-medium">${entry.amount}</TableCell>
+                <TableCell className="text-right font-medium">R$ {entry.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</TableCell>
                 <TableCell className="text-right">
                   <Badge variant="outline" className={statusStyles[entry.status]}>
-                    {entry.status}
+                    {statusLabels[entry.status]}
                   </Badge>
                 </TableCell>
               </TableRow>

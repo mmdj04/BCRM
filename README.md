@@ -124,6 +124,17 @@ _Deploy your own copy with one click._
 
 Your app will be running at [http://localhost:3000](http://localhost:3000)
 
+### Demo Account
+
+BCRM includes a built-in demo mode for testing and presentations. Use these credentials to access the demo:
+
+| Field | Value |
+|-------|-------|
+| Email | `admin@bcrm.com` |
+| Password | `10092004m` |
+
+The demo mode works with mock data and does not require a Supabase connection. When logged in as demo, a "Demo" badge will appear in the user menu.
+
 ### Formatting and Linting
 
 Format, lint, and organize imports

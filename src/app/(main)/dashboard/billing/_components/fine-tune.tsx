@@ -11,32 +11,32 @@ export function FineTune({ options }: FineTuneProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Fine-tune your project</CardTitle>
+        <CardTitle className="text-lg">Ajuste seu projeto</CardTitle>
         <CardDescription>
-          All projects run on a compute instance. Pro and Team plans include Micro compute in the base price.
-          Additional projects each add their own compute cost.
+          Todos os projetos rodam em uma instancia de computacao. Os planos Pro e Team incluem compute Micro no preco base.
+          Projetos adicionais adicionam seu proprio custo de computacao.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Size</TableHead>
-              <TableHead className="text-right">$/month</TableHead>
+              <TableHead>Tamanho</TableHead>
+              <TableHead className="text-right">R$/mes</TableHead>
               <TableHead>CPU</TableHead>
-              <TableHead>Dedicated</TableHead>
+              <TableHead>Dedicado</TableHead>
               <TableHead>RAM</TableHead>
-              <TableHead className="text-right">Direct Conn.</TableHead>
-              <TableHead className="text-right">Pooler Conn.</TableHead>
+              <TableHead className="text-right">Conex. Diretas</TableHead>
+              <TableHead className="text-right">Conex. Pooler</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {options.map((option) => (
               <TableRow key={option.size}>
                 <TableCell className="font-medium">{option.size}</TableCell>
-                <TableCell className="text-right">${option.price}</TableCell>
+                <TableCell className="text-right">R$ {option.price.toLocaleString("pt-BR")}</TableCell>
                 <TableCell>{option.cpu}</TableCell>
-                <TableCell>{option.dedicated ? "Yes" : "No"}</TableCell>
+                <TableCell>{option.dedicated ? "Sim" : "Nao"}</TableCell>
                 <TableCell>{option.ram}</TableCell>
                 <TableCell className="text-right">{option.directConnections}</TableCell>
                 <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>

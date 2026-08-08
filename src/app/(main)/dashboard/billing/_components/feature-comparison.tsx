@@ -33,7 +33,7 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Feature Comparison</CardTitle>
+        <CardTitle className="text-lg">Comparacao de Recursos</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-0 p-0">
         {categories.map((cat) => (
@@ -58,7 +58,7 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
-                    <TableHead className="w-[200px]">Feature</TableHead>
+                    <TableHead className="w-[200px]">Recurso</TableHead>
                     <TableHead className="text-center">Starter</TableHead>
                     <TableHead className="text-center">Pro</TableHead>
                     <TableHead className="text-center">Team</TableHead>
@@ -82,7 +82,7 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
           </Collapsible>
         ))}
         <div className="flex justify-center border-t px-6 py-4">
-          <Button variant="outline">Compare all features in detail</Button>
+          <Button variant="outline">Comparar todos os recursos em detalhes</Button>
         </div>
       </CardContent>
     </Card>

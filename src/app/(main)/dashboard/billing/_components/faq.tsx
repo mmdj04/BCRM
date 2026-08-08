@@ -31,7 +31,7 @@ export function Faq({ items }: FaqProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Frequently asked questions</CardTitle>
+        <CardTitle className="text-lg">Perguntas Frequentes</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-0 p-0">
         {items.map((item, index) => (
