@@ -427,23 +427,23 @@ CREATE TABLE IF NOT EXISTS public.user_preferences (
 -- 15. INDEXES
 -- =====================================================
 
-CREATE INDEX idx_customers_email ON public.customers(email);
-CREATE INDEX idx_customers_status ON public.customers(status);
-CREATE INDEX idx_orders_customer ON public.orders(customer_name);
-CREATE INDEX idx_orders_status ON public.orders(fulfillment_status);
-CREATE INDEX idx_opportunities_stage ON public.opportunities(stage);
-CREATE INDEX idx_tasks_status ON public.tasks(status);
-CREATE INDEX idx_tasks_priority ON public.tasks(priority);
-CREATE INDEX idx_kanban_tasks_column ON public.kanban_tasks(column_id);
-CREATE INDEX idx_conversations_user ON public.conversations(user_id);
-CREATE INDEX idx_messages_conversation ON public.messages(conversation_id);
-CREATE INDEX idx_emails_folder ON public.emails(folder);
-CREATE INDEX idx_emails_user ON public.emails(user_id);
-CREATE INDEX idx_shipments_status ON public.shipments(status);
-CREATE INDEX idx_invoices_status ON public.invoices(status);
-CREATE INDEX idx_calendar_events_user ON public.calendar_events(user_id);
-CREATE INDEX idx_files_user ON public.files(user_id);
-CREATE INDEX idx_patients_user ON public.patients(user_id);
+CREATE INDEX IF NOT EXISTS idx_customers_email ON public.customers(email);
+CREATE INDEX IF NOT EXISTS idx_customers_status ON public.customers(status);
+CREATE INDEX IF NOT EXISTS idx_orders_customer ON public.orders(customer_name);
+CREATE INDEX IF NOT EXISTS idx_orders_status ON public.orders(fulfillment_status);
+CREATE INDEX IF NOT EXISTS idx_opportunities_stage ON public.opportunities(stage);
+CREATE INDEX IF NOT EXISTS idx_tasks_status ON public.tasks(status);
+CREATE INDEX IF NOT EXISTS idx_tasks_priority ON public.tasks(priority);
+CREATE INDEX IF NOT EXISTS idx_kanban_tasks_column ON public.kanban_tasks(column_id);
+CREATE INDEX IF NOT EXISTS idx_conversations_user ON public.conversations(user_id);
+CREATE INDEX IF NOT EXISTS idx_messages_conversation ON public.messages(conversation_id);
+CREATE INDEX IF NOT EXISTS idx_emails_folder ON public.emails(folder);
+CREATE INDEX IF NOT EXISTS idx_emails_user ON public.emails(user_id);
+CREATE INDEX IF NOT EXISTS idx_shipments_status ON public.shipments(status);
+CREATE INDEX IF NOT EXISTS idx_invoices_status ON public.invoices(status);
+CREATE INDEX IF NOT EXISTS idx_calendar_events_user ON public.calendar_events(user_id);
+CREATE INDEX IF NOT EXISTS idx_files_user ON public.files(user_id);
+CREATE INDEX IF NOT EXISTS idx_patients_user ON public.patients(user_id);
 
 -- =====================================================
 -- 16. ROW LEVEL SECURITY (RLS)
