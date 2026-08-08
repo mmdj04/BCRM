@@ -24,24 +24,24 @@ import type { Role } from "./roles-table/data";
 import { RolesTable } from "./roles-table/table";
 
 function getRoleTypeFilter(groupFilter: string) {
-  if (groupFilter === "System roles") {
-    return "System";
+  if (groupFilter === "Funções do sistema") {
+    return "Sistema";
   }
 
-  if (groupFilter === "Custom roles") {
-    return "Custom";
+  if (groupFilter === "Funções personalizadas") {
+    return "Personalizado";
   }
 
-  return "All";
+  return "Todos";
 }
 
 function getRoleGroupFilterValue(typeFilter: string) {
-  if (typeFilter === "System") {
-    return "System roles";
+  if (typeFilter === "Sistema") {
+    return "Funções do sistema";
   }
 
-  if (typeFilter === "Custom") {
-    return "Custom roles";
+  if (typeFilter === "Personalizado") {
+    return "Funções personalizadas";
   }
 
   return undefined;
@@ -84,16 +84,16 @@ export function Roles({ roles }: { roles: Role[] }) {
     <div className="flex h-full flex-col gap-4">
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl tracking-tight">Roles & Permissions</h1>
-          <p className="text-muted-foreground text-sm">Manage access roles and permissions across your organization.</p>
+          <h1 className="text-3xl tracking-tight">Funções e Permissões</h1>
+          <p className="text-muted-foreground text-sm">Gerencie funções de acesso e permissões na sua organização.</p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button size="sm" variant="outline">
             <FileUp data-icon="inline-start" />
-            Import JSON
+            Importar JSON
           </Button>
-          <Button size="sm">Create role</Button>
+          <Button size="sm">Criar função</Button>
         </div>
       </div>
 
@@ -102,20 +102,20 @@ export function Roles({ roles }: { roles: Role[] }) {
           variant="line"
           className="w-full justify-start gap-2 border-b ps-0 *:data-[slot=tabs-trigger]:flex-none"
         >
-          <TabsTrigger value="roles">Roles</TabsTrigger>
-          <TabsTrigger value="permission-sets">Permission sets</TabsTrigger>
-          <TabsTrigger value="access-reviews">Access reviews</TabsTrigger>
+          <TabsTrigger value="roles">Funções</TabsTrigger>
+          <TabsTrigger value="permission-sets">Conjuntos de permissões</TabsTrigger>
+          <TabsTrigger value="access-reviews">Revisões de acesso</TabsTrigger>
         </TabsList>
 
         <TabsContent value="roles">
           <div className="flex flex-col gap-4">
             <Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
               <AlertTriangle className="size-4" />
-              <AlertTitle>Review required</AlertTitle>
-              <AlertDescription>3 roles have unreviewed permission changes.</AlertDescription>
+              <AlertTitle>Revisão necessária</AlertTitle>
+              <AlertDescription>3 funções têm alterações de permissão não revisadas.</AlertDescription>
               <AlertAction>
                 <Button size="sm" variant="link">
-                  Review changes
+                  Revisar alterações
                   <ChevronRight data-icon="inline-end" />
                 </Button>
               </AlertAction>
@@ -129,7 +129,7 @@ export function Roles({ roles }: { roles: Role[] }) {
                   </InputGroupAddon>
                   <InputGroupInput
                     className="h-7"
-                    placeholder="Search roles..."
+                    placeholder="Buscar funções..."
                     value={search}
                     onChange={(e) => {
                       table.getColumn("search")?.setFilterValue(e.target.value || undefined);
@@ -147,14 +147,14 @@ export function Roles({ roles }: { roles: Role[] }) {
                     }}
                   >
                     <SelectTrigger size="sm">
-                      <span className="text-muted-foreground">Type:</span>
-                      <SelectValue placeholder="All" />
+                      <span className="text-muted-foreground">Tipo:</span>
+                      <SelectValue placeholder="Todos" />
                     </SelectTrigger>
                     <SelectContent position="popper" align="start">
                       <SelectGroup>
-                        <SelectItem value="All">All</SelectItem>
-                        <SelectItem value="System">System</SelectItem>
-                        <SelectItem value="Custom">Custom</SelectItem>
+                        <SelectItem value="All">Todos</SelectItem>
+                        <SelectItem value="System">Sistema</SelectItem>
+                        <SelectItem value="Custom">Personalizado</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -167,12 +167,12 @@ export function Roles({ roles }: { roles: Role[] }) {
                     }}
                   >
                     <SelectTrigger size="sm">
-                      <span className="text-muted-foreground">Owner:</span>
-                      <SelectValue placeholder="All" />
+                      <span className="text-muted-foreground">Proprietário:</span>
+                      <SelectValue placeholder="Todos" />
                     </SelectTrigger>
                     <SelectContent position="popper" align="start">
                       <SelectGroup>
-                        <SelectItem value="All">All</SelectItem>
+                        <SelectItem value="All">Todos</SelectItem>
                         <SelectItem value="System">System</SelectItem>
                         <SelectItem value="Jane Doe">Jane Doe</SelectItem>
                         <SelectItem value="Alex Kim">Alex Kim</SelectItem>
@@ -190,13 +190,13 @@ export function Roles({ roles }: { roles: Role[] }) {
                   >
                     <SelectTrigger size="sm">
                       <span className="text-muted-foreground">Status:</span>
-                      <SelectValue placeholder="All" />
+                      <SelectValue placeholder="Todos" />
                     </SelectTrigger>
                     <SelectContent position="popper" align="start">
                       <SelectGroup>
-                        <SelectItem value="All">All</SelectItem>
-                        <SelectItem value="Active">Active</SelectItem>
-                        <SelectItem value="Needs review">Needs review</SelectItem>
+                        <SelectItem value="All">Todos</SelectItem>
+                        <SelectItem value="Active">Ativo</SelectItem>
+                        <SelectItem value="Needs review">Precisa de revisão</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -209,12 +209,12 @@ export function Roles({ roles }: { roles: Role[] }) {
         </TabsContent>
         <TabsContent value="permission-sets">
           <div className="flex h-full items-center justify-center rounded-md border border-dashed text-muted-foreground text-sm">
-            Permission Sets Coming Soon
+            Conjuntos de Permissões Em Breve
           </div>
         </TabsContent>
         <TabsContent value="access-reviews">
           <div className="flex h-full items-center justify-center rounded-md border border-dashed text-muted-foreground text-sm">
-            Access Reviews Coming Soon
+            Revisões de Acesso Em Breve
           </div>
         </TabsContent>
       </Tabs>

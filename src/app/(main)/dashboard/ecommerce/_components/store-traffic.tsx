@@ -128,11 +128,11 @@ function getTrafficData() {
 
 const trafficConfig = {
   visitors: {
-    label: "Visitors",
+    label: "Visitantes",
     color: "var(--chart-3)",
   },
   anomalies: {
-    label: "Anomalies",
+    label: "Anomalias",
     color: "var(--destructive)",
   },
 } satisfies ChartConfig;
@@ -148,18 +148,18 @@ export function StoreTraffic() {
 
   function formatTrafficTick(value: string) {
     if (value === firstTrafficTimestamp) {
-      return "24h ago";
+      return "há 24h";
     }
 
-    return value === lastTrafficTimestamp ? "now" : "";
+    return value === lastTrafficTimestamp ? "agora" : "";
   }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-normal text-muted-foreground text-sm">Store Traffic</CardTitle>
+        <CardTitle className="font-normal text-muted-foreground text-sm">Tráfego da Loja</CardTitle>
         <CardDescription className="text-foreground text-xl tabular-nums leading-none tracking-tight">
-          12.9K visits
+          12.9K visitas
         </CardDescription>
         <CardAction>
           <ArrowUpRight className="size-4" />

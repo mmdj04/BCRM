@@ -81,19 +81,19 @@ export const defaultInvoiceValues: InvoiceFormValues = {
   items: [
     {
       id: "hosting",
-      description: "Cloud hosting services",
+      description: "Serviços de hospedagem em nuvem",
       quantity: 1,
       unitPrice: 3500,
     },
     {
       id: "analytics",
-      description: "Data analytics report",
+      description: "Relatório de análise de dados",
       quantity: 2,
       unitPrice: 750,
     },
     {
       id: "support",
-      description: "Technical support retainer",
+      description: "Contrato de suporte técnico",
       quantity: 1,
       unitPrice: 400,
     },
@@ -108,17 +108,17 @@ export const invoiceTaxOptions: InvoiceTaxOption[] = [
   },
   {
     id: "vat",
-    name: "VAT",
+    name: "IVA",
     rate: 12,
   },
   {
     id: "service-tax",
-    name: "Service Tax",
+    name: "Imposto sobre Serviços",
     rate: 10,
   },
   {
     id: "none",
-    name: "No Tax",
+    name: "Sem Imposto",
     rate: 0,
   },
 ];

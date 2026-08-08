@@ -33,7 +33,7 @@ export function UpcomingTransactions() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-normal">Upcoming Bills & Payments</CardTitle>
+        <CardTitle className="font-normal">Contas e Pagamentos Próximos</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         <div className="flex flex-col gap-3">
@@ -43,13 +43,13 @@ export function UpcomingTransactions() {
               <span className="text-muted-foreground text-xl">.00</span>
             </h2>
             <p className="text-muted-foreground text-sm leading-none">
-              You have <span className="font-medium text-foreground">3</span> bills due this month
+              Você tem <span className="font-medium text-foreground">3</span> contas para pagar este mês
             </p>
           </div>
           <div className="flex w-max items-center gap-2 rounded-md border border-border bg-muted/70 px-2 py-1.5 text-sm">
             <Zap className="size-4 fill-primary text-primary" />
             <span className="text-muted-foreground">
-              Autopay will process <span className="font-medium text-foreground">$145.00</span> today
+              Pagamento automático processará <span className="font-medium text-foreground">$145.00</span> hoje
             </span>
           </div>
         </div>

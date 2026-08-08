@@ -22,9 +22,9 @@ function monthlyDeltaTone(delta: number) {
 }
 
 function formatMonthlyDelta(delta: number) {
-  if (delta === 0) return "Flat this month";
+  if (delta === 0) return "Estável este mês";
   const sign = delta > 0 ? "+" : "";
-  return `${sign}${formatCurrency(delta, { noDecimals: true })} this month`;
+  return `${sign}${formatCurrency(delta, { noDecimals: true })} este mês`;
 }
 
 export function AccountsList({ onSelectAccount }: AccountsListProps) {
@@ -39,11 +39,11 @@ export function AccountsList({ onSelectAccount }: AccountsListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-normal text-lg">All accounts</CardTitle>
-        <CardDescription>Tap a row to see its transactions.</CardDescription>
+        <CardTitle className="font-normal text-lg">Todas as contas</CardTitle>
+        <CardDescription>Toque em uma linha para ver suas transações.</CardDescription>
         <CardAction className="hidden items-baseline gap-2 sm:flex">
           <span className="text-sm tabular-nums">{formatCurrency(totalBalance, { noDecimals: true })}</span>
-          <span className="text-muted-foreground text-xs">across {accounts.length} accounts</span>
+          <span className="text-muted-foreground text-xs">em {accounts.length} contas</span>
         </CardAction>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
@@ -75,7 +75,7 @@ export function AccountsList({ onSelectAccount }: AccountsListProps) {
                         type="button"
                         className="text-left"
                         onClick={() => onSelectAccount?.(account.id)}
-                        aria-label={`View transactions for ${account.name}`}
+                        aria-label={`Ver transações para ${account.name}`}
                       >
                         <ItemMedia className="self-center! translate-y-0!">
                           <div
@@ -109,7 +109,7 @@ export function AccountsList({ onSelectAccount }: AccountsListProps) {
                               data={account.trend}
                               positive={positive}
                               className="h-8 w-24"
-                              label={`${account.name} balance trend, last 7 days`}
+                              label={`${account.name} tendência de saldo, últimos 7 dias`}
                             />
                           </div>
                           <ChevronRight aria-hidden="true" className="size-5 text-muted-foreground" />

@@ -52,32 +52,32 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-4">
       <div className="space-y-1">
-        <h1 className="text-3xl tracking-tight">Personal Finances</h1>
+        <h1 className="text-3xl tracking-tight">Finanças Pessoais</h1>
         <p className="text-muted-foreground text-sm">{formattedDate}</p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <TabsList variant="line">
-            <TabsTrigger value={DASHBOARD_TAB}>Dashboard</TabsTrigger>
-            <TabsTrigger value={ACCOUNTS_TAB}>Accounts</TabsTrigger>
+            <TabsTrigger value={DASHBOARD_TAB}>Painel</TabsTrigger>
+            <TabsTrigger value={ACCOUNTS_TAB}>Contas</TabsTrigger>
             <TabsTrigger ref={transactionsTriggerRef} value={TRANSACTIONS_TAB}>
-              Transactions
+              Transações
             </TabsTrigger>
           </TabsList>
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
               <RotateCw aria-hidden="true" className="size-4" />
-              <span>Updated 5 min ago</span>
+              <span>Atualizado há 5 min</span>
             </div>
             <Button size="sm" variant="outline">
               <Settings2 />
-              Settings
+              Configurações
             </Button>
             <Button size="sm" variant="outline">
               <Download data-icon="inline-start" />
-              Export
+              Exportar
             </Button>
           </div>
         </div>

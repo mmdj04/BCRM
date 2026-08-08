@@ -28,7 +28,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
         variant="outline"
       >
         <span className="size-1.5 rounded-full bg-current" />
-        Paid
+        Pago
       </Badge>
     );
   }
@@ -37,7 +37,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
-        Refunded
+        Reembolsado
       </Badge>
     );
   }
@@ -48,7 +48,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
       variant="outline"
     >
       <span className="size-1.5 rounded-full bg-current" />
-      Pending
+      Pendente
     </Badge>
   );
 }
@@ -61,7 +61,7 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
         variant="outline"
       >
         <span className="size-1.5 rounded-full bg-current" />
-        Fulfilled
+        Atendido
       </Badge>
     );
   }
@@ -70,7 +70,7 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
-        Returned
+        Devolvido
       </Badge>
     );
   }
@@ -78,7 +78,7 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
   return (
     <Badge variant="destructive">
       <span className="size-1.5 rounded-full bg-current" />
-      Unfulfilled
+      Não Atendido
     </Badge>
   );
 }
@@ -89,7 +89,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
     header: ({ table }) => (
       <div className="w-10">
         <Checkbox
-          aria-label="Select all orders"
+          aria-label="Selecionar todos os pedidos"
           checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         />
@@ -98,7 +98,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
     cell: ({ row }) => (
       <div className="w-10">
         <Checkbox
-          aria-label={`Select order ${row.original.id}`}
+          aria-label={`Selecionar pedido ${row.original.id}`}
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
         />
@@ -109,7 +109,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
   },
   {
     accessorKey: "id",
-    header: "Order",
+    header: "Pedido",
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
         <div className="font-medium leading-none">{row.original.id}</div>
@@ -120,7 +120,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
   },
   {
     accessorKey: "customer",
-    header: "Customer",
+    header: "Cliente",
   },
   {
     id: "statusSummary",
@@ -132,7 +132,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
       </div>
     ),
     filterFn: (row, _columnId, value) => {
-      if (value === "Needs action") {
+      if (value === "Necessita ação") {
         return (
           row.original.payment === "Pending" ||
           row.original.payment === "Refunded" ||
@@ -141,15 +141,15 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
         );
       }
 
-      if (value === "Unfulfilled") {
+      if (value === "Não Atendido") {
         return row.original.fulfillment === "Unfulfilled";
       }
 
-      if (value === "Unpaid") {
+      if (value === "Não pago") {
         return row.original.payment === "Pending";
       }
 
-      if (value === "Returns") {
+      if (value === "Devoluções") {
         return row.original.payment === "Refunded" || row.original.fulfillment === "Returned";
       }
 
@@ -163,27 +163,27 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
   },
   {
     accessorKey: "date",
-    header: () => <div className="w-44">Date</div>,
+    header: () => <div className="w-44">Data</div>,
     cell: ({ row }) => <div className="w-44 text-muted-foreground">{formatOrderDate(row.original.date)}</div>,
   },
   {
     id: "actions",
-    header: () => <div className="flex w-full justify-end">Actions</div>,
+    header: () => <div className="flex w-full justify-end">Ações</div>,
     cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex w-full justify-end">
-            <Button aria-label="Open order actions" size="icon-sm" variant="ghost">
+            <Button aria-label="Abrir ações do pedido" size="icon-sm" variant="ghost">
               <MoreHorizontal />
             </Button>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">
-          <DropdownMenuLabel>Order Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>Ações do Pedido</DropdownMenuLabel>
           <DropdownMenuGroup>
-            <DropdownMenuItem>View order</DropdownMenuItem>
-            <DropdownMenuItem>Contact customer</DropdownMenuItem>
-            <DropdownMenuItem>Copy order ID</DropdownMenuItem>
+            <DropdownMenuItem>Ver pedido</DropdownMenuItem>
+            <DropdownMenuItem>Contatar cliente</DropdownMenuItem>
+            <DropdownMenuItem>Copiar ID do pedido</DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

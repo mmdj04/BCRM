@@ -43,32 +43,32 @@ type ShipmentDetailsProps = {
 
 function getContactLabel(mode: Shipment["mode"]) {
   if (mode === "land") {
-    return "Call Driver";
+    return "Chamar Motorista";
   }
 
   if (mode === "air") {
-    return "Call Airline Support";
+    return "Chamar Suporte da Companhia Aérea";
   }
 
-  return "Call Captain";
+  return "Chamar Capitão";
 }
 
 function getTransportNumberLabel(mode: Shipment["mode"]) {
   if (mode === "land") {
-    return "Vehicle number";
+    return "Número do veículo";
   }
 
   if (mode === "air") {
-    return "Flight number";
+    return "Número do voo";
   }
 
-  return "Vessel number";
+  return "Número do navio";
 }
 
 function EmptyShipmentOverview() {
   return (
     <div className="grid min-h-48 place-items-center rounded-lg border border-dashed text-muted-foreground text-sm">
-      Select a shipment to view details.
+      Selecione um envio para ver os detalhes.
     </div>
   );
 }
@@ -83,7 +83,7 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="flex items-center gap-2">
           <h1 className="font-medium text-lg tabular-nums tracking-tight sm:text-xl">#{shipment.id}</h1>
-          <Button variant="ghost" size="icon-sm" aria-label="Copy shipment ID">
+          <Button variant="ghost" size="icon-sm" aria-label="Copiar ID do envio">
             <Copy />
           </Button>
         </div>
@@ -94,7 +94,7 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
             {shipment.status}
           </Badge>
           <span className="text-muted-foreground">·</span>
-          <span className="text-foreground tabular-nums">{shipment.progress}% complete</span>
+          <span className="text-foreground tabular-nums">{shipment.progress}% concluído</span>
           <span className="text-muted-foreground">·</span>
           <span className="text-foreground tabular-nums">
             ETA: {shipment.eta} {shipment.etaMeta}
@@ -132,7 +132,7 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
 
       <div className="flex flex-col gap-8">
         <div className="flex items-start justify-between gap-4">
-          <h2 className="font-medium">Cargo details</h2>
+          <h2 className="font-medium">Detalhes da carga</h2>
 
           <Button variant="outline" size="sm">
             <ContactIcon data-icon="inline-start" />
@@ -142,17 +142,17 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-[1.35fr_1fr_1.1fr_1.15fr_1fr]">
           <div className="col-span-2 flex flex-col gap-1 md:col-span-1 md:gap-2">
-            <div className="text-muted-foreground text-xs leading-none md:invisible md:text-sm">Cargo</div>
+            <div className="text-muted-foreground text-xs leading-none md:invisible md:text-sm">Carga</div>
             <div className="whitespace-nowrap text-sm leading-none">{shipment.cargo}</div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="text-muted-foreground text-xs leading-none md:text-sm">Total weight</div>
+            <div className="text-muted-foreground text-xs leading-none md:text-sm">Peso total</div>
             <div className="text-sm leading-none">{shipment.weight}</div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="text-muted-foreground text-xs leading-none md:text-sm">Transport mode</div>
+            <div className="text-muted-foreground text-xs leading-none md:text-sm">Modo de transporte</div>
             <div className="text-sm capitalize leading-none">
               {shipment.mode} · {shipment.routeType}
             </div>
@@ -165,7 +165,7 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
 
           <div className="flex flex-col gap-2 md:text-right">
             <div className="text-muted-foreground text-xs leading-none md:text-sm">Status</div>
-            <div className="text-sm leading-none">{shipment.progress}% complete</div>
+            <div className="text-sm leading-none">{shipment.progress}% concluído</div>
           </div>
         </div>
       </div>
@@ -227,19 +227,19 @@ export function ShipmentDetails({ shipment }: ShipmentDetailsProps) {
               variant="line"
             >
               <TabsTrigger className="flex-none" value="overview">
-                Overview
+                Visão Geral
               </TabsTrigger>
               <TabsTrigger className="flex-none" value="route">
-                Route
+                Rota
               </TabsTrigger>
               <TabsTrigger className="flex-none" value="cargo">
-                Cargo
+                Carga
               </TabsTrigger>
               <TabsTrigger className="flex-none" value="documents">
-                Documents
+                Documentos
               </TabsTrigger>
               <TabsTrigger className="flex-none" value="activity">
-                Activity
+                Atividade
               </TabsTrigger>
             </TabsList>
             <TabsContent className="min-h-0 overflow-auto p-4" value="overview">
@@ -247,22 +247,22 @@ export function ShipmentDetails({ shipment }: ShipmentDetailsProps) {
             </TabsContent>
             <TabsContent className="p-4" value="route">
               <div className="grid h-full place-items-center rounded-md border border-dashed text-muted-foreground text-sm">
-                Route view coming soon.
+                Visualização da rota em breve.
               </div>
             </TabsContent>
             <TabsContent className="p-4" value="cargo">
               <div className="grid h-full place-items-center rounded-md border border-dashed text-muted-foreground text-sm">
-                Cargo view coming soon.
+                Visualização da carga em breve.
               </div>
             </TabsContent>
             <TabsContent className="p-4" value="documents">
               <div className="grid h-full place-items-center rounded-md border border-dashed text-muted-foreground text-sm">
-                Documents view coming soon.
+                Visualização dos documentos em breve.
               </div>
             </TabsContent>
             <TabsContent className="p-4" value="activity">
               <div className="grid h-full place-items-center rounded-md border border-dashed text-muted-foreground text-sm">
-                Activity view coming soon.
+                Visualização da atividade em breve.
               </div>
             </TabsContent>
           </Tabs>

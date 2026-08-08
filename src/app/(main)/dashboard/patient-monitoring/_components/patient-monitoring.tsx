@@ -70,7 +70,7 @@ export function PatientMonitoring({ patients }: PatientMonitoringProps) {
             <AlertTitle>{selectedPatient.alarm}</AlertTitle>
             {selectedPatient.alarmDuration && (
               <AlertDescription className={cn(hasActiveAlarm && "text-amber-950")}>
-                Active for {selectedPatient.alarmDuration}
+                Ativo há {selectedPatient.alarmDuration}
               </AlertDescription>
             )}
             <AlertAction className="top-1/2 -translate-y-1/2">
@@ -81,7 +81,7 @@ export function PatientMonitoring({ patients }: PatientMonitoringProps) {
                 size="sm"
                 variant="secondary"
               >
-                {acknowledged ? "Acknowledged" : "Acknowledge"}
+                {acknowledged ? "Reconhecido" : "Reconhecer"}
               </Button>
             </AlertAction>
           </Alert>
@@ -94,24 +94,24 @@ export function PatientMonitoring({ patients }: PatientMonitoringProps) {
             className="w-full justify-start gap-0 border-b p-0 *:h-full *:max-w-32 *:rounded-none *:border-0 *:border-border *:border-r *:after:-bottom-px!"
             variant="line"
           >
-            <TabsTrigger value="real-time">Real time</TabsTrigger>
-            <TabsTrigger value="events">Event review</TabsTrigger>
-            <TabsTrigger value="trends">Trends</TabsTrigger>
-            <TabsTrigger value="disclosure">Full disclosure</TabsTrigger>
+            <TabsTrigger value="real-time">Tempo real</TabsTrigger>
+            <TabsTrigger value="events">Revisão de eventos</TabsTrigger>
+            <TabsTrigger value="trends">Tendências</TabsTrigger>
+            <TabsTrigger value="disclosure">Divulgação completa</TabsTrigger>
           </TabsList>
 
           <TabsContent
             className="m-0 flex flex-col items-center justify-center gap-1 px-4 text-center"
             value="real-time"
           >
-            <p className="font-medium text-sm">Live monitoring is active</p>
-            <p className="text-muted-foreground text-xs">Waveforms and vital signs update continuously above.</p>
+            <p className="font-medium text-sm">Monitoramento ao vivo está ativo</p>
+            <p className="text-muted-foreground text-xs">Formas de onda e sinais vitais são atualizados continuamente acima.</p>
           </TabsContent>
           <TabsContent className="m-0" value="events">
             <div className="min-h-44">
               <div className="grid grid-cols-[4rem_1fr] bg-muted/40 px-4 py-2 font-medium text-muted-foreground text-xs">
-                <span>Time</span>
-                <span>Event</span>
+                <span>Hora</span>
+                <span>Evento</span>
               </div>
               <Separator />
               {selectedPatient.recentEvents.map((event, index) => (
@@ -132,9 +132,9 @@ export function PatientMonitoring({ patients }: PatientMonitoringProps) {
             className="m-0 flex flex-col items-center justify-center gap-1 px-4 text-center"
             value="disclosure"
           >
-            <p className="font-medium text-sm">Full disclosure recording is active</p>
+            <p className="font-medium text-sm">Gravação de divulgação completa está ativa</p>
             <p className="text-muted-foreground text-xs">
-              Continuous waveform history is available for the last 24 hours.
+              Histórico de formas de onda contínuo está disponível nas últimas 24 horas.
             </p>
           </TabsContent>
         </Tabs>

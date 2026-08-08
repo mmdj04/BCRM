@@ -40,14 +40,14 @@ const statusClasses: Record<TransactionStatus, string> = {
 };
 
 const sortStateLabels: Record<"asc" | "desc" | "none", string> = {
-  asc: "ascending",
-  desc: "descending",
-  none: "unsorted",
+  asc: "crescente",
+  desc: "decrescente",
+  none: "não ordenado",
 };
 
 function sortAriaLabel(field: string, state: false | "asc" | "desc") {
   const key = state || "none";
-  return `Sort by ${field}, currently ${sortStateLabels[key]}`;
+  return `Ordenar por ${field}, atualmente ${sortStateLabels[key]}`;
 }
 
 function accountById(id: string) {
@@ -61,14 +61,14 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
       <Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all transactions"
+        aria-label="Selecionar todas as transações"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label={`Select ${row.original.description}`}
+        aria-label={`Selecionar ${row.original.description}`}
       />
     ),
     enableHiding: false,
@@ -86,7 +86,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
           className="-ml-2 h-7 px-2 text-foreground"
           onClick={() => column.toggleSorting(sortState === "asc")}
         >
-          Date
+          Data
           <ArrowUpDown aria-hidden="true" className="ml-1 size-3.5 text-muted-foreground" />
         </Button>
       );
@@ -104,7 +104,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
   },
   {
     accessorKey: "description",
-    header: "Description",
+    header: "Descrição",
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
         <span className="font-medium text-sm">{row.original.description}</span>
@@ -114,7 +114,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
   },
   {
     accessorKey: "accountId",
-    header: "Account",
+    header: "Conta",
     cell: ({ row }) => {
       const account = accountById(row.original.accountId);
       if (!account) return <span className="text-muted-foreground text-sm">—</span>;
@@ -134,7 +134,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
   },
   {
     accessorKey: "category",
-    header: "Category",
+    header: "Categoria",
     cell: ({ row }) => (
       <Badge className={cn("rounded-full border-transparent px-2.5", categoryClasses[row.original.category])}>
         {row.original.category}
@@ -162,7 +162,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
             className="-mr-2 h-7 px-2 text-foreground"
             onClick={() => column.toggleSorting(sortState === "asc")}
           >
-            Amount
+            Valor
             <ArrowUpDown aria-hidden="true" className="ml-1 size-3.5 text-muted-foreground" />
           </Button>
         </div>
@@ -193,7 +193,7 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
   },
   {
     id: "actions",
-    header: () => <span className="sr-only">Actions</span>,
+    header: () => <span className="sr-only">Ações</span>,
     cell: ({ row }) => (
       <div className="text-right">
         <DropdownMenu>
@@ -202,15 +202,15 @@ export const transactionsColumns: ColumnDef<TransactionRow>[] = [
               variant="ghost"
               size="icon"
               className="size-8 rounded-full text-muted-foreground hover:bg-transparent focus-visible:bg-transparent"
-              aria-label={`Actions for ${row.original.description}`}
+              aria-label={`Ações para ${row.original.description}`}
             >
               <MoreHorizontal aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem>View details</DropdownMenuItem>
-            <DropdownMenuItem>Recategorize</DropdownMenuItem>
-            <DropdownMenuItem variant="destructive">Dispute</DropdownMenuItem>
+            <DropdownMenuItem>Ver detalhes</DropdownMenuItem>
+            <DropdownMenuItem>Recategorizar</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">Disputar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

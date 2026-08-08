@@ -48,9 +48,9 @@ const categoryOptions = ["all", ...transactionCategories] as const;
 const typeOptions = ["all", ...transactionTypes] as const;
 
 const typeFilterLabels: Record<(typeof typeOptions)[number], string> = {
-  all: "All",
-  credit: "Credit",
-  debit: "Debit",
+  all: "Todos",
+  credit: "Crédito",
+  debit: "Débito",
 };
 
 function preventPaginationNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -124,15 +124,15 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="leading-none">Transactions</CardTitle>
-        <CardDescription>Every credit and debit across your linked accounts.</CardDescription>
+        <CardTitle className="leading-none">Transações</CardTitle>
+        <CardDescription>Todos os créditos e débitos nas suas contas vinculadas.</CardDescription>
         <CardAction>
           <div className="flex flex-wrap items-center gap-2">
-            <Input
-              aria-label="Search transactions"
-              className="h-7 w-44 md:w-52"
-              placeholder="Search transactions..."
-              value={searchQuery}
+              <Input
+                aria-label="Buscar transações"
+                className="h-7 w-44 md:w-52"
+                placeholder="Buscar transações..."
+                value={searchQuery}
               onChange={(event) => {
                 table.setGlobalFilter(event.target.value || undefined);
                 table.setPageIndex(0);
@@ -142,7 +142,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
                   <ListFilter aria-hidden="true" data-icon="inline-start" />
-                  Account
+                  Conta
                   <ChevronDownIcon aria-hidden="true" data-icon="inline-end" />
                 </Button>
               </DropdownMenuTrigger>
@@ -154,7 +154,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
                     table.setPageIndex(0);
                   }}
                 >
-                  <DropdownMenuRadioItem value="all">All accounts</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="all">Todas as contas</DropdownMenuRadioItem>
                   {accounts.map((account) => (
                     <DropdownMenuRadioItem key={account.id} value={account.id}>
                       {account.name}
@@ -167,7 +167,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
                   <ListFilter aria-hidden="true" data-icon="inline-start" />
-                  Category
+                  Categoria
                   <ChevronDownIcon aria-hidden="true" data-icon="inline-end" />
                 </Button>
               </DropdownMenuTrigger>
@@ -181,7 +181,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
                 >
                   {categoryOptions.map((option) => (
                     <DropdownMenuRadioItem key={option} value={option}>
-                      {option === "all" ? "All categories" : option}
+                      {option === "all" ? "Todas as categorias" : option}
                     </DropdownMenuRadioItem>
                   ))}
                 </DropdownMenuRadioGroup>
@@ -191,7 +191,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
                   <ListFilter aria-hidden="true" data-icon="inline-start" />
-                  Type
+                  Tipo
                   <ChevronDownIcon aria-hidden="true" data-icon="inline-end" />
                 </Button>
               </DropdownMenuTrigger>
@@ -243,7 +243,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
               ) : (
                 <TableRow>
                   <TableCell colSpan={table.getVisibleLeafColumns().length} className="h-24 text-center">
-                    No transactions match these filters.
+                    Nenhuma transação corresponde a esses filtros.
                   </TableCell>
                 </TableRow>
               )}
@@ -252,7 +252,7 @@ export function TransactionsSection({ initialAccountFilter, onAccountFilterConsu
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 px-4 pb-1">
           <p className="text-muted-foreground text-sm">
-            Showing {visibleTransactionCount} of {filteredTransactionCount.toLocaleString()} transactions
+            Mostrando {visibleTransactionCount} de {filteredTransactionCount.toLocaleString()} transações
           </p>
 
           <Pagination className="mx-0 w-auto justify-end">

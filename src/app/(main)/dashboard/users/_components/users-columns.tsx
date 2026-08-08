@@ -121,7 +121,7 @@ export const usersColumns: ColumnDef<UserRow>[] = [
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
-          aria-label="Select all users"
+          aria-label="Selecionar todos os usuários"
           checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         />
@@ -130,7 +130,7 @@ export const usersColumns: ColumnDef<UserRow>[] = [
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
         <Checkbox
-          aria-label={`Select ${row.original.name}`}
+          aria-label={`Selecionar ${row.original.name}`}
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
         />
@@ -147,7 +147,7 @@ export const usersColumns: ColumnDef<UserRow>[] = [
   },
   {
     accessorKey: "name",
-    header: "User",
+    header: "Usuário",
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
         <AvatarCell name={row.original.name} lastActive={row.original.lastActive} />
@@ -160,19 +160,19 @@ export const usersColumns: ColumnDef<UserRow>[] = [
   },
   {
     accessorKey: "role",
-    header: "Role / Team",
+    header: "Função / Equipe",
     filterFn: "equalsString",
     cell: ({ row }) => <RoleCell role={row.original.role} team={row.original.team} />,
   },
   {
     accessorKey: "team",
-    header: "Team",
+    header: "Equipe",
     filterFn: "equalsString",
     cell: ({ row }) => <div className="text-sm">{row.original.team}</div>,
   },
   {
     accessorKey: "workspace",
-    header: "Workspace",
+    header: "Área de trabalho",
     filterFn: "arrIncludes",
     cell: ({ row }) => <WorkspaceCell workspaces={row.original.workspace} />,
   },
@@ -185,18 +185,18 @@ export const usersColumns: ColumnDef<UserRow>[] = [
   {
     id: "joinedDate",
     accessorFn: (row) => parse(row.joinedDate, "dd MMM yyyy, h:mm a", new Date()).getTime(),
-    header: "Joined date",
+    header: "Data de entrada",
     cell: ({ row }) => <div className="text-foreground text-sm">{row.original.joinedDate}</div>,
   },
   {
     id: "actions",
-    header: () => <div className="text-right">Actions</div>,
+    header: () => <div className="text-right">Ações</div>,
     cell: ({ row }) => (
       <div className="text-right">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              aria-label={`Open actions for ${row.original.name}`}
+              aria-label={`Abrir ações para ${row.original.name}`}
               className="size-8 rounded-md text-muted-foreground hover:bg-muted/50"
               size="icon-sm"
               variant="ghost"
@@ -205,12 +205,12 @@ export const usersColumns: ColumnDef<UserRow>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>View profile</DropdownMenuItem>
-            <DropdownMenuItem>Edit user</DropdownMenuItem>
-            <DropdownMenuItem>Manage team</DropdownMenuItem>
-            <DropdownMenuItem>Resend invite</DropdownMenuItem>
+            <DropdownMenuItem>Ver perfil</DropdownMenuItem>
+            <DropdownMenuItem>Editar usuário</DropdownMenuItem>
+            <DropdownMenuItem>Gerenciar equipe</DropdownMenuItem>
+            <DropdownMenuItem>Reenviar convite</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">Deactivate user</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">Desativar usuário</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

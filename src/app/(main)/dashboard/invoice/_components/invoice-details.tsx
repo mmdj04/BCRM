@@ -19,12 +19,12 @@ const dateFields: Array<{
 }> = [
   {
     id: "issued-date",
-    label: "Issued Date",
+    label: "Data de Emissão",
     name: "issuedDate",
   },
   {
     id: "payment-due-date",
-    label: "Due Date",
+    label: "Data de Vencimento",
     name: "paymentDueDate",
   },
 ];
@@ -37,7 +37,7 @@ export function InvoiceDetails() {
       <FieldGroup>
         <Field className="gap-1">
           <FieldLabel className="text-xs" htmlFor="reference-number">
-            Reference Number
+            Número de Referência
           </FieldLabel>
           <InputGroup>
             <InputGroupInput id="reference-number" {...register("referenceNumber")} />
@@ -82,7 +82,7 @@ function DatePicker({ id, value, onChange }: { id: string; value: string; onChan
           data-empty={!date}
           className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
         >
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "PPP") : <span>Selecionar uma data</span>}
           <CalendarIcon className="text-muted-foreground" />
         </Button>
       </PopoverTrigger>

@@ -7,7 +7,7 @@ export interface InfrastructureEnvironment {
     name: string;
     icon: SimpleIcon;
   };
-  environment: "Expired" | "Production" | "Staging";
+  environment: "Expirado" | "Produção" | "Staging";
   status: "Online" | "Unhealthy";
   latency: string;
   uptime: string;
@@ -38,7 +38,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
           name: "Next.js",
           icon: siNextdotjs,
         },
-        environment: "Expired",
+        environment: "Expirado",
         status: "Unhealthy",
         latency: "86ms",
         uptime: "8d 23h",
@@ -59,7 +59,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
           name: "React",
           icon: siReact,
         },
-        environment: "Production",
+        environment: "Produção",
         status: "Online",
         latency: "246ms",
         uptime: "9d 23h",
@@ -95,7 +95,7 @@ export const infrastructureGroups: InfrastructureGroup[] = [
           name: "Node.js",
           icon: siNodedotjs,
         },
-        environment: "Production",
+        environment: "Produção",
         status: "Online",
         latency: "25ms",
         uptime: "10d 23h",

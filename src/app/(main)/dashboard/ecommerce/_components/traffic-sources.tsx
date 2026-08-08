@@ -48,7 +48,7 @@ const trafficSources = [
 
 const trafficSourcesConfig = {
   share: {
-    label: "Visits",
+    label: "Visitas",
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
@@ -160,9 +160,9 @@ export function TrafficSources() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-normal text-muted-foreground text-sm">Traffic Sources</CardTitle>
+        <CardTitle className="font-normal text-muted-foreground text-sm">Fontes de Tráfego</CardTitle>
         <CardDescription className="text-foreground text-xl tabular-nums leading-none tracking-tight">
-          14.8K visits
+          14.8K visitas
         </CardDescription>
         <CardAction>
           <ArrowUpRight className="size-4" />

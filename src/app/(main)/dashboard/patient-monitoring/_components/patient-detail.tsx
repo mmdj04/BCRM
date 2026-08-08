@@ -83,7 +83,7 @@ export function PatientDetail({ hasActiveAlarm, patient }: PatientDetailProps) {
       <dl className="xl:grid xl:grid-rows-6">
         <NumericVital
           color={hasActiveAlarm ? "text-amber-500 dark:text-amber-400" : "text-lime-500 dark:text-lime-400"}
-          label="HR"
+          label="FC"
           limits="50–100"
           unit="bpm"
           value={patient.heartRate}
@@ -97,14 +97,14 @@ export function PatientDetail({ hasActiveAlarm, patient }: PatientDetailProps) {
         />
         <NumericVital
           color="text-amber-500 dark:text-amber-400"
-          label="RR"
+          label="FR"
           limits="8–30"
           unit="/min"
           value={patient.respirationRate}
         />
         <NumericVital
           color="text-foreground"
-          label="NIBP"
+          label="PNI"
           limits="90–160"
           unit={`(${patient.map})`}
           value={patient.nibp}

@@ -1,59 +1,59 @@
-# Contributing to BCRM
+# Contribuindo para o BCRM
 
-Thank you for your interest in contributing to BCRM! This document provides guidelines and information about contributing to this project.
+Obrigado pelo seu interesse em contribuir para o BCRM! Este documento fornece diretrizes e informações sobre como contribuir para este projeto.
 
-## Table of Contents
+## Sumário
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Setup](#development-setup)
-- [How to Contribute](#how-to-contribute)
-- [Pull Request Process](#pull-request-process)
-- [Style Guidelines](#style-guidelines)
-- [Commit Messages](#commit-messages)
-- [Reporting Issues](#reporting-issues)
+- [Código de Conduta](#código-de-conduta)
+- [Primeiros Passos](#primeiros-passos)
+- [Configuração do Desenvolvimento](#configuração-do-desenvolvimento)
+- [Como Contribuir](#como-contribuir)
+- [Processo de Pull Request](#processo-de-pull-request)
+- [Diretrizes de Estilo](#diretrizes-de-estilo)
+- [Mensagens de Commit](#mensagens-de-commit)
+- [Reportando Problemas](#reportando-problemas)
 
-## Code of Conduct
+## Código de Conduta
 
-This project and everyone participating in it is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [conduct@bcrm.dev](mailto:conduct@bcrm.dev).
+Este projeto e todos que participam dele são regidos pelo nosso [Código de Conduta](CODE_OF_CONDUCT.md). Ao participar, você deve cumprir este código. Por favor, reporte comportamentos inaceitáveis para [conduct@bcrm.dev](mailto:conduct@bcrm.dev).
 
-## Getting Started
+## Primeiros Passos
 
-1. Fork the repository
-2. Clone your fork
-3. Create a feature branch
-4. Make your changes
-5. Submit a pull request
+1. Faça o fork do repositório
+2. Clone o seu fork
+3. Crie uma branch para a funcionalidade
+4. Faça suas alterações
+5. Envie um pull request
 
-## Development Setup
+## Configuração do Desenvolvimento
 
-### Prerequisites
+### Pré-requisitos
 
-- Node.js 20+ (recommended: use [nvm](https://github.com/nvm-sh/nvm))
+- Node.js 20+ (recomendado: use [nvm](https://github.com/nvm-sh/nvm))
 - npm 10+
 - Git
-- Supabase account (free tier works)
+- Conta no Supabase (plano gratuito funciona)
 
-### Installation
+### Instalação
 
 ```bash
-# Clone your fork
+# Clone o seu fork
 git clone https://github.com/YOUR_USERNAME/BCRM.git
 cd BCRM
 
-# Install dependencies
+# Instale as dependências
 npm install
 
-# Copy environment variables
+# Copie as variáveis de ambiente
 cp .env.local.example .env.local
 
-# Start development server
+# Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-### Environment Variables
+### Variáveis de Ambiente
 
-Get your Supabase credentials from https://supabase.com/dashboard → Project Settings → API:
+Obtenha suas credenciais do Supabase em https://supabase.com/dashboard → Project Settings → API:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
@@ -61,48 +61,48 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-anon-key
 SUPABASE_SECRET_KEY=your-service-role-key
 ```
 
-## How to Contribute
+## Como Contribuir
 
-### Reporting Bugs
+### Reportando Bugs
 
-Before creating a bug report, please check [existing issues](https://github.com/mmdj04/BCRM/issues) to avoid duplicates.
+Antes de criar um reporte de bug, por favor verifique as [issues existentes](https://github.com/mmdj04/BCRM/issues) para evitar duplicatas.
 
-When creating a bug report, include:
+Ao criar um reporte de bug, inclua:
 
-- A clear and descriptive title
-- Steps to reproduce the issue
-- Expected behavior vs actual behavior
-- Screenshots if applicable
-- Environment details
+- Um título claro e descritivo
+- Passos para reproduzir o problema
+- Comportamento esperado vs comportamento atual
+- Capturas de tela, se aplicável
+- Detalhes do ambiente
 
-### Suggesting Features
+### Sugerindo Funcionalidades
 
-Feature requests are welcome. Please provide:
+Solicitações de funcionalidades são bem-vindas. Por favor, forneça:
 
-- A clear description of the feature
-- Use case / motivation
-- Any mockups or examples
+- Uma descrição clara da funcionalidade
+- Caso de uso / motivação
+- Qualquer mockup ou exemplo
 
-### Contributing Code
+### Contribuindo com Código
 
-1. Find an issue labeled `good first issue` or `help wanted`
-2. Comment on the issue to let others know you're working on it
-3. Create a branch from `main`
-4. Make your changes
-5. Write or update tests if applicable
-6. Submit a pull request
+1. Encontre uma issue marcada como `good first issue` ou `help wanted`
+2. Comente na issue para que outros saibam que você está trabalhando nela
+3. Crie uma branch a partir de `main`
+4. Faça suas alterações
+5. Escreva ou atualize testes, se aplicável
+6. Envie um pull request
 
-## Pull Request Process
+## Processo de Pull Request
 
-1. Update the README.md if your changes affect the documentation
-2. Ensure your code follows the project's style guidelines
-3. Link the related issue in your PR description
-4. Request a review from maintainers
-5. Address any feedback promptly
+1. Atualize o README.md se suas alterações afetarem a documentação
+2. Certifique-se de que seu código segue as diretrizes de estilo do projeto
+3. Vincule a issue relacionada na descrição do seu PR
+4. Solicite uma revisão dos mantenedores
+5. Responda a qualquer feedback prontamente
 
-### PR Title Format
+### Formato do Título do PR
 
-Use [Conventional Commits](https://www.conventionalcommits.org/) format:
+Use o formato [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
 feat: add new dashboard widget
@@ -111,49 +111,49 @@ docs: update installation guide
 refactor: improve auth flow
 ```
 
-## Style Guidelines
+## Diretrizes de Estilo
 
 ### TypeScript
 
-- Use strict mode
-- Avoid `any` types
-- Use proper type annotations
-- Prefer interfaces over types for object shapes
+- Use o modo estrito
+- Evite tipos `any`
+- Use anotações de tipo adequadas
+- Prefira interfaces em vez de types para formas de objetos
 
 ### React
 
-- Use functional components with hooks
-- Keep components small and focused
-- Use proper prop types
-- Follow the co-location pattern (components near their routes)
+- Use componentes funcionais com hooks
+- Mantenha os componentes pequenos e focados
+- Use tipos de prop adequados
+- Siga o padrão de co-localização (componentes próximos às suas rotas)
 
 ### CSS/Tailwind
 
-- Use semantic class names
-- Follow the existing design system
-- Use theme tokens for colors
-- Ensure responsive design
+- Use nomes de classe semânticos
+- Siga o sistema de design existente
+- Use tokens do tema para cores
+- Garanta design responsivo
 
-### File Structure
+### Estrutura de Arquivos
 
 ```
 src/
 ├── app/                    # Next.js App Router
 │   ├── (main)/
-│   │   ├── auth/          # Authentication pages
-│   │   └── dashboard/     # Dashboard pages
-│   └── layout.tsx         # Root layout
-├── components/             # Shared components
-│   └── ui/                # shadcn/ui components
-├── lib/                    # Utilities and helpers
-│   └── supabase/          # Supabase client setup
-├── hooks/                  # Custom React hooks
-└── styles/                 # Global styles
+│   │   ├── auth/          # Páginas de autenticação
+│   │   └── dashboard/     # Páginas do dashboard
+│   └── layout.tsx         # Layout raiz
+├── components/             # Componentes compartilhados
+│   └── ui/                # Componentes shadcn/ui
+├── lib/                    # Utilitários e helpers
+│   └── supabase/          # Configuração do cliente Supabase
+├── hooks/                  # Hooks React personalizados
+└── styles/                 # Estilos globais
 ```
 
-## Commit Messages
+## Mensagens de Commit
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
+Siga a especificação [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
 feat: add user authentication
@@ -165,27 +165,27 @@ test: add login form tests
 chore: update dependencies
 ```
 
-### Commit Types
+### Tipos de Commit
 
-- **feat**: A new feature
-- **fix**: A bug fix
-- **docs**: Documentation only changes
-- **style**: Code style changes (formatting, etc.)
-- **refactor**: Code refactoring
-- **test**: Adding or updating tests
-- **chore**: Maintenance tasks
+- **feat**: Uma nova funcionalidade
+- **fix**: Uma correção de bug
+- **docs**: Alterações apenas na documentação
+- **style**: Alterações no estilo do código (formatação, etc.)
+- **refactor**: Refatoração do código
+- **test**: Adicionando ou atualizando testes
+- **chore**: Tarefas de manutenção
 
-## Reporting Issues
+## Reportando Problemas
 
-Use the [issue tracker](https://github.com/mmdj04/BCRM/issues) to report bugs or request features.
+Use o [issue tracker](https://github.com/mmdj04/BCRM/issues) para reportar bugs ou solicitar funcionalidades.
 
-When reporting security vulnerabilities, please follow our [Security Policy](SECURITY.md).
+Ao reportar vulnerabilidades de segurança, por favor siga nossa [Política de Segurança](SECURITY.md).
 
-## Questions?
+## Dúvidas?
 
-If you have questions about contributing, feel free to:
+Se você tem dúvidas sobre como contribuir, fique à vontade para:
 
-- Open a [discussion](https://github.com/mmdj04/BCRM/discussions)
-- Reach out on [Discord](https://discord.gg/bcrm)
+- Abrir uma [discussão](https://github.com/mmdj04/BCRM/discussions)
+- Entrar em contato no [Discord](https://discord.gg/bcrm)
 
-Thank you for contributing to BCRM!
+Obrigado por contribuir para o BCRM!

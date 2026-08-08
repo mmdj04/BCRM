@@ -1,61 +1,61 @@
-# Security Policy
+# Política de Segurança
 
-## Supported Versions
+## Versões Suportadas
 
-| Version | Supported          |
+| Versão | Suportada          |
 | ------- | ------------------ |
 | 2.2.x   | :white_check_mark: |
 | < 2.2   | :x:                |
 
-## Reporting a Vulnerability
+## Reportando uma Vulnerabilidade
 
-If you discover a security vulnerability within BCRM, please send an email to [security@bcrm.dev](mailto:security@bcrm.dev). All security vulnerabilities will be promptly addressed.
+Se você descobrir uma vulnerabilidade de segurança no BCRM, por favor envie um e-mail para [security@bcrm.dev](mailto:security@bcrm.dev). Todas as vulnerabilidades de segurança serão prontamente atendidas.
 
-**Please do not report security vulnerabilities through public GitHub issues.**
+**Por favor, não reporte vulnerabilidades de segurança através de issues públicas no GitHub.**
 
-### What to include
+### O que incluir
 
-- Type of vulnerability (e.g., SQL injection, XSS, authentication bypass)
-- Full paths of source file(s) related to the vulnerability
-- The location of the affected source code (tag/branch/commit or direct URL)
-- Any special configuration required to reproduce the issue
-- Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact assessment
+- Tipo de vulnerabilidade (ex: injeção SQL, XSS, bypass de autenticação)
+- Caminhos completos dos arquivos-fonte relacionados à vulnerabilidade
+- A localização do código-fonte afetado (tag/branch/commit ou URL direta)
+- Qualquer configuração especial necessária para reproduzir o problema
+- Instruções passo a passo para reproduzir o problema
+- Prova de conceito ou código de exploit (se possível)
+- Avaliação de impacto
 
-### Response timeline
+### Cronograma de resposta
 
-- **Acknowledgment**: Within 48 hours
-- **Initial assessment**: Within 1 week
-- **Fix release**: Depends on severity
+- **Confirmação**: Dentro de 48 horas
+- **Avaliação inicial**: Dentro de 1 semana
+- **Lançamento da correção**: Depende da gravidade
 
-### Safe harbor
+### Porto seguro
 
-We support safe harbor for security researchers who:
+Nós apoiamos porto seguro para pesquisadores de segurança que:
 
-- Make a good faith effort to avoid privacy violations, data destruction, or disruption
-- Only interact with accounts you own or with explicit permission
-- Do not exploit a vulnerability beyond what is necessary to confirm its existence
-- Report vulnerabilities promptly and do not publicly disclose them before a fix is available
+- Fazem um esforço de boa fé para evitar violações de privacidade, destruição de dados ou interrupções
+- Interagem apenas com contas que possuem ou com permissão explícita
+- Não exploram uma vulnerabilidade além do necessário para confirmar sua existência
+- Reportam vulnerabilidades prontamente e não as divulgam publicamente antes que uma correção esteja disponível
 
-## Security Best Practices
+## Melhores Práticas de Segurança
 
-### Environment Variables
+### Variáveis de Ambiente
 
-- Never commit `.env` files to version control
-- Use `.env.local` for local development
-- Use Vercel environment variables for production
-- Rotate Supabase keys periodically
+- Nunca faça commit de arquivos `.env` no controle de versão
+- Use `.env.local` para desenvolvimento local
+- Use variáveis de ambiente do Vercel para produção
+- Renove as chaves do Supabase periodicamente
 
-### Authentication
+### Autenticação
 
-- Supabase Auth handles all authentication
-- Row Level Security (RLS) is enabled on all tables
-- Service role key is only used server-side
-- Session tokens are refreshed via middleware
+- O Supabase Auth gerencia toda a autenticação
+- Segurança Nível de Linha (RLS) está habilitada em todas as tabelas
+- A chave de função de serviço é usada apenas no lado do servidor
+- Tokens de sessão são atualizados via middleware
 
-### Data Protection
+### Proteção de Dados
 
-- All user data is isolated via RLS policies
-- Sensitive data is encrypted at rest in Supabase
-- No sensitive data is stored in cookies or localStorage
+- Todos os dados do usuário são isolados via políticas RLS
+- Dados sensíveis são criptografados em repouso no Supabase
+- Nenhum dado sensível é armazenado em cookies ou localStorage

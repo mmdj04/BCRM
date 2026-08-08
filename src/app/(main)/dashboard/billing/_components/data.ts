@@ -36,7 +36,7 @@ export const plans: Plan[] = [
   {
     id: "pro",
     name: "Pro",
-    description: "Para aplicacoes em producao e equipes em crescimento.",
+    description: "Para aplicações em produção e equipes em crescimento.",
     monthlyPrice: 1889.90,
     yearlyPrice: 22678.80,
     badge: "Popular",

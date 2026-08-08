@@ -21,7 +21,7 @@ export function FileActions({ file, onToggleStar }: FileActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${file.name}`}>
+        <Button variant="ghost" size="icon-sm" aria-label={`Ações para ${file.name}`}>
           <MoreVertical />
         </Button>
       </DropdownMenuTrigger>
@@ -29,22 +29,22 @@ export function FileActions({ file, onToggleStar }: FileActionsProps) {
         <DropdownMenuGroup>
           <DropdownMenuItem onSelect={onToggleStar}>
             <Star />
-            {file.starred ? "Remove from starred" : "Add to starred"}
+            {file.starred ? "Remover dos favoritos" : "Adicionar aos favoritos"}
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Download />
-            Download
+            Baixar
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Share2 />
-            Copy share link
+            Copiar link de compartilhamento
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem variant="destructive">
             <Trash2 />
-            Move to trash
+            Mover para lixeira
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

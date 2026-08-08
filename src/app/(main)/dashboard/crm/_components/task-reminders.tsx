@@ -20,11 +20,11 @@ export function TaskReminders() {
     <section className="grid grid-cols-1 gap-4 xl:grid-cols-12">
       <Card className="xl:col-span-8">
         <CardHeader>
-          <CardTitle>Upcoming Meetings</CardTitle>
+          <CardTitle>Reuniões Próximas</CardTitle>
           <CardAction>
             <Button variant="outline" size="sm">
               <CalendarDays data-icon="inline-start" />
-              View Calendar
+              Ver Calendário
             </Button>
           </CardAction>
         </CardHeader>
@@ -58,7 +58,7 @@ export function TaskReminders() {
                   </div>
                   <div className="min-w-0">
                     <div className="truncate font-medium text-primary-foreground text-xs leading-none">
-                      Product demo with Tim
+                      Demo de produto com Tim
                     </div>
                     <div className="truncate text-[10px] text-primary-foreground/75">Weblabs Studio</div>
                   </div>
@@ -72,14 +72,14 @@ export function TaskReminders() {
 
       <Card className="xl:col-span-4">
         <CardHeader>
-          <CardTitle>Monthly Proposal Goal</CardTitle>
+          <CardTitle>Meta Mensal de Propostas</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-1">
           <div className="flex items-end justify-between gap-3">
             <div className="font-medium text-2xl tabular-nums leading-none">
-              {proposalSent} <span className="font-normal text-base text-muted-foreground">sent</span>
+              {proposalSent} <span className="font-normal text-base text-muted-foreground">enviadas</span>
             </div>
-            <div className="text-muted-foreground text-sm tabular-nums">{proposalGoal} target</div>
+            <div className="text-muted-foreground text-sm tabular-nums">{proposalGoal} meta</div>
           </div>
           <div className="flex h-10 w-full items-end gap-0.5">
             {proposalGoalBars.map((bar) => (
@@ -94,7 +94,7 @@ export function TaskReminders() {
             ))}
           </div>
           <p className="text-muted-foreground text-sm">
-            {proposalProgressPercentage}% of this month&apos;s proposal target reached.
+            {proposalProgressPercentage}% da meta de propostas deste mês atingida.
           </p>
         </CardContent>
       </Card>

@@ -87,7 +87,7 @@ export function RolesTable({ table }: { table: TableType<Role> }) {
           ) : (
             <TableRow>
               <TableCell colSpan={colCount} className="h-24 text-center text-muted-foreground">
-                No results.
+                Nenhum resultado.
               </TableCell>
             </TableRow>
           )}
@@ -96,7 +96,7 @@ export function RolesTable({ table }: { table: TableType<Role> }) {
 
       <div className="flex items-center border-border/70 border-t p-4">
         <div className="text-muted-foreground text-sm">
-          Showing {start} to {end} of {filteredRows.length} roles
+          Mostrando {start} de {end} de {filteredRows.length} funções
         </div>
 
         <div className="mx-auto">
@@ -143,7 +143,7 @@ export function RolesTable({ table }: { table: TableType<Role> }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-muted-foreground text-sm">Rows per page</span>
+          <span className="text-muted-foreground text-sm">Linhas por página</span>
           <Select
             value={`${pageSize}`}
             onValueChange={(v) => {

@@ -11,17 +11,26 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 - **Supabase Integration**: Autenticação completa (login, registro, OAuth Google)
-- **Supabase Database**: 25 tabelas com RLS, triggers e indexes
+- **Supabase Database**: 26 tabelas com RLS, triggers e indexes
 - **Middleware de Autenticação**: Refresh de sessão e proteção de rotas
 - **GitHub Actions**: CI/CD completo (lint, typecheck, build, deploy, CodeQL, Dependabot)
 - **Open Source Files**: SECURITY.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md
 - **Issue Templates**: Bug Report, Feature Request, Question
 - **PR Template**: Template padronizado para Pull Requests
 - **Dependabot**: Atualização automática de dependências
-- **PR #61**: Accounts e Transactions tabs no Finance dashboard
+- **Stripe Integration**: Página de billing com preços em BRL, checkout, webhook e customer portal
+- **Demo Mode**: Modo de demonstração com credenciais hardcoded e cookie-based
+- **Changelog Page**: Página de changelog in-app sincronizada com CHANGELOG.md
+- **Account Page**: Página de configurações da conta
+- **Notifications Page**: Página de notificações com mark read, delete e create
+- **Finance Accounts e Transactions**: Tabs Accounts e Transactions no Finance dashboard
   - Accounts tab com KPI strip, allocation bar, account list com sparklines
   - Transactions tab com TanStack Table, search, filters, sorting, pagination
   - Navegação cross-tab: clique no chevron para pular para Transactions com filtro
+- **Mock Data Fallback**: Todas as páginas usam mock data quando Supabase retorna erro/404
+- **CRUD Completo**: Create, Read, Update e Delete em todas as páginas aplicáveis
+- **Billing com Preços BRL**: Planos Starter R$ 789,90/mo, Pro R$ 1.889,90/mo, Team R$ 7.989,90/mo
+- **Portuguese Translation**: Interface completamente traduzida para Português Brasileiro
 
 ---
 
@@ -89,7 +98,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ---
 
-## [2.0.0] - 2025-10-24
+## [2.0.0] - 2025-10-25
 
 ### Added
 - **Next.js 16**: Migração para Next.js 16 com React Compiler
@@ -205,7 +214,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ### Finance Dashboard
 - v1 (2025-07-09): Dashboard com wallet, cash flow e spending
 - v2 (2026-04-26): Refatorado com crypto assets e vault info
-- v3 (PR #61): Adicionado Accounts e Transactions tabs
+- v3 (2026-08-08): Adicionado Accounts e Transactions tabs
 
 ### CRM Dashboard
 - v1 (2025-07-08): Dashboard com leads e métricas
@@ -256,6 +265,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Logistics
 - (2025-05-19): Dashboard com shipment tracking e route map
+
+### Notifications
+- (2026-08-08): Página de notificações com mark read, delete e create
+
+### Billing
+- (2026-08-08): Página de billing com preços em BRL, checkout Stripe e customer portal
 
 ### Productivity
 - (2025-04-13): Dashboard com summary cards, focus, tasks e projects

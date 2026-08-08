@@ -12,7 +12,7 @@ const performanceHighlights = [
     className: "G11A",
     start: 1.25,
     duration: 1.45,
-    subject: "Pure Math",
+    subject: "Matemática Pura",
     score: 84,
     avatars: ["AM", "LS", "NK"],
   },
@@ -20,7 +20,7 @@ const performanceHighlights = [
     className: "G11B",
     start: 0.72,
     duration: 1.75,
-    subject: "Literature",
+    subject: "Literatura",
     score: 78,
     avatars: ["IR"],
   },
@@ -28,7 +28,7 @@ const performanceHighlights = [
     className: "G11C",
     start: 1.35,
     duration: 1.9,
-    subject: "Physics",
+    subject: "Física",
     score: 80,
     avatars: ["SK", "MJ", "AT"],
   },
@@ -36,7 +36,7 @@ const performanceHighlights = [
     className: "G11D",
     start: 2.22,
     duration: 1.66,
-    subject: "History",
+    subject: "História",
     score: 73,
     avatars: ["RP", "EH"],
   },
@@ -44,7 +44,7 @@ const performanceHighlights = [
 
 const chartConfig = {
   duration: {
-    label: "Score",
+    label: "Pontuação",
     color: "var(--chart-3)",
   },
 } satisfies ChartConfig;
@@ -129,9 +129,9 @@ export function PerformanceHighlights() {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-sm">Performance Highlights</CardTitle>
+        <CardTitle className="text-sm">Destaques de Desempenho</CardTitle>
         <CardAction className="flex items-center gap-1 text-muted-foreground text-xs">
-          View Insights <ArrowRight className="size-4" />
+          Ver Insights <ArrowRight className="size-4" />
         </CardAction>
       </CardHeader>
       <CardContent>
@@ -146,7 +146,7 @@ export function PerformanceHighlights() {
             <XAxis
               axisLine={false}
               domain={[0, 4]}
-              tickFormatter={(value) => ["Mon", "Tue", "Wed", "Thu", "Fri"][Number(value)] ?? ""}
+              tickFormatter={(value) => ["Seg", "Ter", "Qua", "Qui", "Sex"][Number(value)] ?? ""}
               tickLine={false}
               tickMargin={10}
               ticks={[0, 1, 2, 3, 4]}

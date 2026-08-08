@@ -7,33 +7,33 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/componen
 const upcomingEvents = [
   {
     dayOffset: 6,
-    title: "Science Exhibition",
+    title: "Exposição de Ciências",
     time: "08:30 AM - 12:30 PM",
-    type: "On Campus",
+    type: "No Campus",
   },
   {
     dayOffset: 9,
-    title: "Parents' Evening",
+    title: "Noite dos Pais",
     time: "02:00 PM - 05:00 PM",
-    type: "Meeting",
+    type: "Reunião",
   },
   {
     dayOffset: 12,
-    title: "Inter-House Sports Day",
+    title: "Dia Esportivo Inter-Casas",
     time: "09:00 AM - 04:00 PM",
-    type: "Sports",
+    type: "Esportes",
   },
   {
     dayOffset: 15,
-    title: "Grade 11 Mock Exam",
+    title: "Simulado do 11º Ano",
     time: "09:00 AM - 12:00 PM",
-    type: "Exam",
+    type: "Prova",
   },
   {
     dayOffset: 18,
-    title: "Department Planning",
+    title: "Planejamento do Departamento",
     time: "03:30 PM - 04:30 PM",
-    type: "Meeting",
+    type: "Reunião",
   },
 ];
 
@@ -43,9 +43,9 @@ export function UpcomingEvents() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm">Upcoming Events</CardTitle>
+        <CardTitle className="text-sm">Próximos Eventos</CardTitle>
         <CardAction className="flex items-center gap-1 text-muted-foreground text-xs">
-          View Calendar <ArrowRight className="size-4" />
+          Ver Calendário <ArrowRight className="size-4" />
         </CardAction>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">

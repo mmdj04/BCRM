@@ -17,8 +17,8 @@ import { createClient } from "@/lib/supabase/client";
 import { DEMO_CONFIG } from "@/config/demo-config";
 
 const formSchema = z.object({
-  email: z.email({ message: "Please enter a valid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  email: z.email({ message: "Por favor, digite um endereço de e-mail válido." }),
+  password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
   remember: z.boolean().optional(),
 });
 
@@ -50,7 +50,7 @@ export function LoginForm() {
           user: DEMO_CONFIG.user,
           isDemo: true,
         })}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
-        toast.success("Demo mode activated!");
+        toast.success("Modo de demonstração ativado!");
         router.push("/dashboard/default");
         router.refresh();
         return;
@@ -66,11 +66,11 @@ export function LoginForm() {
         return;
       }
 
-      toast.success("Logged in successfully!");
+      toast.success("Login realizado com sucesso!");
       router.push("/dashboard/default");
       router.refresh();
     } catch {
-      toast.error("An unexpected error occurred");
+      toast.error("Ocorreu um erro inesperado");
     } finally {
       setLoading(false);
     }
@@ -84,7 +84,7 @@ export function LoginForm() {
           name="email"
           render={({ field, fieldState }) => (
             <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="login-email">Email Address</FieldLabel>
+              <FieldLabel htmlFor="login-email">Endereço de E-mail</FieldLabel>
               <Input
                 {...field}
                 id="login-email"
@@ -102,7 +102,7 @@ export function LoginForm() {
           name="password"
           render={({ field, fieldState }) => (
             <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="login-password">Password</FieldLabel>
+              <FieldLabel htmlFor="login-password">Senha</FieldLabel>
               <Input
                 {...field}
                 id="login-password"
@@ -129,7 +129,7 @@ export function LoginForm() {
               />
               <FieldContent>
                 <FieldLabel htmlFor="login-remember" className="font-normal">
-                  Remember me for 30 days
+                  Lembrar de mim por 30 dias
                 </FieldLabel>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </FieldContent>
@@ -138,7 +138,7 @@ export function LoginForm() {
         />
       </FieldGroup>
       <Button className="w-full" type="submit" disabled={loading}>
-        {loading ? "Logging in..." : "Login"}
+        {loading ? "Entrando..." : "Entrar"}
       </Button>
     </form>
   );

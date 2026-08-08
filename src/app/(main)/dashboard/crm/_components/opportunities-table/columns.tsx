@@ -38,7 +38,7 @@ export const opportunitiesColumns: ColumnDef<OpportunityRow>[] = [
       <Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all opportunities"
+        aria-label="Selecionar todas as oportunidades"
       />
     ),
     cell: ({ row }) => (
@@ -58,12 +58,12 @@ export const opportunitiesColumns: ColumnDef<OpportunityRow>[] = [
   },
   {
     accessorKey: "account",
-    header: "Account",
+    header: "Conta",
     cell: ({ row }) => <div className="font-medium text-sm">{row.original.account}</div>,
   },
   {
     accessorKey: "stage",
-    header: "Stage",
+    header: "Etapa",
     cell: ({ row }) => (
       <Badge variant="outline" className="rounded-full px-2.5">
         {row.original.stage}
@@ -73,12 +73,12 @@ export const opportunitiesColumns: ColumnDef<OpportunityRow>[] = [
   },
   {
     accessorKey: "priority",
-    header: "Priority",
+    header: "Prioridade",
     cell: ({ row }) => <div className="text-sm">{row.original.priority}</div>,
   },
   {
     accessorKey: "health",
-    header: "Health",
+    header: "Saúde",
     cell: ({ row }) => (
       <div className="flex items-end gap-0.5" title={row.original.health}>
         <span className="sr-only">{row.original.health}</span>
@@ -97,12 +97,12 @@ export const opportunitiesColumns: ColumnDef<OpportunityRow>[] = [
   },
   {
     accessorKey: "value",
-    header: "Value",
+    header: "Valor",
     cell: ({ row }) => <div className="font-medium text-sm tabular-nums">{row.original.value}</div>,
   },
   {
     id: "actions",
-    header: () => <div className="text-right">Edit</div>,
+    header: () => <div className="text-right">Editar</div>,
     cell: () => (
       <div className="text-right">
         <Button
@@ -111,7 +111,7 @@ export const opportunitiesColumns: ColumnDef<OpportunityRow>[] = [
           className="size-8 rounded-full text-muted-foreground hover:bg-transparent focus-visible:bg-transparent"
         >
           <Pencil />
-          <span className="sr-only">Edit opportunity</span>
+          <span className="sr-only">Editar oportunidade</span>
         </Button>
       </div>
     ),

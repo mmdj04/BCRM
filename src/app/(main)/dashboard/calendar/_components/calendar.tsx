@@ -19,17 +19,17 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { demoEvents } from "./events-data";
 
 const views = [
-  { key: "dayGridMonth", label: "Month" },
-  { key: "timeGridWeek", label: "Week" },
-  { key: "timeGridDay", label: "Day" },
+  { key: "dayGridMonth", label: "Mês" },
+  { key: "timeGridWeek", label: "Semana" },
+  { key: "timeGridDay", label: "Dia" },
 ];
 
 const calendars = [
-  { key: "all", label: "All calendars" },
-  { key: "work", label: "Work" },
-  { key: "personal", label: "Personal" },
-  { key: "team", label: "Team" },
-  { key: "focus", label: "Focus time" },
+  { key: "all", label: "Todos os calendários" },
+  { key: "work", label: "Trabalho" },
+  { key: "personal", label: "Pessoal" },
+  { key: "team", label: "Equipe" },
+  { key: "focus", label: "Tempo de foco" },
 ];
 
 const plugins = [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, multiMonthPlugin];
@@ -55,7 +55,7 @@ export function Calendar() {
         <div className="flex min-w-0 shrink-0 flex-col gap-1">
           <div className="font-medium text-lg leading-none">{title}</div>
           <p className="text-muted-foreground text-sm">
-            {days} days - {eventCount} events
+            {days} dias - {eventCount} eventos
           </p>
         </div>
 
@@ -80,7 +80,7 @@ export function Calendar() {
               <ChevronLeft />
             </Button>
             <Button variant="outline" onClick={() => controller.today()}>
-              Today
+              Hoje
             </Button>
             <Button size="icon" variant="outline" onClick={() => controller.next()}>
               <ChevronRight />
@@ -107,7 +107,7 @@ export function Calendar() {
           </Select>
           <Button>
             <Plus />
-            Add event
+            Adicionar evento
           </Button>
         </div>
       </div>

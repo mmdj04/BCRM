@@ -1,156 +1,156 @@
-# Next.js Admin Template with TypeScript & Shadcn UI
+# Modelo de Admin Next.js com TypeScript & Shadcn UI
 
-**Studio Admin** - Includes multiple dashboards, authentication layouts, customizable theme presets, and more.
+**Studio Admin** - Inclui múltiplos dashboards, layouts de autenticação, presets de tema personalizáveis e mais.
 
-<img src="https://github.com/arhamkhnz/next-shadcn-admin-dashboard/blob/main/media/dashboard.png?version=5" alt="Dashboard Screenshot">
+<img src="https://github.com/arhamkhnz/next-shadcn-admin-dashboard/blob/main/media/dashboard.png?version=5" alt="Screenshot do Dashboard">
 
-Most admin templates I found, free or paid, felt cluttered, outdated, or too rigid. I built this as a cleaner alternative with features often missing in others, such as theme toggling and layout controls, while keeping the design modern, minimal, and flexible.
+A maioria dos templates de admin que encontrei, gratuitos ou pagos, pareciam desordenados, desatualizados ou muito rígidos. Criei este como uma alternativa mais limpa, com funcionalidades frequentemente ausentes em outros, como alternância de tema e controles de layout, mantendo o design moderno, minimalista e flexível.
 
-> **View demo:** [studio admin](https://next-shadcn-admin-dashboard.vercel.app)
+> **Veja a demo:** [studio admin](https://next-shadcn-admin-dashboard.vercel.app)
 
 > [!NOTE]
-> Looking for the Base UI version? Check out [next-shadcn-admin-dashboard-baseui](https://github.com/arhamkhnz/next-shadcn-admin-dashboard-baseui).
+> Procurando a versão com Base UI? Confira [next-shadcn-admin-dashboard-baseui](https://github.com/arhamkhnz/next-shadcn-admin-dashboard-baseui).
 >
-> Looking for the React Aria version? Check out [arhamkhnz/next-shadcn-admin-dashboard-aria](https://github.com/arhamkhnz/next-shadcn-admin-dashboard-aria).
+> Procurando a versão com React Aria? Confira [arhamkhnz/next-shadcn-admin-dashboard-aria](https://github.com/arhamkhnz/next-shadcn-admin-dashboard-aria).
 >
-> Looking for the TanStack Start version? Check out [tanstack-shadcn-admin-dashboard](https://github.com/arhamkhnz/tanstack-shadcn-admin-dashboard).
+> Procurando a versão com TanStack Start? Confira [tanstack-shadcn-admin-dashboard](https://github.com/arhamkhnz/tanstack-shadcn-admin-dashboard).
 
 > [!TIP]
-> I’m also working on Nuxt.js and Svelte versions of this dashboard. They’ll be live soon.
+> Também estou trabalhando nas versões Nuxt.js e Svelte deste dashboard. Estarão disponíveis em breve.
 
-## Features
+## Funcionalidades
 
-- Built with Next.js 16, TypeScript, Tailwind CSS v4, and Shadcn UI  
-- Responsive and mobile-friendly  
-- Customizable theme presets (light/dark modes with color schemes like Tangerine, Brutalist, and more)  
-- Flexible layouts (collapsible sidebar, variable content widths)  
-- Authentication flows and screens  
-- Prebuilt dashboards (Default, CRM, Finance, Analytics, Productivity) plus legacy variants  
-- Role-Based Access Control (RBAC) with config-driven UI and multi-tenant support *(planned)*  
+- Construído com Next.js 16, TypeScript, Tailwind CSS v4 e Shadcn UI
+- Responsivo e compatível com dispositivos móveis
+- Presets de tema personalizáveis (modos claro/escuro com esquemas de cores como Tangerine, Brutalist e mais)
+- Layouts flexíveis (sidebar recolhível, larguras de conteúdo variáveis)
+- Fluxos e telas de autenticação
+- Dashboards pré-construídos (Default, CRM, Finance, Analytics, Productivity) além de variantes legadas
+- Controle de Acesso Baseado em Papel (RBAC) com UI orientada por configuração e suporte multi-tenant *(planejado)*
 
 > [!NOTE]
-> The default dashboard uses the **shadcn neutral** theme.  
-> It also includes additional color presets inspired by [Tweakcn](https://tweakcn.com):  
+> O dashboard padrão usa o tema **shadcn neutral**.
+> Também inclui presets de cores adicionais inspirados pelo [Tweakcn](https://tweakcn.com):
 >
-> - Tangerine  
-> - Neo Brutalism  
-> - Soft Pop  
+> - Tangerine
+> - Neo Brutalism
+> - Soft Pop
 >
-> You can create more presets by following the same structure as the existing ones.
+> Você pode criar mais presets seguindo a mesma estrutura dos existentes.
 
-> Looking for the **Next.js 15** version?  
-> Check out the [`archive/next15`](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/tree/archive/next15) branch.  
-> This branch contains the setup prior to upgrading to Next 16 and the React Compiler.
+> Procurando a versão **Next.js 15**?
+> Confira a branch [`archive/next15`](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/tree/archive/next15).
+> Esta branch contém a configuração anterior à atualização para Next 16 e o React Compiler.
 
-> Looking for the **Next.js 14 + Tailwind CSS v3** version?  
-> Check out the [`archive/next14-tailwindv3`](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/tree/archive/next14-tailwindv3) branch.  
-> It has a different color theme and is not actively maintained, but I try to keep it updated with major changes.  
+> Procurando a versão **Next.js 14 + Tailwind CSS v3**?
+> Confira a branch [`archive/next14-tailwindv3`](https://github.com/arhamkhnz/next-shadcn-admin-dashboard/tree/archive/next14-tailwindv3).
+> Possui um tema de cores diferente e não é ativamente mantida, mas tento mantê-la atualizada com mudanças significativas.
 
-## Tech Stack
+## Stack Tecnológica
 
-- **Framework**: Next.js 16 (App Router), TypeScript, Tailwind CSS v4  
-- **UI Components**: Shadcn UI  
-- **Validation**: Zod  
-- **Forms & State Management**: React Hook Form, Zustand  
-- **Tables & Data Handling**: TanStack Table  
-- **Tooling & DX**: Biome, Husky  
+- **Framework**: Next.js 16 (App Router), TypeScript, Tailwind CSS v4
+- **Componentes UI**: Shadcn UI
+- **Validação**: Zod
+- **Formulários e Gerenciamento de Estado**: React Hook Form, Zustand
+- **Tabelas e Tratamento de Dados**: TanStack Table
+- **Ferramentas e DX**: Biome, Husky
 
-## Screens
+## Telas
 
-### Available
-- Default Dashboard  
-- CRM Dashboard  
-- Finance Dashboard  
-- Analytics Dashboard  
-- Productivity Dashboard  
-- E-commerce Dashboard  
-- Academy Dashboard  
-- Logistics Dashboard  
-- Infrastructure Dashboard  
-- File Manager  
-- Patient Monitoring  
-- Chat Page  
-- Email Page  
-- Users Management  
-- Roles Management  
-- Kanban Board  
-- Tasks Page  
-- Invoice Page  
-- Calendar Page  
-- Authentication (4 screens)  
-- Legacy: Default v1, CRM v1, Finance v1, Analytics v1
+### Disponíveis
+- Dashboard Padrão
+- Dashboard CRM
+- Dashboard Financeiro
+- Dashboard de Análises
+- Dashboard de Produtividade
+- Dashboard de E-commerce
+- Dashboard de Academia
+- Dashboard de Logística
+- Dashboard de Infraestrutura
+- Gerenciador de Arquivos
+- Monitoramento de Pacientes
+- Página de Chat
+- Página de Email
+- Gerenciamento de Usuários
+- Gerenciamento de Papéis
+- Quadro Kanban
+- Página de Tarefas
+- Página de Faturas
+- Página de Calendário
+- Autenticação (4 telas)
+- Legado: Default v1, CRM v1, Finance v1, Analytics v1
 
-### Planned
-I’ve added all the planned screens. Feel free to open an issue for requesting something specific.
+### Planejadas
+Adicionei todas as telas planejadas. Sinta-se à vontade para abrir uma issue solicitando algo específico.
 
-## Colocation File System Architecture
+## Arquitetura de Sistema de Arquivos por Co-localização
 
-This project follows a **colocation-based architecture** each feature keeps its own pages, components, and logic inside its route folder.  
-Shared UI, hooks, and configuration live at the top level, making the codebase modular, scalable, and easier to maintain as the app grows.
+Este projeto segue uma **arquitetura baseada em co-localização** - cada funcionalidade mantém suas próprias páginas, componentes e lógica dentro da pasta da sua rota.
+Componentes UI compartilhados, hooks e configurações ficam no nível superior, tornando a base de código modular, escalável e mais fácil de manter conforme o aplicativo cresce.
 
-For a full breakdown of the structure with examples, see the [Next Colocation Template](https://github.com/arhamkhnz/next-colocation-template).
+Para uma análise completa da estrutura com exemplos, consulte o [Next Colocation Template](https://github.com/arhamkhnz/next-colocation-template).
 
-## Getting Started
+## Primeiros Passos
 
-You can run this project locally, or deploy it instantly with Vercel.
+Você pode executar este projeto localmente ou fazer deploy instantaneamente com o Vercel.
 
-### Deploy with Vercel
+### Deploy com Vercel
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farhamkhnz%2Fnext-shadcn-admin-dashboard)
 
-_Deploy your own copy with one click._
+_Faça deploy da sua própria cópia com um clique._
 
-### Run locally
+### Executar localmente
 
-1. **Clone the repository**
+1. **Clone o repositório**
    ```bash
    git clone https://github.com/arhamkhnz/next-shadcn-admin-dashboard.git
    ```
-   
-2. **Navigate into the project**
+
+2. **Navegue até o projeto**
    ```bash
     cd next-shadcn-admin-dashboard
    ```
-   
-3. **Install dependencies**
+
+3. **Instale as dependências**
    ```bash
     npm install
    ```
 
-4. **Start the development server**
+4. **Inicie o servidor de desenvolvimento**
    ```bash
    npm run dev
    ```
 
-Your app will be running at [http://localhost:3000](http://localhost:3000)
+Seu aplicativo estará rodando em [http://localhost:3000](http://localhost:3000)
 
-### Demo Account
+### Conta de Demonstração
 
-BCRM includes a built-in demo mode for testing and presentations. Use these credentials to access the demo:
+O BCRM inclui um modo de demonstração integrado para testes e apresentações. Use estas credenciais para acessar a demo:
 
-| Field | Value |
+| Campo | Valor |
 |-------|-------|
 | Email | `admin@bcrm.com` |
-| Password | `10092004m` |
+| Senha | `10092004m` |
 
-The demo mode works with mock data and does not require a Supabase connection. When logged in as demo, a "Demo" badge will appear in the user menu.
+O modo de demonstração funciona com dados simulados e não requer uma conexão com o Supabase. Ao fazer login como demo, um selo "Demo" aparecerá no menu do usuário.
 
-### Formatting and Linting
+### Formatação e Lint
 
-Format, lint, and organize imports
+Formate, verifique o lint e organize os imports
 ```bash
 npx @biomejs/biome check --write
 ```
-> For more information on available rules, fixes, and CLI options, refer to the [Biome documentation](https://biomejs.dev/).
+> Para mais informações sobre regras disponíveis, correções e opções de CLI, consulte a [documentação do Biome](https://biomejs.dev/).
 
 ---
 
-> [!IMPORTANT]  
-> This project is updated frequently. If you’re working from a fork or an older clone, pull the latest changes before syncing. Some updates may include breaking changes.
+> [!IMPORTANT]
+> Este projeto é atualizado frequentemente. Se você está trabalhando a partir de um fork ou clone antigo, puxe as últimas alterações antes de sincronizar. Algumas atualizações podem incluir mudanças incompatíveis.
 
 ---
 
-Contributions are welcome. Feel free to open issues, feature requests, or start a discussion.
+Contribuições são bem-vindas. Sinta-se à vontade para abrir issues, solicitações de funcionalidades ou iniciar uma discussão.
 
 
-**Happy Vibe Coding!**
+**Bom Vibe Coding!**

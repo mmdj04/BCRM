@@ -1,43 +1,43 @@
 # AGENTS.md
 
-## Project overview
+## Visão geral do projeto
 
-Studio Admin is a responsive admin dashboard built with Next.js 16, React 19, TypeScript, Tailwind CSS v4, and shadcn/ui.
+Studio Admin é um painel de administrador responsivo construído com Next.js 16, React 19, TypeScript, Tailwind CSS v4 e shadcn/ui.
 
-This repository uses the shadcn `radix-nova` style. The shadcn CLI reports `base: "radix"`, which refers to Radix UI. Always inspect the local components in `src/components/ui/` because individual wrappers may use different primitives.
+Este repositório usa o estilo `radix-nova` do shadcn. O CLI do shadcn reporta `base: "radix"`, que se refere ao Radix UI. Sempre inspecione os componentes locais em `src/components/ui/` porque wrappers individuais podem usar primitivos diferentes.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# Next.js: ALWAYS read docs before coding
+# Next.js: SEMPRE leia a documentação antes de programar
 
-Before any Next.js work, find and read the relevant doc in `node_modules/next/dist/docs/`. Your training data is outdated — the docs are the source of truth.
+Antes de qualquer trabalho com Next.js, encontre e leia a documentação relevante em `node_modules/next/dist/docs/`. Seus dados de treinamento estão desatualizados — a documentação é a fonte da verdade.
 
 <!-- END:nextjs-agent-rules -->
 
-## shadcn skill
+## Habilidade shadcn
 
-Use the shadcn skill for all work involving shadcn/ui components, styling, composition, registries, presets, or `components.json`.
+Use a habilidade shadcn para todo trabalho envolvendo componentes shadcn/ui, estilização, composição, registros, presets ou `components.json`.
 
-If the skill is not available, install it with:
+Se a habilidade não estiver disponível, instale-a com:
 
 ```bash
 npx skills add shadcn/ui
 ```
 
-The skill contains the component, styling, composition, accessibility, and CLI rules. Do not duplicate those rules here. Always inspect the local component source before using it.
+A habilidade contém as regras de componentes, estilização, composição, acessibilidade e CLI. Não duplique essas regras aqui. Sempre inspecione a fonte do componente local antes de usá-la.
 
-Do not modify files inside `src/components/ui/` or `src/components/calendar/`. Keep these components intact and apply styling or customization where they are used.
+Não modifique arquivos dentro de `src/components/ui/` ou `src/components/calendar/`. Mantenha esses componentes intactos e aplique estilização ou personalização onde são usados.
 
-## Setup
+## Configuração
 
-This project uses npm.
+Este projeto usa npm.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Available commands:
+Comandos disponíveis:
 
 ```bash
 npm run build
@@ -48,66 +48,89 @@ npm run check:fix
 npm run generate:presets
 ```
 
-There is currently no automated test command. Run build, lint, check, or other validation commands only when the user explicitly requests that validation.
+Atualmente não há comando de teste automatizado. Execute build, lint, check ou outros comandos de validação apenas quando o usuário solicitar explicitamente essa validação.
 
-## Co-location-based structure
+## Estrutura baseada em co-localização
 
-Keep feature code close to the route that owns it.
+Mantenha o código da funcionalidade perto da rota que a possui.
 
-- Dashboard routes: `src/app/(main)/dashboard/<screen>/page.tsx`
-- Screen-specific components, data, and schemas: `src/app/(main)/dashboard/<screen>/_components/`
-- Shared dashboard components: `src/app/(main)/dashboard/_components/`
-- Shared application components: `src/components/`
-- Local shadcn components: `src/components/ui/`
-- Shared hooks and utilities: `src/hooks/` and `src/lib/`
-- Theme presets: `src/styles/presets/`
+- Rotas do painel: `src/app/(main)/dashboard/<screen>/page.tsx`
+- Componentes, dados e schemas específicos da tela: `src/app/(main)/dashboard/<screen>/_components/`
+- Componentes compartilhados do painel: `src/app/(main)/dashboard/_components/`
+- Componentes compartilhados da aplicação: `src/components/`
+- Componentes shadcn locais: `src/components/ui/`
+- Hooks e utilitários compartilhados: `src/hooks/` e `src/lib/`
+- Presets de tema: `src/styles/presets/`
 
-Keep a component inside its route until it is reused by another feature. Do not move screen-specific code into a shared directory preemptively.
+Mantenha um componente dentro de sua rota até que ele seja reutilizado por outra funcionalidade. Não mova código específico de tela para um diretório compartilhado preventivamente.
 
-## Creating or extending a screen
+## Criando ou estendendo uma tela
 
-1. Inspect the closest current screen before writing code. Finance, Infrastructure, CRM, and Analytics are useful references. Do not use routes under `(legacy)` as references for new screens unless maintaining a legacy route.
-2. When reproducing a UI from a screenshot or image, follow its visual direction closely, including layout, hierarchy, spacing, component structure, and important details. Implement it with the project's existing components and semantic theme tokens rather than copying raw color values. If the design needs a color that is not available through the existing theme tokens, or the user explicitly requests a non-theme color, use a named color from Tailwind's default palette. Do not use arbitrary hex, RGB, HSL, or OKLCH values.
-3. Reuse the existing dashboard shell, local components, layout controls, and theme tokens.
-4. Break each new page into focused components inside the route's `_components/` directory. Keep `page.tsx` small and focused on composing those pieces.
-5. Keep `page.tsx` as a Server Component by default. Move interactive or browser-dependent code into a dedicated Client Component.
-6. Add the screen to `src/navigation/sidebar/sidebar-items.ts` when it should appear in the dashboard navigation.
-7. Decide the information hierarchy before choosing widgets. Let the content determine the page structure.
-8. Keep the established visual rhythm where it fits: compact spacing, clear typography hierarchy, responsive action rows, and grids that collapse cleanly on smaller screens.
-9. Widget selection is not a fixed formula. Try different arrangements of cards, resource rows, meters, charts, tabs, empty states, and actions, then keep the version that communicates the content clearly and feels consistent with the project.
-10. Match nearby screens in card density, borders, radius, spacing, content width, and responsive behavior.
-11. Use semantic theme tokens so new screens work with light mode, dark mode, and the existing theme presets.
-12. Handle relevant loading, empty, error, disabled, and overflow states.
-13. Keep screens accessible with semantic HTML, keyboard support, visible focus states, labels, and appropriate ARIA attributes.
+1. Inspecione a tela atual mais próxima antes de escrever código. Finance, Infrastructure, CRM e Analytics são referências úteis. Não use rotas sob `(legacy)` como referências para novas telas, a menos que esteja mantendo uma rota legada.
+2. Ao reproduzir uma interface a partir de uma captura de tela ou imagem, siga sua direção visual de perto, incluindo layout, hierarquia, espaçamento, estrutura de componentes e detalhes importantes. Implemente-a com os componentes existentes do projeto e tokens semânticos de tema em vez de copiar valores de cor brutos. Se o design precisar de uma cor que não está disponível através dos tokens de tema existentes, ou o usuário solicitar explicitamente uma cor fora do tema, use uma cor nomeada da paleta padrão do Tailwind. Não use valores hexadecimais, RGB, HSL ou OKLCH arbitrários.
+3. Reutilize o shell existente do painel, componentes locais, controles de layout e tokens de tema.
+4. Divida cada nova página em componentes focados dentro do diretório `_components/` da rota. Mantenha `page.tsx` pequeno e focado em compor essas partes.
+5. Mantenha `page.tsx` como um Server Component por padrão. Mova código interativo ou dependente do navegador para um Client Component dedicado.
+6. Adicione a tela a `src/navigation/sidebar/sidebar-items.ts` quando ela deve aparecer na navegação do painel.
+7. Defina a hierarquia de informações antes de escolher os widgets. Deixe o conteúdo determinar a estrutura da página.
+8. Mantenha o ritmo visual estabelecido onde se adequar: espaçamento compacto, hierarquia de tipografia clara, linhas de ação responsivas e grades que colapsam limpa em telas menores.
+9. A seleção de widgets não é uma fórmula fixa. Experimente diferentes arranjos de cards, linhas de recursos, medidores, gráficos, abas, estados vazios e ações, depois mantenha a versão que comunica o conteúdo claramente e se sente consistente com o projeto.
+10. Combine com telas próximas em densidade de cards, bordas, raio, espaçamento, largura do conteúdo e comportamento responsivo.
+11. Use tokens semânticos de tema para que novas telas funcionem com modo claro, modo escuro e os presets de tema existentes.
+12. Lide com estados relevantes de carregamento, vazio, erro, desabilitado e transbordamento.
+13. Mantenha as telas acessíveis com HTML semântico, suporte a teclado, estados de foco visíveis, rótulos e atributos ARIA apropriados.
 
-## Code conventions
+## Convenções de código
 
-- TypeScript strict mode is enabled. Use precise types and avoid `any`.
-- Use the existing `@/` import aliases.
-- Follow the Biome configuration: double quotes, semicolons, two-space indentation, sorted imports, and a 120-character line width.
-- Avoid unnecessary dependencies.
-- Keep changes focused and do not refactor unrelated files.
+- O modo estrito do TypeScript está habilitado. Use tipos precisos e evite `any`.
+- Use os aliases de importação `@/` existentes.
+- Siga a configuração do Biome: aspas duplas, ponto e vírgula, indentação de dois espaços, importações ordenadas e largura de linha de 120 caracteres.
+- Evite dependências desnecessárias.
+- Mantenha as mudanças focadas e não refatore arquivos não relacionados.
 
-## Contributions
+## Contribuições
 
-- Use conventional commit prefixes such as `feat:`, `fix:`, `refactor:`, `docs:`, and `chore:`.
-- Include screenshots for new screens and material visual changes. Include mobile and dark-theme states when relevant.
-- Explain new reusable patterns or dependencies in the pull request.
-- Follow `CONTRIBUTING.md` for the contribution workflow.
+- Use prefixos de commit convencionais como `feat:`, `fix:`, `refactor:`, `docs:` e `chore:`.
+- Inclua capturas de tela para novas telas e mudanças visuais materiais. Inclua estados de tema móvel e escuro quando relevante.
+- Explique novos padrões reutilizáveis ou dependências no pull request.
+- Siga `CONTRIBUTING.md` para o fluxo de trabalho de contribuição.
 
-## Portuguese Diacritics (CRITICAL)
+## Diacríticos Portugueses (CRÍTICO)
 
-When writing text in Brazilian Portuguese, ALWAYS use proper diacritics:
+Ao escrever texto em português brasileiro, SEMPRE use diacríticos adequados:
 - ç (cedilha): começar, ação, proteção, segurança, configuração
 - á (a agudo): já, está, criar, preço, mensagem
 - é (e agudo): é, também, você, próximo
-- ê (e circunflexo): você,-être
+- ê (e circunflexo): você, amanhã
 - í (i agudo): iniciar, também, último
 - ó (o agudo): também, último, pronto
 - ú (u agudo): último, usuário
 - ã (a til): também, manhã, começa
 - õ (o til): também, não, são
 
-NEVER write Portuguese without diacritics. Examples:
-- Wrong: "Comecar", "voce", "tambem", "usuario", "seguranca"
-- Right: "Começar", "você", "também", "usuário", "segurança"
+NUNCA escreva português sem diacríticos. Exemplos:
+- Errado: "Comecar", "voce", "tambem", "usuario", "seguranca"
+- Certo: "Começar", "você", "também", "usuário", "segurança"
+
+## Regras Importantes
+
+### Git Push
+- NUNCA faça push para GitHub a menos que o usuário solicite explicitamente
+- Sempre espere a confirmação do usuário antes de `git push`
+
+### Servidores MCP Configurados
+- playwright: Automação de navegador para testes
+- context7: Busca de documentação
+- gh_grep: Busca de código no GitHub
+- supabase: Gerenciamento de banco de dados
+- stripe: Integração de pagamentos
+- memory: Memória persistente entre sessões
+- filesystem: Acesso a arquivos locais
+- sqlite: Consultas a banco de dados local
+- fetch: Requisições HTTP
+- git: Operações Git
+- github: API do GitHub (issues, PRs, repositórios, busca de código)
+
+### Banco de Dados SQLite
+- Localização: `/home/thematheusgemini123/bcrm-data.db`
+- Usado para armazenar estado do projeto, memórias e resultados de análise

@@ -123,11 +123,11 @@ export const accounts: Account[] = [
 ];
 
 export const accountTypeLabels: Record<AccountType, string> = {
-  bank: "Bank",
-  savings: "Savings",
-  investment: "Investment",
-  crypto: "Crypto",
-  reserve: "Reserve",
+  bank: "Banco",
+  savings: "Poupança",
+  investment: "Investimento",
+  crypto: "Cripto",
+  reserve: "Reserva",
 };
 
 export const accountTypeOrder: AccountType[] = ["bank", "savings", "investment", "crypto", "reserve"];

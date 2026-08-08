@@ -116,12 +116,12 @@ function buildMapGeometry(shipment: Shipment | null) {
           projectPoint({
             coordinates: shipment.origin.coordinates,
             country: shipment.origin.country,
-            label: "Origin",
+            label: "Origem",
           }),
           projectPoint({
             coordinates: shipment.destination.coordinates,
             country: shipment.destination.country,
-            label: "Destination",
+            label: "Destino",
           }),
         ]
       : [],
@@ -175,7 +175,7 @@ export function ShipmentRouteMap({ shipment }: ShipmentRouteMapProps) {
   return (
     <div className="size-full min-h-0 overflow-hidden bg-[#d4dadc] dark:bg-[#2C353C]">
       <svg
-        aria-label="Southeast Asia shipment region map"
+        aria-label="Mapa da região de envios do Sudeste Asiático"
         className="block size-full bg-[#d4dadc] dark:bg-[#2C353C]"
         role="img"
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
