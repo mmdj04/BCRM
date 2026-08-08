@@ -41,7 +41,7 @@ export const plans: Plan[] = [
     yearlyPrice: 1800,
     badge: "Popular",
     highlighted: true,
-    cta: "Start Free Trial",
+    cta: "Upgrade Now",
     supabasePlan: "Pro",
     supabaseCost: 25,
     features: [
@@ -66,7 +66,7 @@ export const plans: Plan[] = [
     description: "For teams that need security and compliance.",
     monthlyPrice: 1200,
     yearlyPrice: 14400,
-    cta: "Start Free Trial",
+    cta: "Upgrade Now",
     supabasePlan: "Team",
     supabaseCost: 599,
     features: [

@@ -72,7 +72,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/users" className="flex items-center gap-2">
+                <Link href="/dashboard/account" className="flex items-center gap-2">
                   <CircleUser />
                   Account
                 </Link>
@@ -84,7 +84,7 @@ export function NavUser({
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/mail" className="flex items-center gap-2">
+                <Link href="/dashboard/notifications" className="flex items-center gap-2">
                   <MessageSquareDot />
                   Notifications
                 </Link>
