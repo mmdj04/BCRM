@@ -66,10 +66,10 @@ jobs:
               });
               
               if (prs.length > 0) {
-                let body = '🔍 **Monthly Security & Dependency Audit**\n\n';
+                let body = '**Monthly Security & Dependency Audit**\n\n';
                 
                 if (hasVulnerabilities) {
-                  body += '❌ **Vulnerabilities found:**\n';
+                  body += '**Vulnerabilities found:**\n';
                   for (const [pkg, vuln] of Object.entries(auditReport.vulnerabilities || {})) {
                     body += `- ${pkg}: ${vuln.severity} (${vuln.via.map(v => v.title || v).join(', ')})\n`;
                   }
@@ -77,7 +77,7 @@ jobs:
                 }
                 
                 if (hasOutdated) {
-                  body += '📦 **Outdated dependencies:**\n';
+                  body += '**Outdated dependencies:**\n';
                   for (const [pkg, info] of Object.entries(outdatedReport)) {
                     body += `- ${pkg}: ${info.current} → ${info.latest}\n`;
                   }

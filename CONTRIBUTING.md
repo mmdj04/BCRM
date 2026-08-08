@@ -188,4 +188,4 @@ If you have questions about contributing, feel free to:
 - Open a [discussion](https://github.com/mmdj04/BCRM/discussions)
 - Reach out on [Discord](https://discord.gg/bcrm)
 
-Thank you for contributing to BCRM! 🚀
+Thank you for contributing to BCRM!

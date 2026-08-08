@@ -57,7 +57,7 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `⚠️ This is a large PR (${total} lines changed). Please break it into smaller PRs if possible.`
+                body: `This is a large PR (${total} lines changed). Please break it into smaller PRs if possible.`
               });
             }
 
@@ -82,6 +82,6 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `📦 Lock file changes detected. This may cause merge conflicts. Please rebase and resolve conflicts before merging.`
+                body: `Lock file changes detected. This may cause merge conflicts. Please rebase and resolve conflicts before merging.`
               });
             }
