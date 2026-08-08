@@ -1,19 +1,6 @@
-import {
-  closestCenter,
-  DndContext,
-  type DragEndEvent,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
+import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
+import { isSortable, useSortable } from "@dnd-kit/react/sortable";
 import { GripVertical, Plus, Trash2 } from "lucide-react";
 import type { UseFormRegister } from "react-hook-form";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
@@ -32,21 +19,14 @@ export function InvoiceItems() {
     keyName: "fieldKey",
   });
   const items = useWatch({ control, name: "items" }) ?? [];
-  const sortableItemIds = fields.map((field) => field.id);
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
-  );
-
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
+    const { source } = event.operation;
 
-    const oldIndex = fields.findIndex((field) => field.id === active.id);
-    const newIndex = fields.findIndex((field) => field.id === over.id);
-    if (oldIndex === -1 || newIndex === -1) return;
+    if (event.canceled || !isSortable(source) || source.initialIndex === source.index) {
+      return;
+    }
 
-    move(oldIndex, newIndex);
+    move(source.initialIndex, source.index);
   }
 
   function handleAddItem() {
@@ -69,32 +49,24 @@ export function InvoiceItems() {
           <span>Descrição</span>
           <span className="px-2">Unidades</span>
           <span className="px-2">Custo unitário</span>
-          <span className="text-right">Total da linha</span>
+          <span className="text-right">Total da Linha</span>
           <span />
         </div>
 
-        <DndContext
-          id="invoice-items"
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={sortableItemIds} strategy={verticalListSortingStrategy}>
-            <div className="flex flex-col gap-3">
-              {fields.map((field, index) => (
-                <SortableInvoiceItemRow
-                  key={field.id}
-                  id={field.id}
-                  index={index}
-                  item={items[index]}
-                  register={register}
-                  onRemove={() => remove(index)}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <DragDropProvider onDragEnd={handleDragEnd}>
+          <div className="flex flex-col gap-3">
+            {fields.map((field, index) => (
+              <SortableInvoiceItemRow
+                key={field.id}
+                id={field.id}
+                index={index}
+                item={items[index]}
+                register={register}
+                onRemove={() => remove(index)}
+              />
+            ))}
+          </div>
+        </DragDropProvider>
       </div>
     </section>
   );
@@ -113,51 +85,50 @@ function SortableInvoiceItemRow({
   register: UseFormRegister<InvoiceFormValues>;
   onRemove: () => void;
 }) {
-  const { attributes, isDragging, listeners, setActivatorNodeRef, setNodeRef, transform, transition } = useSortable({
+  const { handleRef, isDragging, ref } = useSortable({
     id,
+    index,
+    type: "invoice-item",
+    accept: "invoice-item",
+    group: "invoice-items",
+    modifiers: [RestrictToVerticalAxis],
   });
 
   return (
     <div
-      ref={setNodeRef}
-      style={{
-        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-        transition,
-      }}
+      ref={ref}
       className={cn(
         "grid min-w-0 grid-cols-[24px_minmax(0,0.8fr)_minmax(0,1fr)_32px] items-center gap-2 rounded-lg md:grid-cols-[24px_minmax(0,1fr)_64px_112px_112px_32px]",
         isDragging && "relative z-10 opacity-50",
       )}
     >
       <Button
-        ref={setActivatorNodeRef}
+        ref={handleRef}
         type="button"
         variant="ghost"
         size="icon-sm"
         className="-ml-2 cursor-grab text-muted-foreground active:cursor-grabbing"
-        aria-label={`Reordenar ${id}`}
-        {...attributes}
-        {...listeners}
+        aria-label={`Reorder ${id}`}
       >
         <GripVertical />
       </Button>
       <Input
         className="min-w-0 text-sm max-md:col-span-3"
-        aria-label={`Descrição do item ${index + 1}`}
+        aria-label={`Item ${index + 1} description`}
         {...register(`items.${index}.description` as const)}
       />
       <Input
         type="number"
         step="1"
         className="text-sm max-md:col-start-2 max-md:row-start-2"
-        aria-label={`Quantidade do item ${index + 1}`}
+        aria-label={`Item ${index + 1} quantity`}
         {...register(`items.${index}.quantity` as const, { valueAsNumber: true })}
       />
       <Input
         type="number"
         step="0.01"
         className="text-sm max-md:col-start-3 max-md:row-start-2"
-        aria-label={`Preço unitário do item ${index + 1}`}
+        aria-label={`Item ${index + 1} unit price`}
         {...register(`items.${index}.unitPrice` as const, { valueAsNumber: true })}
       />
       <div className="min-w-0 text-right font-medium text-sm max-md:col-span-3 max-md:col-start-2 max-md:row-start-3 max-md:flex max-md:items-center max-md:justify-between max-md:text-left">
@@ -169,7 +140,7 @@ function SortableInvoiceItemRow({
         variant="ghost"
         size="icon-sm"
         className="max-md:col-start-4 max-md:row-start-2"
-        aria-label={`Remover item ${index + 1}`}
+        aria-label={`Remove item ${index + 1}`}
         onClick={onRemove}
       >
         <Trash2 />

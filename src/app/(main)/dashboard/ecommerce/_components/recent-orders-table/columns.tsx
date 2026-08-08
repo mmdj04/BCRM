@@ -1,4 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import { Subscribe } from "@tanstack/react-table";
 import { format, parseISO } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 
@@ -13,6 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { DataTableFeatures } from "@/lib/data-table-features";
 
 import type { OrderRow } from "./schema";
 
@@ -21,7 +23,7 @@ function formatOrderDate(date: string) {
 }
 
 function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
-  if (status === "Pago") {
+  if (status === "Paid") {
     return (
       <Badge
         className="border-green-700/25 text-green-700 dark:border-green-300/25 dark:text-green-300"
@@ -33,7 +35,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
     );
   }
 
-  if (status === "Reembolsado") {
+  if (status === "Refunded") {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
@@ -54,19 +56,19 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
 }
 
 function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
-  if (status === "Enviado") {
+  if (status === "Fulfilled") {
     return (
       <Badge
         className="border-green-700/25 text-green-700 dark:border-green-300/25 dark:text-green-300"
         variant="outline"
       >
         <span className="size-1.5 rounded-full bg-current" />
-        Atendido
+        Enviado
       </Badge>
     );
   }
 
-  if (status === "Devolvido") {
+  if (status === "Returned") {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
@@ -78,30 +80,44 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
   return (
     <Badge variant="destructive">
       <span className="size-1.5 rounded-full bg-current" />
-      Não Atendido
+      Não Enviado
     </Badge>
   );
 }
 
-export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
+export const recentOrdersColumns: ColumnDef<DataTableFeatures, OrderRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
       <div className="w-10">
-        <Checkbox
-          aria-label="Selecionar todos os pedidos"
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        />
+        <Subscribe
+          source={table.atoms.rowSelection}
+          selector={() =>
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected() && "indeterminate")
+          }
+        >
+          {(checked) => (
+            <Checkbox
+              aria-label="Selecionar todos os pedidos"
+              checked={checked}
+              onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            />
+          )}
+        </Subscribe>
       </div>
     ),
     cell: ({ row }) => (
       <div className="w-10">
-        <Checkbox
-          aria-label={`Selecionar pedido ${row.original.id}`}
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-        />
+        <Subscribe source={row.table.atoms.rowSelection} selector={(selection) => Boolean(selection?.[row.id])}>
+          {(checked) => (
+            <Checkbox
+              aria-label={`Selecionar pedido ${row.original.id}`}
+              checked={checked}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+            />
+          )}
+        </Subscribe>
       </div>
     ),
     enableHiding: false,
@@ -124,7 +140,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
   },
   {
     id: "statusSummary",
-    header: "Status",
+    header: "Estado",
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <PaymentBadge status={row.original.payment} />
@@ -132,25 +148,25 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
       </div>
     ),
     filterFn: (row, _columnId, value) => {
-      if (value === "Necessita ação") {
+      if (value === "Needs action") {
         return (
-          row.original.payment === "Pendente" ||
-          row.original.payment === "Reembolsado" ||
-          row.original.fulfillment === "Não Enviado" ||
-          row.original.fulfillment === "Devolvido"
+          row.original.payment === "Pending" ||
+          row.original.payment === "Refunded" ||
+          row.original.fulfillment === "Unfulfilled" ||
+          row.original.fulfillment === "Returned"
         );
       }
 
-      if (value === "Não Atendido") {
-        return row.original.fulfillment === "Não Enviado";
+      if (value === "Unfulfilled") {
+        return row.original.fulfillment === "Unfulfilled";
       }
 
-      if (value === "Não pago") {
-        return row.original.payment === "Pendente";
+      if (value === "Unpaid") {
+        return row.original.payment === "Pending";
       }
 
-      if (value === "Devoluções") {
-        return row.original.payment === "Reembolsado" || row.original.fulfillment === "Devolvido";
+      if (value === "Returns") {
+        return row.original.payment === "Refunded" || row.original.fulfillment === "Returned";
       }
 
       return true;
@@ -173,7 +189,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex w-full justify-end">
-            <Button aria-label="Abrir ações do pedido" size="icon-sm" variant="ghost">
+            <Button               aria-label="Abrir ações do pedido" size="icon-sm" variant="ghost">
               <MoreHorizontal />
             </Button>
           </div>
@@ -182,7 +198,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
           <DropdownMenuLabel>Ações do Pedido</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem>Ver pedido</DropdownMenuItem>
-            <DropdownMenuItem>Contatar cliente</DropdownMenuItem>
+            <DropdownMenuItem>Entrar em contato com o cliente</DropdownMenuItem>
             <DropdownMenuItem>Copiar ID do pedido</DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

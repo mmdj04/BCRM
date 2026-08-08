@@ -1,7 +1,6 @@
 "use client";
-"use no memo";
-
 import type { ColumnDef } from "@tanstack/react-table";
+import { Subscribe } from "@tanstack/react-table";
 import { parse } from "date-fns";
 import { Check, Clock, MoreHorizontal, X } from "lucide-react";
 
@@ -16,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { DataTableFeatures } from "@/lib/data-table-features";
 import { cn, getInitials } from "@/lib/utils";
 
 import { statusMeta, type UserRow } from "./data";
@@ -115,25 +115,39 @@ function WorkspaceCell({ workspaces }: { workspaces: string[] }) {
   );
 }
 
-export const usersColumns: ColumnDef<UserRow>[] = [
+export const usersColumns: ColumnDef<DataTableFeatures, UserRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
       <div className="flex items-center justify-center">
-        <Checkbox
-          aria-label="Selecionar todos os usuários"
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        />
+        <Subscribe
+          source={table.atoms.rowSelection}
+          selector={() =>
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected() && "indeterminate")
+          }
+        >
+          {(checked) => (
+            <Checkbox
+              aria-label="Selecionar todos os usuários"
+              checked={checked}
+              onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            />
+          )}
+        </Subscribe>
       </div>
     ),
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        <Checkbox
-          aria-label={`Selecionar ${row.original.name}`}
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-        />
+        <Subscribe source={row.table.atoms.rowSelection} selector={(selection) => Boolean(selection?.[row.id])}>
+          {(checked) => (
+            <Checkbox
+              aria-label={`Selecionar ${row.original.name}`}
+              checked={checked}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+            />
+          )}
+        </Subscribe>
       </div>
     ),
     enableHiding: false,
@@ -160,7 +174,7 @@ export const usersColumns: ColumnDef<UserRow>[] = [
   },
   {
     accessorKey: "role",
-    header: "Função / Equipe",
+    header: "Cargo / Equipe",
     filterFn: "equalsString",
     cell: ({ row }) => <RoleCell role={row.original.role} team={row.original.team} />,
   },
@@ -172,20 +186,20 @@ export const usersColumns: ColumnDef<UserRow>[] = [
   },
   {
     accessorKey: "workspace",
-    header: "Área de trabalho",
+    header: "Espaço de trabalho",
     filterFn: "arrIncludes",
     cell: ({ row }) => <WorkspaceCell workspaces={row.original.workspace} />,
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Estado",
     filterFn: "equalsString",
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
   {
     id: "joinedDate",
     accessorFn: (row) => parse(row.joinedDate, "dd MMM yyyy, h:mm a", new Date()).getTime(),
-    header: "Data de entrada",
+    header: "Data de cadastro",
     cell: ({ row }) => <div className="text-foreground text-sm">{row.original.joinedDate}</div>,
   },
   {

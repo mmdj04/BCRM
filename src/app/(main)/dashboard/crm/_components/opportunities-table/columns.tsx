@@ -1,12 +1,12 @@
 "use client";
-"use no memo";
-
 import type { ColumnDef } from "@tanstack/react-table";
+import { Subscribe } from "@tanstack/react-table";
 import { Pencil } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import type { DataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
 import type { OpportunityRow } from "./schema";
@@ -18,35 +18,49 @@ const healthStripSlots = Array.from({ length: 18 }, (_, index) => ({
 
 function getHealthScore(health: OpportunityRow["health"]) {
   switch (health) {
-    case "No Ritmo":
+    case "On Track":
       return 18;
-    case "Precisa de Revisão":
+    case "Needs Review":
       return 11;
-    case "Em Risco":
+    case "At Risk":
       return 7;
-    case "Em Espera":
+    case "On Hold":
       return 4;
     default:
       return 0;
   }
 }
 
-export const opportunitiesColumns: ColumnDef<OpportunityRow>[] = [
+export const opportunitiesColumns: ColumnDef<DataTableFeatures, OpportunityRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Selecionar todas as oportunidades"
-      />
+      <Subscribe
+        source={table.atoms.rowSelection}
+        selector={() =>
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected() && "indeterminate")
+        }
+      >
+        {(checked) => (
+          <Checkbox
+            checked={checked}
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Selecionar todas as oportunidades"
+          />
+        )}
+      </Subscribe>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label={`Selecionar ${row.original.account}`}
-      />
+      <Subscribe source={row.table.atoms.rowSelection} selector={(selection) => Boolean(selection?.[row.id])}>
+        {(checked) => (
+          <Checkbox
+            checked={checked}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label={`Selecionar ${row.original.account}`}
+          />
+        )}
+      </Subscribe>
     ),
     enableHiding: false,
   },
@@ -63,7 +77,7 @@ export const opportunitiesColumns: ColumnDef<OpportunityRow>[] = [
   },
   {
     accessorKey: "stage",
-    header: "Etapa",
+    header: "Estágio",
     cell: ({ row }) => (
       <Badge variant="outline" className="rounded-full px-2.5">
         {row.original.stage}
