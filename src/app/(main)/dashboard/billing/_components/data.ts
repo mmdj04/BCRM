@@ -12,27 +12,29 @@ export type Plan = {
 
 export const plans: Plan[] = [
   {
-    id: "free",
-    name: "Free",
-    description: "For hobby projects and exploration.",
-    monthlyPrice: 0,
-    yearlyPrice: 0,
+    id: "starter",
+    name: "Starter",
+    description: "For small teams getting started with essential features.",
+    monthlyPrice: 145,
+    yearlyPrice: 1392,
     cta: "Get Started",
     features: [
-      "2 active projects",
+      "5 active projects",
       "50,000 monthly active users",
-      "500 MB database",
-      "5 GB bandwidth",
-      "1 GB file storage",
-      "Community support",
+      "2 GB database per project",
+      "50 GB bandwidth",
+      "25 GB file storage",
+      "Email support",
+      "Weekly backups (7 days)",
+      "Custom SMTP server",
     ],
   },
   {
     id: "pro",
     name: "Pro",
     description: "For production apps and growing teams.",
-    monthlyPrice: 25,
-    yearlyPrice: 240,
+    monthlyPrice: 299,
+    yearlyPrice: 2870,
     badge: "Popular",
     highlighted: true,
     cta: "Start Free Trial",
@@ -42,9 +44,10 @@ export const plans: Plan[] = [
       "8 GB database per project",
       "250 GB bandwidth",
       "100 GB file storage",
-      "Email support",
-      "Daily backups (7 days)",
+      "Priority email support",
+      "Daily backups (14 days)",
       "Custom SMTP server",
+      "SSO for dashboard",
     ],
   },
   {
@@ -52,7 +55,7 @@ export const plans: Plan[] = [
     name: "Team",
     description: "For teams that need security and compliance.",
     monthlyPrice: 599,
-    yearlyPrice: 5990,
+    yearlyPrice: 5750,
     cta: "Start Free Trial",
     features: [
       "Everything in Pro",
@@ -89,7 +92,7 @@ export type FeatureCategory = {
   category: string;
   features: {
     name: string;
-    free: string;
+    starter: string;
     pro: string;
     team: string;
     enterprise: string;
@@ -100,55 +103,54 @@ export const featureComparison: FeatureCategory[] = [
   {
     category: "Database",
     features: [
-      { name: "Dedicated Postgres", free: "Included", pro: "Included", team: "Included", enterprise: "Included" },
-      { name: "Database size", free: "500 MB", pro: "8 GB", team: "8 GB", enterprise: "Custom" },
-      { name: "Automatic backups", free: "-", pro: "7 days", team: "14 days", enterprise: "Custom" },
-      { name: "Point-in-time recovery", free: "-", pro: "$100/mo", team: "$100/mo", enterprise: "$100/mo" },
-      { name: "Egress", free: "5 GB", pro: "250 GB", team: "250 GB", enterprise: "Custom" },
-      { name: "Branching", free: "-", pro: "$0.013/hr", team: "$0.013/hr", enterprise: "Custom" },
+      { name: "Dedicated Postgres", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
+      { name: "Database size", starter: "2 GB", pro: "8 GB", team: "8 GB", enterprise: "Custom" },
+      { name: "Automatic backups", starter: "7 days", pro: "14 days", team: "14 days", enterprise: "Custom" },
+      { name: "Point-in-time recovery", starter: "-", pro: "$100/mo", team: "$100/mo", enterprise: "$100/mo" },
+      { name: "Egress", starter: "50 GB", pro: "250 GB", team: "250 GB", enterprise: "Custom" },
+      { name: "Branching", starter: "-", pro: "$0.013/hr", team: "$0.013/hr", enterprise: "Custom" },
     ],
   },
   {
     category: "Auth",
     features: [
-      { name: "Monthly active users", free: "50,000", pro: "100,000", team: "100,000", enterprise: "Custom" },
-      { name: "Social OAuth providers", free: "Included", pro: "Included", team: "Included", enterprise: "Included" },
-      { name: "Custom SMTP", free: "Included", pro: "Included", team: "Included", enterprise: "Included" },
-      { name: "Multi-Factor Auth", free: "Basic", pro: "Basic", team: "Basic", enterprise: "Advanced" },
-      { name: "Single Sign-On (SAML)", free: "-", pro: "50 included", team: "50 included", enterprise: "Contact Us" },
-      { name: "Auth audit logs", free: "1 hour", pro: "7 days", team: "28 days", enterprise: "Included" },
+      { name: "Monthly active users", starter: "50,000", pro: "100,000", team: "100,000", enterprise: "Custom" },
+      { name: "Social OAuth providers", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
+      { name: "Custom SMTP", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
+      { name: "Multi-Factor Auth", starter: "Basic", pro: "Basic", team: "Basic", enterprise: "Advanced" },
+      { name: "Single Sign-On (SAML)", starter: "-", pro: "50 included", team: "50 included", enterprise: "Contact Us" },
+      { name: "Auth audit logs", starter: "1 hour", pro: "7 days", team: "28 days", enterprise: "Included" },
     ],
   },
   {
     category: "Storage",
     features: [
-      { name: "File storage", free: "1 GB", pro: "100 GB", team: "100 GB", enterprise: "Custom" },
-      { name: "Max file upload", free: "50 MB", pro: "500 GB", team: "500 GB", enterprise: "Custom" },
-      { name: "CDN", free: "Basic", pro: "Smart CDN", team: "Smart CDN", enterprise: "Smart CDN" },
-      { name: "Image transformations", free: "-", pro: "100 free", team: "100 free", enterprise: "Custom" },
+      { name: "File storage", starter: "25 GB", pro: "100 GB", team: "100 GB", enterprise: "Custom" },
+      { name: "Max file upload", starter: "50 MB", pro: "500 GB", team: "500 GB", enterprise: "Custom" },
+      { name: "CDN", starter: "Basic", pro: "Smart CDN", team: "Smart CDN", enterprise: "Smart CDN" },
+      { name: "Image transformations", starter: "-", pro: "100 free", team: "100 free", enterprise: "Custom" },
     ],
   },
   {
     category: "Platform & Security",
     features: [
-      { name: "Team members", free: "Unlimited", pro: "Unlimited", team: "Unlimited", enterprise: "Unlimited" },
-      { name: "SOC2", free: "-", pro: "-", team: "Included", enterprise: "Included" },
-      { name: "ISO 27001", free: "-", pro: "-", team: "Included", enterprise: "Included" },
-      { name: "HIPAA", free: "-", pro: "-", team: "Add-on", enterprise: "Add-on" },
-      { name: "SSO", free: "-", pro: "-", team: "Contact Us", enterprise: "Contact Us" },
-      { name: "Log retention", free: "1 day", pro: "7 days", team: "28 days", enterprise: "90 days" },
-      { name: "Uptime SLAs", free: "-", pro: "-", team: "-", enterprise: "Included" },
+      { name: "Team members", starter: "10", pro: "Unlimited", team: "Unlimited", enterprise: "Unlimited" },
+      { name: "SOC2", starter: "-", pro: "-", team: "Included", enterprise: "Included" },
+      { name: "ISO 27001", starter: "-", pro: "-", team: "Included", enterprise: "Included" },
+      { name: "HIPAA", starter: "-", pro: "-", team: "Add-on", enterprise: "Add-on" },
+      { name: "SSO", starter: "-", pro: "-", team: "Contact Us", enterprise: "Contact Us" },
+      { name: "Log retention", starter: "3 days", pro: "7 days", team: "28 days", enterprise: "90 days" },
+      { name: "Uptime SLAs", starter: "-", pro: "-", team: "-", enterprise: "Included" },
     ],
   },
   {
     category: "Support",
     features: [
-      { name: "Community support", free: "Included", pro: "Included", team: "Included", enterprise: "Included" },
-      { name: "Email support", free: "-", pro: "Included", team: "Included", enterprise: "Included" },
-      { name: "Email SLA", free: "-", pro: "-", team: "Included", enterprise: "Included" },
-      { name: "Designated support", free: "-", pro: "-", team: "-", enterprise: "Included" },
-      { name: "24/7 premium support", free: "-", pro: "-", team: "-", enterprise: "Included" },
-      { name: "Private Slack channel", free: "-", pro: "-", team: "-", enterprise: "Included" },
+      { name: "Email support", starter: "Included", pro: "Included", team: "Included", enterprise: "Included" },
+      { name: "Email SLA", starter: "-", pro: "-", team: "Included", enterprise: "Included" },
+      { name: "Designated support", starter: "-", pro: "-", team: "-", enterprise: "Included" },
+      { name: "24/7 premium support", starter: "-", pro: "-", team: "-", enterprise: "Included" },
+      { name: "Private Slack channel", starter: "-", pro: "-", team: "-", enterprise: "Included" },
     ],
   },
 ];
@@ -162,8 +164,8 @@ export type BillingHistoryEntry = {
 };
 
 export const billingHistory: BillingHistoryEntry[] = [
-  { id: "inv_001", date: "Aug 1, 2026", description: "Pro Plan - Monthly", amount: 25, status: "paid" },
-  { id: "inv_002", date: "Jul 1, 2026", description: "Pro Plan - Monthly", amount: 25, status: "paid" },
-  { id: "inv_003", date: "Jun 1, 2026", description: "Pro Plan - Monthly", amount: 25, status: "paid" },
-  { id: "inv_004", date: "May 1, 2026", description: "Free Plan", amount: 0, status: "paid" },
+  { id: "inv_001", date: "Aug 1, 2026", description: "Pro Plan - Monthly", amount: 299, status: "paid" },
+  { id: "inv_002", date: "Jul 1, 2026", description: "Pro Plan - Monthly", amount: 299, status: "paid" },
+  { id: "inv_003", date: "Jun 1, 2026", description: "Starter Plan - Monthly", amount: 145, status: "paid" },
+  { id: "inv_004", date: "May 1, 2026", description: "Starter Plan - Monthly", amount: 145, status: "paid" },
 ];
