@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-import type { Plan } from "../data";
+import type { Plan } from "./data";
 
 type PricingCardsProps = {
   plans: Plan[];
