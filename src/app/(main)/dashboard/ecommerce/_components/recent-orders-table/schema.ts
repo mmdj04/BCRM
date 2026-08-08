@@ -6,8 +6,8 @@ export type OrderRow = {
   id: string;
   date: string;
   customer: string;
-  payment: "Paid" | "Pending" | "Refunded";
+  payment: "Pago" | "Pendente" | "Reembolsado";
   total: string;
   items: string;
-  fulfillment: "Fulfilled" | "Returned" | "Unfulfilled";
+  fulfillment: "Enviado" | "Devolvido" | "Não Enviado";
 };

@@ -25,7 +25,7 @@ const revenueBucketValues = [
   [6900, 7400, 8100, 8600, 8200, 9360],
 ] as const;
 
-const monthFormatter = new Intl.DateTimeFormat("en-US", { month: "short" });
+const monthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "short" });
 
 function getRollingRevenueBuckets() {
   const currentMonth = new Date();

@@ -23,19 +23,19 @@ const categories = [
 
 const products = [
   {
-    name: "Linen Overshirt",
+    name: "Camisa de Linho",
     category: "Vestuário",
     share: "31%",
     sales: "$14,820",
   },
   {
-    name: "Everyday Tote",
+    name: "Bolsa do Dia a Dia",
     category: "Acessórios",
     share: "24%",
     sales: "$11,460",
   },
   {
-    name: "Ceramic Planter",
+    name: "Vaso de Cerâmica",
     category: "Casa",
     share: "18%",
     sales: "$8,930",

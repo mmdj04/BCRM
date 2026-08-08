@@ -20,36 +20,36 @@ export default function Page() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl leading-none tracking-tight">Store Overview</h1>
+          <h1 className="text-3xl leading-none tracking-tight">Visão Geral da Loja</h1>
           <p className="text-muted-foreground text-sm">{formattedDate}</p>
         </div>
 
         <div className="flex flex-wrap items-end justify-end gap-2 lg:w-fit">
           <Select defaultValue="this-month">
             <SelectTrigger className="w-34" id="ecommerce-period" size="sm">
-              <SelectValue placeholder="This Month" />
+              <SelectValue placeholder="Este Mês" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="this-month">This Month</SelectItem>
-                <SelectItem value="last-month">Last Month</SelectItem>
-                <SelectItem value="last-30-days">Last 30 Days</SelectItem>
-                <SelectItem value="year-to-date">Year to Date</SelectItem>
+                <SelectItem value="this-month">Este Mês</SelectItem>
+                <SelectItem value="last-month">Mês Passado</SelectItem>
+                <SelectItem value="last-30-days">Últimos 30 Dias</SelectItem>
+                <SelectItem value="year-to-date">Ano até Hoje</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
 
           <Select defaultValue="all-channels">
             <SelectTrigger className="w-40" id="ecommerce-channel" size="sm">
-              <SelectValue placeholder="All Channels" />
+              <SelectValue placeholder="Todos os Canais" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="all-channels">All Channels</SelectItem>
-                <SelectItem value="online-store">Online Store</SelectItem>
+                <SelectItem value="all-channels">Todos os Canais</SelectItem>
+                <SelectItem value="online-store">Loja Online</SelectItem>
                 <SelectItem value="marketplace">Marketplace</SelectItem>
                 <SelectItem value="social">Social</SelectItem>
-                <SelectItem value="retail">Retail</SelectItem>
+                <SelectItem value="retail">Varejo</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
