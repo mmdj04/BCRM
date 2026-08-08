@@ -94,3 +94,20 @@ Keep a component inside its route until it is reused by another feature. Do not 
 - Include screenshots for new screens and material visual changes. Include mobile and dark-theme states when relevant.
 - Explain new reusable patterns or dependencies in the pull request.
 - Follow `CONTRIBUTING.md` for the contribution workflow.
+
+## Portuguese Diacritics (CRITICAL)
+
+When writing text in Brazilian Portuguese, ALWAYS use proper diacritics:
+- ç (cedilha): começar, ação, proteção, segurança, configuração
+- á (a agudo): já, está, criar, preço, mensagem
+- é (e agudo): é, também, você, próximo
+- ê (e circunflexo): você,-être
+- í (i agudo): iniciar, também, último
+- ó (o agudo): também, último, pronto
+- ú (u agudo): último, usuário
+- ã (a til): também, manhã, começa
+- õ (o til): também, não, são
+
+NEVER write Portuguese without diacritics. Examples:
+- Wrong: "Comecar", "voce", "tambem", "usuario", "seguranca"
+- Right: "Começar", "você", "também", "usuário", "segurança"

@@ -33,7 +33,7 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Comparacao de Recursos</CardTitle>
+        <CardTitle className="text-lg">Comparação de Recursos</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-0 p-0">
         {categories.map((cat) => (

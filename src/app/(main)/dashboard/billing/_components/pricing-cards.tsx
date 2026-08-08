@@ -75,7 +75,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                   <>
                     <span className="text-muted-foreground text-sm">R$</span>
                     <span className="text-4xl font-bold">{formatPrice(annual ? plan.yearlyPrice! : plan.monthlyPrice)}</span>
-                    <span className="text-muted-foreground text-sm">/{annual ? "ano" : "mes"}</span>
+                    <span className="text-muted-foreground text-sm">/{annual ? "ano" : "mês"}</span>
                   </>
                 ) : (
                   <span className="text-4xl font-bold">Personalizado</span>

@@ -25,7 +25,7 @@ export function BillingHistory({ entries }: BillingHistoryProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Historico de Faturamento</CardTitle>
+        <CardTitle className="text-lg">Histórico de Faturamento</CardTitle>
         <CardDescription>Veja suas faturas e pagamentos anteriores.</CardDescription>
       </CardHeader>
       <CardContent>
@@ -33,7 +33,7 @@ export function BillingHistory({ entries }: BillingHistoryProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Data</TableHead>
-              <TableHead>Descricao</TableHead>
+              <TableHead>Descrição</TableHead>
               <TableHead className="text-right">Valor</TableHead>
               <TableHead className="text-right">Status</TableHead>
             </TableRow>

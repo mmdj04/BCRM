@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const { plan, interval = "monthly", email, userId } = await request.json();
 
     if (!plan || !PLAN_PRICES[plan as keyof typeof PLAN_PRICES]) {
-      return NextResponse.json({ error: "Plano invalido" }, { status: 400 });
+      return NextResponse.json({ error: "Plano inválido" }, { status: 400 });
     }
 
     const priceAmount = PLAN_PRICES[plan as keyof typeof PLAN_PRICES][interval as "monthly" | "yearly"];

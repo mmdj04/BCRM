@@ -38,12 +38,12 @@ export function CurrentPlan() {
             <p className="text-lg font-medium">{currentPlan.name}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-muted-foreground">Proximo faturamento</p>
+            <p className="text-sm text-muted-foreground">Próximo faturamento</p>
             <p className="text-lg font-medium">{currentPlan.nextBilling}</p>
           </div>
           <div className="text-right">
             <p className="text-sm text-muted-foreground">Valor</p>
-            <p className="text-lg font-medium">R$ {currentPlan.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mes</p>
+            <p className="text-lg font-medium">R$ {currentPlan.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês</p>
           </div>
         </div>
 

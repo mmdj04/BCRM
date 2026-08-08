@@ -13,8 +13,8 @@ export function FineTune({ options }: FineTuneProps) {
       <CardHeader>
         <CardTitle className="text-lg">Ajuste seu projeto</CardTitle>
         <CardDescription>
-          Todos os projetos rodam em uma instancia de computacao. Os planos Pro e Team incluem compute Micro no preco base.
-          Projetos adicionais adicionam seu proprio custo de computacao.
+          Todos os projetos rodam em uma instância de computação. Os planos Pro e Team incluem compute Micro no preço base.
+          Projetos adicionais adicionam seu próprio custo de computação.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -22,7 +22,7 @@ export function FineTune({ options }: FineTuneProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Tamanho</TableHead>
-              <TableHead className="text-right">R$/mes</TableHead>
+              <TableHead className="text-right">R$/mês</TableHead>
               <TableHead>CPU</TableHead>
               <TableHead>Dedicado</TableHead>
               <TableHead>RAM</TableHead>
@@ -36,7 +36,7 @@ export function FineTune({ options }: FineTuneProps) {
                 <TableCell className="font-medium">{option.size}</TableCell>
                 <TableCell className="text-right">R$ {option.price.toLocaleString("pt-BR")}</TableCell>
                 <TableCell>{option.cpu}</TableCell>
-                <TableCell>{option.dedicated ? "Sim" : "Nao"}</TableCell>
+                <TableCell>{option.dedicated ? "Sim" : "Não"}</TableCell>
                 <TableCell>{option.ram}</TableCell>
                 <TableCell className="text-right">{option.directConnections}</TableCell>
                 <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>
