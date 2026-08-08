@@ -21,22 +21,22 @@ import { accounts } from "../accounts";
 import type { TransactionCategory, TransactionRow, TransactionStatus } from "./schema";
 
 const categoryClasses: Record<TransactionCategory, string> = {
-  Income: "bg-chart-2/15 text-chart-2 dark:text-chart-2",
-  Groceries: "bg-chart-1/15 text-chart-1 dark:text-chart-1",
-  Rent: "bg-chart-4/15 text-chart-4 dark:text-chart-4",
-  Subscriptions: "bg-chart-3/15 text-chart-3 dark:text-chart-3",
-  Transfers: "bg-muted text-foreground",
-  Crypto: "bg-chart-5/15 text-chart-5 dark:text-chart-5",
-  Dining: "bg-chart-1/10 text-chart-1 dark:text-chart-1",
-  Utilities: "bg-chart-4/10 text-chart-4 dark:text-chart-4",
-  Travel: "bg-chart-3/10 text-chart-3 dark:text-chart-3",
-  Other: "bg-muted text-muted-foreground",
+  Receita: "bg-chart-2/15 text-chart-2 dark:text-chart-2",
+  Mercearia: "bg-chart-1/15 text-chart-1 dark:text-chart-1",
+  Aluguel: "bg-chart-4/15 text-chart-4 dark:text-chart-4",
+  Assinaturas: "bg-chart-3/15 text-chart-3 dark:text-chart-3",
+  Transferências: "bg-muted text-foreground",
+  Cripto: "bg-chart-5/15 text-chart-5 dark:text-chart-5",
+  Alimentação: "bg-chart-1/10 text-chart-1 dark:text-chart-1",
+  Utilidades: "bg-chart-4/10 text-chart-4 dark:text-chart-4",
+  Viagem: "bg-chart-3/10 text-chart-3 dark:text-chart-3",
+  Outro: "bg-muted text-muted-foreground",
 };
 
 const statusClasses: Record<TransactionStatus, string> = {
-  Posted: "bg-green-500/10 text-green-700 dark:bg-green-500/15 dark:text-green-300",
-  Pending: "bg-amber-500/10 text-amber-700 dark:bg-amber-500/15 dark:text-amber-200",
-  Failed: "bg-destructive/10 text-destructive",
+  Compensado: "bg-green-500/10 text-green-700 dark:bg-green-500/15 dark:text-green-300",
+  Pendente: "bg-amber-500/10 text-amber-700 dark:bg-amber-500/15 dark:text-amber-200",
+  Falhou: "bg-destructive/10 text-destructive",
 };
 
 const sortStateLabels: Record<"asc" | "desc" | "none", string> = {
