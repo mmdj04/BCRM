@@ -100,7 +100,6 @@ function getStepType(index: number, current: number): "completed" | "current" | 
 export function SetupWizard() {
   const { currentStep, setStep } = useSetup();
   const StepComponent = steps[currentStep]?.component || WelcomeStep;
-  const currentStepData = steps[currentStep];
   const progress = ((currentStep) / (steps.length - 1)) * 100;
   const visibleSteps = getVisibleSteps(currentStep);
 
@@ -205,32 +204,6 @@ export function SetupWizard() {
                 </div>
               );
             })}
-          </div>
-
-          {/* Current step detail */}
-          <div className="mt-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {currentStepData && (() => {
-                const Icon = currentStepData.icon;
-                return <Icon className="size-4 text-muted-foreground" />;
-              })()}
-              <span className="font-medium text-foreground text-sm">
-                {currentStepData?.title}
-              </span>
-              {currentStepData?.required === true && (
-                <span className="rounded bg-destructive/10 px-1.5 py-0.5 font-medium text-[10px] text-destructive">
-                  Obrigatório
-                </span>
-              )}
-              {currentStepData?.required === false && (
-                <span className="rounded bg-muted px-1.5 py-0.5 font-medium text-[10px] text-muted-foreground">
-                  Opcional
-                </span>
-              )}
-            </div>
-            <span className="text-muted-foreground text-xs">
-              Etapa {currentStep + 1} de {steps.length}
-            </span>
           </div>
 
           {/* Dot overview */}
