@@ -26,8 +26,6 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
   const { checkout, loading } = useCheckout();
   const { isDemo } = useAuth();
 
-  const selectedPlanData = plans.find((p) => p.id === selectedPlan);
-
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
     const plan = plans.find((p) => p.id === planId);
@@ -61,9 +59,6 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
   const getComputeForPlan = (plan: Plan) => {
     return computeOptions.filter((c) => plan.allowedCompute.includes(c.id));
   };
-
-  const computePrice = selectedCompute ? (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0) : 0;
-  const totalPrice = (selectedPlanData?.monthlyPrice ?? 0) + computePrice;
 
   return (
     <div className="flex flex-col gap-6">
@@ -100,20 +95,24 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
 
                 {/* Base Features */}
                 <div className="flex flex-col gap-2">
-                  <ul className="flex flex-col gap-2">
-                    {plan.baseFeatures.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2 text-sm">
-                        <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {plan.baseFeatures.length > 0 && (
+                    <ul className="flex flex-col gap-2">
+                      {plan.baseFeatures.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-sm">
+                          <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
                   {/* Extra Features (cumulative) */}
                   {plan.extraFeatures.length > 0 && (
                     <>
-                      <Separator className="my-1" />
-                      <p className="font-medium text-primary text-xs">Tudo no Plano Inicial, mais:</p>
+                      {plan.baseFeatures.length > 0 && <Separator className="my-1" />}
+                      <p className="font-medium text-primary text-xs">
+                        {plan.featureHeader ?? "Tudo no Plano anterior, mais:"}
+                      </p>
                       <ul className="flex flex-col gap-2">
                         {plan.extraFeatures.map((feature) => (
                           <li key={feature} className="flex items-start gap-2 text-sm">

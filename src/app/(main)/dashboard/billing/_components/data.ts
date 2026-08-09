@@ -8,6 +8,7 @@ export type Plan = {
   cta: string;
   baseFeatures: string[];
   extraFeatures: string[];
+  featureHeader?: string;
   supabasePlan: string;
   allowedCompute: string[];
 };
@@ -44,17 +45,8 @@ export const plans: Plan[] = [
     cta: "Fazer Upgrade",
     supabasePlan: "Pro",
     allowedCompute: ["micro", "small", "medium", "large", "xlarge"],
-    baseFeatures: [
-      "Até 10 usuários",
-      "5 módulos",
-      "100 GB de armazenamento",
-      "1 projeto ativo",
-      "Banco Postgres dedicado",
-      "Auth com 100K MAU",
-      "Backups automáticos (7 dias)",
-      "Suporte por e-mail",
-      "Relatórios básicos",
-    ],
+    baseFeatures: [],
+    featureHeader: "Tudo no Plano Inicial, mais:",
     extraFeatures: [
       "Até 50 usuários",
       "Todos os módulos",
@@ -75,27 +67,9 @@ export const plans: Plan[] = [
     cta: "Fazer Upgrade",
     supabasePlan: "Team",
     allowedCompute: ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge"],
-    baseFeatures: [
-      "Até 10 usuários",
-      "5 módulos",
-      "100 GB de armazenamento",
-      "1 projeto ativo",
-      "Banco Postgres dedicado",
-      "Auth com 100K MAU",
-      "Backups automáticos (7 dias)",
-      "Suporte por e-mail",
-      "Relatórios básicos",
-    ],
+    baseFeatures: [],
+    featureHeader: "Tudo no Plano Pro, mais:",
     extraFeatures: [
-      "Até 50 usuários",
-      "Todos os módulos",
-      "3 projetos ativos",
-      "Banco com 4 GB RAM",
-      "SAML/SSO (50 usuários)",
-      "Suporte prioritário",
-      "Relatórios avançados",
-      "API de integração",
-      "Faturamento e Finanças",
       "Usuários ilimitados",
       "5 projetos ativos",
       "Banco com 8 GB RAM (dedicado)",
@@ -106,6 +80,21 @@ export const plans: Plan[] = [
     ],
   },
 ];
+
+export function getAllPlanFeatures(planId: string): string[] {
+  const plan = plans.find((p) => p.id === planId);
+  if (!plan) return [];
+  if (plan.id === "starter") {
+    return [...plan.baseFeatures];
+  }
+  const prevPlan =
+    plan.id === "pro"
+      ? plans.find((p) => p.id === "starter")
+      : plan.id === "team"
+        ? plans.find((p) => p.id === "pro")
+        : undefined;
+  return [...(prevPlan ? getAllPlanFeatures(prevPlan.id) : []), ...plan.extraFeatures];
+}
 
 export type FeatureCategory = {
   category: string;
