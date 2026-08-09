@@ -1,4 +1,5 @@
 import { ChangelogList } from "./_components/changelog-list";
+import { getChangelogTypeFromContent } from "./_components/changelog-icon";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -7,10 +8,12 @@ function getChangelog(): string {
   return fs.readFileSync(filePath, "utf-8");
 }
 
+type ChangelogEntryType = "feature" | "fix" | "maintenance";
+
 function parseChangelog(markdown: string) {
   const lines = markdown.split("\n");
-  const entries: { version: string; date: string; content: string }[] = [];
-  let current: { version: string; date: string; content: string } | null = null;
+  const entries: { version: string; date: string; content: string; type: ChangelogEntryType }[] = [];
+  let current: { version: string; date: string; content: string; type: ChangelogEntryType } | null = null;
 
   for (const line of lines) {
     // Match "## Versão 1.0.0 — BCRM: ..." or "## Versão Agosto de 2026"
@@ -26,6 +29,7 @@ function parseChangelog(markdown: string) {
         version: raw,
         date: dateMatch?.[1] || "Versão atual",
         content: "",
+        type: "feature",
       };
       continue;
     }
@@ -42,6 +46,7 @@ function parseChangelog(markdown: string) {
   return entries.map((e) => ({
     ...e,
     content: e.content.trim(),
+    type: getChangelogTypeFromContent(e.content),
   }));
 }
 
