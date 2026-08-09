@@ -1,6 +1,7 @@
 "use client";
 
 import { format, subMonths } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { BadgeDollarSign, Wallet } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, Line, LineChart, XAxis } from "recharts";
 
@@ -16,7 +17,7 @@ import {
   revenueChartData,
 } from "./crm.config";
 
-const lastMonth = format(subMonths(new Date(), 1), "LLLL");
+const lastMonth = format(subMonths(new Date(), 1), "LLLL", { locale: ptBR });
 
 export function OverviewCards() {
   return (

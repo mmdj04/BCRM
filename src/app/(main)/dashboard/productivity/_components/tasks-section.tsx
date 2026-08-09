@@ -17,11 +17,11 @@ type Task = {
 };
 
 const tasks: Task[] = [
-  { title: "Finalizar roteiro do Q2", tag: "Trabalho", time: "10:00 AM", checked: false },
-  { title: "Revisar atualizações do sistema de design", tag: "Design", time: "11:30 AM", checked: true },
-  { title: "Responder e-mails importantes", tag: "Administração", time: "2:00 PM", checked: false },
-  { title: "Planejar conteúdo de criador para esta semana", tag: "Conteúdo", time: "4:30 PM", checked: false },
-  { title: "Preparar notas da sincronização semanal da equipe", tag: "Planejamento", time: "6:00 PM", checked: false },
+  { title: "Finalizar roteiro do Q2", tag: "Trabalho", time: "10:00", checked: false },
+  { title: "Revisar atualizações do sistema de design", tag: "Design", time: "11:30", checked: true },
+  { title: "Responder e-mails importantes", tag: "Administração", time: "14:00", checked: false },
+  { title: "Planejar conteúdo de criador para esta semana", tag: "Conteúdo", time: "16:30", checked: false },
+  { title: "Preparar notas da sincronização semanal da equipe", tag: "Planejamento", time: "18:00", checked: false },
 ];
 
 export function TasksSection() {

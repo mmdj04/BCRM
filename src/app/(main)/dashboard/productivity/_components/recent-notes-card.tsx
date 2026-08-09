@@ -1,4 +1,5 @@
 import { format, isToday, isYesterday, subDays } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { BookOpen, FileText } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -9,12 +10,16 @@ const today = new Date();
 function formatNoteDate(date: Date) {
   if (isToday(date)) return "Hoje";
   if (isYesterday(date)) return "Ontem";
-  return format(date, "MMM d");
+  return format(date, "d 'de' MMM", { locale: ptBR });
 }
 
 const recentNotes = [
   { title: "Princípios de design que escalam", date: formatNoteDate(today), icon: FileText },
-  { title: `Ideias de conteúdo – ${format(today, "MMMM")}`, date: formatNoteDate(subDays(today, 1)), icon: FileText },
+  {
+    title: `Ideias de conteúdo – ${format(today, "MMMM", { locale: ptBR })}`,
+    date: formatNoteDate(subDays(today, 1)),
+    icon: FileText,
+  },
   { title: "Lições da semana", date: formatNoteDate(subDays(today, 4)), icon: FileText },
   { title: "Livros que estou lendo", date: formatNoteDate(subDays(today, 5)), icon: BookOpen },
 ] as const;

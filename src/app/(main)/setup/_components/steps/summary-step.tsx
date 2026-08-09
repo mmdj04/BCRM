@@ -11,7 +11,6 @@ import {
   CreditCard,
   Globe,
   LayoutDashboard,
-  Server,
   Smartphone,
   Users,
   X,
@@ -26,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSetup } from "@/contexts/setup-context";
 import { useAuth } from "@/lib/supabase/auth-context";
 
@@ -685,38 +685,95 @@ export function SummaryStep() {
             {selectedPlan && (
               <div className="mt-4">
                 <h3 className="mb-3 font-semibold text-base">Escolha o Compute</h3>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {computeOptions
-                    .filter((c) => plans.find((p) => p.id === selectedPlan)?.allowedCompute.includes(c.id))
-                    .map((opt) => (
-                      <button
-                        key={opt.id}
-                        type="button"
-                        onClick={() => setSelectedCompute(opt.id)}
-                        className={`flex items-center justify-between rounded-lg border p-3 text-left transition-all ${
-                          selectedCompute === opt.id
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-muted-foreground/50"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <Server className="size-4 text-muted-foreground" />
-                          <div className="flex flex-col">
-                            <span className="font-medium text-sm">{opt.size}</span>
-                            <span className="text-muted-foreground text-xs">
-                              {opt.cpu} / {opt.ram} RAM
-                              {opt.dedicated ? " (dedicado)" : ""}
-                            </span>
-                          </div>
-                        </div>
-                        <span className="font-medium text-sm">
-                          + R$ {opt.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-                        </span>
-                      </button>
-                    ))}
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-8" />
+                        <TableHead>Tamanho</TableHead>
+                        <TableHead className="text-right">R$/mês</TableHead>
+                        <TableHead>CPU</TableHead>
+                        <TableHead>Dedicado</TableHead>
+                        <TableHead>RAM</TableHead>
+                        <TableHead className="text-right">Conex. Diretas</TableHead>
+                        <TableHead className="text-right">Conex. Pooler</TableHead>
+                        <TableHead className="hidden min-w-[280px] lg:table-cell">Benefícios</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {computeOptions
+                        .filter((c) => plans.find((p) => p.id === selectedPlan)?.allowedCompute.includes(c.id))
+                        .map((option) => {
+                          const isSelected = selectedCompute === option.id;
+                          return (
+                            <TableRow
+                              key={option.id}
+                              className={`cursor-pointer transition-colors ${
+                                isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50"
+                              }`}
+                              onClick={() => setSelectedCompute(option.id)}
+                            >
+                              <TableCell className="w-8 pr-0">
+                                <div
+                                  className={`flex size-5 items-center justify-center rounded-full border-2 transition-colors ${
+                                    isSelected
+                                      ? "border-primary bg-primary text-primary-foreground"
+                                      : "border-muted-foreground/30"
+                                  }`}
+                                >
+                                  {isSelected && <Check className="size-3" />}
+                                </div>
+                              </TableCell>
+                              <TableCell className="font-medium">{option.size}</TableCell>
+                              <TableCell className="text-right font-medium">
+                                R$ {option.price.toLocaleString("pt-BR")}
+                              </TableCell>
+                              <TableCell>{option.cpu}</TableCell>
+                              <TableCell>{option.dedicated ? "Sim" : "Não"}</TableCell>
+                              <TableCell>{option.ram}</TableCell>
+                              <TableCell className="text-right">{option.directConnections}</TableCell>
+                              <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>
+                              <TableCell className="hidden min-w-[280px] lg:table-cell">
+                                <ul className="flex flex-col gap-0.5">
+                                  {option.benefits.map((benefit) => (
+                                    <li key={benefit} className="flex items-start gap-1 text-muted-foreground text-xs">
+                                      <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+                                      {benefit}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                    </TableBody>
+                  </Table>
                 </div>
 
-                {/* Total */}
+                {selectedCompute && (
+                  <div className="mt-4 lg:hidden">
+                    {computeOptions
+                      .filter(
+                        (o) =>
+                          o.id === selectedCompute &&
+                          plans.find((p) => p.id === selectedPlan)?.allowedCompute.includes(o.id),
+                      )
+                      .map((option) => (
+                        <div key={option.id} className="rounded-lg border bg-muted/30 p-3">
+                          <p className="mb-2 font-medium text-sm">Benefícios — {option.size}</p>
+                          <ul className="flex flex-col gap-1">
+                            {option.benefits.map((benefit) => (
+                              <li key={benefit} className="flex items-start gap-1.5 text-muted-foreground text-xs">
+                                <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+                                {benefit}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                  </div>
+                )}
+
                 <div className="mt-3 rounded-lg bg-muted/50 p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground text-sm">Plano {selectedPlanData?.name} + Compute</span>

@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Download, RotateCw, Settings2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -34,7 +35,7 @@ export default function Page() {
   React.useEffect(() => {
     setNow(new Date());
   }, []);
-  const formattedDate = now ? format(now, "EEEE, do MMMM yyyy") : " ";
+  const formattedDate = now ? format(now, "EEEE, d 'de' MMMM 'de' yyyy", { locale: ptBR }) : " ";
   const [activeTab, setActiveTab] = React.useState<string>(DASHBOARD_TAB);
   const [accountFilterSeed, setAccountFilterSeed] = React.useState<string | undefined>(undefined);
   const transactionsTriggerRef = React.useRef<HTMLButtonElement>(null);

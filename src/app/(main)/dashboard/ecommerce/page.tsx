@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { Settings2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,16 @@ import { StoreTraffic } from "./_components/store-traffic";
 import { TopProducts } from "./_components/top-products";
 import { TrafficSources } from "./_components/traffic-sources";
 
+const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
+  timeZone: "America/Sao_Paulo",
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
 export default function Page() {
-  const formattedDate = format(new Date(), "EEEE, do MMMM yyyy");
+  const formattedDate = dateFormatter.format(new Date());
 
   return (
     <div className="flex flex-col gap-4">

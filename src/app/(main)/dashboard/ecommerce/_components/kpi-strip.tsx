@@ -1,6 +1,7 @@
 "use client";
 
 import { format, parse } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { ArrowUpRight, DollarSign, PackageCheck, ReceiptText, RotateCcw, ShoppingBag, Users } from "lucide-react";
 import { Area, Bar, CartesianGrid, ComposedChart, XAxis, YAxis } from "recharts";
 
@@ -78,11 +79,13 @@ function formatTooltipLabel(value: string) {
   const startDate = new Date(month.getFullYear(), month.getMonth(), Number(start));
   const endDate = new Date(month.getFullYear(), month.getMonth(), Math.min(Number(end), lastDayOfMonth));
 
-  return `${format(month, "MMM")} ${format(startDate, "do")} - ${format(endDate, "do")}, ${format(month, "yyyy")}`;
+  return `${format(month, "MMM", { locale: ptBR })} ${format(startDate, "d", { locale: ptBR })} - ${format(endDate, "d", { locale: ptBR })}, ${format(month, "yyyy", { locale: ptBR })}`;
 }
 
+const brlFormatter = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
 function formatCurrencyTooltipValue(value: unknown) {
-  return typeof value === "number" ? `R$ ${value.toLocaleString()}` : String(value ?? "");
+  return typeof value === "number" ? brlFormatter.format(value) : String(value ?? "");
 }
 
 export function KpiStrip() {

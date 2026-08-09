@@ -1,4 +1,5 @@
 import { addDays, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { ClipboardCheck, Globe, Orbit, Plus } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +16,7 @@ const projects = [
     status: "Em Andamento",
     description: "Entregue melhor, entregue de forma mais inteligente.",
     progress: 68,
-    due: `Prazo ${format(addDays(today, 9), "MMM d")}`,
+    due: `Prazo ${format(addDays(today, 9), "d 'de' MMM", { locale: ptBR })}`,
     icon: Orbit,
   },
   {
@@ -23,7 +24,7 @@ const projects = [
     status: "Planejamento",
     description: "Limpo, moderno e rápido.",
     progress: 42,
-    due: `Prazo ${format(addDays(today, 21), "MMM d")}`,
+    due: `Prazo ${format(addDays(today, 21), "d 'de' MMM", { locale: ptBR })}`,
     icon: Globe,
   },
   {
@@ -31,7 +32,7 @@ const projects = [
     status: "Planejamento",
     description: "Reduza etapas iniciais.",
     progress: 31,
-    due: `Prazo ${format(addDays(today, 18), "MMM d")}`,
+    due: `Prazo ${format(addDays(today, 18), "d 'de' MMM", { locale: ptBR })}`,
     icon: ClipboardCheck,
   },
 ] as const;

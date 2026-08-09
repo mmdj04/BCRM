@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { eachDayOfInterval, format, startOfDay, subDays } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Check, ChevronsUpDown, Download } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import { Area, ComposedChart, XAxis, YAxis } from "recharts";
@@ -135,7 +136,7 @@ function buildRevenueChartData(from: Date, to: Date) {
     currentRevenue = Math.max(minRevenue, Math.min(maxRevenue, nextRevenue));
 
     return {
-      day: format(day, "MMM d"),
+      day: format(day, "d 'de' MMM", { locale: ptBR }),
       revenue: currentRevenue,
     };
   });

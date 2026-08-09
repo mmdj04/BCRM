@@ -2,6 +2,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Subscribe } from "@tanstack/react-table";
 import { addMinutes, differenceInCalendarDays, endOfToday, format, parseISO } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { CircleAlertIcon, CircleCheckIcon, Clock3Icon, LoaderIcon, UserRound } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -135,8 +136,8 @@ export const recentCustomersColumns: ColumnDef<DataTableFeatures, RecentCustomer
 
       return (
         <div className="grid gap-0.5">
-          <span className="text-sm">{format(joinedAt, "do MMMM yyyy")}</span>
-          <span className="text-muted-foreground text-xs">às {format(joinedAt, "h:mm a")}</span>
+          <span className="text-sm">{format(joinedAt, "d 'de' MMMM 'de' yyyy", { locale: ptBR })}</span>
+          <span className="text-muted-foreground text-xs">às {format(joinedAt, "HH:mm", { locale: ptBR })}</span>
         </div>
       );
     },

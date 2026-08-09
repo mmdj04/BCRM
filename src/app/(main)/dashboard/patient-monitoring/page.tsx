@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Network, Printer, Volume2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +23,7 @@ export default function Page() {
         <div className="whitespace-nowrap">{patients.length} Pacientes</div>
         <div className="col-span-2 flex items-center justify-between gap-5 text-muted-foreground lg:col-span-1 lg:justify-end">
           <span className="whitespace-nowrap tabular-nums">
-            {format(now, "dd MMM yyyy")}&nbsp;&nbsp;{format(now, "HH:mm:ss")}
+            {format(now, "dd MMM yyyy", { locale: ptBR })}&nbsp;&nbsp;{format(now, "HH:mm:ss")}
           </span>
           <Tooltip>
             <TooltipTrigger aria-label="Áudio de alarme ativado" className="inline-flex" type="button">

@@ -1,6 +1,7 @@
 "use client";
 
 import { addDays, format, set } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { ChevronRight, Zap } from "lucide-react";
 import { siClaude, siLinear, siResend } from "simple-icons";
 
@@ -12,19 +13,25 @@ const transactions = [
   {
     id: 1,
     title: "Claude Pro Subscription",
-    date: format(set(addDays(new Date(), 2), { hours: 14, minutes: 45 }), "hh.mm a '•' MMMM dd, yyyy"),
+    date: format(set(addDays(new Date(), 2), { hours: 14, minutes: 45 }), "HH:mm '•' d 'de' MMMM 'de' yyyy", {
+      locale: ptBR,
+    }),
     icon: siClaude,
   },
   {
     id: 2,
     title: "Resend Pro Team",
-    date: format(set(addDays(new Date(), 4), { hours: 7, minutes: 0 }), "hh.mm a '•' MMMM dd, yyyy"),
+    date: format(set(addDays(new Date(), 4), { hours: 7, minutes: 0 }), "HH:mm '•' d 'de' MMMM 'de' yyyy", {
+      locale: ptBR,
+    }),
     icon: siResend,
   },
   {
     id: 3,
     title: "Linear Plus Plan",
-    date: format(set(addDays(new Date(), 10), { hours: 7, minutes: 0 }), "hh.mm a '•' MMMM dd, yyyy"),
+    date: format(set(addDays(new Date(), 10), { hours: 7, minutes: 0 }), "HH:mm '•' d 'de' MMMM 'de' yyyy", {
+      locale: ptBR,
+    }),
     icon: siLinear,
   },
 ];

@@ -1,4 +1,5 @@
 import { addDays, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -57,9 +58,11 @@ export function UpcomingEvents() {
               <div className="flex items-center gap-2">
                 <div className="size-11 shrink-0 overflow-hidden rounded-sm border">
                   <div className="grid h-1/3 place-items-center border-b bg-muted font-medium text-[10px] uppercase leading-none">
-                    {format(eventDate, "MMM")}
+                    {format(eventDate, "MMM", { locale: ptBR })}
                   </div>
-                  <div className="grid h-2/3 place-items-center text-lg leading-none">{format(eventDate, "d")}</div>
+                  <div className="grid h-2/3 place-items-center text-lg leading-none">
+                    {format(eventDate, "d", { locale: ptBR })}
+                  </div>
                 </div>
 
                 <div className="flex min-w-0 flex-col gap-1">

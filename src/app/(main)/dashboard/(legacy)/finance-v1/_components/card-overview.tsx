@@ -1,6 +1,7 @@
 "use client";
 
 import { addDays, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Home, Receipt, Sparkles, Zap } from "lucide-react";
 import { siApple, siMastercard } from "simple-icons";
 
@@ -18,28 +19,28 @@ const upcomingPayments = [
     icon: Home,
     title: "Aluguel do Apartamento",
     amount: 1200,
-    date: `Vence em ${format(addDays(now, 2), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 2), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}`,
   },
   {
     id: 2,
     icon: Zap,
     title: "Conta de Eletricidade",
     amount: 75,
-    date: `Vence em ${format(addDays(now, 2), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 2), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}`,
   },
   {
     id: 3,
     icon: Sparkles,
     title: "ChatGPT Plus",
     amount: 20,
-    date: `Vence em ${format(addDays(now, 7), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 7), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}`,
   },
   {
     id: 4,
     icon: Receipt,
     title: "Pagamento do Cartão de Crédito",
     amount: 420,
-    date: `Vence em ${format(addDays(now, 9), "do MMMM yyyy")}`,
+    date: `Vence em ${format(addDays(now, 9), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}`,
   },
 ];
 

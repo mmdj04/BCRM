@@ -18,6 +18,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/supabase/auth-context";
 
@@ -151,36 +152,91 @@ function ChangePlanContent({
         </RadioGroup>
       </div>
 
-      {/* Compute Tier Selection */}
-      {selectedPlan && newPlanData && (
+      {selectedPlan && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <Server className="size-4 text-muted-foreground" />
             <Label className="font-medium">Escolha o Compute</Label>
           </div>
-          <div className="grid gap-2">
-            {computeOptions.map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => onSelectCompute(opt.id)}
-                className={`flex items-center justify-between rounded-lg border p-3 text-left transition-all ${
-                  selectedCompute === opt.id
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-muted-foreground/50"
-                }`}
-              >
-                <div className="flex flex-col">
-                  <span className="font-medium text-sm">{opt.size}</span>
-                  <span className="text-muted-foreground text-xs">
-                    {opt.cpu} / {opt.ram} RAM
-                    {opt.dedicated ? " (dedicado)" : ""}
-                  </span>
-                </div>
-                <span className="font-medium text-sm">+ R$ {formatPrice(opt.price)}/mês</span>
-              </button>
-            ))}
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-8" />
+                  <TableHead>Tamanho</TableHead>
+                  <TableHead className="text-right">R$/mês</TableHead>
+                  <TableHead>CPU</TableHead>
+                  <TableHead>Dedicado</TableHead>
+                  <TableHead>RAM</TableHead>
+                  <TableHead className="text-right">Conex. Diretas</TableHead>
+                  <TableHead className="text-right">Conex. Pooler</TableHead>
+                  <TableHead className="hidden min-w-[280px] lg:table-cell">Benefícios</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {computeOptions.map((option) => {
+                  const isSelected = selectedCompute === option.id;
+                  return (
+                    <TableRow
+                      key={option.id}
+                      className={`cursor-pointer transition-colors ${
+                        isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50"
+                      }`}
+                      onClick={() => onSelectCompute(option.id)}
+                    >
+                      <TableCell className="w-8 pr-0">
+                        <div
+                          className={`flex size-5 items-center justify-center rounded-full border-2 transition-colors ${
+                            isSelected
+                              ? "border-primary bg-primary text-primary-foreground"
+                              : "border-muted-foreground/30"
+                          }`}
+                        >
+                          {isSelected && <Check className="size-3" />}
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium">{option.size}</TableCell>
+                      <TableCell className="text-right font-medium">R$ {formatPrice(option.price)}</TableCell>
+                      <TableCell>{option.cpu}</TableCell>
+                      <TableCell>{option.dedicated ? "Sim" : "Não"}</TableCell>
+                      <TableCell>{option.ram}</TableCell>
+                      <TableCell className="text-right">{option.directConnections}</TableCell>
+                      <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>
+                      <TableCell className="hidden min-w-[280px] lg:table-cell">
+                        <ul className="flex flex-col gap-0.5">
+                          {option.benefits.map((benefit) => (
+                            <li key={benefit} className="flex items-start gap-1 text-muted-foreground text-xs">
+                              <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+                              {benefit}
+                            </li>
+                          ))}
+                        </ul>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
+          {selectedCompute && (
+            <div className="lg:hidden">
+              {computeOptions
+                .filter((o) => o.id === selectedCompute)
+                .map((option) => (
+                  <div key={option.id} className="rounded-lg border bg-muted/30 p-3">
+                    <p className="mb-2 font-medium text-sm">Benefícios — {option.size}</p>
+                    <ul className="flex flex-col gap-1">
+                      {option.benefits.map((benefit) => (
+                        <li key={benefit} className="flex items-start gap-1.5 text-muted-foreground text-xs">
+                          <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+                          {benefit}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       )}
 

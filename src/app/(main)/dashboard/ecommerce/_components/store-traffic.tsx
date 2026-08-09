@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { format, subMinutes } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { ArrowUpRight } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, Line, XAxis, YAxis } from "recharts";
 
@@ -138,7 +139,7 @@ const trafficConfig = {
 } satisfies ChartConfig;
 
 function formatTrafficTooltipLabel(value: string) {
-  return format(new Date(value), "h:mm a, do MMMM yyyy");
+  return format(new Date(value), "HH:mm, d 'de' MMMM 'de' yyyy", { locale: ptBR });
 }
 
 export function StoreTraffic() {

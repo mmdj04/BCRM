@@ -1,11 +1,12 @@
 import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ClassSchedule() {
-  const today = format(new Date(), "EEEE, d MMMM");
+  const today = format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR });
 
   return (
     <Card>

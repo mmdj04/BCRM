@@ -3,6 +3,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { format, parseISO } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { SimpleIcon } from "@/components/simple-icon";
@@ -96,8 +97,10 @@ export const transactionsColumns: ColumnDef<DataTableFeatures, TransactionRow>[]
       const parsed = parseISO(row.original.date);
       return (
         <div className="flex flex-col text-sm">
-          <span className="font-medium tabular-nums">{format(parsed, "MMM d")}</span>
-          <span className="text-muted-foreground text-xs tabular-nums">{format(parsed, "h:mm a")}</span>
+          <span className="font-medium tabular-nums">{format(parsed, "d 'de' MMM", { locale: ptBR })}</span>
+          <span className="text-muted-foreground text-xs tabular-nums">
+            {format(parsed, "HH:mm", { locale: ptBR })}
+          </span>
         </div>
       );
     },
