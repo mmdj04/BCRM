@@ -11,6 +11,7 @@ import { useSetup } from "@/contexts/setup-context";
 
 export function CompanyStep() {
   const { setupData, updateSetupData, setStep } = useSetup();
+  const canProceed = setupData.company.name.trim().length > 0;
 
   return (
     <Card className="border-0 shadow-none">
@@ -106,7 +107,7 @@ export function CompanyStep() {
           <Button variant="outline" onClick={() => setStep(0)}>
             Voltar
           </Button>
-          <Button onClick={() => setStep(2)}>Próximo</Button>
+          <Button onClick={() => setStep(2)} disabled={!canProceed}>Próximo</Button>
         </div>
       </CardContent>
     </Card>

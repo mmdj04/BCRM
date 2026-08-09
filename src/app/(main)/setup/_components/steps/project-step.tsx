@@ -11,6 +11,7 @@ import { useSetup } from "@/contexts/setup-context";
 
 export function ProjectStep() {
   const { setupData, updateSetupData, setStep } = useSetup();
+  const canProceed = setupData.project.name.trim().length > 0;
 
   return (
     <Card className="border-0 shadow-none">
@@ -65,7 +66,7 @@ export function ProjectStep() {
           <Button variant="outline" onClick={() => setStep(1)}>
             Voltar
           </Button>
-          <Button onClick={() => setStep(3)}>Próximo</Button>
+          <Button onClick={() => setStep(3)} disabled={!canProceed}>Próximo</Button>
         </div>
       </CardContent>
     </Card>

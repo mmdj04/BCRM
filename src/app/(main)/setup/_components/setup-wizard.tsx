@@ -15,19 +15,20 @@ import { UsersStep } from "./steps/users-step";
 import { WelcomeStep } from "./steps/welcome-step";
 
 const steps = [
-  { title: "Boas-vindas", component: WelcomeStep },
-  { title: "Empresa", component: CompanyStep },
-  { title: "Projeto", component: ProjectStep },
-  { title: "Módulos", component: ModulesStep },
-  { title: "Pagamento", component: PaymentStep },
-  { title: "Usuários", component: UsersStep },
-  { title: "Notificações", component: NotificationsStep },
-  { title: "Resumo", component: SummaryStep },
+  { title: "Boas-vindas", component: WelcomeStep, required: null },
+  { title: "Empresa", component: CompanyStep, required: true },
+  { title: "Projeto", component: ProjectStep, required: true },
+  { title: "Módulos", component: ModulesStep, required: true },
+  { title: "Pagamento", component: PaymentStep, required: false },
+  { title: "Usuários", component: UsersStep, required: false },
+  { title: "Notificações", component: NotificationsStep, required: false },
+  { title: "Resumo", component: SummaryStep, required: null },
 ];
 
 export function SetupWizard() {
   const { currentStep } = useSetup();
   const StepComponent = steps[currentStep]?.component || WelcomeStep;
+  const currentStepData = steps[currentStep];
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
@@ -57,8 +58,20 @@ export function SetupWizard() {
               </div>
             ))}
           </div>
-          <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-            <span className="hidden sm:inline">{steps[currentStep]?.title}</span>
+          <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+            <span className="hidden sm:inline">
+              {currentStepData?.title}
+              {currentStepData?.required === true && (
+                <span className="ml-2 rounded bg-destructive/10 px-1.5 py-0.5 text-destructive text-[10px] font-medium">
+                  Obrigatório
+                </span>
+              )}
+              {currentStepData?.required === false && (
+                <span className="ml-2 rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium">
+                  Opcional
+                </span>
+              )}
+            </span>
             <span>
               Etapa {currentStep + 1} de {steps.length}
             </span>

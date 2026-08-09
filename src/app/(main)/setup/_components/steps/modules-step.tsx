@@ -47,6 +47,7 @@ export function ModulesStep() {
   };
 
   const enabledCount = Object.values(setupData.modules).filter(Boolean).length;
+  const canProceed = enabledCount > 0;
 
   return (
     <Card className="border-0 shadow-none">
@@ -99,7 +100,7 @@ export function ModulesStep() {
           <Button variant="outline" onClick={() => setStep(2)}>
             Voltar
           </Button>
-          <Button onClick={() => setStep(4)}>Próximo</Button>
+          <Button onClick={() => setStep(4)} disabled={!canProceed}>Próximo</Button>
         </div>
       </CardContent>
     </Card>
