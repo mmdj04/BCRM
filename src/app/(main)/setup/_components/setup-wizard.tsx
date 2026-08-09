@@ -1,5 +1,7 @@
 "use client";
 
+import { Check } from "lucide-react";
+
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
 
@@ -42,7 +44,7 @@ export function SetupWizard() {
                     index > currentStep && "bg-muted text-muted-foreground",
                   )}
                 >
-                  {index < currentStep ? "✓" : index + 1}
+                  {index < currentStep ? <Check className="size-4" /> : index + 1}
                 </div>
                 {index < steps.length - 1 && (
                   <div
