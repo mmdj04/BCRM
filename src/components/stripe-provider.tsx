@@ -1,7 +1,6 @@
 "use client";
 
 import { CheckoutElementsProvider, useCheckoutElements, PaymentElement, CurrencySelectorElement } from "@stripe/react-stripe-js/checkout";
-import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
 import { getStripe } from "@/lib/stripe/client";

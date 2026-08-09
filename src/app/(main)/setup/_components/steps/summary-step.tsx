@@ -26,6 +26,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useSetup } from "@/contexts/setup-context";
 import { useAuth } from "@/lib/supabase/auth-context";
+import { createClient } from "@supabase/supabase-js";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -154,6 +155,13 @@ export function SummaryStep() {
   const openPaymentDialog = async () => {
     // Demo mode: skip Stripe entirely, mark payment as complete
     if (isDemo) {
+      // Save plan to localStorage for demo mode
+      localStorage.setItem("bcrm_demo_plan", JSON.stringify({
+        plan: selectedPlan,
+        interval: "monthly",
+        status: "active",
+        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+      }));
       setPaymentComplete(true);
       return;
     }
@@ -187,10 +195,31 @@ export function SummaryStep() {
     }
   };
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     setPaymentDialogOpen(false);
     setPaymentComplete(true);
     setClientSecret(null);
+
+    // Save plan to Supabase directly (backup to webhook)
+    if (user?.id) {
+      try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+        if (supabaseUrl && supabaseKey) {
+          const supabase = createClient(supabaseUrl, supabaseKey);
+          const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+          await supabase.from("users").upsert({
+            id: user.id,
+            plan: selectedPlan,
+            plan_interval: "monthly",
+            subscription_status: "active",
+            current_period_end: periodEnd,
+          }, { onConflict: "id" });
+        }
+      } catch {
+        // Webhook will handle it as backup
+      }
+    }
   };
 
   const handlePaymentCancel = () => {

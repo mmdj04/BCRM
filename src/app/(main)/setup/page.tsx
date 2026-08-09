@@ -10,7 +10,7 @@ import { SetupWizard } from "./_components/setup-wizard";
 
 function SetupContent() {
   const router = useRouter();
-  const { user, isDemo, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { isSetupComplete, isLoading: setupLoading } = useSetup();
 
   useEffect(() => {

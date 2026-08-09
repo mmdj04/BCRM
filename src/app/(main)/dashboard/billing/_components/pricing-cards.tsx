@@ -8,7 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/lib/supabase/auth-context";
 import { useCheckout } from "@/hooks/use-checkout";
+import { toast } from "sonner";
 
 import type { Plan } from "./data";
 
@@ -21,8 +23,13 @@ type PricingCardsProps = {
 export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
   const [annual, setAnnual] = useState(false);
   const { checkout, loading } = useCheckout();
+  const { isDemo } = useAuth();
 
   const handleCheckout = async (planId: string) => {
+    if (isDemo) {
+      toast.error("Stripe não disponível no modo de demonstração. Faça login com uma conta real para assinar.");
+      return;
+    }
     if (!userEmail || !userId) {
       window.location.href = "/auth/v1/login";
       return;
@@ -101,7 +108,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                 onClick={() => plan.monthlyPrice !== null && handleCheckout(plan.id)}
                 disabled={loading || plan.monthlyPrice === null}
               >
-                {loading ? "Processando..." : plan.cta}
+                {isDemo ? "Indisponível no Demo" : loading ? "Processando..." : plan.cta}
               </Button>
             </CardFooter>
           </Card>

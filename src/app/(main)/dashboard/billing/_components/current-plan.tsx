@@ -2,11 +2,16 @@
 
 import { useEffect, useState } from "react";
 
+import { CreditCard } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/lib/supabase/auth-context";
 import { createClient } from "@supabase/supabase-js";
+
+import { ChangePlanDialog } from "./change-plan-dialog";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -37,6 +42,7 @@ export function CurrentPlan() {
   const { user } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [changePlanOpen, setChangePlanOpen] = useState(false);
 
   useEffect(() => {
     async function fetchSubscription() {
@@ -59,9 +65,26 @@ export function CurrentPlan() {
             currentPeriodEnd: data.current_period_end,
             cancelAtPeriodEnd: data.cancel_at_period_end ?? false,
           });
+          return;
         }
       } catch {
         // User might not exist in DB yet (demo mode)
+      }
+
+      // Fallback: check localStorage for demo plan
+      try {
+        const demoPlan = localStorage.getItem("bcrm_demo_plan");
+        if (demoPlan) {
+          const parsed = JSON.parse(demoPlan);
+          setSubscription({
+            plan: parsed.plan ?? "free",
+            status: parsed.status ?? "active",
+            currentPeriodEnd: parsed.currentPeriodEnd ?? null,
+            cancelAtPeriodEnd: false,
+          });
+        }
+      } catch {
+        // ignore
       } finally {
         setLoading(false);
       }
@@ -92,62 +115,82 @@ export function CurrentPlan() {
     ? new Date(subscription.currentPeriodEnd).toLocaleDateString("pt-BR", { month: "short", day: "numeric", year: "numeric" })
     : null;
 
+  const handlePlanChanged = (newPlan: string) => {
+    setSubscription((prev) => prev ? { ...prev, plan: newPlan } : prev);
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="text-lg">Plano Atual</CardTitle>
-            <CardDescription>Sua assinatura ativa.</CardDescription>
+    <>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-lg">Plano Atual</CardTitle>
+              <CardDescription>Sua assinatura ativa.</CardDescription>
+            </div>
+            <Badge
+              variant="outline"
+              className={
+                status === "active"
+                  ? "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+                  : "border-muted"
+              }
+            >
+              {status === "active" ? "Ativo" : status === "past_due" ? "Atrasado" : status === "canceled" ? "Cancelado" : "Gratuito"}
+            </Badge>
           </div>
-          <Badge
-            variant="outline"
-            className={
-              status === "active"
-                ? "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
-                : "border-muted"
-            }
-          >
-            {status === "active" ? "Ativo" : status === "past_due" ? "Atrasado" : status === "canceled" ? "Cancelado" : "Gratuito"}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-muted-foreground text-sm">Plano</p>
-            <p className="font-medium text-lg">{PLAN_NAMES[plan] ?? plan}</p>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-muted-foreground text-sm">Plano</p>
+              <p className="font-medium text-lg">{PLAN_NAMES[plan] ?? plan}</p>
+            </div>
+            {price > 0 && (
+              <div className="text-right">
+                <p className="text-muted-foreground text-sm">Valor</p>
+                <p className="font-medium text-lg">
+                  R$ {price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                </p>
+              </div>
+            )}
+            {periodEnd && (
+              <div className="text-right">
+                <p className="text-muted-foreground text-sm">
+                  {subscription?.cancelAtPeriodEnd ? "Cancela em" : "Próximo faturamento"}
+                </p>
+                <p className="font-medium text-lg">{periodEnd}</p>
+              </div>
+            )}
           </div>
-          {price > 0 && (
-            <div className="text-right">
-              <p className="text-muted-foreground text-sm">Valor</p>
-              <p className="font-medium text-lg">
-                R$ {price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
-              </p>
+
+          {subscription?.cancelAtPeriodEnd && (
+            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-xs dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
+              Sua assinatura será cancelada ao final do período. Você ainda tem acesso até {periodEnd}.
             </div>
           )}
-          {periodEnd && (
-            <div className="text-right">
-              <p className="text-muted-foreground text-sm">
-                {subscription?.cancelAtPeriodEnd ? "Cancela em" : "Próximo faturamento"}
-              </p>
-              <p className="font-medium text-lg">{periodEnd}</p>
+
+          {plan === "free" && (
+            <div className="rounded-lg border bg-muted/50 p-4 text-center text-muted-foreground text-sm">
+              Você está no plano gratuito. Escolha um plano acima para desbloquear todos os recursos.
             </div>
           )}
-        </div>
 
-        {subscription?.cancelAtPeriodEnd && (
-          <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-xs dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
-            Sua assinatura será cancelada ao final do período. Você ainda tem acesso até {periodEnd}.
-          </div>
-        )}
+          {plan !== "free" && (
+            <Button variant="outline" onClick={() => setChangePlanOpen(true)} className="w-full">
+              <CreditCard className="mr-2 size-4" />
+              Alterar Plano
+            </Button>
+          )}
+        </CardContent>
+      </Card>
 
-        {plan === "free" && (
-          <div className="rounded-lg border bg-muted/50 p-4 text-center text-muted-foreground text-sm">
-            Você está no plano gratuito. Escolha um plano acima para desbloquear todos os recursos.
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      <ChangePlanDialog
+        open={changePlanOpen}
+        onOpenChange={setChangePlanOpen}
+        currentPlan={plan}
+        onPlanChanged={handlePlanChanged}
+      />
+    </>
   );
 }
