@@ -32,14 +32,13 @@ export function SetupWizard() {
       <div className="w-full max-w-2xl">
         {/* Progress */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center">
             {steps.map((step, index) => (
-              <div key={step.title} className="flex items-center">
+              <div key={step.title} className="flex flex-1 items-center">
                 <div
                   className={cn(
-                    "flex size-8 items-center justify-center rounded-full text-xs font-medium transition-colors",
-                    index < currentStep && "bg-primary text-primary-foreground",
-                    index === currentStep && "bg-primary text-primary-foreground",
+                    "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-medium transition-colors",
+                    index <= currentStep && "bg-primary text-primary-foreground",
                     index > currentStep && "bg-muted text-muted-foreground",
                   )}
                 >
@@ -48,7 +47,7 @@ export function SetupWizard() {
                 {index < steps.length - 1 && (
                   <div
                     className={cn(
-                      "mx-1 h-0.5 w-4 transition-colors sm:w-8",
+                      "h-0.5 flex-1 transition-colors",
                       index < currentStep ? "bg-primary" : "bg-muted",
                     )}
                   />
