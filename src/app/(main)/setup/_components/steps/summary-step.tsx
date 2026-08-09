@@ -703,7 +703,7 @@ export function SummaryStep() {
 
       {/* Dialog de Pagamento */}
       <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
-        <DialogContent className="max-h-[90vh] max-w-4xl overflow-hidden p-0">
+        <DialogContent className="max-w-6xl w-[95vw] max-h-[85vh] overflow-hidden p-0">
           <DialogHeader className="px-6 pt-6 pb-4">
             <DialogTitle className="text-xl">Dados de Pagamento</DialogTitle>
             <DialogDescription>
@@ -711,9 +711,9 @@ export function SummaryStep() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 gap-0 overflow-hidden md:grid-cols-5">
+          <div className="flex flex-col md:flex-row gap-0 overflow-hidden">
             {/* Lado Esquerdo: Formulário de Pagamento */}
-            <div className="max-h-[calc(90vh-120px)] overflow-y-auto px-6 pb-6 md:col-span-3">
+            <div className="flex-1 overflow-y-auto px-6 pb-6 min-w-0 md:max-h-[calc(85vh-120px)]">
               {/* Método de pagamento */}
               <div className="mb-5">
                 <p className="mb-2 font-medium text-sm">Método de Pagamento</p>
@@ -899,7 +899,7 @@ export function SummaryStep() {
             </div>
 
             {/* Lado Direito: Resumo do Plano */}
-            <div className="flex flex-col gap-4 border-l bg-muted/30 px-6 py-6 md:col-span-2">
+            <div className="flex flex-col gap-4 border-l bg-muted/30 px-6 py-6 w-full md:w-[380px] md:max-h-[calc(85vh-120px)] md:overflow-y-auto shrink-0">
               <div>
                 <p className="mb-1 text-muted-foreground text-xs">Plano Selecionado</p>
                 <div className="flex items-center gap-2">
