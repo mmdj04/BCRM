@@ -20,7 +20,7 @@ function SetupContent() {
       return;
     }
     if (isSetupComplete) {
-      router.push("/dashboard/default");
+      window.location.href = "/dashboard/default";
     }
   }, [user, isSetupComplete, authLoading, setupLoading, router]);
 
