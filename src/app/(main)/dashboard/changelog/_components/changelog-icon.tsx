@@ -8,17 +8,17 @@ const iconConfig: Record<
   { src: string; alt: string; label: string }
 > = {
   feature: {
-    src: "/changelog/new-releases.svg",
+    src: "/changelog/featured-v3-new-releases.svg",
     alt: "Novo recurso",
     label: "Funcionalidade",
   },
   fix: {
-    src: "/changelog/improvements.svg",
+    src: "/changelog/featured-v3-improvements.svg",
     alt: "Melhoria",
     label: "Correção",
   },
   maintenance: {
-    src: "/changelog/deprecations.svg",
+    src: "/changelog/featured-v3-deprecations.svg",
     alt: "Manutenção",
     label: "Manutenção",
   },
