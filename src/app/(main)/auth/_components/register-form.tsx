@@ -23,8 +23,14 @@ import { createClient } from "@/lib/supabase/client";
 const formSchema = z
   .object({
     email: z.email({ message: "Por favor, digite um endereço de e-mail válido." }),
-    password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
-    confirmPassword: z.string().min(6, { message: "A confirmação de senha deve ter pelo menos 6 caracteres." }),
+    password: z
+      .string()
+      .min(8, { message: "A senha deve ter pelo menos 8 caracteres." })
+      .regex(/[A-Z]/, { message: "A senha deve conter pelo menos 1 letra maiúscula." })
+      .regex(/[a-z]/, { message: "A senha deve conter pelo menos 1 letra minúscula." })
+      .regex(/[0-9]/, { message: "A senha deve conter pelo menos 1 número." })
+      .regex(/[^A-Za-z0-9]/, { message: "A senha deve conter pelo menos 1 caractere especial (!@#$%^&*)." }),
+    confirmPassword: z.string().min(8, { message: "A confirmação de senha deve ter pelo menos 8 caracteres." }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem.",
