@@ -422,7 +422,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="sm:max-w-2xl" style={{ maxWidth: "min(42rem, calc(100% - 2rem))" }}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="size-5" />
