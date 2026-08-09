@@ -1,23 +1,37 @@
-export type PasswordStrength = {
-  score: 0 | 1 | 2 | 3 | 4;
+export type PasswordRequirement = {
+  id: string;
   label: string;
-  color: string;
+  met: boolean;
 };
 
-function getScore(password: string): 0 | 1 | 2 | 3 | 4 {
-  let score = 0;
-  if (password.length >= 6) score++;
-  if (password.length >= 10) score++;
-  if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
-  if (/[0-9]/.test(password)) score++;
-  if (/[^A-Za-z0-9]/.test(password)) score++;
-  return Math.min(score, 4) as 0 | 1 | 2 | 3 | 4;
-}
-
-const labels = ["Muito fraca", "Fraca", "Razoável", "Forte", "Muito forte"];
-const colors = ["bg-destructive", "bg-orange-500", "bg-yellow-500", "bg-emerald-500", "bg-emerald-600"];
+export type PasswordStrength = {
+  score: 0 | 1 | 2 | 3 | 4 | 5;
+  label: string;
+  color: string;
+  barColor: string;
+  requirements: PasswordRequirement[];
+};
 
 export function getPasswordStrength(password: string): PasswordStrength {
-  const score = getScore(password);
-  return { score, label: labels[score], color: colors[score] };
+  const requirements: PasswordRequirement[] = [
+    { id: "length", label: "Pelo menos 8 caracteres", met: password.length >= 8 },
+    { id: "uppercase", label: "Pelo menos 1 letra maiúscula", met: /[A-Z]/.test(password) },
+    { id: "lowercase", label: "Pelo menos 1 letra minúscula", met: /[a-z]/.test(password) },
+    { id: "number", label: "Pelo menos 1 número", met: /[0-9]/.test(password) },
+    { id: "special", label: "Pelo menos 1 caractere especial (!@#$%^&*)", met: /[^A-Za-z0-9]/.test(password) },
+  ];
+
+  const metCount = requirements.filter((r) => r.met).length;
+
+  const levels = [
+    { score: 0 as const, label: "Muito fraca", color: "text-destructive", barColor: "bg-destructive" },
+    { score: 1 as const, label: "Fraca", color: "text-orange-500", barColor: "bg-orange-500" },
+    { score: 2 as const, label: "Razoável", color: "text-yellow-600", barColor: "bg-yellow-500" },
+    { score: 3 as const, label: "Forte", color: "text-emerald-500", barColor: "bg-emerald-500" },
+    { score: 4 as const, label: "Muito forte", color: "text-emerald-600", barColor: "bg-emerald-600" },
+    { score: 5 as const, label: "Excelente", color: "text-emerald-700", barColor: "bg-emerald-700" },
+  ];
+
+  const level = levels[metCount] ?? levels[0];
+  return { ...level, requirements };
 }

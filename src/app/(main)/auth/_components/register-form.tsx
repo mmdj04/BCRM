@@ -9,11 +9,14 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { Check, X } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { PasswordStrengthIndicator } from "@/components/password-strength";
 import { getPasswordStrength } from "@/hooks/use-password-strength";
+import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z
@@ -42,7 +45,9 @@ export function RegisterForm() {
   });
 
   const passwordValue = useWatch({ control: form.control, name: "password" });
+  const confirmPasswordValue = useWatch({ control: form.control, name: "confirmPassword" });
   const strength = getPasswordStrength(passwordValue ?? "");
+  const passwordsMatch = passwordValue && confirmPasswordValue && passwordValue === confirmPasswordValue;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -121,6 +126,18 @@ export function RegisterForm() {
                 aria-invalid={fieldState.invalid}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              {!fieldState.invalid && confirmPasswordValue && (
+                <div className="flex items-center gap-2 text-xs">
+                  {passwordsMatch ? (
+                    <Check className="size-3.5 shrink-0 text-emerald-500" />
+                  ) : (
+                    <X className="size-3.5 shrink-0 text-destructive" />
+                  )}
+                  <span className={cn(passwordsMatch ? "text-emerald-500" : "text-destructive")}>
+                    {passwordsMatch ? "As senhas coincidem" : "As senhas não coincidem"}
+                  </span>
+                </div>
+              )}
             </Field>
           )}
         />
