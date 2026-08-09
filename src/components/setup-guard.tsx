@@ -18,9 +18,14 @@ export function SetupGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Demo users ALWAYS see the setup wizard
+    // Demo users: check sessionStorage (setup completes within same session)
     if (isDemo) {
-      router.push("/setup");
+      const demoSetupDone = sessionStorage.getItem("bcrm_setup_complete_demo") === "true";
+      if (!demoSetupDone) {
+        router.push("/setup");
+        return;
+      }
+      setChecked(true);
       return;
     }
 

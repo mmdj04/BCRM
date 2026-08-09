@@ -111,8 +111,15 @@ interface SetupContextType {
 
 const SetupContext = createContext<SetupContextType | null>(null);
 
+const DEMO_SESSION_KEY = "bcrm_setup_complete_demo";
+
 function getSetupStorageKey(userId: string): string {
   return `bcrm_setup_complete_${userId}`;
+}
+
+function isDemoSetupComplete(): boolean {
+  if (typeof window === "undefined") return false;
+  return sessionStorage.getItem(DEMO_SESSION_KEY) === "true";
 }
 
 export function SetupProvider({ children, userId, isDemo = false }: { children: React.ReactNode; userId: string; isDemo?: boolean }) {
@@ -120,13 +127,10 @@ export function SetupProvider({ children, userId, isDemo = false }: { children: 
   const [setupData, setSetupData] = useState<SetupData>(defaultSetupData);
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const completedRef = useRef(false);
 
   useEffect(() => {
-    if (completedRef.current) return;
-    // Demo users NEVER have setup complete - always show wizard
     if (isDemo) {
-      setIsSetupComplete(false);
+      setIsSetupComplete(isDemoSetupComplete());
       setIsLoading(false);
       return;
     }
@@ -146,19 +150,23 @@ export function SetupProvider({ children, userId, isDemo = false }: { children: 
   }, []);
 
   const completeSetup = useCallback(() => {
-    completedRef.current = true;
-    // Demo users: don't persist to localStorage (always show wizard next time)
-    if (!isDemo) {
+    if (isDemo) {
+      sessionStorage.setItem(DEMO_SESSION_KEY, "true");
+    } else {
       localStorage.setItem(getSetupStorageKey(userId), "true");
     }
     setIsSetupComplete(true);
   }, [userId, isDemo]);
 
   const resetSetup = useCallback(() => {
-    localStorage.removeItem(getSetupStorageKey(userId));
+    if (isDemo) {
+      sessionStorage.removeItem(DEMO_SESSION_KEY);
+    } else {
+      localStorage.removeItem(getSetupStorageKey(userId));
+    }
     setIsSetupComplete(false);
     setCurrentStep(0);
-  }, [userId]);
+  }, [userId, isDemo]);
 
   return (
     <SetupContext.Provider
