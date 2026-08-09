@@ -9,7 +9,7 @@ export const DEMO_CONFIG = {
     email: "admin@bcrm.com",
     user_metadata: {
       full_name: "Matheus Moraes",
-      avatar_url: null,
+      avatar_url: "https://github.com/mmdj04.png",
     },
   },
 };
