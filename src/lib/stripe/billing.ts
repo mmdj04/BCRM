@@ -32,7 +32,7 @@ export async function getOrCreateCustomer(userId: string, email: string): Promis
   return customer;
 }
 
-export async function createPaymentIntent(
+export async function createCheckoutSessionElements(
   userId: string,
   email: string,
   plan: string,
@@ -40,13 +40,26 @@ export async function createPaymentIntent(
   business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ clientSecret: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
-  const amount = PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly;
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount,
-    currency: "brl",
+  const session = await stripe.checkout.sessions.create({
     customer: customer.id,
-    automatic_payment_methods: { enabled: true },
+    mode: "subscription",
+    ui_mode: "elements",
+    line_items: [
+      {
+        price_data: {
+          currency: "brl",
+          product_data: {
+            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
+            metadata: { plan, interval },
+          },
+          unit_amount: PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly,
+          recurring: { interval: interval === "yearly" ? "year" : "month" },
+        },
+        quantity: 1,
+      },
+    ],
+    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`,
     metadata: {
       userId,
       plan,
@@ -57,7 +70,7 @@ export async function createPaymentIntent(
     },
   });
 
-  return { clientSecret: paymentIntent.client_secret };
+  return { clientSecret: session.client_secret };
 }
 
 export async function createCheckoutSession(

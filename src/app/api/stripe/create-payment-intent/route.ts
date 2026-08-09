@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createPaymentIntent } from "@/lib/stripe/billing";
+import { createCheckoutSessionElements } from "@/lib/stripe/billing";
 
 export async function POST(request: Request) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
     }
 
-    const { clientSecret } = await createPaymentIntent(userId, email, plan, interval, {
+    const { clientSecret } = await createCheckoutSessionElements(userId, email, plan, interval, {
       isBusiness: !!isBusiness,
       companyName: companyName || undefined,
       cnpj: cnpj || undefined,
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ clientSecret });
   } catch (error) {
-    console.error("Error creating payment intent:", error);
+    console.error("Error creating checkout session:", error);
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
   }
 }

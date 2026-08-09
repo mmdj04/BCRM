@@ -1,11 +1,11 @@
 "use client";
 
-import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { PaymentElement } from "@stripe/react-stripe-js/checkout";
 import type { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useCheckoutConfirm } from "@/components/stripe-provider";
 
 const paymentElementOptions: StripePaymentElementOptions = {
   layout: "tabs",
@@ -25,34 +25,16 @@ interface PaymentFormProps {
 }
 
 export function PaymentForm({ planName, planPrice, onSuccess, onCancel }: PaymentFormProps) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [processing, setProcessing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { confirm, processing, error: confirmError } = useCheckoutConfirm();
+  const [localError, setLocalError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    setProcessing(true);
-    setErrorMessage(null);
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/dashboard/billing?success=true`,
-      },
-    });
-
-    if (error) {
-      setErrorMessage(error.message ?? "Ocorreu um erro ao processar o pagamento.");
-      setProcessing(false);
-    }
-    // On success, user is redirected to return_url
+    setLocalError(null);
+    await confirm();
   };
+
+  const errorMessage = localError || confirmError;
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -65,7 +47,7 @@ export function PaymentForm({ planName, planPrice, onSuccess, onCancel }: Paymen
       )}
 
       <div className="flex flex-col gap-2 sm:flex-row-reverse">
-        <Button type="submit" disabled={!stripe || processing} className="w-full sm:w-auto">
+        <Button type="submit" disabled={processing} className="w-full sm:w-auto">
           {processing ? (
             <span className="flex items-center gap-2">
               <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
