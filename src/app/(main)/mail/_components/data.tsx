@@ -1,9 +1,9 @@
 import { Archive, CircleHelp, File, Inbox, Keyboard, type LucideIcon, Send, Star, Trash2 } from "lucide-react";
 import { siFigma, siGoogledocs, siGooglephotos } from "simple-icons";
 
-const arhamKhan = {
-  name: "Arham Khan",
-  email: "hello@arhamkhnz.com",
+const matheusMoraes = {
+  name: "Matheus Moraes",
+  email: "admin@bcrm.com",
 };
 
 const weblabsStudio = {
@@ -67,7 +67,7 @@ export const mails: Mail[] = [
       name: "William Smith",
       email: "williamsmith@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     cc: [weblabsStudio],
     subject: "Reunião Amanhã",
     body: "Olá, vamos marcar uma reunião amanhã para discutir o projeto. Tenho revisado os detalhes do projeto e tenho algumas ideias que gostaria de compartilhar. É fundamental que estejamos alinhados sobre os próximos passos para garantir o sucesso do projeto.\n\nPor favor, venha preparado com quaisquer perguntas ou ideias que possa ter. Ansioso pela nossa reunião!\n\nAtenciosamente, William",
@@ -131,7 +131,7 @@ export const mails: Mail[] = [
       name: "Bob Johnson",
       email: "bobjohnson@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Planos para o Fim de Semana",
     body: "Tem algum plano para o fim de semana? Estava pensando em fazer uma caminhada nas montanhas próximas. Faz um tempo que não aproveitamos ao ar livre.\n\nSe estiver interessado, me avise e podemos planejar os detalhes. Será uma ótima forma de relaxar e apreciar a natureza.\n\nAguardo sua resposta!\n\nAbraços, Bob",
     receivedAt: daysAgo(1),
@@ -148,7 +148,7 @@ export const mails: Mail[] = [
       name: "Emily Davis",
       email: "emilydavis@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Re: Pergunta sobre o Orçamento",
     body: "Tenho uma pergunta sobre o orçamento do próximo projeto. Parece que há uma discrepância na alocação de recursos.\n\nRevisei o relatório de orçamento e identifiquei algumas áreas onde podemos otimizar nossos gastos sem comprometer a qualidade do projeto.\n\nAnexei uma análise detalhada para sua referência. Vamos discutir isso mais detalhadamente na nossa próxima reunião.\n\nObrigada, Emily",
     receivedAt: daysAgo(2),
@@ -191,7 +191,7 @@ export const mails: Mail[] = [
       name: "Sarah Brown",
       email: "sarahbrown@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Re: Feedback sobre a Proposta",
     body: "Obrigado pelo seu feedback sobre a proposta. Está ótimo! Fico feliz em saber que você achou promissor. A equipe trabalhou diligentemente para abordar todos os pontos principais que você levantou, e acredito que agora temos uma base sólida para o projeto.\n\nAnexei a proposta revisada para sua análise.\n\nPor favor, me avise se tiver algum comentário ou sugestão adicional. Aguardo sua resposta.\n\nAtenciosamente, Sarah",
     receivedAt: daysAgo(5),
@@ -217,7 +217,7 @@ export const mails: Mail[] = [
       email: "davidlee@example.com",
     },
     to: [weblabsStudio],
-    cc: [arhamKhan],
+    cc: [matheusMoraes],
     subject: "Nova Ideia de Projeto",
     body: "Tenho uma nova ideia de projeto empolgante para discutir com você. Envolve expandir nossos serviços para atingir um nicho de mercado que apresentou crescimento considerável nos últimos meses.\n\nPreparou uma proposta detalhada descrevendo os benefícios potenciais e a estratégia de execução.\n\nEste projeto tem o potencial de impactar positivamente nossos negócios de forma significativa. Vamos marcar uma reunião para aprofundar os detalhes e verificar se está alinhado com nossos objetivos atuais.\n\nAtenciosamente, David",
     receivedAt: daysAgo(8),
@@ -234,7 +234,7 @@ export const mails: Mail[] = [
       name: "Olivia Wilson",
       email: "oliviawilson@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Planos de Férias",
     body: "Vamos planejar nossas férias para o próximo mês. O que acha? Estava pensando em visitar um paraíso tropical, e reuni algumas opções de destinos.\n\nAcredito que é hora de relaxarmos e recarregarmos as energias. Por favor, dê uma olhada nas opções e me avise suas preferências.\n\nPodemos começar a fazer os preparativos para garantir uma viagem tranquila e agradável.\n\nAnimada com suas ideias! Olivia",
     receivedAt: daysAgo(12),
@@ -276,7 +276,7 @@ export const mails: Mail[] = [
       name: "Sophia White",
       email: "sophiawhite@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Jantar da Equipe",
     body: "Vamos fazer um jantar da equipe na próxima semana para celebrar nosso sucesso. Alcançamos marcos significativos, e é hora de reconhecer nosso trabalho duro e dedicação.\n\nFiz reservas em um restaurante encantador, e tenho certeza de que será uma noite agradável.\n\nPor favor, confirme sua disponibilidade e quaisquer preferências alimentares. Ansiosa por um jantar divertido e memorável com a equipe!\n\nAbraços, Sophia",
     receivedAt: daysAgo(24),
@@ -310,7 +310,7 @@ export const mails: Mail[] = [
       name: "Ava Taylor",
       email: "avataylor@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Re: Pauta da Reunião",
     body: "Aqui está a pauta para nossa reunião da próxima semana. Incluí todos os tópicos que precisamos cobrir, bem como as alocações de tempo para cada um.\n\nSe tiver itens adicionais para discutir ou pontos específicos a abordar, por favor, me avise, e podemos integrá-los à pauta.\n\nÉ essencial que nossa reunião seja produtiva e aborde todos os assuntos relevantes.\n\nAnsiosa pela nossa reunião! Ava",
     receivedAt: daysAgo(45),
@@ -344,7 +344,7 @@ export const mails: Mail[] = [
       name: "Mia Harris",
       email: "miaharris@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Re: Itinerário de Viagem",
     body: "Recebi o itinerário de viagem. Está ótimo! Obrigado pela pronta assistência nos arranjos dos detalhes. Revisei a programação e as acomodações, e tudo parece estar em ordem. Estou ansioso pela viagem, e tenho certeza de que será uma experiência tranquila e agradável.\n\nSe houver atividades ou atrações específicas que você recomenda no nosso destino, por favor, sinta-se à vontade para compartilhar suas sugestões.\n\nAnimado para a viagem! Mia",
     receivedAt: daysAgo(75),
@@ -378,7 +378,7 @@ export const mails: Mail[] = [
       name: "Chloe Hall",
       email: "chloehall@example.com",
     },
-    to: [arhamKhan],
+    to: [matheusMoraes],
     subject: "Re: Aprovação do Orçamento",
     body: "O orçamento foi aprovado. Podemos prosseguir com o projeto. Tenho o prazer de informar que nossa proposta de orçamento recebeu o aval do departamento financeiro. Este é um marco significativo, e significa que podemos avançar com o projeto conforme planejado.\n\nAnexei o orçamento finalizado para sua referência. Vamos garantir que mantenhamos o rumo e entregue o projeto no prazo e dentro do orçamento.\n\nÉ um momento empolgante para nós! Chloe",
     receivedAt: daysAgo(118),
@@ -470,8 +470,8 @@ export const mailNavigation: MailNavigation = {
 export const accounts = [
   {
     id: 1,
-    label: "Arham Khan",
-    email: "hello@arhamkhnz.com",
+    label: "Matheus Moraes",
+    email: "admin@bcrm.com",
   },
   {
     id: 2,

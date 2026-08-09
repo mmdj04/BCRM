@@ -69,7 +69,7 @@ export function CardOverview() {
               <div className="flex items-end justify-between">
                 <div className="space-y-2">
                   <p className="font-medium font-mono text-primary-foreground text-sm uppercase tracking-wide">
-                    Arham Khan
+                    Matheus Moraes
                   </p>
                   <div className="flex gap-6">
                     <div>

@@ -18,5 +18,5 @@ export const demoEvents = [
   { title: "Passagem de operações", start: dt(18, 16), end: dt(18, 16, 45) },
   { title: "Relatório trimestral vencido", start: d(24), allDay: true },
   { title: "Dia de reset", start: d(28), allDay: true },
-  { title: "Aniversário do Arham Khan", start: new Date(currentYear, 8, 6), allDay: true },
+  { title: "Aniversário do Matheus Moraes", start: new Date(currentYear, 8, 6), allDay: true },
 ];

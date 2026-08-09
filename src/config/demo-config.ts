@@ -8,7 +8,7 @@ export const DEMO_CONFIG = {
     id: "demo-user-001",
     email: "admin@bcrm.com",
     user_metadata: {
-      full_name: "Admin Demo",
+      full_name: "Matheus Moraes",
       avatar_url: null,
     },
   },
