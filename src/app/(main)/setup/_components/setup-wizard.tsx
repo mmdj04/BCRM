@@ -5,7 +5,6 @@ import {
   Building2,
   Check,
   CheckCircle2,
-  CreditCard,
   FileCheck,
   Globe,
   LayoutDashboard,
@@ -19,7 +18,6 @@ import { cn } from "@/lib/utils";
 import { CompanyStep } from "./steps/company-step";
 import { ModulesStep } from "./steps/modules-step";
 import { NotificationsStep } from "./steps/notifications-step";
-import { PaymentStep } from "./steps/payment-step";
 import { ProjectStep } from "./steps/project-step";
 import { SummaryStep } from "./steps/summary-step";
 import { UsersStep } from "./steps/users-step";
@@ -30,7 +28,6 @@ const steps = [
   { title: "Empresa", icon: Building2, component: CompanyStep, required: true },
   { title: "Projeto", icon: Globe, component: ProjectStep, required: true },
   { title: "Módulos", icon: LayoutDashboard, component: ModulesStep, required: true },
-  { title: "Pagamento", icon: CreditCard, component: PaymentStep, required: false },
   { title: "Usuários", icon: Users, component: UsersStep, required: false },
   { title: "Notificações", icon: Bell, component: NotificationsStep, required: false },
   { title: "Resumo", icon: FileCheck, component: SummaryStep, required: null },
