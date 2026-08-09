@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/supabase/auth-context";
 
@@ -43,24 +43,18 @@ function ChangePlanContent({
   selectedCompute,
   changeTiming,
   success,
-  loading,
   onSelectPlan,
   onSelectCompute,
   onChangeTiming,
-  onConfirm,
-  onClose,
 }: {
   currentPlan: string;
   selectedPlan: string;
   selectedCompute: string;
   changeTiming: "now" | "period_end";
   success: boolean;
-  loading: boolean;
   onSelectPlan: (id: string) => void;
   onSelectCompute: (id: string) => void;
   onChangeTiming: (v: "now" | "period_end") => void;
-  onConfirm: () => void;
-  onClose: () => void;
 }) {
   const newPlanData = plans.find((p) => p.id === selectedPlan);
   const currentPlanData = plans.find((p) => p.id === currentPlan);
@@ -276,16 +270,6 @@ function ChangePlanContent({
           </p>
         </div>
       )}
-
-      {/* Footer buttons for Sheet (mobile) */}
-      <div className="flex flex-col gap-2 pt-2">
-        <Button onClick={onConfirm} disabled={!selectedPlan || !selectedCompute || loading}>
-          {loading ? "Processando..." : "Confirmar Alteração"}
-        </Button>
-        <Button variant="outline" onClick={onClose}>
-          Cancelar
-        </Button>
-      </div>
     </div>
   );
 }
@@ -382,18 +366,15 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
     selectedCompute,
     changeTiming,
     success,
-    loading,
     onSelectPlan: handleSelectPlan,
     onSelectCompute: setSelectedCompute,
     onChangeTiming: setChangeTiming,
-    onConfirm: handleConfirmChange,
-    onClose: () => handleOpenChange(false),
   };
 
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={handleOpenChange}>
-        <SheetContent side="bottom" className="h-[90vh] overflow-y-auto">
+        <SheetContent side="bottom" className="flex max-h-[85vh] flex-col overflow-hidden">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
               <CreditCard className="size-5" />
@@ -401,9 +382,19 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
             </SheetTitle>
             <SheetDescription>Escolha o novo plano que melhor se adapta às suas necessidades.</SheetDescription>
           </SheetHeader>
-          <div className="px-4">
+          <div className="flex-1 overflow-y-auto px-4">
             <ChangePlanContent {...contentProps} />
           </div>
+          <SheetFooter>
+            <Button variant="outline" onClick={() => handleOpenChange(false)}>
+              Cancelar
+            </Button>
+            {!success && (
+              <Button onClick={handleConfirmChange} disabled={!selectedPlan || !selectedCompute || loading}>
+                {loading ? "Processando..." : "Confirmar Alteração"}
+              </Button>
+            )}
+          </SheetFooter>
         </SheetContent>
       </Sheet>
     );
@@ -411,18 +402,18 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-3xl">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[85vh] max-w-3xl flex-col overflow-hidden p-0">
+        <DialogHeader className="px-6 pt-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="size-5" />
             Alterar Plano
           </DialogTitle>
           <DialogDescription>Escolha o novo plano que melhor se adapta às suas necessidades.</DialogDescription>
         </DialogHeader>
-
-        <ChangePlanContent {...contentProps} />
-
-        <DialogFooter>
+        <div className="flex-1 overflow-y-auto px-6">
+          <ChangePlanContent {...contentProps} />
+        </div>
+        <DialogFooter className="px-6 pb-6 pt-0">
           <Button variant="outline" onClick={() => handleOpenChange(false)}>
             Cancelar
           </Button>
