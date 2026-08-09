@@ -14,12 +14,14 @@ function SetupContent() {
   const { isSetupComplete, isLoading: setupLoading } = useSetup();
 
   useEffect(() => {
+    console.log("[SetupPage] useEffect fired:", { authLoading, setupLoading, isSetupComplete, isDemo });
     if (authLoading || setupLoading) return;
     if (!user) {
       router.push("/auth/v1/login");
       return;
     }
     if (isSetupComplete) {
+      console.log("[SetupPage] Redirecting to dashboard!");
       window.location.href = "/dashboard/default";
     }
   }, [user, isSetupComplete, authLoading, setupLoading, router]);
