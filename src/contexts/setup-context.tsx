@@ -124,7 +124,6 @@ function isDemoSetupComplete(): boolean {
 
 export function SetupProvider({ children, userId, isDemo = false }: { children: React.ReactNode; userId: string; isDemo?: boolean }) {
   const [isSetupComplete, setIsSetupComplete] = useState(() => {
-    console.log("[SetupProvider] init state, isDemo:", isDemo);
     if (isDemo) return isDemoSetupComplete();
     return false;
   });
@@ -133,11 +132,8 @@ export function SetupProvider({ children, userId, isDemo = false }: { children: 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[SetupProvider] useEffect:", { isDemo, userId });
     if (isDemo) {
-      const done = isDemoSetupComplete();
-      console.log("[SetupProvider] demo setup complete:", done);
-      setIsSetupComplete(done);
+      setIsSetupComplete(isDemoSetupComplete());
       setIsLoading(false);
       return;
     }
@@ -157,15 +153,12 @@ export function SetupProvider({ children, userId, isDemo = false }: { children: 
   }, []);
 
   const completeSetup = useCallback(() => {
-    console.log("[Setup] completeSetup called, isDemo:", isDemo);
     if (isDemo) {
       sessionStorage.setItem(DEMO_SESSION_KEY, "true");
-      console.log("[Setup] sessionStorage set:", sessionStorage.getItem(DEMO_SESSION_KEY));
     } else {
       localStorage.setItem(getSetupStorageKey(userId), "true");
     }
     setIsSetupComplete(true);
-    console.log("[Setup] setIsSetupComplete(true) called");
   }, [userId, isDemo]);
 
   const resetSetup = useCallback(() => {
