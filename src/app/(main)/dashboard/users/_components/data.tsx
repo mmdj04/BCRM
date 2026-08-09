@@ -22,6 +22,7 @@ export type UserRow = {
   status: UserStatus;
   team: UserTeam;
   workspace: string[];
+  isSetup?: boolean;
 };
 
 export const users: UserRow[] = [
@@ -291,7 +292,7 @@ export const filters = {
   ],
   team: ["Todos", ...teamValues],
   status: ["Todos", "Ativo", "Convite pendente", "Desativado", "Bloqueado", "Suspenso"],
-  workspace: ["Todos", "Weblabs Studio", "Sandbox", "Ferramentas Internas", "Acme Inc."],
+  workspace: ["Todos", "Weblabs Studio", "Sandbox", "Ferramentas Internas", "Acme Inc.", "Setup"],
 };
 
 export const statusMeta: Record<UserStatus, { badgeClass: string; dotClass: string }> = {

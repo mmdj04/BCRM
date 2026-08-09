@@ -873,10 +873,10 @@ export function UsersStep() {
         </div>
 
         <div className="flex justify-between">
-          <Button variant="outline" onClick={() => setStep(4)}>
+          <Button variant="outline" onClick={() => setStep(3)}>
             Voltar
           </Button>
-          <Button onClick={() => setStep(6)}>Próximo</Button>
+          <Button onClick={() => setStep(5)}>Próximo</Button>
         </div>
       </CardContent>
     </Card>

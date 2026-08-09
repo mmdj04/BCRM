@@ -6,15 +6,14 @@ import { AppSidebar } from "@/app/(main)/dashboard/_components/sidebar/app-sideb
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { SetupGuard } from "@/components/setup-guard";
-import { users } from "@/data/users";
 import { cn } from "@/lib/utils";
 import { getPreference } from "@/server/server-actions";
 
 import { AccountSwitcher } from "./_components/header/account-switcher";
-import { GitHubRepositoriesMenu } from "./_components/header/github-repositories-menu";
 import { LayoutControls } from "./_components/header/layout-controls";
 import { SearchDialog } from "./_components/header/search-dialog";
 import { ThemeSwitcher } from "./_components/header/theme-switcher";
+import { WhatsAppContact } from "./_components/header/whatsapp-contact";
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
@@ -64,8 +63,8 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
               <div className="flex items-center gap-2">
                 <LayoutControls />
                 <ThemeSwitcher />
-                <GitHubRepositoriesMenu />
-                <AccountSwitcher users={users} />
+                <WhatsAppContact />
+                <AccountSwitcher />
               </div>
             </div>
           </header>

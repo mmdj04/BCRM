@@ -166,7 +166,14 @@ export const usersColumns: ColumnDef<DataTableFeatures, UserRow>[] = [
       <div className="flex items-center gap-3">
         <AvatarCell name={row.original.name} lastActive={row.original.lastActive} />
         <div className="min-w-0">
-          <div className="truncate font-medium text-foreground text-sm">{row.original.name}</div>
+          <div className="flex items-center gap-1.5">
+            <span className="truncate font-medium text-foreground text-sm">{row.original.name}</span>
+            {row.original.isSetup ? (
+              <Badge className="border-violet-500/20 bg-violet-500/10 px-1.5 py-0 text-[10px] font-medium text-violet-600 dark:text-violet-400" variant="outline">
+                Setup
+              </Badge>
+            ) : null}
+          </div>
           <div className="truncate text-muted-foreground text-sm">{row.original.email}</div>
         </div>
       </div>

@@ -1,90 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 
-import { BadgeCheck, Bell, Check, CreditCard, LogOut } from "lucide-react";
+import { CircleUser, CreditCard, FileText, LogOut, MessageSquareDot } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn, getInitials } from "@/lib/utils";
+import { useAuth } from "@/lib/supabase/auth-context";
+import { getInitials } from "@/lib/utils";
 
-export function AccountSwitcher({
-  users,
-}: {
-  readonly users: ReadonlyArray<{
-    readonly id: string;
-    readonly name: string;
-    readonly email: string;
-    readonly avatar: string;
-    readonly role: string;
-  }>;
-}) {
-  const [activeUser, setActiveUser] = useState(users[0]);
+export function AccountSwitcher() {
+  const { user, signOut, isDemo } = useAuth();
 
-  if (!activeUser) {
-    return null;
-  }
+  if (!user) return null;
+
+  const name = user.user_metadata?.full_name || user.email || "Usuário";
+  const email = user.email || "";
+  const avatar = user.user_metadata?.avatar_url || "";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="size-8 rounded-lg">
-          <AvatarImage src={activeUser.avatar || undefined} alt={activeUser.name} />
-          <AvatarFallback>{getInitials(activeUser.name)}</AvatarFallback>
+        <Avatar className="size-8 cursor-pointer rounded-lg">
+          <AvatarImage src={avatar || undefined} alt={name} />
+          <AvatarFallback>{getInitials(name)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-56 space-y-1 rounded-lg" side="bottom" align="end" sideOffset={4}>
-        {users.map((user) => (
-          <DropdownMenuItem
-            key={user.email}
-            className={cn("p-0", user.id === activeUser.id && "bg-accent/50")}
-            aria-current={user.id === activeUser.id ? "true" : undefined}
-            onClick={() => setActiveUser(user)}
-          >
-            <div className="flex w-full items-center gap-2 px-1 py-1.5">
-              <Avatar className="size-9 rounded-lg">
-                <AvatarImage src={user.avatar || undefined} alt={user.name} />
-                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-              </Avatar>
-              <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs capitalize">{user.role}</span>
-              </div>
-              <span
-                className={cn(
-                  "mr-1 flex size-5 items-center justify-center rounded-full text-primary opacity-0",
-                  user.id === activeUser.id && "opacity-100",
+      <DropdownMenuContent className="min-w-56 rounded-lg" side="bottom" align="end" sideOffset={4}>
+        <DropdownMenuLabel className="p-0 font-normal">
+          <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+            <Avatar className="h-8 w-8 rounded-lg">
+              <AvatarImage src={avatar || undefined} alt={name} />
+              <AvatarFallback className="rounded-lg">{getInitials(name)}</AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="flex items-center gap-2">
+                <span className="truncate font-medium">{name}</span>
+                {isDemo && (
+                  <Badge variant="secondary" className="px-1 py-0 text-[10px]">
+                    Demo
+                  </Badge>
                 )}
-              >
-                <Check aria-hidden="true" />
-              </span>
+              </div>
+              <span className="truncate text-muted-foreground text-xs">{email}</span>
             </div>
-          </DropdownMenuItem>
-        ))}
+          </div>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Conta
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/account" className="flex items-center gap-2">
+              <CircleUser />
+              Conta
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard />
-            Faturamento
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/billing" className="flex items-center gap-2">
+              <CreditCard />
+              Faturamento
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notificações
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/notifications" className="flex items-center gap-2">
+              <MessageSquareDot />
+              Notificações
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/changelog" className="flex items-center gap-2">
+              <FileText />
+              Registro de Alterações
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()}>
           <LogOut />
           Sair
         </DropdownMenuItem>

@@ -629,7 +629,7 @@ export function SummaryStep() {
           )}
 
           <div className="flex justify-between">
-            <Button variant="outline" onClick={() => setStep(6)}>
+            <Button variant="outline" onClick={() => setStep(5)}>
               Voltar
             </Button>
             <Button onClick={handleComplete} size="lg" disabled={!paymentComplete}>

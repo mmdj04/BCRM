@@ -87,10 +87,10 @@ export function NotificationsStep() {
           })}
         </div>
         <div className="flex justify-between">
-          <Button variant="outline" onClick={() => setStep(5)}>
+          <Button variant="outline" onClick={() => setStep(4)}>
             Voltar
           </Button>
-          <Button onClick={() => setStep(7)}>Próximo</Button>
+          <Button onClick={() => setStep(6)}>Próximo</Button>
         </div>
       </CardContent>
     </Card>
