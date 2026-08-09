@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { siX } from "simple-icons";
+import { siWhatsapp } from "simple-icons";
 
 import { SimpleIcon } from "@/components/simple-icon";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,24 +13,14 @@ export function SupportCard() {
         <CardDescription className="line-clamp-3">
           Sugira uma funcionalidade ou discuta trabalho personalizado comigo pelo&nbsp;
           <Link
-            href="https://x.com/arhamkhnz"
+            href="https://wa.me/5521974699723"
             target="_blank"
             rel="noreferrer"
-            aria-label="Reach out on X"
+            aria-label="Falar no WhatsApp"
             className="inline-flex items-center text-foreground"
           >
-            <SimpleIcon icon={siX} aria-hidden className="size-3 fill-foreground" />
+            <SimpleIcon icon={siWhatsapp} aria-hidden className="size-3 fill-foreground" />
           </Link>
-          &nbsp;ou pelo{" "}
-          <Link
-            href="https://github.com/arhamkhnz#want-to-connect"
-            target="_blank"
-            rel="noreferrer"
-            className="text-foreground hover:underline"
-          >
-            e-mail
-          </Link>
-          .
         </CardDescription>
       </CardHeader>
     </Card>
