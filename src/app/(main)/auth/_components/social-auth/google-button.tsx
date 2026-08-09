@@ -27,7 +27,7 @@ export function GoogleButton({ className, ...props }: React.ComponentProps<typeo
         toast.error(error.message);
       }
     } catch {
-      toast.error("Failed to sign in with Google");
+      toast.error("Falha ao entrar com o Google");
     } finally {
       setLoading(false);
     }
@@ -36,7 +36,7 @@ export function GoogleButton({ className, ...props }: React.ComponentProps<typeo
   return (
     <Button variant="secondary" className={cn(className)} onClick={signInWithGoogle} disabled={loading} {...props}>
       <SimpleIcon icon={siGoogle} className="size-4" />
-      {loading ? "Connecting..." : "Continue with Google"}
+      {loading ? "Conectando..." : "Continuar com o Google"}
     </Button>
   );
 }
