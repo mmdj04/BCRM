@@ -72,7 +72,7 @@ function getVisibleSteps(current: number): VisibleStep[] {
     if (current - 1 > 0) {
       result.push({ title: "...", icon: Sparkles, index: -1, type: "completed", collapsedCount: current - 1 });
     }
-    for (let i = current - 1; i < total; i++) {
+    for (let i = current; i < total; i++) {
       result.push({ title: steps[i].title, icon: steps[i].icon, index: i, type: getStepType(i, current), required: steps[i].required });
     }
   } else {
