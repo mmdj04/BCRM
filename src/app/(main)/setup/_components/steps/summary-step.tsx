@@ -11,11 +11,13 @@ import {
   CreditCard,
   Globe,
   LayoutDashboard,
+  Server,
   Smartphone,
   Users,
   X,
 } from "lucide-react";
 
+import { computeOptions } from "@/app/(main)/dashboard/billing/_components/data";
 import { PaymentForm } from "@/components/payment-form";
 import { StripeElementsProvider } from "@/components/stripe-provider";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -79,10 +81,11 @@ const plans = [
   {
     id: "starter",
     name: "Inicial",
-    price: "R$ 899,90",
+    price: 899.9,
     period: "/mês",
     description: "Para pequenas equipes começando",
-    features: [
+    allowedCompute: ["micro", "small", "medium", "large"],
+    baseFeatures: [
       "Até 10 usuários",
       "5 módulos",
       "100 GB de armazenamento",
@@ -91,41 +94,72 @@ const plans = [
       "Auth com 100K MAU",
       "Backups automáticos (7 dias)",
       "Suporte por e-mail",
+      "Relatórios básicos",
     ],
+    extraFeatures: [],
   },
   {
     id: "pro",
     name: "Pro",
-    price: "R$ 2.299,90",
+    price: 2299.9,
     period: "/mês",
     description: "Para equipes em crescimento",
-    features: [
+    allowedCompute: ["micro", "small", "medium", "large", "xlarge"],
+    baseFeatures: [
+      "Até 10 usuários",
+      "5 módulos",
+      "100 GB de armazenamento",
+      "1 projeto ativo",
+      "Banco Postgres dedicado",
+      "Auth com 100K MAU",
+      "Backups automáticos (7 dias)",
+      "Suporte por e-mail",
+      "Relatórios básicos",
+    ],
+    extraFeatures: [
       "Até 50 usuários",
       "Todos os módulos",
-      "100 GB de armazenamento",
       "3 projetos ativos",
-      "Banco Postgres dedicado (4 GB RAM)",
-      "Auth com 100K MAU + SAML (50)",
-      "Backups automáticos (7 dias)",
+      "Banco com 4 GB RAM",
+      "SAML/SSO (50 usuários)",
       "Suporte prioritário",
       "Relatórios avançados",
       "API de integração",
+      "Faturamento e Finanças",
     ],
     popular: true,
   },
   {
     id: "team",
     name: "Equipe",
-    price: "R$ 8.999,90",
+    price: 8999.9,
     period: "/mês",
     description: "Para organizações grandes",
-    features: [
-      "Usuários ilimitados",
-      "Todos os módulos",
+    allowedCompute: ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge"],
+    baseFeatures: [
+      "Até 10 usuários",
+      "5 módulos",
       "100 GB de armazenamento",
+      "1 projeto ativo",
+      "Banco Postgres dedicado",
+      "Auth com 100K MAU",
+      "Backups automáticos (7 dias)",
+      "Suporte por e-mail",
+      "Relatórios básicos",
+    ],
+    extraFeatures: [
+      "Até 50 usuários",
+      "Todos os módulos",
+      "3 projetos ativos",
+      "Banco com 4 GB RAM",
+      "SAML/SSO (50 usuários)",
+      "Suporte prioritário",
+      "Relatórios avançados",
+      "API de integração",
+      "Faturamento e Finanças",
+      "Usuários ilimitados",
       "5 projetos ativos",
-      "Banco Postgres dedicado (8 GB RAM)",
-      "Auth com 100K MAU + SAML (50)",
+      "Banco com 8 GB RAM (dedicado)",
       "Backups automáticos (14 dias)",
       "SOC2 + ISO 27001",
       "SSO Dashboard + Audit Logs",
@@ -146,6 +180,7 @@ export function SummaryStep() {
   const { user, isDemo } = useAuth();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
+  const [selectedCompute, setSelectedCompute] = useState<string>("medium");
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -177,6 +212,7 @@ export function SummaryStep() {
         "bcrm_demo_plan",
         JSON.stringify({
           plan: selectedPlan,
+          compute: selectedCompute,
           status: "active",
           currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         }),
@@ -197,6 +233,7 @@ export function SummaryStep() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           plan: selectedPlan,
+          compute: selectedCompute,
           userId: user.id,
           email: user.email,
         }),
@@ -256,7 +293,7 @@ export function SummaryStep() {
     <StripeElementsProvider clientSecret={clientSecret}>
       <PaymentForm
         planName={selectedPlanData?.name ?? ""}
-        planPrice={selectedPlanData?.price ?? ""}
+        planPrice={`R$ ${((selectedPlanData?.price ?? 0) + (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`}
         onSuccess={handlePaymentSuccess}
         onCancel={handlePaymentCancel}
       />
@@ -592,7 +629,10 @@ export function SummaryStep() {
                 <button
                   key={plan.id}
                   type="button"
-                  onClick={() => setSelectedPlan(plan.id)}
+                  onClick={() => {
+                    setSelectedPlan(plan.id);
+                    if (plan.allowedCompute.length > 0) setSelectedCompute(plan.allowedCompute[0]);
+                  }}
                   className={`flex flex-col rounded-xl border-2 p-4 text-left transition-all ${
                     selectedPlan === plan.id
                       ? "border-primary bg-primary/5 shadow-sm"
@@ -606,21 +646,92 @@ export function SummaryStep() {
                   )}
                   <span className="font-semibold text-base">{plan.name}</span>
                   <div className="mt-1 flex items-baseline gap-0.5">
-                    <span className="font-bold text-xl">{plan.price}</span>
+                    <span className="font-bold text-xl">
+                      R$ {plan.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    </span>
                     <span className="text-muted-foreground text-sm">{plan.period}</span>
                   </div>
                   <p className="mt-1 text-muted-foreground text-xs">{plan.description}</p>
+
+                  {/* Base Features */}
                   <ul className="mt-3 flex flex-col gap-1.5">
-                    {plan.features.map((f) => (
+                    {plan.baseFeatures.map((f) => (
                       <li key={f} className="flex items-center gap-1.5 text-xs">
                         <CheckCircle2 className="size-3 shrink-0 text-green-600" />
                         <span>{f}</span>
                       </li>
                     ))}
                   </ul>
+
+                  {/* Extra Features */}
+                  {plan.extraFeatures.length > 0 && (
+                    <>
+                      <p className="mt-2 font-medium text-primary text-xs">Tudo no Plano Inicial, mais:</p>
+                      <ul className="mt-1 flex flex-col gap-1.5">
+                        {plan.extraFeatures.map((f) => (
+                          <li key={f} className="flex items-center gap-1.5 text-xs">
+                            <CheckCircle2 className="size-3 shrink-0 text-green-600" />
+                            <span className="font-medium">{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </button>
               ))}
             </div>
+
+            {/* Compute Tier Selection */}
+            {selectedPlan && (
+              <div className="mt-4">
+                <h3 className="mb-3 font-semibold text-base">Escolha o Compute</h3>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {computeOptions
+                    .filter((c) => plans.find((p) => p.id === selectedPlan)?.allowedCompute.includes(c.id))
+                    .map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setSelectedCompute(opt.id)}
+                        className={`flex items-center justify-between rounded-lg border p-3 text-left transition-all ${
+                          selectedCompute === opt.id
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-muted-foreground/50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Server className="size-4 text-muted-foreground" />
+                          <div className="flex flex-col">
+                            <span className="font-medium text-sm">{opt.size}</span>
+                            <span className="text-muted-foreground text-xs">
+                              {opt.cpu} / {opt.ram} RAM
+                              {opt.dedicated ? " (dedicado)" : ""}
+                            </span>
+                          </div>
+                        </div>
+                        <span className="font-medium text-sm">
+                          + R$ {opt.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                        </span>
+                      </button>
+                    ))}
+                </div>
+
+                {/* Total */}
+                <div className="mt-3 rounded-lg bg-muted/50 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground text-sm">Plano {selectedPlanData?.name} + Compute</span>
+                    <span className="font-bold text-lg">
+                      R${" "}
+                      {(
+                        (selectedPlanData?.price ?? 0) +
+                        (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)
+                      ).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                      <span className="font-normal text-muted-foreground text-sm">/mês</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Botão de Pagamento */}
@@ -632,7 +743,7 @@ export function SummaryStep() {
                   ? `Selecionar Plano ${selectedPlanData?.name} (Demo)`
                   : loadingPaymentIntent
                     ? "Preparando pagamento..."
-                    : `Confirmar Plano ${selectedPlanData?.name} (${selectedPlanData?.price}${selectedPlanData?.period})`}
+                    : `Confirmar Plano ${selectedPlanData?.name} (R$ ${((selectedPlanData?.price ?? 0) + (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês)`}
               </Button>
             </div>
           ) : (
@@ -686,7 +797,11 @@ export function SummaryStep() {
                 <div className="flex items-center justify-between border-t pt-2">
                   <span className="font-medium text-sm">Total</span>
                   <span className="font-bold text-lg">
-                    {selectedPlanData?.price}
+                    R${" "}
+                    {(
+                      (selectedPlanData?.price ?? 0) +
+                      (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)
+                    ).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                     <span className="font-normal text-muted-foreground text-sm">/mês</span>
                   </span>
                 </div>
@@ -716,7 +831,14 @@ export function SummaryStep() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground text-sm">Total</span>
-                  <span className="font-bold text-lg">{selectedPlanData?.price}/mês</span>
+                  <span className="font-bold text-lg">
+                    R${" "}
+                    {(
+                      (selectedPlanData?.price ?? 0) +
+                      (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)
+                    ).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    /mês
+                  </span>
                 </div>
               </div>
 

@@ -6,10 +6,10 @@ export type Plan = {
   badge?: string;
   highlighted?: boolean;
   cta: string;
-  features: string[];
+  baseFeatures: string[];
+  extraFeatures: string[];
   supabasePlan: string;
-  supabaseCompute: string;
-  supabaseCost: number;
+  allowedCompute: string[];
 };
 
 export const plans: Plan[] = [
@@ -20,9 +20,8 @@ export const plans: Plan[] = [
     monthlyPrice: 899.9,
     cta: "Começar Agora",
     supabasePlan: "Pro",
-    supabaseCompute: "Pequeno",
-    supabaseCost: 200,
-    features: [
+    allowedCompute: ["micro", "small", "medium", "large"],
+    baseFeatures: [
       "Até 10 usuários",
       "5 módulos",
       "100 GB de armazenamento",
@@ -33,6 +32,7 @@ export const plans: Plan[] = [
       "Suporte por e-mail",
       "Relatórios básicos",
     ],
+    extraFeatures: [],
   },
   {
     id: "pro",
@@ -43,16 +43,24 @@ export const plans: Plan[] = [
     highlighted: true,
     cta: "Fazer Upgrade",
     supabasePlan: "Pro",
-    supabaseCompute: "Médio",
-    supabaseCost: 425,
-    features: [
+    allowedCompute: ["micro", "small", "medium", "large", "xlarge"],
+    baseFeatures: [
+      "Até 10 usuários",
+      "5 módulos",
+      "100 GB de armazenamento",
+      "1 projeto ativo",
+      "Banco Postgres dedicado",
+      "Auth com 100K MAU",
+      "Backups automáticos (7 dias)",
+      "Suporte por e-mail",
+      "Relatórios básicos",
+    ],
+    extraFeatures: [
       "Até 50 usuários",
       "Todos os módulos",
-      "100 GB de armazenamento",
       "3 projetos ativos",
-      "Banco Postgres dedicado (4 GB RAM)",
-      "Auth com 100K MAU + SAML (50)",
-      "Backups automáticos (7 dias)",
+      "Banco com 4 GB RAM",
+      "SAML/SSO (50 usuários)",
       "Suporte prioritário",
       "Relatórios avançados",
       "API de integração",
@@ -66,15 +74,31 @@ export const plans: Plan[] = [
     monthlyPrice: 8999.9,
     cta: "Fazer Upgrade",
     supabasePlan: "Team",
-    supabaseCompute: "Grande",
-    supabaseCost: 3545,
-    features: [
-      "Usuários ilimitados",
-      "Todos os módulos",
+    allowedCompute: ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge"],
+    baseFeatures: [
+      "Até 10 usuários",
+      "5 módulos",
       "100 GB de armazenamento",
+      "1 projeto ativo",
+      "Banco Postgres dedicado",
+      "Auth com 100K MAU",
+      "Backups automáticos (7 dias)",
+      "Suporte por e-mail",
+      "Relatórios básicos",
+    ],
+    extraFeatures: [
+      "Até 50 usuários",
+      "Todos os módulos",
+      "3 projetos ativos",
+      "Banco com 4 GB RAM",
+      "SAML/SSO (50 usuários)",
+      "Suporte prioritário",
+      "Relatórios avançados",
+      "API de integração",
+      "Faturamento e Finanças",
+      "Usuários ilimitados",
       "5 projetos ativos",
-      "Banco Postgres dedicado (8 GB RAM)",
-      "Auth com 100K MAU + SAML (50)",
+      "Banco com 8 GB RAM (dedicado)",
       "Backups automáticos (14 dias)",
       "SOC2 + ISO 27001",
       "SSO Dashboard + Audit Logs",
@@ -206,7 +230,10 @@ export const billingHistory: BillingHistoryEntry[] = [
 ];
 
 export type ComputeOption = {
+  id: string;
   size: string;
+  supabaseCost: number;
+  markupPercent: number;
   price: number;
   cpu: string;
   dedicated: boolean;
@@ -217,8 +244,11 @@ export type ComputeOption = {
 
 export const computeOptions: ComputeOption[] = [
   {
+    id: "micro",
     size: "Micro",
-    price: 50,
+    supabaseCost: 50,
+    markupPercent: 90,
+    price: 95,
     cpu: "2 núcleos ARM",
     dedicated: false,
     ram: "1 GB",
@@ -226,8 +256,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 200,
   },
   {
+    id: "small",
     size: "Pequeno",
-    price: 75,
+    supabaseCost: 75,
+    markupPercent: 80,
+    price: 135,
     cpu: "2 núcleos ARM",
     dedicated: false,
     ram: "2 GB",
@@ -235,8 +268,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 400,
   },
   {
+    id: "medium",
     size: "Médio",
-    price: 300,
+    supabaseCost: 300,
+    markupPercent: 65,
+    price: 495,
     cpu: "2 núcleos ARM",
     dedicated: false,
     ram: "4 GB",
@@ -244,8 +280,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 600,
   },
   {
+    id: "large",
     size: "Grande",
-    price: 550,
+    supabaseCost: 550,
+    markupPercent: 55,
+    price: 853,
     cpu: "2 núcleos ARM",
     dedicated: true,
     ram: "8 GB",
@@ -253,8 +292,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 800,
   },
   {
+    id: "xlarge",
     size: "XL",
-    price: 1050,
+    supabaseCost: 1050,
+    markupPercent: 40,
+    price: 1470,
     cpu: "4 núcleos ARM",
     dedicated: true,
     ram: "16 GB",
@@ -262,8 +304,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 1000,
   },
   {
+    id: "2xlarge",
     size: "2XL",
-    price: 2100,
+    supabaseCost: 2100,
+    markupPercent: 30,
+    price: 2730,
     cpu: "8 núcleos ARM",
     dedicated: true,
     ram: "32 GB",
@@ -271,8 +316,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 1500,
   },
   {
+    id: "4xlarge",
     size: "4XL",
-    price: 4200,
+    supabaseCost: 4200,
+    markupPercent: 25,
+    price: 5250,
     cpu: "16 núcleos ARM",
     dedicated: true,
     ram: "64 GB",
@@ -280,8 +328,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 3000,
   },
   {
+    id: "8xlarge",
     size: "8XL",
-    price: 8400,
+    supabaseCost: 8400,
+    markupPercent: 20,
+    price: 10080,
     cpu: "32 núcleos ARM",
     dedicated: true,
     ram: "128 GB",
@@ -289,8 +340,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 6000,
   },
   {
+    id: "12xlarge",
     size: "12XL",
-    price: 12600,
+    supabaseCost: 12600,
+    markupPercent: 20,
+    price: 15120,
     cpu: "48 núcleos ARM",
     dedicated: true,
     ram: "192 GB",
@@ -298,8 +352,11 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 9000,
   },
   {
+    id: "16xlarge",
     size: "16XL",
-    price: 16800,
+    supabaseCost: 16800,
+    markupPercent: 20,
+    price: 20160,
     cpu: "64 núcleos ARM",
     dedicated: true,
     ram: "256 GB",
@@ -307,6 +364,16 @@ export const computeOptions: ComputeOption[] = [
     poolerConnections: 12000,
   },
 ];
+
+export function getComputePrice(computeId: string): number {
+  return computeOptions.find((c) => c.id === computeId)?.price ?? 0;
+}
+
+export function getPlanTotal(planId: string, computeId: string): number {
+  const plan = plans.find((p) => p.id === planId);
+  const compute = getComputePrice(computeId);
+  return (plan?.monthlyPrice ?? 0) + compute;
+}
 
 export type FaqItem = {
   question: string;

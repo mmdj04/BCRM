@@ -4,6 +4,7 @@ import { useState } from "react";
 
 interface UseCheckoutOptions {
   plan: string;
+  compute: string;
   interval?: "monthly";
   email: string;
   userId: string;
@@ -36,7 +37,6 @@ export function useCheckout(): UseCheckoutReturn {
         throw new Error(data.error || "Failed to create checkout session");
       }
 
-      // Redirect to Stripe Checkout URL
       if (data.url) {
         window.location.href = data.url;
       }

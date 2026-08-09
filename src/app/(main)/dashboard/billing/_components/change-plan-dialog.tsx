@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { createClient } from "@supabase/supabase-js";
-import { ArrowRight, Check, CreditCard, Info, Zap } from "lucide-react";
+import { ArrowRight, Check, CreditCard, Server, Zap } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,56 +19,13 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth } from "@/lib/supabase/auth-context";
 
-import { plans } from "./data";
+import { computeOptions, getComputePrice, plans } from "./data";
 
 const PLAN_NAMES: Record<string, string> = {
   free: "Gratuito",
   starter: "Inicial",
   pro: "Pro",
   team: "Equipe",
-};
-
-const PLAN_PRICES: Record<string, number> = {
-  starter: 899.9,
-  pro: 2299.9,
-  team: 8999.9,
-};
-
-const PLAN_FEATURES: Record<string, string[]> = {
-  starter: [
-    "Até 10 usuários",
-    "5 módulos",
-    "100 GB de armazenamento",
-    "1 projeto ativo",
-    "Banco Postgres dedicado",
-    "Auth com 100K MAU",
-    "Backups automáticos (7 dias)",
-    "Suporte por e-mail",
-  ],
-  pro: [
-    "Até 50 usuários",
-    "Todos os módulos",
-    "100 GB de armazenamento",
-    "3 projetos ativos",
-    "Banco Postgres dedicado (4 GB RAM)",
-    "Auth com 100K MAU + SAML (50)",
-    "Backups automáticos (7 dias)",
-    "Suporte prioritário",
-    "Relatórios avançados",
-    "API de integração",
-  ],
-  team: [
-    "Usuários ilimitados",
-    "Todos os módulos",
-    "100 GB de armazenamento",
-    "5 projetos ativos",
-    "Banco Postgres dedicado (8 GB RAM)",
-    "Auth com 100K MAU + SAML (50)",
-    "Backups automáticos (14 dias)",
-    "SOC2 + ISO 27001",
-    "SSO Dashboard + Audit Logs",
-    "Suporte prioritário com SLA",
-  ],
 };
 
 type ChangePlanDialogProps = {
@@ -81,30 +38,46 @@ type ChangePlanDialogProps = {
 export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChanged }: ChangePlanDialogProps) {
   const { user, isDemo } = useAuth();
   const [selectedPlan, setSelectedPlan] = useState<string>("");
+  const [selectedCompute, setSelectedCompute] = useState<string>("");
   const [changeTiming, setChangeTiming] = useState<"now" | "period_end">("period_end");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const newPlanData = plans.find((p) => p.id === selectedPlan);
+  const currentPlanData = plans.find((p) => p.id === currentPlan);
 
   const availablePlans = plans.filter((p) => p.id !== currentPlan && p.monthlyPrice !== null);
 
+  const getAllFeatures = (planId: string) => {
+    const plan = plans.find((p) => p.id === planId);
+    if (!plan) return [];
+    return [...plan.baseFeatures, ...plan.extraFeatures];
+  };
+
   const getBenefitsGained = () => {
     if (!selectedPlan || !currentPlan) return [];
-    const currentFeatures = PLAN_FEATURES[currentPlan] || [];
-    const newFeatures = PLAN_FEATURES[selectedPlan] || [];
+    const currentFeatures = getAllFeatures(currentPlan);
+    const newFeatures = getAllFeatures(selectedPlan);
     return newFeatures.filter((f) => !currentFeatures.includes(f));
   };
 
   const getBenefitsLost = () => {
     if (!selectedPlan || !currentPlan) return [];
-    const currentFeatures = PLAN_FEATURES[currentPlan] || [];
-    const newFeatures = PLAN_FEATURES[selectedPlan] || [];
+    const currentFeatures = getAllFeatures(currentPlan);
+    const newFeatures = getAllFeatures(selectedPlan);
     return currentFeatures.filter((f) => !newFeatures.includes(f));
   };
 
   const benefitsGained = getBenefitsGained();
   const benefitsLost = getBenefitsLost();
+
+  const handleSelectPlan = (planId: string) => {
+    setSelectedPlan(planId);
+    const plan = plans.find((p) => p.id === planId);
+    if (plan && plan.allowedCompute.length > 0) {
+      setSelectedCompute(plan.allowedCompute[0]);
+    }
+  };
 
   const handleConfirmChange = async () => {
     if (!selectedPlan || !user?.id) return;
@@ -112,7 +85,6 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
     setLoading(true);
     try {
       if (isDemo) {
-        // Demo mode: update localStorage
         const demoPlan = localStorage.getItem("bcrm_demo_plan");
         const parsed = demoPlan ? JSON.parse(demoPlan) : {};
         localStorage.setItem(
@@ -120,6 +92,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
           JSON.stringify({
             ...parsed,
             plan: selectedPlan,
+            compute: selectedCompute,
             status: "active",
           }),
         );
@@ -129,9 +102,9 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
           onOpenChange(false);
           setSuccess(false);
           setSelectedPlan("");
+          setSelectedCompute("");
         }, 1500);
       } else {
-        // Real mode: update Supabase directly
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
         const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
         if (supabaseUrl && supabaseKey) {
@@ -141,6 +114,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
             {
               id: user.id,
               plan: selectedPlan,
+              compute: selectedCompute,
               plan_interval: "monthly",
               subscription_status: "active",
               current_period_end: changeTiming === "now" ? periodEnd : undefined,
@@ -154,6 +128,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
           onOpenChange(false);
           setSuccess(false);
           setSelectedPlan("");
+          setSelectedCompute("");
         }, 1500);
       }
     } catch {
@@ -166,11 +141,19 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
   const handleOpenChange = (value: boolean) => {
     if (!value) {
       setSelectedPlan("");
+      setSelectedCompute("");
       setChangeTiming("period_end");
       setSuccess(false);
     }
     onOpenChange(value);
   };
+
+  const formatPrice = (price: number) => {
+    return price.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  const currentComputePrice = getComputePrice(currentPlanData?.allowedCompute[0] ?? "");
+  const newComputePrice = getComputePrice(selectedCompute);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -207,7 +190,12 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                 <div className="text-right">
                   <p className="text-muted-foreground text-sm">Valor</p>
                   <p className="font-medium text-lg">
-                    R$ {(PLAN_PRICES[currentPlan] ?? 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                    R${" "}
+                    {formatPrice(
+                      (PLAN_NAMES[currentPlan] ? (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0) : 0) +
+                        currentComputePrice,
+                    )}
+                    /mês
                   </p>
                 </div>
               </div>
@@ -216,9 +204,10 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
             {/* Available Plans */}
             <div className="flex flex-col gap-3">
               <Label className="font-medium">Selecione o novo plano</Label>
-              <RadioGroup value={selectedPlan} onValueChange={setSelectedPlan} className="flex flex-col gap-3">
+              <RadioGroup value={selectedPlan} onValueChange={handleSelectPlan} className="flex flex-col gap-3">
                 {availablePlans.map((plan) => {
-                  const isUpgrade = (PLAN_PRICES[plan.id] ?? 0) > (PLAN_PRICES[currentPlan] ?? 0);
+                  const isUpgrade =
+                    (plan.monthlyPrice ?? 0) > (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0);
                   return (
                     // biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally
                     <label
@@ -229,6 +218,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                           : "border-border hover:border-muted-foreground/50"
                       }`}
                     >
+                      {/* biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally */}
                       <RadioGroupItem value={plan.id} aria-label={plan.name} />
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
@@ -244,7 +234,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                         </div>
                         <p className="text-muted-foreground text-sm">{plan.description}</p>
                         <p className="mt-1 font-medium text-sm">
-                          R$ {plan.monthlyPrice?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                          R$ {formatPrice(plan.monthlyPrice ?? 0)}/mês + Compute
                         </p>
                       </div>
                     </label>
@@ -252,6 +242,41 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                 })}
               </RadioGroup>
             </div>
+
+            {/* Compute Tier Selection */}
+            {selectedPlan && newPlanData && (
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <Server className="size-4 text-muted-foreground" />
+                  <Label className="font-medium">Escolha o Compute</Label>
+                </div>
+                <div className="grid gap-2">
+                  {computeOptions
+                    .filter((c) => newPlanData.allowedCompute.includes(c.id))
+                    .map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setSelectedCompute(opt.id)}
+                        className={`flex items-center justify-between rounded-lg border p-3 text-left transition-all ${
+                          selectedCompute === opt.id
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-muted-foreground/50"
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-medium text-sm">{opt.size}</span>
+                          <span className="text-muted-foreground text-xs">
+                            {opt.cpu} / {opt.ram} RAM
+                            {opt.dedicated ? " (dedicado)" : ""}
+                          </span>
+                        </div>
+                        <span className="font-medium text-sm">+ R$ {formatPrice(opt.price)}/mês</span>
+                      </button>
+                    ))}
+                </div>
+              </div>
+            )}
 
             {/* Benefits Comparison */}
             {selectedPlan && (
@@ -276,16 +301,16 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                 )}
                 {benefitsLost.length > 0 && (
                   <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 dark:border-yellow-800 dark:bg-yellow-950">
-                    <p className="mb-2 font-medium text-sm text-yellow-800 dark:text-yellow-200">
+                    <p className="mb-2 font-medium text-yellow-800 text-sm dark:text-yellow-200">
                       Benefícios Removidos
                     </p>
                     <ul className="flex flex-col gap-1">
                       {benefitsLost.map((benefit) => (
                         <li
                           key={benefit}
-                          className="flex items-start gap-1.5 text-xs text-yellow-700 dark:text-yellow-300"
+                          className="flex items-start gap-1.5 text-yellow-700 text-xs dark:text-yellow-300"
                         >
-                          <Info className="mt-0.5 size-3 shrink-0" />
+                          <span className="mt-0.5 size-3 shrink-0">⚠</span>
                           {benefit}
                         </li>
                       ))}
@@ -336,7 +361,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                   <ArrowRight className="size-4 text-muted-foreground" />
                   <span className="font-medium">{newPlanData.name}</span>
                   <span className="ml-auto font-medium">
-                    R$ {newPlanData.monthlyPrice?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                    R$ {formatPrice((newPlanData.monthlyPrice ?? 0) + newComputePrice)}/mês
                   </span>
                 </div>
                 <p className="mt-2 text-muted-foreground text-xs">
@@ -354,7 +379,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
             Cancelar
           </Button>
           {!success && (
-            <Button onClick={handleConfirmChange} disabled={!selectedPlan || loading}>
+            <Button onClick={handleConfirmChange} disabled={!selectedPlan || !selectedCompute || loading}>
               {loading ? "Processando..." : "Confirmar Alteração"}
             </Button>
           )}

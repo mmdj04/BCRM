@@ -11,6 +11,23 @@ const PLAN_AMOUNTS: Record<string, number> = {
   team: 899990, // R$ 8.999,90
 };
 
+const COMPUTE_AMOUNTS: Record<string, number> = {
+  micro: 9500, // R$ 95
+  small: 13500, // R$ 135
+  medium: 49500, // R$ 495
+  large: 85300, // R$ 853
+  xlarge: 147000, // R$ 1.470
+  "2xlarge": 273000, // R$ 2.730
+  "4xlarge": 525000, // R$ 5.250
+  "8xlarge": 1008000, // R$ 10.080
+  "12xlarge": 1512000, // R$ 15.120
+  "16xlarge": 2016000, // R$ 20.160
+};
+
+function getTotalAmount(plan: string, compute: string): number {
+  return (PLAN_AMOUNTS[plan] ?? 0) + (COMPUTE_AMOUNTS[compute] ?? 0);
+}
+
 export async function getOrCreateCustomer(userId: string, email: string): Promise<Stripe.Customer> {
   const { data: user } = await supabase.from("users").select("stripe_customer_id").eq("id", userId).single();
 
@@ -33,9 +50,11 @@ export async function createCheckoutSessionElements(
   userId: string,
   email: string,
   plan: string,
+  compute: string,
   business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ clientSecret: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
+  const totalAmount = getTotalAmount(plan, compute);
 
   const session = await stripe.checkout.sessions.create({
     customer: customer.id,
@@ -46,10 +65,10 @@ export async function createCheckoutSessionElements(
         price_data: {
           currency: "brl",
           product_data: {
-            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
-            metadata: { plan },
+            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute}`,
+            metadata: { plan, compute },
           },
-          unit_amount: PLAN_AMOUNTS[plan] ?? PLAN_AMOUNTS.pro,
+          unit_amount: totalAmount,
           recurring: { interval: "month" },
         },
         quantity: 1,
@@ -65,6 +84,7 @@ export async function createCheckoutSessionElements(
     metadata: {
       userId,
       plan,
+      compute,
       interval: "monthly",
       isBusiness: business?.isBusiness ? "true" : "false",
       companyName: business?.companyName || "",
@@ -79,9 +99,11 @@ export async function createCheckoutSession(
   userId: string,
   email: string,
   plan: string,
+  compute: string,
   business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ url: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
+  const totalAmount = getTotalAmount(plan, compute);
 
   const customFields: Stripe.Checkout.SessionCreateParams.CustomField[] = [];
 
@@ -114,10 +136,10 @@ export async function createCheckoutSession(
           currency: "brl",
           product: undefined,
           product_data: {
-            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
-            metadata: { plan },
+            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute}`,
+            metadata: { plan, compute },
           },
-          unit_amount: PLAN_AMOUNTS[plan] ?? PLAN_AMOUNTS.pro,
+          unit_amount: totalAmount,
           recurring: { interval: "month" },
         },
         quantity: 1,
@@ -128,6 +150,7 @@ export async function createCheckoutSession(
     metadata: {
       userId,
       plan,
+      compute,
       interval: "monthly",
       isBusiness: business?.isBusiness ? "true" : "false",
       companyName: business?.companyName || "",
@@ -145,6 +168,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.metadata?.userId;
       const plan = session.metadata?.plan;
+      const compute = session.metadata?.compute;
       const interval = session.metadata?.interval;
       const isBusiness = session.metadata?.isBusiness === "true";
       const companyName = session.metadata?.companyName;
@@ -153,6 +177,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       if (userId && plan) {
         const updateData: Record<string, unknown> = {
           plan,
+          compute: compute ?? "medium",
           plan_interval: interval ?? "monthly",
           subscription_status: "active",
         };
