@@ -1,6 +1,7 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { SetupProvider, useSetup } from "@/contexts/setup-context";
 import { useAuth } from "@/lib/supabase/auth-context";
@@ -8,8 +9,20 @@ import { useAuth } from "@/lib/supabase/auth-context";
 import { SetupWizard } from "./_components/setup-wizard";
 
 function SetupContent() {
+  const router = useRouter();
   const { user, isDemo, loading: authLoading } = useAuth();
   const { isSetupComplete, isLoading: setupLoading } = useSetup();
+
+  useEffect(() => {
+    if (authLoading || setupLoading) return;
+    if (!user) {
+      router.push("/auth/v1/login");
+      return;
+    }
+    if (isSetupComplete) {
+      router.push("/dashboard/default");
+    }
+  }, [user, isSetupComplete, authLoading, setupLoading, router]);
 
   if (authLoading || setupLoading) {
     return (
@@ -20,12 +33,10 @@ function SetupContent() {
   }
 
   if (!user) {
-    redirect("/auth/v1/login");
     return null;
   }
 
   if (isSetupComplete) {
-    redirect("/dashboard/default");
     return null;
   }
 
@@ -33,9 +44,7 @@ function SetupContent() {
 }
 
 export default function SetupPage() {
-  return (
-    <SetupPageInner />
-  );
+  return <SetupPageInner />;
 }
 
 function SetupPageInner() {
@@ -50,7 +59,6 @@ function SetupPageInner() {
   }
 
   if (!user) {
-    redirect("/auth/v1/login");
     return null;
   }
 
