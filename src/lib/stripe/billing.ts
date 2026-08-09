@@ -8,10 +8,10 @@ const supabase = createClient(
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
 
-const PLAN_AMOUNTS: Record<string, Record<string, number>> = {
-  starter: { monthly: 78990, yearly: 947880 },
-  pro: { monthly: 188990, yearly: 2267880 },
-  team: { monthly: 798990, yearly: 9587880 },
+const PLAN_PRICE_IDS: Record<string, string> = {
+  starter: "cpmt_1U2TmNLHXCTYNc73JcBvV8KC",
+  pro: "cpmt_1U2TnQLHXCTYNc73vlQI9hn6",
+  team: "cpmt_1U2TnkLHXCTYNc73nQczYmab",
 };
 
 export async function getOrCreateCustomer(userId: string, email: string): Promise<Stripe.Customer> {
@@ -47,15 +47,7 @@ export async function createCheckoutSessionElements(
     ui_mode: "elements",
     line_items: [
       {
-        price_data: {
-          currency: "brl",
-          product_data: {
-            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
-            metadata: { plan, interval },
-          },
-          unit_amount: PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly,
-          recurring: { interval: interval === "yearly" ? "year" : "month" },
-        },
+        price: PLAN_PRICE_IDS[plan] ?? PLAN_PRICE_IDS.pro,
         quantity: 1,
       },
     ],
@@ -109,16 +101,7 @@ export async function createCheckoutSession(
     payment_method_types: ["card"],
     line_items: [
       {
-        price_data: {
-          currency: "brl",
-          product: undefined,
-          product_data: {
-            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
-            metadata: { plan, interval },
-          },
-          unit_amount: PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly,
-          recurring: { interval: interval === "yearly" ? "year" : "month" },
-        },
+        price: PLAN_PRICE_IDS[plan] ?? PLAN_PRICE_IDS.pro,
         quantity: 1,
       },
     ],
