@@ -23,7 +23,7 @@ export function NetWorth() {
         <div className="space-y-0.5">
           <div className="flex items-center justify-between">
             <p className="font-medium text-xl tabular-nums">{formatCurrency(84250, { noDecimals: true })}</p>
-            <span className="text-xs">+$3,680 MoM</span>
+            <span className="text-xs">+R$ 3.680 vs mês</span>
           </div>
           <p className="text-muted-foreground text-xs">This month</p>
         </div>

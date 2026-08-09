@@ -57,11 +57,11 @@ export function QuickActions() {
           <Field orientation="horizontal">
             <InputGroup>
               <InputGroupAddon>
-                <InputGroupText>$</InputGroupText>
+                <InputGroupText>R$</InputGroupText>
               </InputGroupAddon>
               <InputGroupInput placeholder="0.00" />
               <InputGroupAddon align="inline-end">
-                <InputGroupText>USD</InputGroupText>
+                <InputGroupText>BRL</InputGroupText>
               </InputGroupAddon>
             </InputGroup>
             <Button>Enviar</Button>
