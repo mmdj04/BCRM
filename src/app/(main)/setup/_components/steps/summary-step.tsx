@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Accordion,
@@ -37,7 +37,26 @@ import {
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useSetup } from "@/contexts/setup-context";
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [query]);
+  return matches;
+}
 
 const moduleLabels: Record<string, string> = {
   crm: "CRM",
@@ -392,6 +411,7 @@ function BoletoIcon({ className }: { className?: string }) {
 
 export function SummaryStep() {
   const { setupData, setStep, completeSetup } = useSetup();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
   const [cardNumber, setCardNumber] = useState("");
@@ -701,266 +721,485 @@ export function SummaryStep() {
         </CardContent>
       </Card>
 
-      {/* Dialog de Pagamento */}
-      <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
-        <DialogContent className="sm:max-w-[95vw] sm:w-[95vw] max-h-[85vh] p-0">
-          <DialogHeader className="px-6 pt-6 pb-4">
-            <DialogTitle className="text-xl">Dados de Pagamento</DialogTitle>
-            <DialogDescription>
-              Preencha os dados do pagamento para ativar o plano {selectedPlanData?.name}.
-            </DialogDescription>
-          </DialogHeader>
+      {/* Pagamento - Dialog (Desktop) ou Sheet (Mobile/Tablet) */}
+      {isDesktop ? (
+        <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+          <DialogContent className="sm:max-w-[95vw] sm:w-[95vw] max-h-[90vh] p-0 flex flex-col overflow-hidden">
+            <DialogHeader className="px-6 pt-6 pb-4 shrink-0">
+              <DialogTitle className="text-xl">Dados de Pagamento</DialogTitle>
+              <DialogDescription>
+                Preencha os dados do pagamento para ativar o plano {selectedPlanData?.name}.
+              </DialogDescription>
+            </DialogHeader>
 
-          <div className="flex flex-col md:flex-row gap-0">
-            {/* Lado Esquerdo: Formulário de Pagamento */}
-            <div className="flex-1 overflow-y-auto px-6 pb-6 min-w-0 max-h-[calc(85vh-120px)]">
-              {/* Método de pagamento */}
-              <div className="mb-5">
-                <p className="mb-2 font-medium text-sm">Método de Pagamento</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { id: "card", label: "Cartão", icon: CreditCard },
-                    { id: "pix", label: "PIX", icon: PixIcon },
-                    { id: "boleto", label: "Boleto", icon: BoletoIcon },
-                    { id: "transfer", label: "Transferência", icon: Banknote },
-                  ].map((m) => (
-                    <button
-                      key={m.id}
-                      type="button"
-                      onClick={() => setPaymentMethod(m.id)}
-                      className={`flex items-center gap-2 rounded-lg border-2 p-3 text-xs transition-all ${
-                        paymentMethod === m.id ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground/50"
-                      }`}
-                    >
-                      <m.icon className="size-4 text-muted-foreground" />
-                      <span className="font-medium">{m.label}</span>
-                    </button>
-                  ))}
+            <div className="flex flex-row gap-0 min-h-0 flex-1 overflow-hidden">
+              {/* Lado Esquerdo: Formulário de Pagamento */}
+              <div className="flex-1 overflow-y-auto px-6 pb-6 min-w-0">
+                {/* Método de pagamento */}
+                <div className="mb-5">
+                  <p className="mb-2 font-medium text-sm">Método de Pagamento</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { id: "card", label: "Cartão", icon: CreditCard },
+                      { id: "pix", label: "PIX", icon: PixIcon },
+                      { id: "boleto", label: "Boleto", icon: BoletoIcon },
+                      { id: "transfer", label: "Transferência", icon: Banknote },
+                    ].map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setPaymentMethod(m.id)}
+                        className={`flex items-center gap-2 rounded-lg border-2 p-3 text-xs transition-all ${
+                          paymentMethod === m.id ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground/50"
+                        }`}
+                      >
+                        <m.icon className="size-4 text-muted-foreground" />
+                        <span className="font-medium">{m.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {paymentMethod === "card" && (
+                  <>
+                    <div className="mb-5">
+                      <p className="mb-2 font-medium text-muted-foreground text-xs">Bandeiras aceitas</p>
+                      <div className="flex items-center gap-2">
+                        <VisaIcon className="h-6 w-auto rounded" />
+                        <MastercardIcon className="h-6 w-auto rounded" />
+                        <EloIcon className="h-6 w-auto rounded" />
+                        <AmexIcon className="h-6 w-auto rounded" />
+                        <HipercardIcon className="h-6 w-auto rounded" />
+                      </div>
+                    </div>
+
+                    <FieldGroup className="gap-3">
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="d-name">
+                          Nome Completo
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <Input id="d-name" placeholder="Nome como impresso no cartão" value={cardName} onChange={(e) => setCardName(e.target.value)} />
+                      </Field>
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="d-number">
+                          Número do Cartão
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <Input id="d-number" placeholder="0000 0000 0000 0000" value={cardNumber} onChange={(e) => {
+                          const v = e.target.value.replace(/\D/g, "").replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+                          setCardNumber(v.substring(0, 19));
+                        }} maxLength={19} />
+                      </Field>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="d-expiry">
+                            Validade
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="d-expiry" placeholder="MM/AA" value={cardExpiry} onChange={(e) => {
+                            let v = e.target.value.replace(/\D/g, "");
+                            if (v.length >= 2) v = `${v.substring(0, 2)}/${v.substring(2, 4)}`;
+                            setCardExpiry(v.substring(0, 5));
+                          }} maxLength={5} />
+                        </Field>
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="d-cvc">
+                            CVC
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="d-cvc" placeholder="000" value={cardCvc} onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, "").substring(0, 4))} maxLength={4} />
+                        </Field>
+                      </div>
+                    </FieldGroup>
+
+                    <div className="my-4">
+                      <p className="mb-2 font-medium text-sm">Endereço de Cobrança</p>
+                    </div>
+
+                    <FieldGroup className="gap-3">
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="d-country">
+                          País ou Região
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <select id="d-country" value={country} onChange={(e) => setCountry(e.target.value)} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                          {countries.map((c) => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </Field>
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="d-address">
+                          Endereço
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <Input id="d-address" placeholder="Rua, número, complemento" value={address} onChange={(e) => setAddress(e.target.value)} />
+                      </Field>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="d-city">
+                            Cidade
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="d-city" placeholder="Sua cidade" value={city} onChange={(e) => setCity(e.target.value)} />
+                        </Field>
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="d-zip">
+                            CEP
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="d-zip" placeholder="00000-000" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                        </Field>
+                      </div>
+                    </FieldGroup>
+
+                    <div className="mt-4 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800 text-xs dark:border-green-800 dark:bg-green-950 dark:text-green-200">
+                      <Shield className="size-4 shrink-0" />
+                      <p>Pagamento processado com segurança pela Stripe. Seus dados de cartão não são armazenados no nosso servidor.</p>
+                    </div>
+                  </>
+                )}
+
+                {paymentMethod === "pix" && (
+                  <div className="flex flex-col items-center gap-4 py-6">
+                    <div className="flex size-40 items-center justify-center rounded-lg border bg-white p-2">
+                      <div className="size-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0id2hpdGUiLz48dGV4dCB4PSI2MCIgeT0iNjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UVIgQ09ERSA8L3RleHQ+PC9zdmc+')] bg-center bg-contain bg-no-repeat" />
+                    </div>
+                    <div className="text-center">
+                      <p className="font-medium text-sm">PIX - Pagamento Instantâneo</p>
+                      <p className="mt-1 text-muted-foreground text-xs">Escaneie o QR Code ou copie o código abaixo</p>
+                      <p className="mt-2 max-w-xs break-all rounded bg-muted p-2 font-mono text-xs">00020126580014BR.GOV.BCB.PIX0136bcrm-replace-with-real-key52040000530398654040.015802BR5913BCRM TECNOLOGIA6009SAO PAULO62070503***6304ABCD</p>
+                    </div>
+                  </div>
+                )}
+
+                {paymentMethod === "boleto" && (
+                  <div className="flex flex-col items-center gap-4 py-6">
+                    <div className="text-center">
+                      <p className="font-medium text-sm">Boleto Bancário</p>
+                      <p className="mt-1 text-muted-foreground text-xs">O boleto será gerado após a confirmação. Prazo de até 3 dias úteis para compensação.</p>
+                    </div>
+                  </div>
+                )}
+
+                {paymentMethod === "transfer" && (
+                  <div className="flex flex-col gap-4 py-6">
+                    <div className="text-center">
+                      <p className="font-medium text-sm">Transferência Bancária (TED/DOC)</p>
+                      <p className="mt-1 text-muted-foreground text-xs">Os dados bancários serão exibidos após a confirmação.</p>
+                    </div>
+                    <div className="rounded-lg border p-3 text-sm">
+                      <p><strong>Banco:</strong> 001 - Banco do Brasil</p>
+                      <p><strong>Agência:</strong> 0000-0</p>
+                      <p><strong>Conta:</strong> 00000-0</p>
+                      <p><strong>CNPJ:</strong> 00.000.000/0001-00</p>
+                      <p><strong>Favorecido:</strong> BCRM Tecnologia Ltda</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-4 flex gap-3">
+                  <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="flex-1">
+                    Cancelar
+                  </Button>
+                  <Button
+                    onClick={handlePayment}
+                    disabled={processing || (paymentMethod === "card" && !isCardFormValid)}
+                    className="flex-1"
+                  >
+                    {processing ? (
+                      <>Processando...</>
+                    ) : (
+                      <>
+                        <Wallet className="mr-2 size-4" />
+                        Pagar {selectedPlanData?.price}{selectedPlanData?.period}
+                      </>
+                    )}
+                  </Button>
                 </div>
               </div>
 
-              {paymentMethod === "card" && (
-                <>
-                  {/* Bandeiras do cartão */}
-                  <div className="mb-5">
-                    <p className="mb-2 font-medium text-muted-foreground text-xs">Bandeiras aceitas</p>
-                    <div className="flex items-center gap-2">
-                      <VisaIcon className="h-6 w-auto rounded" />
-                      <MastercardIcon className="h-6 w-auto rounded" />
-                      <EloIcon className="h-6 w-auto rounded" />
-                      <AmexIcon className="h-6 w-auto rounded" />
-                      <HipercardIcon className="h-6 w-auto rounded" />
+              {/* Lado Direito: Resumo do Plano */}
+              <div className="flex flex-col gap-4 border-l bg-muted/30 px-6 py-6 w-[380px] shrink-0 overflow-y-auto">
+                <div>
+                  <p className="mb-1 text-muted-foreground text-xs">Plano Selecionado</p>
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-lg">{selectedPlanData?.name}</h4>
+                    {selectedPlanData?.popular && <Badge className="text-xs">Mais Popular</Badge>}
+                  </div>
+                  <div className="mt-1 flex items-baseline gap-1">
+                    <span className="font-bold text-2xl">{selectedPlanData?.price}</span>
+                    <span className="text-muted-foreground text-sm">{selectedPlanData?.period}</span>
+                  </div>
+                  <p className="mt-1 text-muted-foreground text-xs">{selectedPlanData?.description}</p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="mb-2 text-muted-foreground text-xs">Recursos Inclusos</p>
+                  <ul className="flex flex-col gap-2">
+                    {selectedPlanData?.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-sm">
+                        <CheckCircle2 className="size-3.5 shrink-0 text-green-600" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="mb-2 text-muted-foreground text-xs">Configuração</p>
+                  <div className="flex flex-col gap-1.5 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Módulos ativos</span>
+                      <span className="font-medium">{enabledModules.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Usuários</span>
+                      <span className="font-medium">{setupData.users.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Equipes</span>
+                      <span className="font-medium">{setupData.teams.length}</span>
                     </div>
                   </div>
+                </div>
 
-                  <FieldGroup className="gap-3">
-                    <Field className="gap-1.5">
-                      <FieldLabel htmlFor="dialog-card-name">
-                        Nome Completo
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                      </FieldLabel>
-                      <Input id="dialog-card-name" placeholder="Nome como impresso no cartão" value={cardName} onChange={(e) => setCardName(e.target.value)} />
-                    </Field>
-                    <Field className="gap-1.5">
-                      <FieldLabel htmlFor="dialog-card-number">
-                        Número do Cartão
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                      </FieldLabel>
-                      <Input id="dialog-card-number" placeholder="0000 0000 0000 0000" value={cardNumber} onChange={(e) => {
-                        const v = e.target.value.replace(/\D/g, "").replace(/(\d{4})(?=\d)/g, "$1 ").trim();
-                        setCardNumber(v.substring(0, 19));
-                      }} maxLength={19} />
-                    </Field>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Field className="gap-1.5">
-                        <FieldLabel htmlFor="dialog-card-expiry">
-                          Validade
-                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                        </FieldLabel>
-                        <Input id="dialog-card-expiry" placeholder="MM/AA" value={cardExpiry} onChange={(e) => {
-                          let v = e.target.value.replace(/\D/g, "");
-                          if (v.length >= 2) v = `${v.substring(0, 2)}/${v.substring(2, 4)}`;
-                          setCardExpiry(v.substring(0, 5));
-                        }} maxLength={5} />
-                      </Field>
-                      <Field className="gap-1.5">
-                        <FieldLabel htmlFor="dialog-card-cvc">
-                          CVC
-                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                        </FieldLabel>
-                        <Input id="dialog-card-cvc" placeholder="000" value={cardCvc} onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, "").substring(0, 4))} maxLength={4} />
-                      </Field>
-                    </div>
-                  </FieldGroup>
+                <Separator />
 
-                  <div className="my-4">
-                    <p className="mb-2 font-medium text-sm">Endereço de Cobrança</p>
-                  </div>
-
-                  <FieldGroup className="gap-3">
-                    <Field className="gap-1.5">
-                      <FieldLabel htmlFor="dialog-pay-country">
-                        País ou Região
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                      </FieldLabel>
-                      <select id="dialog-pay-country" value={country} onChange={(e) => setCountry(e.target.value)} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-                        {countries.map((c) => <option key={c} value={c}>{c}</option>)}
-                      </select>
-                    </Field>
-                    <Field className="gap-1.5">
-                      <FieldLabel htmlFor="dialog-pay-address">
-                        Endereço
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                      </FieldLabel>
-                      <Input id="dialog-pay-address" placeholder="Rua, número, complemento" value={address} onChange={(e) => setAddress(e.target.value)} />
-                    </Field>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Field className="gap-1.5">
-                        <FieldLabel htmlFor="dialog-pay-city">
-                          Cidade
-                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                        </FieldLabel>
-                        <Input id="dialog-pay-city" placeholder="Sua cidade" value={city} onChange={(e) => setCity(e.target.value)} />
-                      </Field>
-                      <Field className="gap-1.5">
-                        <FieldLabel htmlFor="dialog-pay-zip">
-                          CEP
-                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
-                        </FieldLabel>
-                        <Input id="dialog-pay-zip" placeholder="00000-000" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
-                      </Field>
-                    </div>
-                  </FieldGroup>
-
-                  <div className="mt-4 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800 text-xs dark:border-green-800 dark:bg-green-950 dark:text-green-200">
+                <div className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950">
+                  <div className="flex items-center gap-2 text-green-800 text-xs dark:text-green-200">
                     <Shield className="size-4 shrink-0" />
                     <p>Pagamento processado com segurança pela Stripe. Seus dados de cartão não são armazenados no nosso servidor.</p>
                   </div>
-                </>
-              )}
-
-              {paymentMethod === "pix" && (
-                <div className="flex flex-col items-center gap-4 py-6">
-                  <div className="flex size-40 items-center justify-center rounded-lg border bg-white p-2">
-                    <div className="size-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0id2hpdGUiLz48dGV4dCB4PSI2MCIgeT0iNjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UVIgQ09ERSA8L3RleHQ+PC9zdmc+')] bg-center bg-contain bg-no-repeat" />
-                  </div>
-                  <div className="text-center">
-                    <p className="font-medium text-sm">PIX - Pagamento Instantâneo</p>
-                    <p className="mt-1 text-muted-foreground text-xs">Escaneie o QR Code ou copie o código abaixo</p>
-                    <p className="mt-2 max-w-xs break-all rounded bg-muted p-2 font-mono text-xs">00020126580014BR.GOV.BCB.PIX0136bcrm-replace-with-real-key52040000530398654040.015802BR5913BCRM TECNOLOGIA6009SAO PAULO62070503***6304ABCD</p>
-                  </div>
                 </div>
-              )}
-
-              {paymentMethod === "boleto" && (
-                <div className="flex flex-col items-center gap-4 py-6">
-                  <div className="text-center">
-                    <p className="font-medium text-sm">Boleto Bancário</p>
-                    <p className="mt-1 text-muted-foreground text-xs">O boleto será gerado após a confirmação. Prazo de até 3 dias úteis para compensação.</p>
-                  </div>
-                </div>
-              )}
-
-              {paymentMethod === "transfer" && (
-                <div className="flex flex-col gap-4 py-6">
-                  <div className="text-center">
-                    <p className="font-medium text-sm">Transferência Bancária (TED/DOC)</p>
-                    <p className="mt-1 text-muted-foreground text-xs">Os dados bancários serão exibidos após a confirmação.</p>
-                  </div>
-                  <div className="rounded-lg border p-3 text-sm">
-                    <p><strong>Banco:</strong> 001 - Banco do Brasil</p>
-                    <p><strong>Agência:</strong> 0000-0</p>
-                    <p><strong>Conta:</strong> 00000-0</p>
-                    <p><strong>CNPJ:</strong> 00.000.000/0001-00</p>
-                    <p><strong>Favorecido:</strong> BCRM Tecnologia Ltda</p>
-                  </div>
-                </div>
-              )}
-
-              <div className="mt-4 flex gap-3">
-                <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="flex-1">
-                  Cancelar
-                </Button>
-                <Button
-                  onClick={handlePayment}
-                  disabled={processing || (paymentMethod === "card" && !isCardFormValid)}
-                  className="flex-1"
-                >
-                  {processing ? (
-                    <>Processando...</>
-                  ) : (
-                    <>
-                      <Wallet className="mr-2 size-4" />
-                      Pagar {selectedPlanData?.price}{selectedPlanData?.period}
-                    </>
-                  )}
-                </Button>
               </div>
             </div>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Sheet open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+          <SheetContent side="bottom" className="h-full w-full max-w-full rounded-none border-0 p-0 flex flex-col overflow-hidden">
+            <SheetHeader className="px-6 pt-6 pb-4 shrink-0">
+              <SheetTitle className="text-xl">Dados de Pagamento</SheetTitle>
+              <SheetDescription>
+                Preencha os dados do pagamento para ativar o plano {selectedPlanData?.name}.
+              </SheetDescription>
+            </SheetHeader>
 
-            {/* Lado Direito: Resumo do Plano */}
-            <div className="flex flex-col gap-4 border-t md:border-t-0 md:border-l bg-muted/30 px-6 py-6 w-full md:w-[380px] shrink-0 max-h-[calc(85vh-120px)] overflow-y-auto">
-              <div>
-                <p className="mb-1 text-muted-foreground text-xs">Plano Selecionado</p>
-                <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-lg">{selectedPlanData?.name}</h4>
-                  {selectedPlanData?.popular && (
-                    <Badge className="text-xs">Mais Popular</Badge>
-                  )}
+            <div className="flex flex-col gap-0 min-h-0 flex-1 overflow-hidden">
+              {/* Resumo do Plano (topo no mobile) */}
+              <div className="flex flex-col gap-3 bg-muted/30 px-6 py-4 shrink-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-base">{selectedPlanData?.name}</h4>
+                    {selectedPlanData?.popular && <Badge className="text-xs">Mais Popular</Badge>}
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-bold text-lg">{selectedPlanData?.price}</span>
+                    <span className="text-muted-foreground text-xs">{selectedPlanData?.period}</span>
+                  </div>
                 </div>
-                <div className="mt-1 flex items-baseline gap-1">
-                  <span className="font-bold text-2xl">{selectedPlanData?.price}</span>
-                  <span className="text-muted-foreground text-sm">{selectedPlanData?.period}</span>
-                </div>
-                <p className="mt-1 text-muted-foreground text-xs">{selectedPlanData?.description}</p>
-              </div>
-
-              <Separator />
-
-              <div>
-                <p className="mb-2 text-muted-foreground text-xs">Recursos Inclusos</p>
-                <ul className="flex flex-col gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {selectedPlanData?.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="size-3.5 shrink-0 text-green-600" />
-                      <span>{f}</span>
-                    </li>
+                    <span key={f} className="flex items-center gap-1 rounded bg-green-50 px-2 py-0.5 text-green-700 text-xs dark:bg-green-950 dark:text-green-400">
+                      <CheckCircle2 className="size-3 shrink-0" />{f}
+                    </span>
                   ))}
-                </ul>
-              </div>
-
-              <Separator />
-
-              <div>
-                <p className="mb-2 text-muted-foreground text-xs">Configuração</p>
-                <div className="flex flex-col gap-1.5 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Módulos ativos</span>
-                    <span className="font-medium">{enabledModules.length}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Usuários</span>
-                    <span className="font-medium">{setupData.users.length}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Equipes</span>
-                    <span className="font-medium">{setupData.teams.length}</span>
-                  </div>
                 </div>
               </div>
 
               <Separator />
 
-              <div className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950">
-                <div className="flex items-center gap-2 text-green-800 text-xs dark:text-green-200">
-                  <Shield className="size-4 shrink-0" />
-                  <p>Pagamento seguro via Stripe. Cancele quando quiser.</p>
+              {/* Formulário de Pagamento (scrollável no mobile) */}
+              <div className="flex-1 overflow-y-auto px-6 py-4">
+                <div className="mb-5">
+                  <p className="mb-2 font-medium text-sm">Método de Pagamento</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { id: "card", label: "Cartão", icon: CreditCard },
+                      { id: "pix", label: "PIX", icon: PixIcon },
+                      { id: "boleto", label: "Boleto", icon: BoletoIcon },
+                      { id: "transfer", label: "Transferência", icon: Banknote },
+                    ].map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setPaymentMethod(m.id)}
+                        className={`flex items-center gap-2 rounded-lg border-2 p-3 text-xs transition-all ${
+                          paymentMethod === m.id ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground/50"
+                        }`}
+                      >
+                        <m.icon className="size-4 text-muted-foreground" />
+                        <span className="font-medium">{m.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {paymentMethod === "card" && (
+                  <>
+                    <div className="mb-5">
+                      <p className="mb-2 font-medium text-muted-foreground text-xs">Bandeiras aceitas</p>
+                      <div className="flex items-center gap-2">
+                        <VisaIcon className="h-6 w-auto rounded" />
+                        <MastercardIcon className="h-6 w-auto rounded" />
+                        <EloIcon className="h-6 w-auto rounded" />
+                        <AmexIcon className="h-6 w-auto rounded" />
+                        <HipercardIcon className="h-6 w-auto rounded" />
+                      </div>
+                    </div>
+
+                    <FieldGroup className="gap-3">
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="s-name">
+                          Nome Completo
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <Input id="s-name" placeholder="Nome como impresso no cartão" value={cardName} onChange={(e) => setCardName(e.target.value)} />
+                      </Field>
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="s-number">
+                          Número do Cartão
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <Input id="s-number" placeholder="0000 0000 0000 0000" value={cardNumber} onChange={(e) => {
+                          const v = e.target.value.replace(/\D/g, "").replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+                          setCardNumber(v.substring(0, 19));
+                        }} maxLength={19} />
+                      </Field>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="s-expiry">
+                            Validade
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="s-expiry" placeholder="MM/AA" value={cardExpiry} onChange={(e) => {
+                            let v = e.target.value.replace(/\D/g, "");
+                            if (v.length >= 2) v = `${v.substring(0, 2)}/${v.substring(2, 4)}`;
+                            setCardExpiry(v.substring(0, 5));
+                          }} maxLength={5} />
+                        </Field>
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="s-cvc">
+                            CVC
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="s-cvc" placeholder="000" value={cardCvc} onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, "").substring(0, 4))} maxLength={4} />
+                        </Field>
+                      </div>
+                    </FieldGroup>
+
+                    <div className="my-4">
+                      <p className="mb-2 font-medium text-sm">Endereço de Cobrança</p>
+                    </div>
+
+                    <FieldGroup className="gap-3">
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="s-country">
+                          País ou Região
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <select id="s-country" value={country} onChange={(e) => setCountry(e.target.value)} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                          {countries.map((c) => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </Field>
+                      <Field className="gap-1.5">
+                        <FieldLabel htmlFor="s-address">
+                          Endereço
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                        </FieldLabel>
+                        <Input id="s-address" placeholder="Rua, número, complemento" value={address} onChange={(e) => setAddress(e.target.value)} />
+                      </Field>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="s-city">
+                            Cidade
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="s-city" placeholder="Sua cidade" value={city} onChange={(e) => setCity(e.target.value)} />
+                        </Field>
+                        <Field className="gap-1.5">
+                          <FieldLabel htmlFor="s-zip">
+                            CEP
+                            <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">Obrigatório</span>
+                          </FieldLabel>
+                          <Input id="s-zip" placeholder="00000-000" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                        </Field>
+                      </div>
+                    </FieldGroup>
+
+                    <div className="mt-4 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800 text-xs dark:border-green-800 dark:bg-green-950 dark:text-green-200">
+                      <Shield className="size-4 shrink-0" />
+                      <p>Pagamento processado com segurança pela Stripe. Seus dados de cartão não são armazenados no nosso servidor.</p>
+                    </div>
+                  </>
+                )}
+
+                {paymentMethod === "pix" && (
+                  <div className="flex flex-col items-center gap-4 py-6">
+                    <div className="flex size-40 items-center justify-center rounded-lg border bg-white p-2">
+                      <div className="size-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0id2hpdGUiLz48dGV4dCB4PSI2MCIgeT0iNjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UVIgQ09ERSA8L3RleHQ+PC9zdmc+')] bg-center bg-contain bg-no-repeat" />
+                    </div>
+                    <div className="text-center">
+                      <p className="font-medium text-sm">PIX - Pagamento Instantâneo</p>
+                      <p className="mt-1 text-muted-foreground text-xs">Escaneie o QR Code ou copie o código abaixo</p>
+                      <p className="mt-2 max-w-xs break-all rounded bg-muted p-2 font-mono text-xs">00020126580014BR.GOV.BCB.PIX0136bcrm-replace-with-real-key52040000530398654040.015802BR5913BCRM TECNOLOGIA6009SAO PAULO62070503***6304ABCD</p>
+                    </div>
+                  </div>
+                )}
+
+                {paymentMethod === "boleto" && (
+                  <div className="flex flex-col items-center gap-4 py-6">
+                    <div className="text-center">
+                      <p className="font-medium text-sm">Boleto Bancário</p>
+                      <p className="mt-1 text-muted-foreground text-xs">O boleto será gerado após a confirmação. Prazo de até 3 dias úteis para compensação.</p>
+                    </div>
+                  </div>
+                )}
+
+                {paymentMethod === "transfer" && (
+                  <div className="flex flex-col gap-4 py-6">
+                    <div className="text-center">
+                      <p className="font-medium text-sm">Transferência Bancária (TED/DOC)</p>
+                      <p className="mt-1 text-muted-foreground text-xs">Os dados bancários serão exibidos após a confirmação.</p>
+                    </div>
+                    <div className="rounded-lg border p-3 text-sm">
+                      <p><strong>Banco:</strong> 001 - Banco do Brasil</p>
+                      <p><strong>Agência:</strong> 0000-0</p>
+                      <p><strong>Conta:</strong> 00000-0</p>
+                      <p><strong>CNPJ:</strong> 00.000.000/0001-00</p>
+                      <p><strong>Favorecido:</strong> BCRM Tecnologia Ltda</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-4 flex gap-3">
+                  <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="flex-1">
+                    Cancelar
+                  </Button>
+                  <Button
+                    onClick={handlePayment}
+                    disabled={processing || (paymentMethod === "card" && !isCardFormValid)}
+                    className="flex-1"
+                  >
+                    {processing ? (
+                      <>Processando...</>
+                    ) : (
+                      <>
+                        <Wallet className="mr-2 size-4" />
+                        Pagar {selectedPlanData?.price}{selectedPlanData?.period}
+                      </>
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </SheetContent>
+        </Sheet>
+      )}
     </>
   );
 }
