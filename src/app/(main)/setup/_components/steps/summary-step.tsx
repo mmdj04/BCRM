@@ -15,11 +15,18 @@ import {
   X,
 } from "lucide-react";
 
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { PaymentForm } from "@/components/payment-form";
+import { StripeElementsProvider } from "@/components/stripe-provider";
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useSetup } from "@/contexts/setup-context";
 import { useAuth } from "@/lib/supabase/auth-context";
 
@@ -122,11 +129,15 @@ const notificationLabels: Record<string, string> = {
 export function SummaryStep() {
   const { setupData, setStep, completeSetup } = useSetup();
   const { user } = useAuth();
-  const _isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
-  const [paymentComplete, _setPaymentComplete] = useState(false);
-  const [_paymentDialogOpen, _setPaymentDialogOpen] = useState(false);
+  const [paymentComplete, setPaymentComplete] = useState(false);
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loadingPaymentIntent, setLoadingPaymentIntent] = useState(false);
+  const [isBusiness, setIsBusiness] = useState(false);
+  const [companyName, setCompanyName] = useState("");
+  const [cnpj, setCnpj] = useState("");
 
   const enabledModules = Object.entries(setupData.modules)
     .filter(([_, v]) => v)
@@ -162,11 +173,15 @@ export function SummaryStep() {
           interval: "monthly",
           userId: user.id,
           email: user.email,
+          isBusiness,
+          companyName: isBusiness ? companyName : undefined,
+          cnpj: isBusiness ? cnpj : undefined,
         }),
       });
       const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
+      if (data.clientSecret) {
+        setClientSecret(data.clientSecret);
+        setPaymentDialogOpen(true);
       }
     } catch {
       // User can retry
@@ -175,9 +190,35 @@ export function SummaryStep() {
     }
   };
 
+  const handlePaymentSuccess = () => {
+    setPaymentDialogOpen(false);
+    setPaymentComplete(true);
+    setClientSecret(null);
+  };
+
+  const handlePaymentCancel = () => {
+    setPaymentDialogOpen(false);
+    setClientSecret(null);
+  };
+
   const handleComplete = () => completeSetup();
 
   const fmt = (value: string, fallback = "Não preenchido") => value || fallback;
+
+  const paymentDialogContent = clientSecret ? (
+    <StripeElementsProvider clientSecret={clientSecret}>
+      <PaymentForm
+        planName={selectedPlanData?.name ?? ""}
+        planPrice={selectedPlanData?.price ?? ""}
+        onSuccess={handlePaymentSuccess}
+        onCancel={handlePaymentCancel}
+      />
+    </StripeElementsProvider>
+  ) : (
+    <div className="flex items-center justify-center py-8">
+      <div className="size-8 animate-spin rounded-full border-4 border-current border-t-transparent text-primary" />
+    </div>
+  );
 
   return (
     <>
@@ -535,6 +576,47 @@ export function SummaryStep() {
             </div>
           </div>
 
+          {/* Toggle empresa */}
+          <div className="rounded-xl border p-4">
+            <div className="flex items-center gap-3">
+              <Checkbox
+                id="is-business"
+                checked={isBusiness}
+                onCheckedChange={(checked) => setIsBusiness(checked === true)}
+              />
+              <Label htmlFor="is-business" className="cursor-pointer font-medium text-sm">
+                Estou comprando como empresa
+              </Label>
+            </div>
+            {isBusiness && (
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="company-name" className="text-xs">
+                    Nome da Empresa
+                  </Label>
+                  <Input
+                    id="company-name"
+                    placeholder="Ex: Moraes Tecnologia LTDA"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="cnpj" className="text-xs">
+                    CNPJ
+                  </Label>
+                  <Input
+                    id="cnpj"
+                    placeholder="00.000.000/0001-00"
+                    value={cnpj}
+                    onChange={(e) => setCnpj(e.target.value)}
+                    maxLength={18}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Botão de Pagamento */}
           {!paymentComplete ? (
             <div className="mt-2">
@@ -569,21 +651,79 @@ export function SummaryStep() {
         </CardContent>
       </Card>
 
-      {/* Overlay de redirecionamento */}
-      {loadingPaymentIntent && (
-        <Dialog open onOpenChange={() => setLoadingPaymentIntent(false)}>
-          <DialogContent className="flex items-center justify-center sm:max-w-md">
-            <div className="flex flex-col items-center gap-4 py-8 text-center">
-              <div className="size-10 animate-spin rounded-full border-4 border-current border-t-transparent text-primary" />
-              <div>
-                <p className="font-medium text-lg">Redirecionando para o Stripe...</p>
-                <p className="mt-1 text-muted-foreground text-sm">
-                  Você será redirecionado para a página de pagamento segura.
-                </p>
+      {/* Desktop: Dialog horizontal */}
+      {isDesktop ? (
+        <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+          <DialogContent className="sm:max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <CreditCard className="size-5" />
+                Pagamento Seguro
+              </DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-6 sm:grid-cols-[1fr_1.2fr]">
+              {/* Resumo do plano */}
+              <div className="flex flex-col gap-3 rounded-lg border bg-muted/30 p-4">
+                <h4 className="font-medium text-sm">Resumo do Pedido</h4>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">Plano</span>
+                  <span className="font-medium text-sm">{selectedPlanData?.name}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">Cobrança</span>
+                  <span className="text-sm">Mensal</span>
+                </div>
+                <div className="flex items-center justify-between border-t pt-2">
+                  <span className="font-medium text-sm">Total</span>
+                  <span className="font-bold text-lg">{selectedPlanData?.price}<span className="font-normal text-muted-foreground text-sm">/mês</span></span>
+                </div>
+                {isBusiness && companyName && (
+                  <div className="border-t pt-2">
+                    <p className="text-muted-foreground text-xs">Empresa</p>
+                    <p className="font-medium text-sm">{companyName}</p>
+                    {cnpj && <p className="text-muted-foreground text-xs">{cnpj}</p>}
+                  </div>
+                )}
               </div>
+
+              {/* Formulário de pagamento */}
+              <div>{paymentDialogContent}</div>
             </div>
           </DialogContent>
         </Dialog>
+      ) : (
+        /* Mobile: Sheet tela cheia */
+        <Sheet open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+          <SheetContent side="bottom" className="h-[95vh]">
+            <SheetHeader>
+              <SheetTitle className="flex items-center gap-2">
+                <CreditCard className="size-5" />
+                Pagamento Seguro
+              </SheetTitle>
+            </SheetHeader>
+            <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 pb-4">
+              {/* Resumo do plano */}
+              <div className="flex flex-col gap-2 rounded-lg border bg-muted/30 p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">Plano</span>
+                  <span className="font-medium text-sm">{selectedPlanData?.name}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">Total</span>
+                  <span className="font-bold text-lg">{selectedPlanData?.price}/mês</span>
+                </div>
+                {isBusiness && companyName && (
+                  <div className="border-t pt-2">
+                    <p className="text-muted-foreground text-xs">Empresa: {companyName}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Formulário de pagamento */}
+              <div>{paymentDialogContent}</div>
+            </div>
+          </SheetContent>
+        </Sheet>
       )}
     </>
   );

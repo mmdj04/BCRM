@@ -32,13 +32,63 @@ export async function getOrCreateCustomer(userId: string, email: string): Promis
   return customer;
 }
 
+export async function createPaymentIntent(
+  userId: string,
+  email: string,
+  plan: string,
+  interval: string,
+  business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
+): Promise<{ clientSecret: string | null }> {
+  const customer = await getOrCreateCustomer(userId, email);
+  const amount = PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly;
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount,
+    currency: "brl",
+    customer: customer.id,
+    automatic_payment_methods: { enabled: true },
+    metadata: {
+      userId,
+      plan,
+      interval,
+      isBusiness: business?.isBusiness ? "true" : "false",
+      companyName: business?.companyName || "",
+      cnpj: business?.cnpj || "",
+    },
+  });
+
+  return { clientSecret: paymentIntent.client_secret };
+}
+
 export async function createCheckoutSession(
   userId: string,
   email: string,
   plan: string,
   interval: string,
+  business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ url: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
+
+  const customFields: Stripe.Checkout.SessionCreateParams.CustomField[] = [];
+
+  if (business?.isBusiness) {
+    if (business.companyName) {
+      customFields.push({
+        key: "company_name",
+        label: { type: "custom" as const, custom: "Nome da Empresa" },
+        type: "text",
+        optional: false,
+      });
+    }
+    if (business.cnpj) {
+      customFields.push({
+        key: "cnpj",
+        label: { type: "custom" as const, custom: "CNPJ" },
+        type: "text",
+        optional: false,
+      });
+    }
+  }
 
   const session = await stripe.checkout.sessions.create({
     customer: customer.id,
@@ -61,7 +111,15 @@ export async function createCheckoutSession(
     ],
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?canceled=true`,
-    metadata: { userId, plan, interval },
+    metadata: {
+      userId,
+      plan,
+      interval,
+      isBusiness: business?.isBusiness ? "true" : "false",
+      companyName: business?.companyName || "",
+      cnpj: business?.cnpj || "",
+    },
+    ...(customFields.length > 0 ? { custom_fields: customFields } : {}),
   });
 
   return { url: session.url };
@@ -74,13 +132,24 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const userId = session.metadata?.userId;
       const plan = session.metadata?.plan;
       const interval = session.metadata?.interval;
+      const isBusiness = session.metadata?.isBusiness === "true";
+      const companyName = session.metadata?.companyName;
+      const cnpj = session.metadata?.cnpj;
 
       if (userId && plan) {
-        await supabase.from("users").update({
+        const updateData: Record<string, unknown> = {
           plan,
           plan_interval: interval ?? "monthly",
           subscription_status: "active",
-        }).eq("id", userId);
+        };
+
+        if (isBusiness) {
+          updateData.is_business = true;
+          if (companyName) updateData.company_name = companyName;
+          if (cnpj) updateData.cnpj = cnpj;
+        }
+
+        await supabase.from("users").update(updateData).eq("id", userId);
       }
       break;
     }
