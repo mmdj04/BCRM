@@ -1,10 +1,12 @@
 "use client";
 
-import { CheckoutElementsProvider, useCheckoutElements, PaymentElement } from "@stripe/react-stripe-js/checkout";
+import { CheckoutElementsProvider, useCheckoutElements, PaymentElement, CurrencySelectorElement } from "@stripe/react-stripe-js/checkout";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
 import { getStripe } from "@/lib/stripe/client";
+
+export { CurrencySelectorElement } from "@stripe/react-stripe-js/checkout";
 
 const lightAppearance = {
   variables: {
@@ -60,6 +62,7 @@ export function StripeElementsProvider({ clientSecret, children }: StripeElement
       stripe={getStripe()}
       options={{
         clientSecret,
+        adaptivePricing: { allowed: true },
         elementsOptions: {
           appearance: isDark ? darkAppearance : lightAppearance,
         },

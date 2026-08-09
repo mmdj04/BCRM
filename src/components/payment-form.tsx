@@ -1,6 +1,6 @@
 "use client";
 
-import { PaymentElement } from "@stripe/react-stripe-js/checkout";
+import { PaymentElement, CurrencySelectorElement } from "@stripe/react-stripe-js/checkout";
 import type { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useState } from "react";
 
@@ -38,6 +38,7 @@ export function PaymentForm({ planName, planPrice, onSuccess, onCancel }: Paymen
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <CurrencySelectorElement />
       <PaymentElement options={paymentElementOptions} className="stripe-payment-element" />
 
       {errorMessage && (
