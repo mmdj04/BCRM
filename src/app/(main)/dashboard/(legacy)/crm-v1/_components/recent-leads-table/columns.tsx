@@ -63,13 +63,13 @@ export const recentLeadsColumns: ColumnDef<DataTableFeatures, RecentLeadRow>[] =
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Nome",
     cell: ({ row }) => row.original.name,
     enableHiding: false,
   },
   {
     accessorKey: "company",
-    header: "Company",
+    header: "Empresa",
     cell: ({ row }) => row.original.company,
   },
   {
@@ -79,12 +79,12 @@ export const recentLeadsColumns: ColumnDef<DataTableFeatures, RecentLeadRow>[] =
   },
   {
     accessorKey: "source",
-    header: "Source",
+    header: "Fonte",
     cell: ({ row }) => <Badge variant="outline">{row.original.source}</Badge>,
   },
   {
     accessorKey: "lastActivity",
-    header: "Last Activity",
+    header: "Última Atividade",
     cell: ({ row }) => <span className="text-muted-foreground tabular-nums">{row.original.lastActivity}</span>,
   },
   {
@@ -94,18 +94,18 @@ export const recentLeadsColumns: ColumnDef<DataTableFeatures, RecentLeadRow>[] =
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="flex size-8 text-muted-foreground">
             <EllipsisVertical />
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Abrir menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuGroup>
-            <DropdownMenuItem>View</DropdownMenuItem>
-            <DropdownMenuItem>Assign</DropdownMenuItem>
-            <DropdownMenuItem>Archive</DropdownMenuItem>
+            <DropdownMenuItem>Ver</DropdownMenuItem>
+            <DropdownMenuItem>Atribuir</DropdownMenuItem>
+            <DropdownMenuItem>Arquivar</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">Excluir</DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

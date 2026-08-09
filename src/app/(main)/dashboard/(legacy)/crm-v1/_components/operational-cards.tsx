@@ -17,7 +17,7 @@ export function OperationalCards() {
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs sm:grid-cols-2 xl:grid-cols-3">
       <Card>
         <CardHeader>
-          <CardTitle>Sales Pipeline</CardTitle>
+          <CardTitle>Pipeline de Vendas</CardTitle>
         </CardHeader>
         <CardContent className="size-full">
           <ChartContainer config={salesPipelineChartConfig} className="size-full">
@@ -30,13 +30,13 @@ export function OperationalCards() {
           </ChartContainer>
         </CardContent>
         <CardFooter>
-          <p className="text-muted-foreground text-xs">Leads increased by 18.2% since last month.</p>
+          <p className="text-muted-foreground text-xs">Leads aumentaram em 18,2% desde o mês passado.</p>
         </CardFooter>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Sales by Region</CardTitle>
+          <CardTitle>Vendas por Região</CardTitle>
           <CardDescription className="font-medium tabular-nums">
             {formatCurrency(totalSales, { noDecimals: true })}
           </CardDescription>
@@ -71,16 +71,16 @@ export function OperationalCards() {
         </CardContent>
         <CardFooter>
           <div className="flex justify-between gap-1 text-muted-foreground text-xs">
-            <span>{regionSalesData.length} regions tracked</span>
+            <span>{regionSalesData.length} regiões monitoradas</span>
             <span>•</span>
-            <span>{regionSalesData.filter((r) => r.isPositive).length} regions growing</span>
+            <span>{regionSalesData.filter((r) => r.isPositive).length} regiões em crescimento</span>
           </div>
         </CardFooter>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Action Items</CardTitle>
+          <CardTitle>Itens de Ação</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2.5">

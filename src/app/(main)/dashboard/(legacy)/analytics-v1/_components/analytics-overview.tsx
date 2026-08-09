@@ -22,10 +22,10 @@ type RiskView = "risk-view" | "momentum" | "quality";
 type FilterToggleKey = "enterpriseOnly" | "stalledOnly" | "overdueOnly" | "includeRenewals";
 
 const FILTER_OPTIONS: Array<{ key: FilterToggleKey; label: string; summaryLabel: string }> = [
-  { key: "enterpriseOnly", label: "Enterprise only", summaryLabel: "Enterprise" },
-  { key: "stalledOnly", label: "Stalled deals (>14 days)", summaryLabel: "Stalled" },
-  { key: "overdueOnly", label: "Closing date exceeded", summaryLabel: "Overdue" },
-  { key: "includeRenewals", label: "Include renewals", summaryLabel: "Renewals" },
+  { key: "enterpriseOnly", label: "Apenas empresas", summaryLabel: "Empresas" },
+  { key: "stalledOnly", label: "Negócios parados (>14 dias)", summaryLabel: "Parados" },
+  { key: "overdueOnly", label: "Data de fechamento excedida", summaryLabel: "Atrasados" },
+  { key: "includeRenewals", label: "Incluir renovações", summaryLabel: "Renovações" },
 ];
 
 const riskViews: Array<{
@@ -35,45 +35,45 @@ const riskViews: Array<{
 }> = [
   {
     value: "risk-view",
-    label: "Risk view",
-    description: "Early warnings",
+    label: "Visão de risco",
+    description: "Alertas iniciais",
   },
   {
     value: "momentum",
-    label: "Momentum",
-    description: "Trend direction",
+    label: "Impulso",
+    description: "Direção da tendência",
   },
   {
     value: "quality",
-    label: "Quality",
-    description: "Pipeline hygiene",
+    label: "Qualidade",
+    description: "Higiene do pipeline",
   },
 ];
 
 const RISK_SUMMARY_METRICS = [
   {
     key: "stalled",
-    label: "Stalled Deals",
+    label: "Negócios Parados",
     value: "8",
-    comparatorLabel: "vs previous period",
+    comparatorLabel: "vs período anterior",
   },
   {
     key: "risk",
-    label: "Revenue at Risk",
+    label: "Receita em Risco",
     value: "R$ 1.151.000",
-    comparatorLabel: "vs previous period",
+    comparatorLabel: "vs período anterior",
   },
   {
     key: "win-rate",
-    label: "Win Rate Trend",
+    label: "Tendência da Taxa de Vitória",
     value: "+8.3pp",
-    comparatorLabel: "vs previous period",
+    comparatorLabel: "vs período anterior",
   },
   {
     key: "cycle",
-    label: "Sales Cycle Drift",
-    value: "+2.3 days",
-    comparatorLabel: "vs previous period",
+    label: "Desvio do Ciclo de Vendas",
+    value: "+2.3 dias",
+    comparatorLabel: "vs período anterior",
   },
 ] as const;
 
@@ -114,7 +114,7 @@ export function AnalyticsOverview() {
           <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
           <Button variant="secondary">
             <Download />
-            Export
+            Exportar
           </Button>
         </div>
       </div>
@@ -144,7 +144,7 @@ function buildRevenueChartData(from: Date, to: Date) {
 function SummaryRow({ revenueSeries }: { revenueSeries: Array<{ day: string; revenue: number }> }) {
   const revenueChartConfig = {
     revenue: {
-      label: "Revenue",
+      label: "Receita",
       color: "var(--chart-1)",
     },
   } satisfies ChartConfig;
@@ -159,7 +159,7 @@ function SummaryRow({ revenueSeries }: { revenueSeries: Array<{ day: string; rev
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
       <div className="min-w-0 space-y-2">
         <div>
-          <div className="font-medium text-muted-foreground text-sm">Revenue</div>
+          <div className="font-medium text-muted-foreground text-sm">Receita</div>
           <div className="font-semibold text-3xl tabular-nums tracking-tight sm:text-4xl">R$ 1.248.000</div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -188,14 +188,14 @@ function SummaryRow({ revenueSeries }: { revenueSeries: Array<{ day: string; rev
               />
             </ComposedChart>
           </ChartContainer>
-          <span className="text-muted-foreground text-xs">Selected range</span>
+          <span className="text-muted-foreground text-xs">Período selecionado</span>
         </div>
       </div>
 
       <Card className="min-w-0 py-4 shadow-xs xl:col-span-2">
         <CardHeader className="px-4">
-          <CardTitle>Risk summary</CardTitle>
-          <CardDescription>Core risk signals vs previous period</CardDescription>
+          <CardTitle>Resumo de risco</CardTitle>
+          <CardDescription>Sinais de risco principais vs período anterior</CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-0 xl:divide-x xl:[&>div:first-child]:pl-0 xl:[&>div:last-child]:pr-0 xl:[&>div]:px-5">
           {RISK_SUMMARY_METRICS.map((item) => (
@@ -281,7 +281,7 @@ function FiltersPopover({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" aria-expanded={open}>
-            Filters
+            Filtros
             <Badge className="tabular-nums" variant="secondary">
               {activeCount}
             </Badge>
@@ -290,7 +290,7 @@ function FiltersPopover({
         <PopoverContent align="start" className="w-72">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-sm">Filters</h3>
+              <h3 className="font-semibold text-sm">Filtros</h3>
               <Badge variant="outline" className="font-medium text-xs tabular-nums">
                 Risk Ladder 30
               </Badge>
@@ -311,7 +311,7 @@ function FiltersPopover({
       </Popover>
 
       <span className="text-muted-foreground text-sm">
-        Showing: <span className="font-medium">{summarizeFilterState(selectedFilters)}</span>
+        Mostrando: <span className="font-medium">{summarizeFilterState(selectedFilters)}</span>
       </span>
     </div>
   );
@@ -340,7 +340,7 @@ function FilterToggle({
 
 function summarizeFilterState(selectedFilters: FilterToggleKey[]) {
   if (selectedFilters.length === 0) {
-    return "All deals";
+    return "Todos os negócios";
   }
   return FILTER_OPTIONS.filter((item) => selectedFilters.includes(item.key))
     .map((item) => item.summaryLabel)

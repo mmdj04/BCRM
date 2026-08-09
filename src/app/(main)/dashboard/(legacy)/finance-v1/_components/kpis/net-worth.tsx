@@ -15,7 +15,7 @@ export function NetWorth() {
             <span className="grid size-7 place-content-center rounded-sm bg-muted">
               <SaudiRiyal className="size-5" />
             </span>
-            Net Worth
+            Patrimônio Líquido
           </div>
         </CardTitle>
       </CardHeader>
@@ -25,12 +25,12 @@ export function NetWorth() {
             <p className="font-medium text-xl tabular-nums">{formatCurrency(84250, { noDecimals: true })}</p>
             <span className="text-xs">+R$ 3.680 vs mês</span>
           </div>
-          <p className="text-muted-foreground text-xs">This month</p>
+          <p className="text-muted-foreground text-xs">Este mês</p>
         </div>
 
         <Separator />
 
-        <p className="text-muted-foreground text-xs">Across all linked accounts</p>
+        <p className="text-muted-foreground text-xs">Em todas as contas vinculadas</p>
       </CardContent>
     </Card>
   );

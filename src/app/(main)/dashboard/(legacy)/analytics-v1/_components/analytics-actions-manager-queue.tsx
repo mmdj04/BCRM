@@ -5,24 +5,24 @@ import { formatCurrency } from "@/lib/utils";
 const NEXT_INTERVENTIONS = [
   {
     dealId: "OPP-489",
-    priority: "Escalate",
+    priority: "Escalar",
     owner: "Leila Zhang",
     risk: 81,
-    recommendation: "Join next customer call and reset close plan.",
+    recommendation: "Participar da próxima chamada com o cliente e redefinir o plano de fechamento.",
   },
   {
     dealId: "OPP-475",
-    priority: "Coach",
+    priority: "Coaching",
     owner: "Omar Ali",
     risk: 76,
-    recommendation: "Review deal strategy and unblock stage exit.",
+    recommendation: "Revisar a estratégia do negócio e desbloquear a saída do estágio.",
   },
   {
     dealId: "OPP-447",
-    priority: "Coach",
+    priority: "Coaching",
     owner: "Sofia Bautista",
     risk: 75,
-    recommendation: "Review deal strategy and unblock stage exit.",
+    recommendation: "Revisar a estratégia do negócio e desbloquear a saída do estágio.",
   },
 ] as const;
 
@@ -30,43 +30,43 @@ export function ActionsManagerQueue() {
   return (
     <Card className="h-full shadow-xs">
       <CardHeader>
-        <CardTitle>Manager Action Queue</CardTitle>
-        <CardDescription>Escalate, coach, and reforecast before commit call</CardDescription>
+        <CardTitle>Fila de Ações do Gerente</CardTitle>
+        <CardDescription>Escalar, coaching e refazer previsão antes da chamada de compromisso</CardDescription>
       </CardHeader>
 
       <CardContent className="flex h-full flex-col gap-4">
         <div className="flex h-full flex-col gap-3">
           <div className="grid grid-cols-2 gap-2">
-            <StatCard label="Actionable deals" value="7" />
-            <StatCard label="Revenue in play" value={formatCurrency(811000, { noDecimals: true })} mono />
-            <StatCard label="Owners engaged" value="3" />
-            <StatCard label="Median risk" value="72" mono />
+            <StatCard label="Negócios acionáveis" value="7" />
+            <StatCard label="Receita em jogo" value={formatCurrency(811000, { noDecimals: true })} mono />
+            <StatCard label="Responsáveis envolvidos" value="3" />
+            <StatCard label="Risco mediano" value="72" mono />
           </div>
 
           <div className="space-y-2 rounded-md border bg-muted/20 px-3 py-2">
             <div className="flex items-center justify-between gap-2">
-              <p className="text-muted-foreground text-xs">Intervention mix</p>
+              <p className="text-muted-foreground text-xs">Mix de intervenções</p>
               <Badge variant="outline" className="h-5 px-2 text-[11px] tabular-nums">
-                Escalate {formatCurrency(174000, { noDecimals: true })}
+                Escalar {formatCurrency(174000, { noDecimals: true })}
               </Badge>
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between rounded-md border bg-background/70 px-2.5 py-1.5">
-                <span className="text-xs">Escalate</span>
+                <span className="text-xs">Escalar</span>
                 <span className="text-muted-foreground text-xs tabular-nums">
-                  1 deals · 14% · {formatCurrency(174000, { noDecimals: true })}
+                  1 negócio · 14% · {formatCurrency(174000, { noDecimals: true })}
                 </span>
               </div>
               <div className="flex items-center justify-between rounded-md border bg-background/70 px-2.5 py-1.5">
-                <span className="text-xs">Coach</span>
+                <span className="text-xs">Coaching</span>
                 <span className="text-muted-foreground text-xs tabular-nums">
-                  4 deals · 57% · {formatCurrency(478000, { noDecimals: true })}
+                  4 negócios · 57% · {formatCurrency(478000, { noDecimals: true })}
                 </span>
               </div>
               <div className="flex items-center justify-between rounded-md border bg-background/70 px-2.5 py-1.5">
-                <span className="text-xs">Reforecast</span>
+                <span className="text-xs">Refazer Previsão</span>
                 <span className="text-muted-foreground text-xs tabular-nums">
-                  2 deals · 29% · {formatCurrency(159000, { noDecimals: true })}
+                  2 negócios · 29% · {formatCurrency(159000, { noDecimals: true })}
                 </span>
               </div>
             </div>
@@ -74,25 +74,25 @@ export function ActionsManagerQueue() {
 
           <div className="space-y-2 rounded-md border bg-muted/20 px-3 py-2">
             <div className="flex items-center justify-between gap-2">
-              <p className="text-muted-foreground text-xs">Manager focus</p>
-              <span className="text-muted-foreground text-xs tabular-nums">This forecast cycle</span>
+              <p className="text-muted-foreground text-xs">Foco do gerente</p>
+              <span className="text-muted-foreground text-xs tabular-nums">Este ciclo de previsão</span>
             </div>
 
             <div className="space-y-1.5 text-xs">
               <div className="flex items-center justify-between gap-2 rounded-md border bg-background/70 px-2.5 py-1.5">
-                <span>Coach queue</span>
+                <span>Fila de coaching</span>
                 <span className="text-muted-foreground tabular-nums">
                   4 deals · {formatCurrency(478000, { noDecimals: true })}
                 </span>
               </div>
 
               <div className="flex items-center justify-between gap-2 rounded-md border bg-background/70 px-2.5 py-1.5">
-                <span>Primary owner</span>
+                <span>Responsável principal</span>
                 <span className="text-muted-foreground tabular-nums">Leila Zhang · 3 deals</span>
               </div>
 
               <div className="flex items-center justify-between gap-2 rounded-md border bg-background/70 px-2.5 py-1.5">
-                <span>Stale pipeline</span>
+                <span>Pipeline obsoleto</span>
                 <span className="text-muted-foreground tabular-nums">
                   8 deals · {formatCurrency(1151000, { noDecimals: true })}
                 </span>
@@ -101,7 +101,7 @@ export function ActionsManagerQueue() {
           </div>
 
           <div className="flex-1 space-y-2">
-            <p className="text-muted-foreground text-xs">Next interventions</p>
+            <p className="text-muted-foreground text-xs">Próximas intervenções</p>
 
             {NEXT_INTERVENTIONS.map((item) => (
               <div key={`${item.priority}-${item.dealId}`} className="space-y-1 rounded-md border px-3 py-2">
@@ -112,7 +112,7 @@ export function ActionsManagerQueue() {
                   </Badge>
                 </div>
                 <p className="text-muted-foreground text-xs">
-                  {item.owner} · {item.risk} risk
+                  {item.owner} · {item.risk} risco
                 </p>
                 <p className="text-xs">{item.recommendation}</p>
               </div>
@@ -120,8 +120,8 @@ export function ActionsManagerQueue() {
           </div>
 
           <div className="flex items-center justify-between gap-2 rounded-md border bg-muted/20 px-3 py-2">
-            <span className="text-muted-foreground text-xs">No-action monitor</span>
-            <span className="font-medium text-xs tabular-nums">3 Deals</span>
+            <span className="text-muted-foreground text-xs">Monitor sem ação</span>
+            <span className="font-medium text-xs tabular-nums">3 Negócios</span>
           </div>
         </div>
       </CardContent>

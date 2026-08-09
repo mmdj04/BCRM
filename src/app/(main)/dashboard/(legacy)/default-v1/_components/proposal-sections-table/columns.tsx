@@ -42,21 +42,21 @@ import type { DataTableFeatures } from "@/lib/data-table-features";
 import type { ProposalSectionsRow } from "./schema";
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: "Janeiro", desktop: 186, mobile: 80 },
+  { month: "Fevereiro", desktop: 305, mobile: 200 },
+  { month: "Março", desktop: 237, mobile: 120 },
+  { month: "Abril", desktop: 73, mobile: 190 },
+  { month: "Maio", desktop: 209, mobile: 130 },
+  { month: "Junho", desktop: 214, mobile: 140 },
 ];
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Área de Trabalho",
     color: "var(--primary)",
   },
   mobile: {
-    label: "Mobile",
+    label: "Móvel",
     color: "var(--primary)",
   },
 } satisfies ChartConfig;
@@ -77,7 +77,7 @@ function DragHandle() {
   return (
     <Button ref={handleRef} variant="ghost" size="icon" className="size-7 text-muted-foreground hover:bg-transparent">
       <GripVerticalIcon />
-      <span className="sr-only">Drag to reorder</span>
+      <span className="sr-only">Arrastar para reordenar</span>
     </Button>
   );
 }
@@ -95,7 +95,7 @@ function ProposalSectionDetailViewer({ item }: { item: ProposalSectionsRow }) {
       <DrawerContent>
         <DrawerHeader className="gap-1">
           <DrawerTitle>{item.header}</DrawerTitle>
-          <DrawerDescription>Showing total visitors for the last 6 months</DrawerDescription>
+          <DrawerDescription>Mostrando total de visitantes nos últimos 6 meses</DrawerDescription>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
@@ -140,11 +140,11 @@ function ProposalSectionDetailViewer({ item }: { item: ProposalSectionsRow }) {
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 font-medium leading-none">
-                  Trending up by 5.2% this month <TrendingUpIcon />
+                  Tendência de alta de 5,2% este mês <TrendingUpIcon />
                 </div>
                 <div className="text-muted-foreground">
-                  Showing total visitors for the last 6 months. This is just some random text to test the layout. It
-                  spans multiple lines and should wrap around.
+                  Mostrando total de visitantes nos últimos 6 meses. Este é apenas um texto aleatório para testar o
+                  layout. Ele abrange múltiplas linhas e deve ser quebrado.
                 </div>
               </div>
               <Separator />
@@ -152,41 +152,41 @@ function ProposalSectionDetailViewer({ item }: { item: ProposalSectionsRow }) {
           )}
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <Label htmlFor="header">Header</Label>
+              <Label htmlFor="header">Cabeçalho</Label>
               <Input id="header" defaultValue={item.header} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="type">Type</Label>
+                <Label htmlFor="type">Tipo</Label>
                 <Select defaultValue={item.type}>
                   <SelectTrigger id="type" className="w-full">
-                    <SelectValue placeholder="Select a type" />
+                    <SelectValue placeholder="Selecionar um tipo" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="Table of Contents">Table of Contents</SelectItem>
-                      <SelectItem value="Executive Summary">Executive Summary</SelectItem>
-                      <SelectItem value="Technical Approach">Technical Approach</SelectItem>
+                      <SelectItem value="Table of Contents">Sumário</SelectItem>
+                      <SelectItem value="Executive Summary">Resumo Executivo</SelectItem>
+                      <SelectItem value="Technical Approach">Abordagem Técnica</SelectItem>
                       <SelectItem value="Design">Design</SelectItem>
-                      <SelectItem value="Capabilities">Capabilities</SelectItem>
-                      <SelectItem value="Focus Documents">Focus Documents</SelectItem>
-                      <SelectItem value="Narrative">Narrative</SelectItem>
-                      <SelectItem value="Cover Page">Cover Page</SelectItem>
+                      <SelectItem value="Capabilities">Capacidades</SelectItem>
+                      <SelectItem value="Focus Documents">Documentos Foco</SelectItem>
+                      <SelectItem value="Narrative">Narrativa</SelectItem>
+                      <SelectItem value="Cover Page">Capa</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Estado</Label>
                 <Select defaultValue={item.status}>
                   <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select a status" />
+                    <SelectValue placeholder="Selecionar um estado" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="Done">Done</SelectItem>
-                      <SelectItem value="In Progress">In Progress</SelectItem>
-                      <SelectItem value="Not Started">Not Started</SelectItem>
+                      <SelectItem value="Done">Concluído</SelectItem>
+                      <SelectItem value="In Progress">Em Andamento</SelectItem>
+                      <SelectItem value="Not Started">Não Iniciado</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -194,19 +194,19 @@ function ProposalSectionDetailViewer({ item }: { item: ProposalSectionsRow }) {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="target">Target</Label>
+                <Label htmlFor="target">Meta</Label>
                 <Input id="target" defaultValue={item.target} />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="limit">Limit</Label>
+                <Label htmlFor="limit">Limite</Label>
                 <Input id="limit" defaultValue={item.limit} />
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="reviewer">Reviewer</Label>
+              <Label htmlFor="reviewer">Revisor</Label>
               <Select defaultValue={item.reviewer}>
                 <SelectTrigger id="reviewer" className="w-full">
-                  <SelectValue placeholder="Select a reviewer" />
+                  <SelectValue placeholder="Selecionar um revisor" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -220,9 +220,9 @@ function ProposalSectionDetailViewer({ item }: { item: ProposalSectionsRow }) {
           </form>
         </div>
         <DrawerFooter>
-          <Button>Submit</Button>
+          <Button>Enviar</Button>
           <DrawerClose asChild>
-            <Button variant="outline">Done</Button>
+            <Button variant="outline">Concluído</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
@@ -234,9 +234,9 @@ function createInlineSaveHandler(header: string) {
   return (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-      loading: `Saving ${header}`,
-      success: "Done",
-      error: "Error",
+      loading: `Salvando ${header}`,
+      success: "Concluído",
+      error: "Erro",
     });
   };
 }
@@ -264,7 +264,7 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
             <Checkbox
               checked={checked}
               onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-              aria-label="Select all"
+              aria-label="Selecionar todos"
             />
           )}
         </Subscribe>
@@ -277,7 +277,7 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
             <Checkbox
               checked={checked}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
-              aria-label="Select row"
+              aria-label="Selecionar linha"
             />
           )}
         </Subscribe>
@@ -288,13 +288,13 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
   },
   {
     accessorKey: "header",
-    header: "Header",
+    header: "Cabeçalho",
     cell: ({ row }) => <ProposalSectionDetailViewer item={row.original} />,
     enableHiding: false,
   },
   {
     accessorKey: "type",
-    header: "Section Type",
+    header: "Tipo de Seção",
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
@@ -305,10 +305,10 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Estado",
     cell: ({ row }) => (
       <Badge variant="outline" className="px-1.5 text-muted-foreground">
-        {row.original.status === "Done" ? (
+        {row.original.status === "Concluído" ? (
           <CircleCheckIcon className="fill-green-500 stroke-primary-foreground dark:fill-green-600" />
         ) : (
           <LoaderIcon />
@@ -319,11 +319,11 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
   },
   {
     accessorKey: "target",
-    header: () => <div className="w-full text-right">Target</div>,
+    header: () => <div className="w-full text-right">Meta</div>,
     cell: ({ row }) => (
       <form onSubmit={createInlineSaveHandler(row.original.header)}>
         <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
+          Meta
         </Label>
         <Input
           id={`${row.original.id}-target`}
@@ -335,11 +335,11 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
   },
   {
     accessorKey: "limit",
-    header: () => <div className="w-full text-right">Limit</div>,
+    header: () => <div className="w-full text-right">Limite</div>,
     cell: ({ row }) => (
       <form onSubmit={createInlineSaveHandler(row.original.header)}>
         <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
+          Limite
         </Label>
         <Input
           id={`${row.original.id}-limit`}
@@ -351,9 +351,9 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
   },
   {
     accessorKey: "reviewer",
-    header: "Reviewer",
+    header: "Revisor",
     cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== "Assign reviewer";
+      const isAssigned = row.original.reviewer !== "Atribuir revisor";
 
       if (isAssigned) {
         return row.original.reviewer;
@@ -362,7 +362,7 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
       return (
         <>
           <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
+            Revisor
           </Label>
           <Select>
             <SelectTrigger
@@ -370,7 +370,7 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
               className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
               size="sm"
             >
-              <SelectValue placeholder="Assign reviewer" />
+              <SelectValue placeholder="Atribuir revisor" />
             </SelectTrigger>
             <SelectContent align="end">
               <SelectGroup>
@@ -390,15 +390,15 @@ export const proposalSectionsColumns: ColumnDef<DataTableFeatures, ProposalSecti
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="flex size-8 text-muted-foreground data-[state=open]:bg-muted" size="icon">
             <EllipsisVerticalIcon />
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Abrir menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
+          <DropdownMenuItem>Editar</DropdownMenuItem>
+          <DropdownMenuItem>Fazer uma cópia</DropdownMenuItem>
+          <DropdownMenuItem>Favoritar</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          <DropdownMenuItem variant="destructive">Excluir</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),

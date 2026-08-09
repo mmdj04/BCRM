@@ -41,10 +41,10 @@ import { DraggableProposalSectionsRow, proposalSectionsColumns } from "./columns
 import type { ProposalSectionsRow } from "./schema";
 
 const VIEW_OPTIONS = [
-  { value: "outline", label: "Outline" },
-  { value: "past-performance", label: "Past Performance" },
-  { value: "key-personnel", label: "Key Personnel" },
-  { value: "focus-documents", label: "Focus Documents" },
+  { value: "outline", label: "Esquema" },
+  { value: "past-performance", label: "Desempenho Anterior" },
+  { value: "key-personnel", label: "Pessoal-Chave" },
+  { value: "focus-documents", label: "Documentos Foco" },
 ] as const;
 
 type ViewOption = (typeof VIEW_OPTIONS)[number]["value"];
@@ -113,11 +113,11 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
     >
       <div className="flex items-center justify-between">
         <Label htmlFor="view-selector" className="sr-only">
-          View
+          Visualização
         </Label>
         <Select value={activeView} onValueChange={(value) => setActiveView(value as ViewOption)}>
           <SelectTrigger className="flex @4xl/main:hidden w-fit" size="sm" id="view-selector">
-            <SelectValue placeholder="Select a view" />
+            <SelectValue placeholder="Selecionar uma visualização" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -130,26 +130,26 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
           </SelectContent>
         </Select>
         <TabsList className="@4xl/main:flex hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
+          <TabsTrigger value="outline">Esquema</TabsTrigger>
           <TabsTrigger value="past-performance">
-            Past Performance <Badge variant="secondary">3</Badge>
+            Desempenho Anterior <Badge variant="secondary">3</Badge>
           </TabsTrigger>
           <TabsTrigger value="key-personnel">
-            Key Personnel <Badge variant="secondary">2</Badge>
+            Pessoal-Chave <Badge variant="secondary">2</Badge>
           </TabsTrigger>
-          <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
+          <TabsTrigger value="focus-documents">Documentos Foco</TabsTrigger>
         </TabsList>
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
                 <Settings2 data-icon="inline-start" />
-                View
+                Visualização
                 <ChevronDownIcon data-icon="inline-end" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-35">
-              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+              <DropdownMenuLabel>Alternar colunas</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {table
                 .getAllColumns()
@@ -168,7 +168,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
           </DropdownMenu>
           <Button variant="outline" size="sm">
             <PlusIcon data-icon="inline-start" />
-            <span className="hidden lg:inline">Add Section</span>
+            <span className="hidden lg:inline">Adicionar Seção</span>
           </Button>
         </div>
       </div>
@@ -202,7 +202,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 ) : (
                   <TableRow>
                     <TableCell colSpan={table.getVisibleLeafColumns().length} className="h-24 text-center">
-                      No results.
+                      Sem resultados.
                     </TableCell>
                   </TableRow>
                 )}
@@ -212,13 +212,13 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
         </div>
         <div className="flex items-center justify-between px-4">
           <div className="hidden flex-1 text-muted-foreground text-sm lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-            selected.
+            {table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length} linha(s)
+            selecionada(s).
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
               <Label htmlFor="rows-per-page" className="font-medium text-sm">
-                Rows per page
+                Linhas por página
               </Label>
               <Select
                 value={`${table.state.pagination.pageSize}`}
@@ -241,7 +241,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center font-medium text-sm">
-              Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
+              Página {table.state.pagination.pageIndex + 1} de {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <Button
@@ -250,7 +250,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
               >
-                <span className="sr-only">Go to first page</span>
+                <span className="sr-only">Ir para a primeira página</span>
                 <ChevronsLeftIcon />
               </Button>
               <Button
@@ -260,7 +260,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
-                <span className="sr-only">Go to previous page</span>
+                <span className="sr-only">Ir para a página anterior</span>
                 <ChevronLeftIcon />
               </Button>
               <Button
@@ -270,7 +270,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
-                <span className="sr-only">Go to next page</span>
+                <span className="sr-only">Ir para a próxima página</span>
                 <ChevronRightIcon />
               </Button>
               <Button
@@ -280,7 +280,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
               >
-                <span className="sr-only">Go to last page</span>
+                <span className="sr-only">Ir para a última página</span>
                 <ChevronsRightIcon />
               </Button>
             </div>

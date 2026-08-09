@@ -6,37 +6,37 @@ import { formatCurrency } from "@/lib/utils";
 const expenses = [
   {
     key: "housing",
-    label: "Housing",
+    label: "Moradia",
     amount: 1650,
   },
   {
     key: "utilities",
-    label: "Utilities",
+    label: "Utilidades",
     amount: 420,
   },
   {
     key: "groceries",
-    label: "Groceries",
+    label: "Mercearia",
     amount: 560,
   },
   {
     key: "transportation",
-    label: "Transport",
+    label: "Transporte",
     amount: 740,
   },
   {
     key: "subscriptions",
-    label: "Subscriptions",
+    label: "Assinaturas",
     amount: 260,
   },
   {
     key: "healthcare",
-    label: "Healthcare",
+    label: "Saúde",
     amount: 390,
   },
   {
     key: "other",
-    label: "Other",
+    label: "Outros",
     amount: 980,
   },
 ];
@@ -46,8 +46,8 @@ export function SpendingBreakdown() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Spending Breakdown</CardTitle>
-        <CardDescription>Expense distribution by category.</CardDescription>
+        <CardTitle>Detalhamento de Gastos</CardTitle>
+        <CardDescription>Distribuição de despesas por categoria.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-1">

@@ -15,14 +15,14 @@ export function MonthlyCashFlow() {
             <span className="grid size-7 place-content-center rounded-sm bg-muted">
               <Calendar className="size-5" />
             </span>
-            Monthly Cash Flow
+            Fluxo de Caixa Mensal
           </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-0.5">
           <p className="font-medium text-xl tabular-nums">+{formatCurrency(2780, { noDecimals: true })}</p>
-          <p className="text-muted-foreground text-xs">This month · Net</p>
+          <p className="text-muted-foreground text-xs">Este mês · Líquido</p>
         </div>
 
         <Separator />
