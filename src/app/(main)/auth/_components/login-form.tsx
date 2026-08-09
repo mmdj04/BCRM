@@ -41,7 +41,11 @@ export function LoginForm() {
     try {
       // Check for demo credentials first
       // biome-ignore lint/suspicious/noUnnecessaryConditions: DEMO_CONFIG.enabled is a runtime config flag
-      if (DEMO_CONFIG.enabled && data.email === DEMO_CONFIG.credentials.email && data.password === DEMO_CONFIG.credentials.password) {
+      if (
+        DEMO_CONFIG.enabled &&
+        data.email === DEMO_CONFIG.credentials.email &&
+        data.password === DEMO_CONFIG.credentials.password
+      ) {
         // Store demo session in cookie (7 days)
         // biome-ignore lint/suspicious/noDocumentCookie: Demo session cookie must be set client-side
         document.cookie = `bcrm_demo_session=${JSON.stringify({
@@ -87,7 +91,7 @@ export function LoginForm() {
                 {...field}
                 id="login-email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="seu@email.com.br"
                 autoComplete="email"
                 aria-invalid={fieldState.invalid}
               />

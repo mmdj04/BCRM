@@ -5,13 +5,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { PasswordStrengthIndicator } from "@/components/password-strength";
+import { getPasswordStrength } from "@/hooks/use-password-strength";
 import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z
@@ -38,6 +40,9 @@ export function RegisterForm() {
       confirmPassword: "",
     },
   });
+
+  const passwordValue = useWatch({ control: form.control, name: "password" });
+  const strength = getPasswordStrength(passwordValue ?? "");
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -74,7 +79,7 @@ export function RegisterForm() {
                 {...field}
                 id="register-email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="seu@email.com.br"
                 autoComplete="email"
                 aria-invalid={fieldState.invalid}
               />
@@ -97,6 +102,7 @@ export function RegisterForm() {
                 aria-invalid={fieldState.invalid}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              {!fieldState.invalid && passwordValue && <PasswordStrengthIndicator strength={strength} />}
             </Field>
           )}
         />
