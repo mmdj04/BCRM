@@ -59,24 +59,24 @@ export function ProfileSection() {
               <AvatarImage src={avatarUrl || undefined} alt={name} />
               <AvatarFallback className="text-lg">{getInitials(name)}</AvatarFallback>
             </Avatar>
-            {!isDemo && (
-              <>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleAvatarChange}
-                />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border bg-background shadow-sm transition-colors hover:bg-muted"
-                >
-                  <Camera className="size-3.5" />
-                </button>
-              </>
-            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (isDemo) return;
+                fileInputRef.current?.click();
+              }}
+              className="absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border bg-background shadow-sm transition-colors hover:bg-muted"
+              disabled={isDemo}
+            >
+              <Camera className="size-3.5" />
+            </button>
           </div>
           <div className="flex flex-col gap-1">
             <p className="font-medium">{name}</p>
