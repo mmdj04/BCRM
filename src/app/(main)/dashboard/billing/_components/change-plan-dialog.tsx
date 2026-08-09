@@ -17,7 +17,14 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/supabase/auth-context";
 
@@ -118,7 +125,8 @@ function ChangePlanContent({
         <Label className="font-medium">Selecione o novo plano</Label>
         <RadioGroup value={selectedPlan} onValueChange={onSelectPlan} className="flex flex-col gap-3">
           {availablePlans.map((plan) => {
-            const isUpgrade = (plan.monthlyPrice ?? 0) > (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0);
+            const isUpgrade =
+              (plan.monthlyPrice ?? 0) > (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0);
             return (
               // biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally
               <label
@@ -144,7 +152,9 @@ function ChangePlanContent({
                     </Badge>
                   </div>
                   <p className="text-muted-foreground text-sm">{plan.description}</p>
-                  <p className="mt-1 font-medium text-sm">R$ {formatPrice(plan.monthlyPrice ?? 0)}/mês + Compute</p>
+                  <p className="mt-1 font-medium text-sm">
+                    R$ {formatPrice(plan.monthlyPrice ?? 0)}/mês + Compute
+                  </p>
                 </div>
               </label>
             );
@@ -192,10 +202,15 @@ function ChangePlanContent({
         <div className="grid gap-4 sm:grid-cols-2">
           {benefitsGained.length > 0 && (
             <div className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950">
-              <p className="mb-2 font-medium text-green-800 text-sm dark:text-green-200">Benefícios Adicionados</p>
+              <p className="mb-2 font-medium text-green-800 text-sm dark:text-green-200">
+                Benefícios Adicionados
+              </p>
               <ul className="flex flex-col gap-1">
                 {benefitsGained.map((benefit) => (
-                  <li key={benefit} className="flex items-start gap-1.5 text-green-700 text-xs dark:text-green-300">
+                  <li
+                    key={benefit}
+                    className="flex items-start gap-1.5 text-green-700 text-xs dark:text-green-300"
+                  >
                     <Check className="mt-0.5 size-3 shrink-0" />
                     {benefit}
                   </li>
@@ -205,10 +220,15 @@ function ChangePlanContent({
           )}
           {benefitsLost.length > 0 && (
             <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 dark:border-yellow-800 dark:bg-yellow-950">
-              <p className="mb-2 font-medium text-yellow-800 text-sm dark:text-yellow-200">Benefícios Removidos</p>
+              <p className="mb-2 font-medium text-yellow-800 text-sm dark:text-yellow-200">
+                Benefícios Removidos
+              </p>
               <ul className="flex flex-col gap-1">
                 {benefitsLost.map((benefit) => (
-                  <li key={benefit} className="flex items-start gap-1.5 text-yellow-700 text-xs dark:text-yellow-300">
+                  <li
+                    key={benefit}
+                    className="flex items-start gap-1.5 text-yellow-700 text-xs dark:text-yellow-300"
+                  >
                     <span className="mt-0.5 size-3 shrink-0">⚠</span>
                     {benefit}
                   </li>
@@ -374,18 +394,18 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={handleOpenChange}>
-        <SheetContent side="bottom" className="flex max-h-[85vh] flex-col overflow-hidden">
-          <SheetHeader>
+        <SheetContent side="bottom" className="flex max-h-[85vh] flex-col overflow-hidden p-0">
+          <SheetHeader className="px-4 pt-4 pb-0">
             <SheetTitle className="flex items-center gap-2">
               <CreditCard className="size-5" />
               Alterar Plano
             </SheetTitle>
             <SheetDescription>Escolha o novo plano que melhor se adapta às suas necessidades.</SheetDescription>
           </SheetHeader>
-          <div className="flex-1 overflow-y-auto px-4">
+          <div className="flex-1 overflow-y-auto px-4 py-4">
             <ChangePlanContent {...contentProps} />
           </div>
-          <SheetFooter>
+          <SheetFooter className="px-4 pb-4 pt-0">
             <Button variant="outline" onClick={() => handleOpenChange(false)}>
               Cancelar
             </Button>
@@ -402,18 +422,20 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="flex max-h-[85vh] max-w-3xl flex-col overflow-hidden p-0">
-        <DialogHeader className="px-6 pt-6 pb-0">
+      <DialogContent className="sm:max-w-2xl">
+        <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="size-5" />
             Alterar Plano
           </DialogTitle>
           <DialogDescription>Escolha o novo plano que melhor se adapta às suas necessidades.</DialogDescription>
         </DialogHeader>
-        <div className="flex-1 overflow-y-auto px-6">
+
+        <div className="max-h-[60vh] overflow-y-auto">
           <ChangePlanContent {...contentProps} />
         </div>
-        <DialogFooter className="px-6 pb-6 pt-0">
+
+        <DialogFooter>
           <Button variant="outline" onClick={() => handleOpenChange(false)}>
             Cancelar
           </Button>
