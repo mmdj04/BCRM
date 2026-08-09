@@ -51,7 +51,6 @@ export const plans: Plan[] = [
       "Até 50 usuários",
       "Todos os módulos",
       "3 projetos ativos",
-      "Banco com 4 GB RAM",
       "SAML/SSO (50 usuários)",
       "Suporte prioritário",
       "Relatórios avançados",
@@ -72,7 +71,6 @@ export const plans: Plan[] = [
     extraFeatures: [
       "Usuários ilimitados",
       "5 projetos ativos",
-      "Banco com 8 GB RAM (dedicado)",
       "Backups automáticos (14 dias)",
       "SOC2 + ISO 27001",
       "SSO Dashboard + Audit Logs",
