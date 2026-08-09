@@ -49,6 +49,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // biome-ignore lint/suspicious/noDocumentCookie: Demo session cookie must be cleared client-side
     document.cookie = "bcrm_demo_session=; path=/; max-age=0";
     localStorage.removeItem("bcrm_demo_session");
+    // Clear demo setup data and completion flag
+    sessionStorage.removeItem("bcrm_setup_complete_demo");
+    localStorage.removeItem("bcrm_setup_data_demo");
+    localStorage.removeItem("bcrm_demo_plan");
     await supabase.auth.signOut();
     window.location.href = "/auth/v1/login";
   }, [supabase]);

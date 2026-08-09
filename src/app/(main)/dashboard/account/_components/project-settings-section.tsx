@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Globe, Save } from "lucide-react";
 
@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/lib/supabase/auth-context";
+import { toast } from "sonner";
 
 const languages = [
   { value: "pt-BR", label: "Português (Brasil)" },
@@ -22,22 +24,63 @@ const themes = [
   { value: "system", label: "Sistema" },
 ];
 
+const defaultProject = {
+  name: "BCRM",
+  url: "",
+  customDomain: "",
+  logo: "",
+  description: "",
+  language: "pt-BR",
+  theme: "light",
+};
+
+function getStorageKeys(userId: string) {
+  return {
+    demo: "bcrm_setup_data_demo",
+    real: `bcrm_setup_data_${userId}`,
+  };
+}
+
 export function ProjectSettingsSection() {
+  const { user, isDemo } = useAuth();
   const [saving, setSaving] = useState(false);
-  const [project, setProject] = useState({
-    name: "BCRM",
-    url: "",
-    customDomain: "",
-    logo: "",
-    description: "",
-    language: "pt-BR",
-    theme: "light",
-  });
+  const [project, setProject] = useState(defaultProject);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const keys = getStorageKeys(user.id);
+    const raw = localStorage.getItem(isDemo ? keys.demo : keys.real);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.project) {
+          setProject((prev) => ({ ...prev, ...parsed.project }));
+        }
+      } catch { /* ignore */ }
+    }
+  }, [user?.id, isDemo]);
 
   const handleSave = async () => {
     setSaving(true);
-    await new Promise((f) => setTimeout(f, 1000));
-    setSaving(false);
+    try {
+      // Save to localStorage
+      if (user?.id) {
+        const keys = getStorageKeys(user.id);
+        const storageKey = isDemo ? keys.demo : keys.real;
+        const raw = localStorage.getItem(storageKey);
+        const parsed = raw ? JSON.parse(raw) : {};
+        localStorage.setItem(storageKey, JSON.stringify({
+          ...parsed,
+          project,
+        }));
+      }
+
+      toast.success("Configurações do projeto salvas com sucesso!");
+    } catch {
+      toast.error("Erro ao salvar configurações do projeto.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

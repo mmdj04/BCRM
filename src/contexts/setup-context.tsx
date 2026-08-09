@@ -156,9 +156,14 @@ interface SetupContextType {
 const SetupContext = createContext<SetupContextType | null>(null);
 
 const DEMO_SESSION_KEY = "bcrm_setup_complete_demo";
+const DEMO_DATA_KEY = "bcrm_setup_data_demo";
 
 function getSetupStorageKey(userId: string): string {
   return `bcrm_setup_complete_${userId}`;
+}
+
+function getSetupDataKey(userId: string): string {
+  return `bcrm_setup_data_${userId}`;
 }
 
 function isDemoSetupComplete(): boolean {
@@ -199,17 +204,21 @@ export function SetupProvider({ children, userId, isDemo = false }: { children: 
   const completeSetup = useCallback(() => {
     if (isDemo) {
       sessionStorage.setItem(DEMO_SESSION_KEY, "true");
+      localStorage.setItem(DEMO_DATA_KEY, JSON.stringify(setupData));
     } else {
       localStorage.setItem(getSetupStorageKey(userId), "true");
+      localStorage.setItem(getSetupDataKey(userId), JSON.stringify(setupData));
     }
     setIsSetupComplete(true);
-  }, [userId, isDemo]);
+  }, [userId, isDemo, setupData]);
 
   const resetSetup = useCallback(() => {
     if (isDemo) {
       sessionStorage.removeItem(DEMO_SESSION_KEY);
+      localStorage.removeItem(DEMO_DATA_KEY);
     } else {
       localStorage.removeItem(getSetupStorageKey(userId));
+      localStorage.removeItem(getSetupDataKey(userId));
     }
     setIsSetupComplete(false);
     setCurrentStep(0);

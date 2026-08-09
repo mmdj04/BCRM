@@ -1,11 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import {
-  Building2,
-  Save,
-} from "lucide-react";
+import { Building2, Save } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +10,8 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/supabase/auth-context";
+import { createClient } from "@supabase/supabase-js";
+import { toast } from "sonner";
 
 const industries = [
   "Tecnologia", "Saúde", "Educação", "Finanças", "Varejo",
@@ -24,29 +23,83 @@ const companySizes = [
   "201-500 funcionários", "500+ funcionários",
 ];
 
+const defaultCompany = {
+  name: "",
+  cnpj: "",
+  description: "",
+  website: "",
+  logo: "",
+  industry: "",
+  size: "",
+  address: "",
+  city: "",
+  state: "",
+  phone: "",
+  email: "",
+  timezone: "America/Sao_Paulo",
+};
+
+function getStorageKeys(userId: string) {
+  return {
+    demo: "bcrm_setup_data_demo",
+    real: `bcrm_setup_data_${userId}`,
+  };
+}
+
 export function CompanySettingsSection() {
-  const { user } = useAuth();
+  const { user, isDemo } = useAuth();
   const [saving, setSaving] = useState(false);
-  const [company, setCompany] = useState({
-    name: "",
-    cnpj: "",
-    description: "",
-    website: "",
-    logo: "",
-    industry: "",
-    size: "",
-    address: "",
-    city: "",
-    state: "",
-    phone: "",
-    email: "",
-    timezone: "America/Sao_Paulo",
-  });
+  const [company, setCompany] = useState(defaultCompany);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const keys = getStorageKeys(user.id);
+    const raw = localStorage.getItem(isDemo ? keys.demo : keys.real);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.company) {
+          setCompany((prev) => ({ ...prev, ...parsed.company }));
+        }
+      } catch { /* ignore */ }
+    }
+  }, [user?.id, isDemo]);
 
   const handleSave = async () => {
     setSaving(true);
-    await new Promise((f) => setTimeout(f, 1000));
-    setSaving(false);
+    try {
+      // Save to localStorage
+      if (user?.id) {
+        const keys = getStorageKeys(user.id);
+        const storageKey = isDemo ? keys.demo : keys.real;
+        const raw = localStorage.getItem(storageKey);
+        const parsed = raw ? JSON.parse(raw) : {};
+        localStorage.setItem(storageKey, JSON.stringify({
+          ...parsed,
+          company,
+        }));
+      }
+
+      // Save to Supabase (real mode only)
+      if (!isDemo && user?.id) {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+        if (supabaseUrl && supabaseKey) {
+          const supabase = createClient(supabaseUrl, supabaseKey);
+          await supabase.from("users").upsert({
+            id: user.id,
+            company_name: company.name,
+            cnpj: company.cnpj,
+          }, { onConflict: "id" });
+        }
+      }
+
+      toast.success("Dados da empresa salvos com sucesso!");
+    } catch {
+      toast.error("Erro ao salvar dados da empresa.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
