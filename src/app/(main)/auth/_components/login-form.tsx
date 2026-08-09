@@ -46,12 +46,13 @@ export function LoginForm() {
         data.email === DEMO_CONFIG.credentials.email &&
         data.password === DEMO_CONFIG.credentials.password
       ) {
-        // Store demo session in cookie (7 days)
+        // Store demo session in cookie: 30 days if remember, otherwise session-only
+        const maxAge = data.remember ? 30 * 24 * 60 * 60 : "";
         // biome-ignore lint/suspicious/noDocumentCookie: Demo session cookie must be set client-side
         document.cookie = `bcrm_demo_session=${JSON.stringify({
           user: DEMO_CONFIG.user,
           isDemo: true,
-        })}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+        })}; path=/; ${maxAge ? `max-age=${maxAge}; ` : ""}SameSite=Lax`;
         toast.success("Modo de demonstração ativado!");
         router.push("/dashboard/default");
         router.refresh();
