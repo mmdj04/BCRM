@@ -300,16 +300,21 @@ function NavItemBadge({ badge }: { badge?: NavBadge }) {
     return null;
   }
 
+  const labels: Record<NavBadge, string> = {
+    new: "Novo",
+    soon: "Em breve",
+  };
+
   return (
     <SidebarMenuBadge
       className={cn(
-        "rounded-sm border capitalize",
+        "rounded-sm border",
         badge === "new" &&
           "border-green-600 text-green-600 peer-hover/menu-button:text-green-600 peer-data-active/menu-button:text-green-600",
         badge === "soon" && "border-muted-foreground text-muted-foreground",
       )}
     >
-      {badge}
+      {labels[badge]}
     </SidebarMenuBadge>
   );
 }
