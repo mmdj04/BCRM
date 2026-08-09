@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 import Image from "next/image";
+
 import { ChevronDown } from "lucide-react";
 import Markdown from "react-markdown";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
 
 type ChangelogEntryType = "feature" | "fix" | "maintenance";
 

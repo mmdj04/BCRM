@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 
+import { createClient } from "@supabase/supabase-js";
 import { Building2, Save } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,17 +12,26 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { createClient } from "@supabase/supabase-js";
-import { toast } from "sonner";
 
 const industries = [
-  "Tecnologia", "Saúde", "Educação", "Finanças", "Varejo",
-  "Indústria", "Serviços", "Construção", "Agronegócio", "Outro",
+  "Tecnologia",
+  "Saúde",
+  "Educação",
+  "Finanças",
+  "Varejo",
+  "Indústria",
+  "Serviços",
+  "Construção",
+  "Agronegócio",
+  "Outro",
 ];
 
 const companySizes = [
-  "1-10 funcionários", "11-50 funcionários", "51-200 funcionários",
-  "201-500 funcionários", "500+ funcionários",
+  "1-10 funcionários",
+  "11-50 funcionários",
+  "51-200 funcionários",
+  "201-500 funcionários",
+  "500+ funcionários",
 ];
 
 const defaultCompany = {
@@ -61,7 +72,9 @@ export function CompanySettingsSection() {
         if (parsed.company) {
           setCompany((prev) => ({ ...prev, ...parsed.company }));
         }
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     }
   }, [user?.id, isDemo]);
 
@@ -74,10 +87,13 @@ export function CompanySettingsSection() {
         const storageKey = isDemo ? keys.demo : keys.real;
         const raw = localStorage.getItem(storageKey);
         const parsed = raw ? JSON.parse(raw) : {};
-        localStorage.setItem(storageKey, JSON.stringify({
-          ...parsed,
-          company,
-        }));
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify({
+            ...parsed,
+            company,
+          }),
+        );
       }
 
       // Save to Supabase (real mode only)
@@ -86,11 +102,14 @@ export function CompanySettingsSection() {
         const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
         if (supabaseUrl && supabaseKey) {
           const supabase = createClient(supabaseUrl, supabaseKey);
-          await supabase.from("users").upsert({
-            id: user.id,
-            company_name: company.name,
-            cnpj: company.cnpj,
-          }, { onConflict: "id" });
+          await supabase.from("users").upsert(
+            {
+              id: user.id,
+              company_name: company.name,
+              cnpj: company.cnpj,
+            },
+            { onConflict: "id" },
+          );
         }
       }
 
@@ -162,7 +181,11 @@ export function CompanySettingsSection() {
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
                 <option value="">Selecione</option>
-                {industries.map((i) => <option key={i} value={i}>{i}</option>)}
+                {industries.map((i) => (
+                  <option key={i} value={i}>
+                    {i}
+                  </option>
+                ))}
               </select>
             </Field>
             <Field className="gap-1.5">
@@ -174,7 +197,11 @@ export function CompanySettingsSection() {
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
                 <option value="">Selecione</option>
-                {companySizes.map((s) => <option key={s} value={s}>{s}</option>)}
+                {companySizes.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
               </select>
             </Field>
           </div>

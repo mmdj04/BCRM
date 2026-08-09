@@ -1,11 +1,12 @@
 "use client";
 
-import { PaymentElement, CurrencySelectorElement } from "@stripe/react-stripe-js/checkout";
-import type { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { CurrencySelectorElement, PaymentElement } from "@stripe/react-stripe-js/checkout";
+import type { StripePaymentElementOptions } from "@stripe/stripe-js";
+
 import { useCheckoutConfirm } from "@/components/stripe-provider";
+import { Button } from "@/components/ui/button";
 
 const paymentElementOptions: StripePaymentElementOptions = {
   layout: "tabs",
@@ -24,7 +25,7 @@ interface PaymentFormProps {
   onCancel?: () => void;
 }
 
-export function PaymentForm({ planName, planPrice, onSuccess, onCancel }: PaymentFormProps) {
+export function PaymentForm({ planName: _planName, planPrice, onSuccess: _onSuccess, onCancel }: PaymentFormProps) {
   const { confirm, processing, error: confirmError } = useCheckoutConfirm();
   const [localError, setLocalError] = useState<string | null>(null);
 

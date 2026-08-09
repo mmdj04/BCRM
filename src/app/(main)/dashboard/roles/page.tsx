@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useSetupStorage } from "@/hooks/use-setup-storage";
 
 import { Roles } from "./_components/roles";
-import { type Role, roles as mockRoles } from "./_components/roles-table/data";
+import { roles as mockRoles, type Role } from "./_components/roles-table/data";
 
 function formatDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, "0");

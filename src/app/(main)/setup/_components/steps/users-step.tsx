@@ -3,12 +3,6 @@
 import { useState } from "react";
 
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
   ArrowRightLeft,
   Check,
   Edit,
@@ -24,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -106,7 +101,9 @@ export function UsersStep() {
       color: newTeamColor,
     };
     setTeams((prev) => [...prev, team]);
-    updateSetupData({ teams: [...setupData.teams, { name: team.name, description: team.description, color: team.color }] });
+    updateSetupData({
+      teams: [...setupData.teams, { name: team.name, description: team.description, color: team.color }],
+    });
     setNewTeamName("");
     setNewTeamDescription("");
     setNewTeamColor(TEAM_COLORS[0]);
@@ -136,7 +133,9 @@ export function UsersStep() {
     const updated = { ...teams[index], name: editingTeamName.trim(), description: editingTeamDescription.trim() };
     setTeams((prev) => prev.map((t, i) => (i === index ? updated : t)));
     updateSetupData({
-      teams: setupData.teams.map((t) => (t.name === oldName ? { name: updated.name, description: updated.description, color: updated.color } : t)),
+      teams: setupData.teams.map((t) =>
+        t.name === oldName ? { name: updated.name, description: updated.description, color: updated.color } : t,
+      ),
       users: setupData.users.map((u) => (u.team === oldName ? { ...u, team: updated.name } : u)),
     });
     setEditingTeamIndex(null);
@@ -197,8 +196,8 @@ export function UsersStep() {
           Gestão de Usuários
         </CardTitle>
         <CardDescription>
-          Convide membros da equipe, crie equipes e configure permissões. Você pode adicionar mais
-          usuários depois nas configurações.
+          Convide membros da equipe, crie equipes e configure permissões. Você pode adicionar mais usuários depois nas
+          configurações.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -213,9 +212,7 @@ export function UsersStep() {
                   Opcional
                 </span>
                 {teams.length > 0 && (
-                  <span className="ml-2 rounded bg-primary/10 px-1.5 py-0.5 text-primary text-xs">
-                    {teams.length}
-                  </span>
+                  <span className="ml-2 rounded bg-primary/10 px-1.5 py-0.5 text-primary text-xs">{teams.length}</span>
                 )}
               </div>
             </AccordionTrigger>
@@ -252,9 +249,7 @@ export function UsersStep() {
                       />
                     </Field>
                     <Field className="gap-1.5">
-                      <FieldLabel>
-                        Cor
-                      </FieldLabel>
+                      <FieldLabel>Cor</FieldLabel>
                       <div className="flex items-center gap-1.5">
                         <Palette className="size-4 text-muted-foreground" />
                         <div className="flex gap-1.5">
@@ -445,16 +440,12 @@ export function UsersStep() {
                         <Shield className="size-4 text-muted-foreground" />
                         <div>
                           <p className="font-medium text-sm">{role.name}</p>
-                          {role.description && (
-                            <p className="text-muted-foreground text-xs">{role.description}</p>
-                          )}
+                          {role.description && <p className="text-muted-foreground text-xs">{role.description}</p>}
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         {index < DEFAULT_ROLES.length && (
-                          <span className="rounded bg-muted px-2 py-0.5 text-muted-foreground text-xs">
-                            Padrão
-                          </span>
+                          <span className="rounded bg-muted px-2 py-0.5 text-muted-foreground text-xs">Padrão</span>
                         )}
                         {index >= DEFAULT_ROLES.length && (
                           <Button
@@ -488,9 +479,7 @@ export function UsersStep() {
             </AccordionTrigger>
             <AccordionContent className="pb-3">
               <div className="flex flex-col gap-3">
-                <p className="text-muted-foreground text-xs">
-                  Já usa outro sistema? Importe seus dados para o BCRM.
-                </p>
+                <p className="text-muted-foreground text-xs">Já usa outro sistema? Importe seus dados para o BCRM.</p>
 
                 <div className="flex flex-col gap-2">
                   {/* CSV/Excel */}
@@ -669,15 +658,27 @@ export function UsersStep() {
                     <div className="flex flex-col gap-2">
                       <p className="font-medium text-xs">Opções de Sincronização</p>
                       <label htmlFor="google-sync-users" className="flex items-center gap-2 text-sm">
-                        <Checkbox id="google-sync-users" checked={googleSyncUsers} onCheckedChange={() => setGoogleSyncUsers(!googleSyncUsers)} />
+                        <Checkbox
+                          id="google-sync-users"
+                          checked={googleSyncUsers}
+                          onCheckedChange={() => setGoogleSyncUsers(!googleSyncUsers)}
+                        />
                         <span>Usuários</span>
                       </label>
                       <label htmlFor="google-sync-groups" className="flex items-center gap-2 text-sm">
-                        <Checkbox id="google-sync-groups" checked={googleSyncGroups} onCheckedChange={() => setGoogleSyncGroups(!googleSyncGroups)} />
+                        <Checkbox
+                          id="google-sync-groups"
+                          checked={googleSyncGroups}
+                          onCheckedChange={() => setGoogleSyncGroups(!googleSyncGroups)}
+                        />
                         <span>Grupos</span>
                       </label>
                       <label htmlFor="google-sync-ou" className="flex items-center gap-2 text-sm">
-                        <Checkbox id="google-sync-ou" checked={googleSyncOu} onCheckedChange={() => setGoogleSyncOu(!googleSyncOu)} />
+                        <Checkbox
+                          id="google-sync-ou"
+                          checked={googleSyncOu}
+                          onCheckedChange={() => setGoogleSyncOu(!googleSyncOu)}
+                        />
                         <span>Unidades Organizacionais</span>
                       </label>
                     </div>
@@ -850,9 +851,7 @@ export function UsersStep() {
                       {user.team}
                     </span>
                   )}
-                  <span className="rounded bg-muted px-2 py-0.5 text-xs">
-                    {user.role}
-                  </span>
+                  <span className="rounded bg-muted px-2 py-0.5 text-xs">{user.role}</span>
                   <Button
                     type="button"
                     variant="ghost"
@@ -869,7 +868,9 @@ export function UsersStep() {
         )}
 
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-blue-800 text-sm dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
-          <p>Usuários e equipes podem ser gerenciados depois em <strong>Configurações → Usuários</strong>.</p>
+          <p>
+            Usuários e equipes podem ser gerenciados depois em <strong>Configurações → Usuários</strong>.
+          </p>
         </div>
 
         <div className="flex justify-between">

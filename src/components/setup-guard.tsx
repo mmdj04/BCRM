@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/lib/supabase/auth-context";
 

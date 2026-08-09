@@ -1,7 +1,8 @@
 "use client";
 
+import { useCallback, useEffect } from "react";
+
 import Image from "next/image";
-import { useEffect, useCallback } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -40,7 +41,9 @@ export function Lightbox({ src, alt, open, onClose }: LightboxProps) {
         "fade-in-0 animate-in duration-200",
       )}
       onClick={onClose}
-      onKeyDown={(e) => { if (e.key === "Escape") onClose(); }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") onClose();
+      }}
       role="dialog"
       aria-modal="true"
     >
@@ -50,7 +53,18 @@ export function Lightbox({ src, alt, open, onClose }: LightboxProps) {
         className="absolute top-4 right-4 z-50 flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
         aria-label="Fechar"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
           <path d="M18 6 6 18" />
           <path d="m6 6 12 12" />
         </svg>

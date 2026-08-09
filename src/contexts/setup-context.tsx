@@ -171,7 +171,15 @@ function isDemoSetupComplete(): boolean {
   return sessionStorage.getItem(DEMO_SESSION_KEY) === "true";
 }
 
-export function SetupProvider({ children, userId, isDemo = false }: { children: React.ReactNode; userId: string; isDemo?: boolean }) {
+export function SetupProvider({
+  children,
+  userId,
+  isDemo = false,
+}: {
+  children: React.ReactNode;
+  userId: string;
+  isDemo?: boolean;
+}) {
   const [isSetupComplete, setIsSetupComplete] = useState(() => {
     if (isDemo) return isDemoSetupComplete();
     return false;

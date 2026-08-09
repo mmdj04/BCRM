@@ -1,17 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 import Stripe from "stripe";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-  process.env.SUPABASE_SECRET_KEY ?? "",
-);
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", process.env.SUPABASE_SECRET_KEY ?? "");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
 
-const PLAN_AMOUNTS: Record<string, Record<string, number>> = {
-  starter: { monthly: 78990, yearly: 947880 },
-  pro: { monthly: 188990, yearly: 2267880 },
-  team: { monthly: 798990, yearly: 9587880 },
+const PLAN_AMOUNTS: Record<string, number> = {
+  starter: 89990, // R$ 899,90
+  pro: 229990, // R$ 2.299,90
+  team: 899990, // R$ 8.999,90
 };
 
 export async function getOrCreateCustomer(userId: string, email: string): Promise<Stripe.Customer> {
@@ -36,7 +33,6 @@ export async function createCheckoutSessionElements(
   userId: string,
   email: string,
   plan: string,
-  interval: string,
   business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ clientSecret: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
@@ -51,10 +47,10 @@ export async function createCheckoutSessionElements(
           currency: "brl",
           product_data: {
             name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
-            metadata: { plan, interval },
+            metadata: { plan },
           },
-          unit_amount: PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly,
-          recurring: { interval: interval === "yearly" ? "year" : "month" },
+          unit_amount: PLAN_AMOUNTS[plan] ?? PLAN_AMOUNTS.pro,
+          recurring: { interval: "month" },
         },
         quantity: 1,
       },
@@ -69,7 +65,7 @@ export async function createCheckoutSessionElements(
     metadata: {
       userId,
       plan,
-      interval,
+      interval: "monthly",
       isBusiness: business?.isBusiness ? "true" : "false",
       companyName: business?.companyName || "",
       cnpj: business?.cnpj || "",
@@ -83,7 +79,6 @@ export async function createCheckoutSession(
   userId: string,
   email: string,
   plan: string,
-  interval: string,
   business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ url: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
@@ -120,10 +115,10 @@ export async function createCheckoutSession(
           product: undefined,
           product_data: {
             name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
-            metadata: { plan, interval },
+            metadata: { plan },
           },
-          unit_amount: PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly,
-          recurring: { interval: interval === "yearly" ? "year" : "month" },
+          unit_amount: PLAN_AMOUNTS[plan] ?? PLAN_AMOUNTS.pro,
+          recurring: { interval: "month" },
         },
         quantity: 1,
       },
@@ -133,7 +128,7 @@ export async function createCheckoutSession(
     metadata: {
       userId,
       plan,
-      interval,
+      interval: "monthly",
       isBusiness: business?.isBusiness ? "true" : "false",
       companyName: business?.companyName || "",
       cnpj: business?.cnpj || "",
@@ -190,9 +185,12 @@ export async function handleWebhookEvent(event: Stripe.Event) {
           description: invoice.description ?? "Assinatura BCRM",
         });
 
-        await supabase.from("users").update({
-          subscription_status: "active",
-        }).eq("id", user.id);
+        await supabase
+          .from("users")
+          .update({
+            subscription_status: "active",
+          })
+          .eq("id", user.id);
       }
       break;
     }
@@ -226,12 +224,15 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const { data: user } = await supabase.from("users").select("id").eq("stripe_customer_id", customerId).single();
 
       if (user) {
-        await supabase.from("users").update({
-          subscription_status: "free",
-          plan: "free",
-          subscription_id: null,
-          cancel_at_period_end: false,
-        }).eq("id", user.id);
+        await supabase
+          .from("users")
+          .update({
+            subscription_status: "free",
+            plan: "free",
+            subscription_id: null,
+            cancel_at_period_end: false,
+          })
+          .eq("id", user.id);
       }
       break;
     }

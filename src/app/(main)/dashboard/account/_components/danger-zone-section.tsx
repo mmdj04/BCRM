@@ -78,8 +78,8 @@ export function DangerZoneSection() {
                       Excluir Todos os Dados
                     </DialogTitle>
                     <DialogDescription>
-                      Isso excluirá permanentemente todos os seus projetos, bancos de dados, arquivos e configurações. Esta
-                      ação não pode ser desfeita.
+                      Isso excluirá permanentemente todos os seus projetos, bancos de dados, arquivos e configurações.
+                      Esta ação não pode ser desfeita.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col gap-2">

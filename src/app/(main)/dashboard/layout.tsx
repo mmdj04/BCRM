@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import { cookies } from "next/headers";
 
 import { AppSidebar } from "@/app/(main)/dashboard/_components/sidebar/app-sidebar";
+import { SetupGuard } from "@/components/setup-guard";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { SetupGuard } from "@/components/setup-guard";
 import { cn } from "@/lib/utils";
 import { getPreference } from "@/server/server-actions";
 

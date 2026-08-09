@@ -1,12 +1,10 @@
 import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 type ChangelogIconType = "feature" | "fix" | "maintenance";
 
-const iconConfig: Record<
-  ChangelogIconType,
-  { src: string; alt: string; label: string }
-> = {
+const iconConfig: Record<ChangelogIconType, { src: string; alt: string; label: string }> = {
   feature: {
     src: "/changelog/featured-v3-new-releases.svg",
     alt: "Novo recurso",
@@ -24,23 +22,11 @@ const iconConfig: Record<
   },
 };
 
-export function ChangelogIcon({
-  type,
-  className,
-}: {
-  type: ChangelogIconType;
-  className?: string;
-}) {
+export function ChangelogIcon({ type, className }: { type: ChangelogIconType; className?: string }) {
   const config = iconConfig[type];
 
   return (
-    <Image
-      src={config.src}
-      alt={config.alt}
-      width={32}
-      height={32}
-      className={cn("shrink-0 rounded-md", className)}
-    />
+    <Image src={config.src} alt={config.alt} width={32} height={32} className={cn("shrink-0 rounded-md", className)} />
   );
 }
 

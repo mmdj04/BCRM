@@ -1,6 +1,6 @@
 "use client";
 
-import { CreditCard, QrCode, Receipt, Building2, Banknote } from "lucide-react";
+import { Banknote, Building2, CreditCard, QrCode, Receipt } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -86,15 +86,10 @@ export function PaymentStep() {
                 onClick={() => togglePayment(method.id)}
                 className={cn(
                   "flex items-center gap-3 rounded-lg border p-3 text-left transition-colors",
-                  isEnabled
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-muted-foreground/50",
+                  isEnabled ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground/50",
                 )}
               >
-                <Checkbox
-                  checked={isEnabled}
-                  onCheckedChange={() => togglePayment(method.id)}
-                />
+                <Checkbox checked={isEnabled} onCheckedChange={() => togglePayment(method.id)} />
                 <Icon className="size-4 shrink-0" />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">

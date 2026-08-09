@@ -59,13 +59,7 @@ export function ProfileSection() {
               <AvatarImage src={avatarUrl || undefined} alt={name} />
               <AvatarFallback className="text-lg">{getInitials(name)}</AvatarFallback>
             </Avatar>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarChange}
-            />
+            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
             <button
               type="button"
               onClick={() => {

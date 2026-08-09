@@ -1,16 +1,14 @@
 "use client";
 
-import { useState } from "react";
-
 import { Check } from "lucide-react";
+import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/lib/supabase/auth-context";
 import { useCheckout } from "@/hooks/use-checkout";
-import { toast } from "sonner";
+import { useAuth } from "@/lib/supabase/auth-context";
 
 import type { Plan } from "./data";
 
@@ -21,7 +19,6 @@ type PricingCardsProps = {
 };
 
 export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
-  const [annual, setAnnual] = useState(false);
   const { checkout, loading } = useCheckout();
   const { isDemo } = useAuth();
 
@@ -36,7 +33,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
     }
     await checkout({
       plan: planId,
-      interval: annual ? "yearly" : "monthly",
+      interval: "monthly",
       email: userEmail,
       userId,
     });
@@ -48,24 +45,6 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-center gap-3">
-        <span className={`text-sm ${!annual ? "font-medium" : "text-muted-foreground"}`}>Mensal</span>
-        <button
-          type="button"
-          onClick={() => setAnnual(!annual)}
-          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ${
-            annual ? "bg-primary" : "bg-input"
-          }`}
-        >
-          <span
-            className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform ${
-              annual ? "translate-x-5" : "translate-x-0"
-            }`}
-          />
-        </button>
-        <span className={`text-sm ${annual ? "font-medium" : "text-muted-foreground"}`}>Anual</span>
-      </div>
-
       <div className="flex flex-col gap-6">
         {plans.map((plan) => (
           <Card key={plan.id} className={`flex flex-col ${plan.highlighted ? "border-primary shadow-md" : ""}`}>
@@ -81,11 +60,8 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                 {plan.monthlyPrice !== null ? (
                   <>
                     <span className="text-muted-foreground text-sm">R$</span>
-                    <span className="font-bold text-4xl">
-                      {/* biome-ignore lint/style/noNonNullAssertion: yearlyPrice is always defined when annual is true */}
-                      {formatPrice(annual ? plan.yearlyPrice! : plan.monthlyPrice)}
-                    </span>
-                    <span className="text-muted-foreground text-sm">/{annual ? "ano" : "mês"}</span>
+                    <span className="font-bold text-4xl">{formatPrice(plan.monthlyPrice)}</span>
+                    <span className="text-muted-foreground text-sm">/mês</span>
                   </>
                 ) : (
                   <span className="font-bold text-4xl">Personalizado</span>

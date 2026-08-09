@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 import { useSetupStorage } from "@/hooks/use-setup-storage";
 
-import { users, type UserRow, type UserTeam } from "./_components/data";
+import { type UserRow, type UserTeam, users } from "./_components/data";
 import { Users } from "./_components/users";
 
 const validTeams = new Set<string>([

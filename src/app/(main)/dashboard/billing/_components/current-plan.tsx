@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from "react";
 
+import { createClient } from "@supabase/supabase-js";
 import { CreditCard } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { createClient } from "@supabase/supabase-js";
 
 import { ChangePlanDialog } from "./change-plan-dialog";
 
@@ -33,9 +32,9 @@ const PLAN_NAMES: Record<string, string> = {
 };
 
 const PLAN_PRICES: Record<string, number> = {
-  starter: 789.9,
-  pro: 1889.9,
-  team: 7989.9,
+  starter: 899.9,
+  pro: 2299.9,
+  team: 8999.9,
 };
 
 export function CurrentPlan() {
@@ -112,11 +111,15 @@ export function CurrentPlan() {
   const status = subscription?.status ?? "free";
   const price = PLAN_PRICES[plan] ?? 0;
   const periodEnd = subscription?.currentPeriodEnd
-    ? new Date(subscription.currentPeriodEnd).toLocaleDateString("pt-BR", { month: "short", day: "numeric", year: "numeric" })
+    ? new Date(subscription.currentPeriodEnd).toLocaleDateString("pt-BR", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
     : null;
 
   const handlePlanChanged = (newPlan: string) => {
-    setSubscription((prev) => prev ? { ...prev, plan: newPlan } : prev);
+    setSubscription((prev) => (prev ? { ...prev, plan: newPlan } : prev));
   };
 
   return (
@@ -136,7 +139,13 @@ export function CurrentPlan() {
                   : "border-muted"
               }
             >
-              {status === "active" ? "Ativo" : status === "past_due" ? "Atrasado" : status === "canceled" ? "Cancelado" : "Gratuito"}
+              {status === "active"
+                ? "Ativo"
+                : status === "past_due"
+                  ? "Atrasado"
+                  : status === "canceled"
+                    ? "Cancelado"
+                    : "Gratuito"}
             </Badge>
           </div>
         </CardHeader>

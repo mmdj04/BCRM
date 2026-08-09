@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, } from "lucide-react";
+import { Building2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,8 +48,8 @@ export function CompanyStep() {
           Dados da Empresa
         </CardTitle>
         <CardDescription>
-          Informações básicas da sua empresa ou organização. Todos os campos podem ser alterados
-          depois nas configurações da conta.
+          Informações básicas da sua empresa ou organização. Todos os campos podem ser alterados depois nas
+          configurações da conta.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -278,14 +278,18 @@ export function CompanyStep() {
         </FieldGroup>
 
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-blue-800 text-sm dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
-          <p>Todos os dados podem ser alterados depois em <strong>Configurações da Conta</strong>.</p>
+          <p>
+            Todos os dados podem ser alterados depois em <strong>Configurações da Conta</strong>.
+          </p>
         </div>
 
         <div className="flex justify-between">
           <Button variant="outline" onClick={() => setStep(0)}>
             Voltar
           </Button>
-          <Button onClick={() => setStep(2)} disabled={!canProceed}>Próximo</Button>
+          <Button onClick={() => setStep(2)} disabled={!canProceed}>
+            Próximo
+          </Button>
         </div>
       </CardContent>
     </Card>

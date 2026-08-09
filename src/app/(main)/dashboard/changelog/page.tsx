@@ -1,5 +1,5 @@
-import { ChangelogList } from "./_components/changelog-list";
 import { getChangelogTypeFromContent } from "./_components/changelog-icon";
+import { ChangelogList } from "./_components/changelog-list";
 import fs from "node:fs";
 import path from "node:path";
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { Globe, Save } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +11,6 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { toast } from "sonner";
 
 const languages = [
   { value: "pt-BR", label: "Português (Brasil)" },
@@ -56,7 +56,9 @@ export function ProjectSettingsSection() {
         if (parsed.project) {
           setProject((prev) => ({ ...prev, ...parsed.project }));
         }
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     }
   }, [user?.id, isDemo]);
 
@@ -69,10 +71,13 @@ export function ProjectSettingsSection() {
         const storageKey = isDemo ? keys.demo : keys.real;
         const raw = localStorage.getItem(storageKey);
         const parsed = raw ? JSON.parse(raw) : {};
-        localStorage.setItem(storageKey, JSON.stringify({
-          ...parsed,
-          project,
-        }));
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify({
+            ...parsed,
+            project,
+          }),
+        );
       }
 
       toast.success("Configurações do projeto salvas com sucesso!");
@@ -149,7 +154,11 @@ export function ProjectSettingsSection() {
                 onChange={(e) => setProject({ ...project, language: e.target.value })}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
-                {languages.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
+                {languages.map((l) => (
+                  <option key={l.value} value={l.value}>
+                    {l.label}
+                  </option>
+                ))}
               </select>
             </Field>
             <Field className="gap-1.5">
@@ -160,7 +169,11 @@ export function ProjectSettingsSection() {
                 onChange={(e) => setProject({ ...project, theme: e.target.value })}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
-                {themes.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+                {themes.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
+                  </option>
+                ))}
               </select>
             </Field>
           </div>

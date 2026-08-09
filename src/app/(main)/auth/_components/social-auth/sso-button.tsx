@@ -67,9 +67,7 @@ export function SSOButton({ className, ...props }: React.ComponentProps<typeof B
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
           <DialogTitle>Entrar com SSO</DialogTitle>
-          <DialogDescription>
-            Digite o domínio de e-mail da sua empresa para autenticar via SAML SSO.
-          </DialogDescription>
+          <DialogDescription>Digite o domínio de e-mail da sua empresa para autenticar via SAML SSO.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSSO} className="space-y-4">
           <FieldGroup>

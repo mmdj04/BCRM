@@ -67,9 +67,7 @@ export function NotificationsStep() {
                 htmlFor={`notif-${notif.id}`}
                 className={cn(
                   "flex items-center gap-3 rounded-lg border p-3 transition-colors",
-                  isEnabled
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-muted-foreground/50",
+                  isEnabled ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground/50",
                 )}
               >
                 <Checkbox

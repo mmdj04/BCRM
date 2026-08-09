@@ -4,15 +4,7 @@ import { createCheckoutSessionElements } from "@/lib/stripe/billing";
 
 export async function POST(request: Request) {
   try {
-    const {
-      plan,
-      interval = "monthly",
-      userId,
-      email,
-      isBusiness,
-      companyName,
-      cnpj,
-    } = await request.json();
+    const { plan, userId, email, isBusiness, companyName, cnpj } = await request.json();
 
     if (!plan || !["starter", "pro", "team"].includes(plan)) {
       return NextResponse.json({ error: "Plano inválido" }, { status: 400 });
@@ -22,7 +14,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
     }
 
-    const { clientSecret } = await createCheckoutSessionElements(userId, email, plan, interval, {
+    const { clientSecret } = await createCheckoutSessionElements(userId, email, plan, {
       isBusiness: !!isBusiness,
       companyName: companyName || undefined,
       cnpj: cnpj || undefined,

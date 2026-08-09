@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 
+import { createClient } from "@supabase/supabase-js";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -29,7 +30,8 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   succeeded: "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300",
-  pending: "border-yellow-200 bg-yellow-50 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300",
+  pending:
+    "border-yellow-200 bg-yellow-50 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300",
   failed: "border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300",
 };
 
@@ -57,7 +59,11 @@ export function BillingHistory() {
           setEntries(
             data.map((p) => ({
               id: p.id,
-              date: new Date(p.created_at).toLocaleDateString("pt-BR", { month: "short", day: "numeric", year: "numeric" }),
+              date: new Date(p.created_at).toLocaleDateString("pt-BR", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
               description: p.description ?? "Assinatura BCRM",
               amount: p.amount / 100,
               status: p.status as PaymentEntry["status"],

@@ -62,7 +62,6 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
                       <TableHead className="text-center">Inicial</TableHead>
                       <TableHead className="text-center">Pro</TableHead>
                       <TableHead className="text-center">Equipe</TableHead>
-                      <TableHead className="text-center">Empresarial</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -72,7 +71,6 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
                         <TableCell className="text-center text-sm">{feature.starter}</TableCell>
                         <TableCell className="text-center text-sm">{feature.pro}</TableCell>
                         <TableCell className="text-center text-sm">{feature.team}</TableCell>
-                        <TableCell className="text-center text-sm">{feature.enterprise}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

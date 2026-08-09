@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { createClient } from "@supabase/supabase-js";
 import {
   Banknote,
   Building2,
@@ -17,7 +18,6 @@ import {
 
 import { PaymentForm } from "@/components/payment-form";
 import { StripeElementsProvider } from "@/components/stripe-provider";
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useSetup } from "@/contexts/setup-context";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { createClient } from "@supabase/supabase-js";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -79,40 +78,58 @@ const _notificationLabels: Record<string, string> = {
 const plans = [
   {
     id: "starter",
-    name: "Starter",
-    price: "R$ 789,90",
+    name: "Inicial",
+    price: "R$ 899,90",
     period: "/mês",
     description: "Para pequenas equipes começando",
-    features: ["Até 5 usuários", "3 módulos", "Suporte por e-mail", "1 GB de armazenamento"],
+    features: [
+      "Até 10 usuários",
+      "5 módulos",
+      "100 GB de armazenamento",
+      "1 projeto ativo",
+      "Banco Postgres dedicado",
+      "Auth com 100K MAU",
+      "Backups automáticos (7 dias)",
+      "Suporte por e-mail",
+    ],
   },
   {
     id: "pro",
     name: "Pro",
-    price: "R$ 1.889,90",
+    price: "R$ 2.299,90",
     period: "/mês",
     description: "Para equipes em crescimento",
     features: [
-      "Até 25 usuários",
+      "Até 50 usuários",
       "Todos os módulos",
+      "100 GB de armazenamento",
+      "3 projetos ativos",
+      "Banco Postgres dedicado (4 GB RAM)",
+      "Auth com 100K MAU + SAML (50)",
+      "Backups automáticos (7 dias)",
       "Suporte prioritário",
-      "10 GB de armazenamento",
       "Relatórios avançados",
+      "API de integração",
     ],
     popular: true,
   },
   {
     id: "team",
-    name: "Team",
-    price: "R$ 7.989,90",
+    name: "Equipe",
+    price: "R$ 8.999,90",
     period: "/mês",
     description: "Para organizações grandes",
     features: [
       "Usuários ilimitados",
       "Todos os módulos",
-      "Suporte 24/7",
-      "Armazenamento ilimitado",
-      "API completa",
-      "SSO/SAML",
+      "100 GB de armazenamento",
+      "5 projetos ativos",
+      "Banco Postgres dedicado (8 GB RAM)",
+      "Auth com 100K MAU + SAML (50)",
+      "Backups automáticos (14 dias)",
+      "SOC2 + ISO 27001",
+      "SSO Dashboard + Audit Logs",
+      "Suporte prioritário com SLA",
     ],
   },
 ];
@@ -156,12 +173,14 @@ export function SummaryStep() {
     // Demo mode: skip Stripe entirely, mark payment as complete
     if (isDemo) {
       // Save plan to localStorage for demo mode
-      localStorage.setItem("bcrm_demo_plan", JSON.stringify({
-        plan: selectedPlan,
-        interval: "monthly",
-        status: "active",
-        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      }));
+      localStorage.setItem(
+        "bcrm_demo_plan",
+        JSON.stringify({
+          plan: selectedPlan,
+          status: "active",
+          currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        }),
+      );
       setPaymentComplete(true);
       return;
     }
@@ -178,7 +197,6 @@ export function SummaryStep() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           plan: selectedPlan,
-          interval: "monthly",
           userId: user.id,
           email: user.email,
         }),
@@ -208,13 +226,16 @@ export function SummaryStep() {
         if (supabaseUrl && supabaseKey) {
           const supabase = createClient(supabaseUrl, supabaseKey);
           const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-          await supabase.from("users").upsert({
-            id: user.id,
-            plan: selectedPlan,
-            plan_interval: "monthly",
-            subscription_status: "active",
-            current_period_end: periodEnd,
-          }, { onConflict: "id" });
+          await supabase.from("users").upsert(
+            {
+              id: user.id,
+              plan: selectedPlan,
+              plan_interval: "monthly",
+              subscription_status: "active",
+              current_period_end: periodEnd,
+            },
+            { onConflict: "id" },
+          );
         }
       } catch {
         // Webhook will handle it as backup
@@ -664,7 +685,10 @@ export function SummaryStep() {
                 </div>
                 <div className="flex items-center justify-between border-t pt-2">
                   <span className="font-medium text-sm">Total</span>
-                  <span className="font-bold text-lg">{selectedPlanData?.price}<span className="font-normal text-muted-foreground text-sm">/mês</span></span>
+                  <span className="font-bold text-lg">
+                    {selectedPlanData?.price}
+                    <span className="font-normal text-muted-foreground text-sm">/mês</span>
+                  </span>
                 </div>
               </div>
 

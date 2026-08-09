@@ -5,19 +5,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Check, X } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { Check, X } from "lucide-react";
-
+import { PasswordStrengthIndicator } from "@/components/password-strength";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { PasswordStrengthIndicator } from "@/components/password-strength";
 import { getPasswordStrength } from "@/hooks/use-password-strength";
-import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 
 const formSchema = z
   .object({

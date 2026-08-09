@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { createClient } from "@supabase/supabase-js";
 import { ArrowRight, Check, CreditCard, Info, Zap } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +18,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { createClient } from "@supabase/supabase-js";
 
 import { plans } from "./data";
 
@@ -29,39 +29,45 @@ const PLAN_NAMES: Record<string, string> = {
 };
 
 const PLAN_PRICES: Record<string, number> = {
-  starter: 789.9,
-  pro: 1889.9,
-  team: 7989.9,
+  starter: 899.9,
+  pro: 2299.9,
+  team: 8999.9,
 };
 
 const PLAN_FEATURES: Record<string, string[]> = {
   starter: [
-    "2 projetos ativos",
-    "50.000 usuários ativos mensais",
-    "500 MB de banco de dados",
-    "5 GB de largura de banda",
-    "1 GB de armazenamento",
-    "Suporte da comunidade",
+    "Até 10 usuários",
+    "5 módulos",
+    "100 GB de armazenamento",
+    "1 projeto ativo",
+    "Banco Postgres dedicado",
+    "Auth com 100K MAU",
+    "Backups automáticos (7 dias)",
+    "Suporte por e-mail",
   ],
   pro: [
-    "Projetos ilimitados",
-    "100.000 usuários ativos mensais",
-    "8 GB de banco por projeto",
-    "250 GB de largura de banda",
+    "Até 50 usuários",
+    "Todos os módulos",
     "100 GB de armazenamento",
-    "Suporte por e-mail",
-    "Backups diários (7 dias)",
-    "SSO/SAML (50 incluídos)",
+    "3 projetos ativos",
+    "Banco Postgres dedicado (4 GB RAM)",
+    "Auth com 100K MAU + SAML (50)",
+    "Backups automáticos (7 dias)",
+    "Suporte prioritário",
+    "Relatórios avançados",
+    "API de integração",
   ],
   team: [
-    "Tudo do Pro",
-    "SOC2 e ISO 27001",
-    "Conformidade HIPAA",
-    "SSO para dashboard",
-    "Suporte prioritário por e-mail e SLAs",
-    "Backups (14 dias)",
-    "Funções de acesso personalizadas",
-    "AWS PrivateLink",
+    "Usuários ilimitados",
+    "Todos os módulos",
+    "100 GB de armazenamento",
+    "5 projetos ativos",
+    "Banco Postgres dedicado (8 GB RAM)",
+    "Auth com 100K MAU + SAML (50)",
+    "Backups automáticos (14 dias)",
+    "SOC2 + ISO 27001",
+    "SSO Dashboard + Audit Logs",
+    "Suporte prioritário com SLA",
   ],
 };
 
@@ -79,10 +85,9 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const currentPlanData = plans.find((p) => p.id === currentPlan);
   const newPlanData = plans.find((p) => p.id === selectedPlan);
 
-  const availablePlans = plans.filter((p) => p.id !== currentPlan && p.id !== "enterprise" && p.monthlyPrice !== null);
+  const availablePlans = plans.filter((p) => p.id !== currentPlan && p.monthlyPrice !== null);
 
   const getBenefitsGained = () => {
     if (!selectedPlan || !currentPlan) return [];
@@ -110,11 +115,14 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
         // Demo mode: update localStorage
         const demoPlan = localStorage.getItem("bcrm_demo_plan");
         const parsed = demoPlan ? JSON.parse(demoPlan) : {};
-        localStorage.setItem("bcrm_demo_plan", JSON.stringify({
-          ...parsed,
-          plan: selectedPlan,
-          status: "active",
-        }));
+        localStorage.setItem(
+          "bcrm_demo_plan",
+          JSON.stringify({
+            ...parsed,
+            plan: selectedPlan,
+            status: "active",
+          }),
+        );
         setSuccess(true);
         setTimeout(() => {
           onPlanChanged(selectedPlan);
@@ -129,13 +137,16 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
         if (supabaseUrl && supabaseKey) {
           const supabase = createClient(supabaseUrl, supabaseKey);
           const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-          await supabase.from("users").upsert({
-            id: user.id,
-            plan: selectedPlan,
-            plan_interval: "monthly",
-            subscription_status: "active",
-            current_period_end: changeTiming === "now" ? periodEnd : undefined,
-          }, { onConflict: "id" });
+          await supabase.from("users").upsert(
+            {
+              id: user.id,
+              plan: selectedPlan,
+              plan_interval: "monthly",
+              subscription_status: "active",
+              current_period_end: changeTiming === "now" ? periodEnd : undefined,
+            },
+            { onConflict: "id" },
+          );
         }
         setSuccess(true);
         setTimeout(() => {
@@ -169,9 +180,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
             <CreditCard className="size-5" />
             Alterar Plano
           </DialogTitle>
-          <DialogDescription>
-            Escolha o novo plano que melhor se adapta às suas necessidades.
-          </DialogDescription>
+          <DialogDescription>Escolha o novo plano que melhor se adapta às suas necessidades.</DialogDescription>
         </DialogHeader>
 
         {success ? (
@@ -211,6 +220,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                 {availablePlans.map((plan) => {
                   const isUpgrade = (PLAN_PRICES[plan.id] ?? 0) > (PLAN_PRICES[currentPlan] ?? 0);
                   return (
+                    // biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally
                     <label
                       key={plan.id}
                       className={`flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-all ${
@@ -219,7 +229,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                           : "border-border hover:border-muted-foreground/50"
                       }`}
                     >
-                      <RadioGroupItem value={plan.id} />
+                      <RadioGroupItem value={plan.id} aria-label={plan.name} />
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{plan.name}</span>
@@ -234,7 +244,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                         </div>
                         <p className="text-muted-foreground text-sm">{plan.description}</p>
                         <p className="mt-1 font-medium text-sm">
-                          R$ {plan.monthlyPrice!.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                          R$ {plan.monthlyPrice?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
                         </p>
                       </div>
                     </label>
@@ -253,7 +263,10 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                     </p>
                     <ul className="flex flex-col gap-1">
                       {benefitsGained.map((benefit) => (
-                        <li key={benefit} className="flex items-start gap-1.5 text-green-700 text-xs dark:text-green-300">
+                        <li
+                          key={benefit}
+                          className="flex items-start gap-1.5 text-green-700 text-xs dark:text-green-300"
+                        >
                           <Check className="mt-0.5 size-3 shrink-0" />
                           {benefit}
                         </li>
@@ -263,12 +276,15 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                 )}
                 {benefitsLost.length > 0 && (
                   <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 dark:border-yellow-800 dark:bg-yellow-950">
-                    <p className="mb-2 font-medium text-yellow-800 text-sm dark:text-yellow-200">
+                    <p className="mb-2 font-medium text-sm text-yellow-800 dark:text-yellow-200">
                       Benefícios Removidos
                     </p>
                     <ul className="flex flex-col gap-1">
                       {benefitsLost.map((benefit) => (
-                        <li key={benefit} className="flex items-start gap-1.5 text-yellow-700 text-xs dark:text-yellow-300">
+                        <li
+                          key={benefit}
+                          className="flex items-start gap-1.5 text-xs text-yellow-700 dark:text-yellow-300"
+                        >
                           <Info className="mt-0.5 size-3 shrink-0" />
                           {benefit}
                         </li>
@@ -284,8 +300,9 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
               <div className="flex flex-col gap-3">
                 <Label className="font-medium">Quando aplicar a alteração?</Label>
                 <RadioGroup value={changeTiming} onValueChange={(v) => setChangeTiming(v as "now" | "period_end")}>
+                  {/* biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally */}
                   <label className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all hover:bg-muted/50">
-                    <RadioGroupItem value="period_end" />
+                    <RadioGroupItem value="period_end" aria-label="Ao final do período atual" />
                     <div>
                       <p className="font-medium text-sm">Ao final do período atual</p>
                       <p className="text-muted-foreground text-xs">
@@ -293,8 +310,9 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                       </p>
                     </div>
                   </label>
+                  {/* biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally */}
                   <label className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all hover:bg-muted/50">
-                    <RadioGroupItem value="now" />
+                    <RadioGroupItem value="now" aria-label="Agora (instantâneo)" />
                     <div className="flex items-center gap-2">
                       <Zap className="size-4 text-orange-500" />
                       <div>
@@ -318,7 +336,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
                   <ArrowRight className="size-4 text-muted-foreground" />
                   <span className="font-medium">{newPlanData.name}</span>
                   <span className="ml-auto font-medium">
-                    R$ {newPlanData.monthlyPrice!.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                    R$ {newPlanData.monthlyPrice?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
                   </span>
                 </div>
                 <p className="mt-2 text-muted-foreground text-xs">

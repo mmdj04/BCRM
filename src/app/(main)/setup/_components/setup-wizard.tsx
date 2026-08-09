@@ -1,16 +1,6 @@
 "use client";
 
-import {
-  Bell,
-  Building2,
-  Check,
-  CheckCircle2,
-  FileCheck,
-  Globe,
-  LayoutDashboard,
-  Sparkles,
-  Users,
-} from "lucide-react";
+import { Bell, Building2, Check, FileCheck, Globe, LayoutDashboard, Sparkles, Users } from "lucide-react";
 
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
@@ -60,7 +50,13 @@ function getVisibleSteps(current: number): VisibleStep[] {
 
   if (current <= 2) {
     for (let i = 0; i <= Math.min(current + 1, total - 1); i++) {
-      result.push({ title: steps[i].title, icon: steps[i].icon, index: i, type: getStepType(i, current), required: steps[i].required });
+      result.push({
+        title: steps[i].title,
+        icon: steps[i].icon,
+        index: i,
+        type: getStepType(i, current),
+        required: steps[i].required,
+      });
     }
     if (current + 2 < total) {
       result.push({ title: "...", icon: Sparkles, index: -1, type: "future" });
@@ -70,14 +66,26 @@ function getVisibleSteps(current: number): VisibleStep[] {
       result.push({ title: "...", icon: Sparkles, index: -1, type: "completed", collapsedCount: current - 1 });
     }
     for (let i = current; i < total; i++) {
-      result.push({ title: steps[i].title, icon: steps[i].icon, index: i, type: getStepType(i, current), required: steps[i].required });
+      result.push({
+        title: steps[i].title,
+        icon: steps[i].icon,
+        index: i,
+        type: getStepType(i, current),
+        required: steps[i].required,
+      });
     }
   } else {
     if (current - 1 > 0) {
       result.push({ title: "...", icon: Sparkles, index: -1, type: "completed", collapsedCount: current - 1 });
     }
     for (let i = current; i <= current + 1; i++) {
-      result.push({ title: steps[i].title, icon: steps[i].icon, index: i, type: getStepType(i, current), required: steps[i].required });
+      result.push({
+        title: steps[i].title,
+        icon: steps[i].icon,
+        index: i,
+        type: getStepType(i, current),
+        required: steps[i].required,
+      });
     }
     if (current + 2 < total) {
       result.push({ title: "...", icon: Sparkles, index: -1, type: "future" });
@@ -97,7 +105,7 @@ function getStepType(index: number, current: number): "completed" | "current" | 
 export function SetupWizard() {
   const { currentStep, setStep } = useSetup();
   const StepComponent = steps[currentStep]?.component || WelcomeStep;
-  const progress = ((currentStep) / (steps.length - 1)) * 100;
+  const progress = (currentStep / (steps.length - 1)) * 100;
   const visibleSteps = getVisibleSteps(currentStep);
 
   return (
@@ -157,22 +165,15 @@ export function SetupWizard() {
                     disabled={step.type === "next" || step.type === "future"}
                     className={cn(
                       "group flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-medium transition-all",
-                      step.type === "completed" &&
-                        "cursor-pointer bg-primary/10 text-primary hover:bg-primary/20",
-                      step.type === "current" &&
-                        "ring-primary/30 bg-primary text-primary-foreground shadow-sm ring-2",
-                      step.type === "next" && "border border-dashed border-muted-foreground/30 bg-muted/50 text-muted-foreground",
+                      step.type === "completed" && "cursor-pointer bg-primary/10 text-primary hover:bg-primary/20",
+                      step.type === "current" && "ring-primary/30 bg-primary text-primary-foreground shadow-sm ring-2",
+                      step.type === "next" &&
+                        "border border-dashed border-muted-foreground/30 bg-muted/50 text-muted-foreground",
                       step.type === "future" && "bg-muted/30 text-muted-foreground/50",
                     )}
                   >
-                    {step.type === "completed" ? (
-                      <Check className="size-3.5" />
-                    ) : (
-                      <Icon className="size-3.5" />
-                    )}
-                    <span className={cn("hidden sm:inline", step.type === "future" && "hidden")}>
-                      {step.title}
-                    </span>
+                    {step.type === "completed" ? <Check className="size-3.5" /> : <Icon className="size-3.5" />}
+                    <span className={cn("hidden sm:inline", step.type === "future" && "hidden")}>{step.title}</span>
                     {step.type === "current" && step.required === true && (
                       <span className="ml-0.5 rounded-full bg-primary-foreground/20 px-1 py-0.5 text-[9px] leading-none">
                         Obrig.

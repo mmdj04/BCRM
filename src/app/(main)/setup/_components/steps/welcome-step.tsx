@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Building2, CheckCircle, CreditCard, Globe, LayoutDashboard, Mail, Users } from "lucide-react";
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSetup } from "@/contexts/setup-context";
@@ -131,9 +126,7 @@ export function WelcomeStep() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-sm">{step.title}</span>
-                        <span className={`rounded px-1.5 py-0.5 font-medium text-xs ${step.tagColor}`}>
-                          {step.tag}
-                        </span>
+                        <span className={`rounded px-1.5 py-0.5 font-medium text-xs ${step.tagColor}`}>{step.tag}</span>
                       </div>
                       <p className="mt-0.5 text-muted-foreground text-xs">{step.description}</p>
                     </div>

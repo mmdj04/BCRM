@@ -38,8 +38,8 @@ export function ProjectStep() {
           Configurações do Projeto
         </CardTitle>
         <CardDescription>
-          Defina as informações do seu projeto BCRM. Todos os campos podem ser alterados depois nas
-          configurações da conta.
+          Defina as informações do seu projeto BCRM. Todos os campos podem ser alterados depois nas configurações da
+          conta.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -57,9 +57,7 @@ export function ProjectStep() {
               value={setupData.project.name}
               onChange={(e) => updateSetupData({ project: { ...setupData.project, name: e.target.value } })}
             />
-            <p className="text-muted-foreground text-xs">
-              Aparece no título do navegador e no menu lateral do painel.
-            </p>
+            <p className="text-muted-foreground text-xs">Aparece no título do navegador e no menu lateral do painel.</p>
           </Field>
 
           <Field className="gap-1.5">
@@ -75,9 +73,7 @@ export function ProjectStep() {
               value={setupData.project.url}
               onChange={(e) => updateSetupData({ project: { ...setupData.project, url: e.target.value } })}
             />
-            <p className="text-muted-foreground text-xs">
-              URL principal onde o painel estará acessível.
-            </p>
+            <p className="text-muted-foreground text-xs">URL principal onde o painel estará acessível.</p>
           </Field>
 
           <Field className="gap-1.5">
@@ -111,9 +107,7 @@ export function ProjectStep() {
               value={setupData.project.logo}
               onChange={(e) => updateSetupData({ project: { ...setupData.project, logo: e.target.value } })}
             />
-            <p className="text-muted-foreground text-xs">
-              Logo que aparece no menu lateral e no cabeçalho do painel.
-            </p>
+            <p className="text-muted-foreground text-xs">Logo que aparece no menu lateral e no cabeçalho do painel.</p>
           </Field>
 
           <Field className="gap-1.5">
@@ -197,14 +191,18 @@ export function ProjectStep() {
         </FieldGroup>
 
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-blue-800 text-sm dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
-          <p>Todos os dados podem ser alterados depois em <strong>Configurações da Conta</strong>.</p>
+          <p>
+            Todos os dados podem ser alterados depois em <strong>Configurações da Conta</strong>.
+          </p>
         </div>
 
         <div className="flex justify-between">
           <Button variant="outline" onClick={() => setStep(1)}>
             Voltar
           </Button>
-          <Button onClick={() => setStep(3)} disabled={!canProceed}>Próximo</Button>
+          <Button onClick={() => setStep(3)} disabled={!canProceed}>
+            Próximo
+          </Button>
         </div>
       </CardContent>
     </Card>

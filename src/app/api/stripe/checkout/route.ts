@@ -2,21 +2,21 @@ import { NextResponse } from "next/server";
 
 import { stripe } from "@/lib/stripe/server";
 
-const PLAN_PRICES = {
-  starter: { monthly: 78990, yearly: 947880 },
-  pro: { monthly: 188990, yearly: 2267880 },
-  team: { monthly: 798990, yearly: 9587880 },
-} as const;
+const PLAN_PRICES: Record<string, number> = {
+  starter: 89990,
+  pro: 229990,
+  team: 899990,
+};
 
 export async function POST(request: Request) {
   try {
-    const { plan, interval = "monthly", email, userId } = await request.json();
+    const { plan, email, userId } = await request.json();
 
     if (!plan || !PLAN_PRICES[plan as keyof typeof PLAN_PRICES]) {
       return NextResponse.json({ error: "Plano inválido" }, { status: 400 });
     }
 
-    const priceAmount = PLAN_PRICES[plan as keyof typeof PLAN_PRICES][interval as "monthly" | "yearly"];
+    const priceAmount = PLAN_PRICES[plan as keyof typeof PLAN_PRICES];
 
     const session = await stripe.checkout.sessions.create({
       customer_email: email,
@@ -27,11 +27,11 @@ export async function POST(request: Request) {
             currency: "brl",
             product_data: {
               name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
-              description: interval === "yearly" ? "Faturamento anual" : "Faturamento mensal",
+              description: "Faturamento mensal",
             },
             unit_amount: priceAmount,
             recurring: {
-              interval: interval as "month" | "year",
+              interval: "month",
             },
           },
           quantity: 1,
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       metadata: {
         userId,
         plan,
-        interval,
+        interval: "monthly",
       },
     });
 
