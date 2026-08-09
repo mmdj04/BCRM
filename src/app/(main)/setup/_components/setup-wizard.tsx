@@ -108,24 +108,10 @@ export function SetupWizard() {
       <div className="w-full max-w-2xl">
         {/* Smart Progress */}
         <div className="mb-8">
-          {/* Progress bar */}
-          <div className="mb-4 flex items-center gap-3">
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-500 ease-out"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <span className="shrink-0 font-medium text-muted-foreground text-xs tabular-nums">
-              {currentStep + 1}/{steps.length}
-            </span>
-          </div>
-
           {/* Adaptive step indicators */}
-          <div className="flex items-center justify-center gap-1 sm:gap-2">
+          <div className="mb-4 flex items-center justify-center gap-1 sm:gap-2">
             {visibleSteps.map((step, i) => {
               const isEllipsis = step.index === -1;
-              const isCurrent = step.type === "current";
 
               if (isEllipsis) {
                 return (
@@ -206,25 +192,17 @@ export function SetupWizard() {
             })}
           </div>
 
-          {/* Dot overview */}
-          <div className="mt-3 flex items-center justify-center gap-1.5">
-            {steps.map((step, i) => (
-              <button
-                key={step.title}
-                type="button"
-                onClick={() => {
-                  if (i <= currentStep) setStep(i);
-                }}
-                disabled={i > currentStep}
-                className={cn(
-                  "size-1.5 rounded-full transition-all",
-                  i < currentStep && "cursor-pointer bg-primary/40 hover:bg-primary/60",
-                  i === currentStep && "size-2 bg-primary",
-                  i > currentStep && "bg-muted",
-                )}
-                aria-label={step.title}
+          {/* Progress bar */}
+          <div className="flex items-center gap-3">
+            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
               />
-            ))}
+            </div>
+            <span className="shrink-0 font-medium text-muted-foreground text-xs tabular-nums">
+              {currentStep + 1}/{steps.length}
+            </span>
           </div>
         </div>
 

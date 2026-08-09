@@ -15,9 +15,6 @@ import {
   X,
 } from "lucide-react";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { PaymentForm } from "@/components/payment-form";
 import { StripeElementsProvider } from "@/components/stripe-provider";
 
@@ -128,16 +125,13 @@ const notificationLabels: Record<string, string> = {
 
 export function SummaryStep() {
   const { setupData, setStep, completeSetup } = useSetup();
-  const { user } = useAuth();
+  const { user, isDemo } = useAuth();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loadingPaymentIntent, setLoadingPaymentIntent] = useState(false);
-  const [isBusiness, setIsBusiness] = useState(false);
-  const [companyName, setCompanyName] = useState("");
-  const [cnpj, setCnpj] = useState("");
 
   const enabledModules = Object.entries(setupData.modules)
     .filter(([_, v]) => v)
@@ -158,6 +152,12 @@ export function SummaryStep() {
   const selectedPlanData = plans.find((p) => p.id === selectedPlan);
 
   const openPaymentDialog = async () => {
+    // Demo mode: skip Stripe entirely, mark payment as complete
+    if (isDemo) {
+      setPaymentComplete(true);
+      return;
+    }
+
     if (!user?.id || !user?.email) {
       window.location.href = "/auth/v1/login";
       return;
@@ -173,9 +173,6 @@ export function SummaryStep() {
           interval: "monthly",
           userId: user.id,
           email: user.email,
-          isBusiness,
-          companyName: isBusiness ? companyName : undefined,
-          cnpj: isBusiness ? cnpj : undefined,
         }),
       });
       const data = await res.json();
@@ -576,64 +573,27 @@ export function SummaryStep() {
             </div>
           </div>
 
-          {/* Toggle empresa */}
-          <div className="rounded-xl border p-4">
-            <div className="flex items-center gap-3">
-              <Checkbox
-                id="is-business"
-                checked={isBusiness}
-                onCheckedChange={(checked) => setIsBusiness(checked === true)}
-              />
-              <Label htmlFor="is-business" className="cursor-pointer font-medium text-sm">
-                Estou comprando como empresa
-              </Label>
-            </div>
-            {isBusiness && (
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="company-name" className="text-xs">
-                    Nome da Empresa
-                  </Label>
-                  <Input
-                    id="company-name"
-                    placeholder="Ex: Moraes Tecnologia LTDA"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                  />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="cnpj" className="text-xs">
-                    CNPJ
-                  </Label>
-                  <Input
-                    id="cnpj"
-                    placeholder="00.000.000/0001-00"
-                    value={cnpj}
-                    onChange={(e) => setCnpj(e.target.value)}
-                    maxLength={18}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
           {/* Botão de Pagamento */}
           {!paymentComplete ? (
             <div className="mt-2">
               <Button onClick={openPaymentDialog} size="lg" className="w-full" disabled={loadingPaymentIntent}>
                 <CreditCard className="mr-2 size-4" />
-                {loadingPaymentIntent
-                  ? "Preparando pagamento..."
-                  : `Confirmar Plano ${selectedPlanData?.name} (${selectedPlanData?.price}${selectedPlanData?.period})`}
+                {isDemo
+                  ? `Selecionar Plano ${selectedPlanData?.name} (Demo)`
+                  : loadingPaymentIntent
+                    ? "Preparando pagamento..."
+                    : `Confirmar Plano ${selectedPlanData?.name} (${selectedPlanData?.price}${selectedPlanData?.period})`}
               </Button>
             </div>
           ) : (
             <div className="mt-4 flex flex-col items-center gap-3 rounded-xl border border-green-200 bg-green-50 p-6 dark:border-green-800 dark:bg-green-950">
               <CheckCircle2 className="size-12 text-green-600" />
               <div className="text-center">
-                <p className="font-semibold text-green-800 text-lg dark:text-green-200">Pagamento Aprovado!</p>
+                <p className="font-semibold text-green-800 text-lg dark:text-green-200">
+                  {isDemo ? "Plano Selecionado!" : "Pagamento Aprovado!"}
+                </p>
                 <p className="text-green-700 text-sm dark:text-green-300">
-                  Plano {selectedPlanData?.name} ativado com sucesso.
+                  Plano {selectedPlanData?.name} {isDemo ? "selecionado" : "ativado com sucesso"}.
                 </p>
               </div>
             </div>
@@ -677,13 +637,6 @@ export function SummaryStep() {
                   <span className="font-medium text-sm">Total</span>
                   <span className="font-bold text-lg">{selectedPlanData?.price}<span className="font-normal text-muted-foreground text-sm">/mês</span></span>
                 </div>
-                {isBusiness && companyName && (
-                  <div className="border-t pt-2">
-                    <p className="text-muted-foreground text-xs">Empresa</p>
-                    <p className="font-medium text-sm">{companyName}</p>
-                    {cnpj && <p className="text-muted-foreground text-xs">{cnpj}</p>}
-                  </div>
-                )}
               </div>
 
               {/* Formulário de pagamento */}
@@ -712,11 +665,6 @@ export function SummaryStep() {
                   <span className="text-muted-foreground text-sm">Total</span>
                   <span className="font-bold text-lg">{selectedPlanData?.price}/mês</span>
                 </div>
-                {isBusiness && companyName && (
-                  <div className="border-t pt-2">
-                    <p className="text-muted-foreground text-xs">Empresa: {companyName}</p>
-                  </div>
-                )}
               </div>
 
               {/* Formulário de pagamento */}
