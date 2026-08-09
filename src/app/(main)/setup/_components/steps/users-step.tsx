@@ -59,7 +59,12 @@ export function UsersStep() {
           <FieldGroup className="gap-3">
             <div className="grid grid-cols-2 gap-3">
               <Field className="gap-1.5">
-                <FieldLabel htmlFor="user-name">Nome</FieldLabel>
+                <FieldLabel htmlFor="user-name">
+                  Nome
+                  <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                    Obrigatório
+                  </span>
+                </FieldLabel>
                 <Input
                   id="user-name"
                   placeholder="Nome do usuário"
@@ -68,7 +73,12 @@ export function UsersStep() {
                 />
               </Field>
               <Field className="gap-1.5">
-                <FieldLabel htmlFor="user-email">E-mail</FieldLabel>
+                <FieldLabel htmlFor="user-email">
+                  E-mail
+                  <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                    Obrigatório
+                  </span>
+                </FieldLabel>
                 <Input
                   id="user-email"
                   type="email"
@@ -80,7 +90,12 @@ export function UsersStep() {
             </div>
             <div className="flex items-end gap-3">
               <Field className="flex-1 gap-1.5">
-                <FieldLabel htmlFor="user-role">Função</FieldLabel>
+                <FieldLabel htmlFor="user-role">
+                  Função
+                  <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                    Opcional
+                  </span>
+                </FieldLabel>
                 <select
                   id="user-role"
                   value={newRole}

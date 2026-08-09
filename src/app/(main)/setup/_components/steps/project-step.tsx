@@ -25,7 +25,12 @@ export function ProjectStep() {
       <CardContent className="flex flex-col gap-4">
         <FieldGroup className="gap-4">
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="project-name">Nome do Projeto *</FieldLabel>
+            <FieldLabel htmlFor="project-name">
+              Nome do Projeto
+              <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                Obrigatório
+              </span>
+            </FieldLabel>
             <Input
               id="project-name"
               placeholder="BCRM"
@@ -34,7 +39,12 @@ export function ProjectStep() {
             />
           </Field>
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="project-url">URL do Projeto</FieldLabel>
+            <FieldLabel htmlFor="project-url">
+              URL do Projeto
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                Opcional
+              </span>
+            </FieldLabel>
             <Input
               id="project-url"
               placeholder="https://bcrm.vercel.app"
@@ -43,7 +53,12 @@ export function ProjectStep() {
             />
           </Field>
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="project-logo">URL do Logo</FieldLabel>
+            <FieldLabel htmlFor="project-logo">
+              URL do Logo
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                Opcional
+              </span>
+            </FieldLabel>
             <Input
               id="project-logo"
               placeholder="https://exemplo.com/logo.png"
@@ -52,7 +67,12 @@ export function ProjectStep() {
             />
           </Field>
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="project-description">Descrição do Projeto</FieldLabel>
+            <FieldLabel htmlFor="project-description">
+              Descrição do Projeto
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                Opcional
+              </span>
+            </FieldLabel>
             <Textarea
               id="project-description"
               placeholder="Descreva o objetivo do seu projeto..."

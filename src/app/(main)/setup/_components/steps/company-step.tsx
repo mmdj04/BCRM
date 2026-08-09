@@ -25,7 +25,12 @@ export function CompanyStep() {
       <CardContent className="flex flex-col gap-4">
         <FieldGroup className="gap-4">
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="company-name">Nome da Empresa *</FieldLabel>
+            <FieldLabel htmlFor="company-name">
+              Nome da Empresa
+              <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                Obrigatório
+              </span>
+            </FieldLabel>
             <Input
               id="company-name"
               placeholder="Minha Empresa LTDA"
@@ -34,7 +39,12 @@ export function CompanyStep() {
             />
           </Field>
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="company-cnpj">CNPJ</FieldLabel>
+            <FieldLabel htmlFor="company-cnpj">
+              CNPJ
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                Opcional
+              </span>
+            </FieldLabel>
             <Input
               id="company-cnpj"
               placeholder="00.000.000/0001-00"
@@ -43,7 +53,12 @@ export function CompanyStep() {
             />
           </Field>
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="company-description">Descrição</FieldLabel>
+            <FieldLabel htmlFor="company-description">
+              Descrição
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                Opcional
+              </span>
+            </FieldLabel>
             <Textarea
               id="company-description"
               placeholder="Descreva brevemente sua empresa..."
@@ -54,7 +69,12 @@ export function CompanyStep() {
           </Field>
           <div className="grid grid-cols-2 gap-4">
             <Field className="gap-1.5">
-              <FieldLabel htmlFor="company-city">Cidade</FieldLabel>
+              <FieldLabel htmlFor="company-city">
+                Cidade
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                  Opcional
+                </span>
+              </FieldLabel>
               <Input
                 id="company-city"
                 placeholder="Nova Iguaçu"
@@ -63,7 +83,12 @@ export function CompanyStep() {
               />
             </Field>
             <Field className="gap-1.5">
-              <FieldLabel htmlFor="company-state">Estado</FieldLabel>
+              <FieldLabel htmlFor="company-state">
+                Estado
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                  Opcional
+                </span>
+              </FieldLabel>
               <Input
                 id="company-state"
                 placeholder="RJ"
@@ -73,7 +98,12 @@ export function CompanyStep() {
             </Field>
           </div>
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="company-address">Endereço</FieldLabel>
+            <FieldLabel htmlFor="company-address">
+              Endereço
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                Opcional
+              </span>
+            </FieldLabel>
             <Input
               id="company-address"
               placeholder="Rua Exemplo, 123 - Centro"
@@ -83,7 +113,12 @@ export function CompanyStep() {
           </Field>
           <div className="grid grid-cols-2 gap-4">
             <Field className="gap-1.5">
-              <FieldLabel htmlFor="company-phone">Telefone</FieldLabel>
+              <FieldLabel htmlFor="company-phone">
+                Telefone
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                  Opcional
+                </span>
+              </FieldLabel>
               <Input
                 id="company-phone"
                 placeholder="(21) 99999-9999"
@@ -92,7 +127,12 @@ export function CompanyStep() {
               />
             </Field>
             <Field className="gap-1.5">
-              <FieldLabel htmlFor="company-email">E-mail</FieldLabel>
+              <FieldLabel htmlFor="company-email">
+                E-mail
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                  Opcional
+                </span>
+              </FieldLabel>
               <Input
                 id="company-email"
                 type="email"
