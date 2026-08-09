@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { DEMO_CONFIG } from "@/config/demo-config";
 
@@ -120,8 +120,10 @@ export function SetupProvider({ children, userId, isDemo = false }: { children: 
   const [setupData, setSetupData] = useState<SetupData>(defaultSetupData);
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const completedRef = useRef(false);
 
   useEffect(() => {
+    if (completedRef.current) return;
     // Demo users NEVER have setup complete - always show wizard
     if (isDemo) {
       setIsSetupComplete(false);
@@ -144,6 +146,7 @@ export function SetupProvider({ children, userId, isDemo = false }: { children: 
   }, []);
 
   const completeSetup = useCallback(() => {
+    completedRef.current = true;
     // Demo users: don't persist to localStorage (always show wizard next time)
     if (!isDemo) {
       localStorage.setItem(getSetupStorageKey(userId), "true");
