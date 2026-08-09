@@ -115,19 +115,25 @@ function getSetupStorageKey(userId: string): string {
   return `bcrm_setup_complete_${userId}`;
 }
 
-export function SetupProvider({ children, userId }: { children: React.ReactNode; userId: string }) {
+export function SetupProvider({ children, userId, isDemo = false }: { children: React.ReactNode; userId: string; isDemo?: boolean }) {
   const [isSetupComplete, setIsSetupComplete] = useState(false);
   const [setupData, setSetupData] = useState<SetupData>(defaultSetupData);
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Demo users NEVER have setup complete - always show wizard
+    if (isDemo) {
+      setIsSetupComplete(false);
+      setIsLoading(false);
+      return;
+    }
     const stored = localStorage.getItem(getSetupStorageKey(userId));
     if (stored === "true") {
       setIsSetupComplete(true);
     }
     setIsLoading(false);
-  }, [userId]);
+  }, [userId, isDemo]);
 
   const setStep = useCallback((step: number) => {
     setCurrentStep(step);
@@ -138,9 +144,12 @@ export function SetupProvider({ children, userId }: { children: React.ReactNode;
   }, []);
 
   const completeSetup = useCallback(() => {
-    localStorage.setItem(getSetupStorageKey(userId), "true");
+    // Demo users: don't persist to localStorage (always show wizard next time)
+    if (!isDemo) {
+      localStorage.setItem(getSetupStorageKey(userId), "true");
+    }
     setIsSetupComplete(true);
-  }, [userId]);
+  }, [userId, isDemo]);
 
   const resetSetup = useCallback(() => {
     localStorage.removeItem(getSetupStorageKey(userId));

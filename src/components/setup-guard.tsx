@@ -5,10 +5,6 @@ import { useEffect, useState } from "react";
 
 import { useAuth } from "@/lib/supabase/auth-context";
 
-function getSetupStorageKey(userId: string): string {
-  return `bcrm_setup_complete_${userId}`;
-}
-
 export function SetupGuard({ children }: { children: React.ReactNode }) {
   const { user, isDemo, loading } = useAuth();
   const router = useRouter();
@@ -22,8 +18,15 @@ export function SetupGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const userId = user.id || "demo-user-001";
-    const stored = localStorage.getItem(getSetupStorageKey(userId));
+    // Demo users ALWAYS see the setup wizard
+    if (isDemo) {
+      router.push("/setup");
+      return;
+    }
+
+    // Real users: check localStorage
+    const userId = user.id;
+    const stored = localStorage.getItem(`bcrm_setup_complete_${userId}`);
 
     if (stored !== "true") {
       router.push("/setup");
@@ -31,7 +34,7 @@ export function SetupGuard({ children }: { children: React.ReactNode }) {
     }
 
     setChecked(true);
-  }, [user, loading, router]);
+  }, [user, isDemo, loading, router]);
 
   if (loading || !checked) {
     return (

@@ -39,7 +39,7 @@ export default function SetupPage() {
 }
 
 function SetupPageInner() {
-  const { user, loading } = useAuth();
+  const { user, isDemo, loading } = useAuth();
 
   if (loading) {
     return (
@@ -55,7 +55,7 @@ function SetupPageInner() {
   }
 
   return (
-    <SetupProvider userId={user.id || "demo-user-001"}>
+    <SetupProvider userId={user.id || "demo-user-001"} isDemo={isDemo}>
       <SetupContent />
     </SetupProvider>
   );
