@@ -4,6 +4,7 @@ import { Command } from "lucide-react";
 
 import { LoginForm } from "../../_components/login-form";
 import { GoogleButton } from "../../_components/social-auth/google-button";
+import { SSOButton } from "../../_components/social-auth/sso-button";
 
 export default function LoginV1() {
   return (
@@ -31,6 +32,7 @@ export default function LoginV1() {
           <div className="space-y-4">
             <LoginForm />
             <GoogleButton className="w-full" variant="outline" />
+            <SSOButton className="w-full" />
             <p className="text-center text-muted-foreground text-xs">
               Não tem uma conta?{" "}
               <Link prefetch={false} href="register" className="text-primary">
