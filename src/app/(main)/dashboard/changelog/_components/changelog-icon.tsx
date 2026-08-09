@@ -1,21 +1,25 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 type ChangelogIconType = "feature" | "fix" | "maintenance";
 
 const iconConfig: Record<
   ChangelogIconType,
-  { color: string; label: string }
+  { src: string; alt: string; label: string }
 > = {
   feature: {
-    color: "bg-blue-500",
+    src: "/changelog/new-releases.svg",
+    alt: "Novo recurso",
     label: "Funcionalidade",
   },
   fix: {
-    color: "bg-green-500",
+    src: "/changelog/improvements.svg",
+    alt: "Melhoria",
     label: "Correção",
   },
   maintenance: {
-    color: "bg-red-500",
+    src: "/changelog/deprecations.svg",
+    alt: "Manutenção",
     label: "Manutenção",
   },
 };
@@ -30,9 +34,12 @@ export function ChangelogIcon({
   const config = iconConfig[type];
 
   return (
-    <span
-      className={cn("inline-block size-2.5 shrink-0 rounded-full", config.color, className)}
-      aria-label={config.label}
+    <Image
+      src={config.src}
+      alt={config.alt}
+      width={32}
+      height={32}
+      className={cn("shrink-0 rounded-md", className)}
     />
   );
 }
