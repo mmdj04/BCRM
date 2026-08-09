@@ -1,6 +1,6 @@
 # Modelo de Admin Next.js com TypeScript & Shadcn UI
 
-**Studio Admin** - Inclui múltiplos dashboards, layouts de autenticação, presets de tema personalizáveis e mais.
+**BCRM** - Inclui múltiplos dashboards, layouts de autenticação, presets de tema personalizáveis e mais.
 
 <img src="https://github.com/arhamkhnz/next-shadcn-admin-dashboard/blob/main/media/dashboard.png?version=5" alt="Screenshot do Dashboard">
 

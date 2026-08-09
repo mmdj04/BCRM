@@ -2,7 +2,7 @@
 
 ## Visão geral do projeto
 
-Studio Admin é um painel de administrador responsivo construído com Next.js 16, React 19, TypeScript, Tailwind CSS v4 e shadcn/ui.
+BCRM é um painel de administrador responsivo construído com Next.js 16, React 19, TypeScript, Tailwind CSS v4 e shadcn/ui.
 
 Este repositório usa o estilo `radix-nova` do shadcn. O CLI do shadcn reporta `base: "radix"`, que se refere ao Radix UI. Sempre inspecione os componentes locais em `src/components/ui/` porque wrappers individuais podem usar primitivos diferentes.
 
