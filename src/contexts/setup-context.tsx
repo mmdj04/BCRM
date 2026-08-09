@@ -66,6 +66,11 @@ export interface SetupData {
   teams: {
     name: string;
     description: string;
+    color: string;
+  }[];
+  customRoles: {
+    name: string;
+    description: string;
   }[];
   notifications: {
     email: boolean;
@@ -130,6 +135,7 @@ const defaultSetupData: SetupData = {
   },
   users: [],
   teams: [],
+  customRoles: [],
   notifications: {
     email: true,
     whatsapp: false,
