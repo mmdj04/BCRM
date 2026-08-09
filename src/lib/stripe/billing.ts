@@ -60,6 +60,12 @@ export async function createCheckoutSessionElements(
       },
     ],
     return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`,
+    tax_id_collection: { enabled: true },
+    billing_address_collection: "required",
+    customer_update: {
+      name: "auto",
+      address: "auto",
+    },
     metadata: {
       userId,
       plan,
