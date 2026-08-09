@@ -10,7 +10,6 @@ import {
   Check,
   CheckCircle2,
   CreditCard,
-  FileText,
   Globe,
   LayoutDashboard,
   Shield,
@@ -63,7 +62,7 @@ const moduleLabels: Record<string, string> = {
 };
 
 const paymentLabels: Record<string, string> = {
-  stripe: "Stripe",
+  stripe: "Stripe (Cartão, PIX, Google Pay)",
   pix: "PIX",
   boleto: "Boleto Bancário",
   creditCard: "Cartão de Crédito (Brasil)",
@@ -117,20 +116,6 @@ const plans = [
     ],
   },
 ];
-
-function PixIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00BFA5" />
-      <path d="M2 17L12 22L22 17" stroke="#00BFA5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M2 12L12 17L22 12" stroke="#00BFA5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function BoletoIcon({ className }: { className?: string }) {
-  return <FileText className={className} />;
-}
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "");
 
@@ -198,9 +183,7 @@ export function SummaryStep() {
   const { setupData, setStep, completeSetup } = useSetup();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
-  const [paymentMethod, setPaymentMethod] = useState<string>("card");
-  const [processing, setProcessing] = useState(false);
-  const [paymentComplete, setPaymentComplete] = useState(false);
+  const [paymentComplete, _setPaymentComplete] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loadingPaymentIntent, setLoadingPaymentIntent] = useState(false);
@@ -225,7 +208,7 @@ export function SummaryStep() {
 
   const openPaymentDialog = async () => {
     setPaymentDialogOpen(true);
-    if (paymentMethod === "card" && !clientSecret) {
+    if (!clientSecret) {
       setLoadingPaymentIntent(true);
       try {
         const res = await fetch("/api/stripe/create-payment-intent", {
@@ -242,16 +225,6 @@ export function SummaryStep() {
       } finally {
         setLoadingPaymentIntent(false);
       }
-    }
-  };
-
-  const handlePayment = async () => {
-    if (paymentMethod !== "card") {
-      setProcessing(true);
-      await new Promise((f) => setTimeout(f, 2000));
-      setProcessing(false);
-      setPaymentComplete(true);
-      setPaymentDialogOpen(false);
     }
   };
 
@@ -663,130 +636,28 @@ export function SummaryStep() {
             <div className="flex min-h-0 flex-1 flex-row gap-0 overflow-hidden">
               {/* Lado Esquerdo: Formulário de Pagamento */}
               <div className="min-w-0 flex-1 overflow-y-auto px-6 pb-6">
-                {/* Método de pagamento */}
-                <div className="mb-5">
-                  <p className="mb-2 font-medium text-sm">Método de Pagamento</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { id: "card", label: "Cartão", icon: CreditCard },
-                      { id: "pix", label: "PIX", icon: PixIcon },
-                      { id: "boleto", label: "Boleto", icon: BoletoIcon },
-                      { id: "transfer", label: "Transferência", icon: Banknote },
-                    ].map((m) => (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => setPaymentMethod(m.id)}
-                        className={`flex items-center gap-2 rounded-lg border-2 p-3 text-xs transition-all ${
-                          paymentMethod === m.id
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-muted-foreground/50"
-                        }`}
-                      >
-                        <m.icon className="size-4 text-muted-foreground" />
-                        <span className="font-medium">{m.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {paymentMethod === "card" &&
-                  (loadingPaymentIntent ? (
-                    <div className="flex items-center justify-center py-12">
-                      <div className="text-center">
-                        <div className="mb-3 inline-block size-8 animate-spin rounded-full border-4 border-current border-t-transparent text-primary" />
-                        <p className="text-muted-foreground text-sm">Preparando formulário de pagamento...</p>
-                      </div>
-                    </div>
-                  ) : clientSecret ? (
-                    <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>
-                      <PaymentForm
-                        planPrice={selectedPlanData?.price ?? ""}
-                        planPeriod={selectedPlanData?.period ?? ""}
-                        onCancel={() => setPaymentDialogOpen(false)}
-                      />
-                    </Elements>
-                  ) : (
-                    <div className="flex flex-col items-center gap-2 py-8 text-center">
-                      <p className="text-muted-foreground text-sm">
-                        Não foi possível carregar o formulário de pagamento.
-                      </p>
-                      <Button variant="outline" size="sm" onClick={openPaymentDialog}>
-                        Tentar novamente
-                      </Button>
-                    </div>
-                  ))}
-
-                {paymentMethod === "pix" && (
-                  <div className="flex flex-col items-center gap-4 py-6">
-                    <div className="flex size-40 items-center justify-center rounded-lg border bg-white p-2">
-                      <div className="size-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0id2hpdGUiLz48dGV4dCB4PSI2MCIgeT0iNjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UVIgQ09ERSA8L3RleHQ+PC9zdmc+')] bg-center bg-contain bg-no-repeat" />
-                    </div>
+                {loadingPaymentIntent ? (
+                  <div className="flex items-center justify-center py-12">
                     <div className="text-center">
-                      <p className="font-medium text-sm">PIX - Pagamento Instantâneo</p>
-                      <p className="mt-1 text-muted-foreground text-xs">Escaneie o QR Code ou copie o código abaixo</p>
-                      <p className="mt-2 max-w-xs break-all rounded bg-muted p-2 font-mono text-xs">
-                        00020126580014BR.GOV.BCB.PIX0136bcrm-replace-with-real-key52040000530398654040.015802BR5913BCRM
-                        TECNOLOGIA6009SAO PAULO62070503***6304ABCD
-                      </p>
+                      <div className="mb-3 inline-block size-8 animate-spin rounded-full border-4 border-current border-t-transparent text-primary" />
+                      <p className="text-muted-foreground text-sm">Preparando formulário de pagamento...</p>
                     </div>
                   </div>
-                )}
-
-                {paymentMethod === "boleto" && (
-                  <div className="flex flex-col items-center gap-4 py-6">
-                    <div className="text-center">
-                      <p className="font-medium text-sm">Boleto Bancário</p>
-                      <p className="mt-1 text-muted-foreground text-xs">
-                        O boleto será gerado após a confirmação. Prazo de até 3 dias úteis para compensação.
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {paymentMethod === "transfer" && (
-                  <div className="flex flex-col gap-4 py-6">
-                    <div className="text-center">
-                      <p className="font-medium text-sm">Transferência Bancária (TED/DOC)</p>
-                      <p className="mt-1 text-muted-foreground text-xs">
-                        Os dados bancários serão exibidos após a confirmação.
-                      </p>
-                    </div>
-                    <div className="rounded-lg border p-3 text-sm">
-                      <p>
-                        <strong>Banco:</strong> 001 - Banco do Brasil
-                      </p>
-                      <p>
-                        <strong>Agência:</strong> 0000-0
-                      </p>
-                      <p>
-                        <strong>Conta:</strong> 00000-0
-                      </p>
-                      <p>
-                        <strong>CNPJ:</strong> 00.000.000/0001-00
-                      </p>
-                      <p>
-                        <strong>Favorecido:</strong> BCRM Tecnologia Ltda
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {paymentMethod !== "card" && (
-                  <div className="mt-4 flex gap-3">
-                    <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="flex-1">
-                      Cancelar
-                    </Button>
-                    <Button onClick={handlePayment} disabled={processing} className="flex-1">
-                      {processing ? (
-                        <>Processando...</>
-                      ) : (
-                        <>
-                          <Wallet className="mr-2 size-4" />
-                          Pagar {selectedPlanData?.price}
-                          {selectedPlanData?.period}
-                        </>
-                      )}
+                ) : clientSecret ? (
+                  <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>
+                    <PaymentForm
+                      planPrice={selectedPlanData?.price ?? ""}
+                      planPeriod={selectedPlanData?.period ?? ""}
+                      onCancel={() => setPaymentDialogOpen(false)}
+                    />
+                  </Elements>
+                ) : (
+                  <div className="flex flex-col items-center gap-2 py-8 text-center">
+                    <p className="text-muted-foreground text-sm">
+                      Não foi possível carregar o formulário de pagamento.
+                    </p>
+                    <Button variant="outline" size="sm" onClick={openPaymentDialog}>
+                      Tentar novamente
                     </Button>
                   </div>
                 )}
@@ -899,129 +770,28 @@ export function SummaryStep() {
 
               {/* Formulário de Pagamento (scrollável no mobile) */}
               <div className="flex-1 overflow-y-auto px-6 py-4">
-                <div className="mb-5">
-                  <p className="mb-2 font-medium text-sm">Método de Pagamento</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { id: "card", label: "Cartão", icon: CreditCard },
-                      { id: "pix", label: "PIX", icon: PixIcon },
-                      { id: "boleto", label: "Boleto", icon: BoletoIcon },
-                      { id: "transfer", label: "Transferência", icon: Banknote },
-                    ].map((m) => (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => setPaymentMethod(m.id)}
-                        className={`flex items-center gap-2 rounded-lg border-2 p-3 text-xs transition-all ${
-                          paymentMethod === m.id
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-muted-foreground/50"
-                        }`}
-                      >
-                        <m.icon className="size-4 text-muted-foreground" />
-                        <span className="font-medium">{m.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {paymentMethod === "card" &&
-                  (loadingPaymentIntent ? (
-                    <div className="flex items-center justify-center py-12">
-                      <div className="text-center">
-                        <div className="mb-3 inline-block size-8 animate-spin rounded-full border-4 border-current border-t-transparent text-primary" />
-                        <p className="text-muted-foreground text-sm">Preparando formulário de pagamento...</p>
-                      </div>
-                    </div>
-                  ) : clientSecret ? (
-                    <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>
-                      <PaymentForm
-                        planPrice={selectedPlanData?.price ?? ""}
-                        planPeriod={selectedPlanData?.period ?? ""}
-                        onCancel={() => setPaymentDialogOpen(false)}
-                      />
-                    </Elements>
-                  ) : (
-                    <div className="flex flex-col items-center gap-2 py-8 text-center">
-                      <p className="text-muted-foreground text-sm">
-                        Não foi possível carregar o formulário de pagamento.
-                      </p>
-                      <Button variant="outline" size="sm" onClick={openPaymentDialog}>
-                        Tentar novamente
-                      </Button>
-                    </div>
-                  ))}
-
-                {paymentMethod === "pix" && (
-                  <div className="flex flex-col items-center gap-4 py-6">
-                    <div className="flex size-40 items-center justify-center rounded-lg border bg-white p-2">
-                      <div className="size-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0id2hpdGUiLz48dGV4dCB4PSI2MCIgeT0iNjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UVIgQ09ERSA8L3RleHQ+PC9zdmc+')] bg-center bg-contain bg-no-repeat" />
-                    </div>
+                {loadingPaymentIntent ? (
+                  <div className="flex items-center justify-center py-12">
                     <div className="text-center">
-                      <p className="font-medium text-sm">PIX - Pagamento Instantâneo</p>
-                      <p className="mt-1 text-muted-foreground text-xs">Escaneie o QR Code ou copie o código abaixo</p>
-                      <p className="mt-2 max-w-xs break-all rounded bg-muted p-2 font-mono text-xs">
-                        00020126580014BR.GOV.BCB.PIX0136bcrm-replace-with-real-key52040000530398654040.015802BR5913BCRM
-                        TECNOLOGIA6009SAO PAULO62070503***6304ABCD
-                      </p>
+                      <div className="mb-3 inline-block size-8 animate-spin rounded-full border-4 border-current border-t-transparent text-primary" />
+                      <p className="text-muted-foreground text-sm">Preparando formulário de pagamento...</p>
                     </div>
                   </div>
-                )}
-
-                {paymentMethod === "boleto" && (
-                  <div className="flex flex-col items-center gap-4 py-6">
-                    <div className="text-center">
-                      <p className="font-medium text-sm">Boleto Bancário</p>
-                      <p className="mt-1 text-muted-foreground text-xs">
-                        O boleto será gerado após a confirmação. Prazo de até 3 dias úteis para compensação.
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {paymentMethod === "transfer" && (
-                  <div className="flex flex-col gap-4 py-6">
-                    <div className="text-center">
-                      <p className="font-medium text-sm">Transferência Bancária (TED/DOC)</p>
-                      <p className="mt-1 text-muted-foreground text-xs">
-                        Os dados bancários serão exibidos após a confirmação.
-                      </p>
-                    </div>
-                    <div className="rounded-lg border p-3 text-sm">
-                      <p>
-                        <strong>Banco:</strong> 001 - Banco do Brasil
-                      </p>
-                      <p>
-                        <strong>Agência:</strong> 0000-0
-                      </p>
-                      <p>
-                        <strong>Conta:</strong> 00000-0
-                      </p>
-                      <p>
-                        <strong>CNPJ:</strong> 00.000.000/0001-00
-                      </p>
-                      <p>
-                        <strong>Favorecido:</strong> BCRM Tecnologia Ltda
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {paymentMethod !== "card" && (
-                  <div className="mt-4 flex gap-3">
-                    <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="flex-1">
-                      Cancelar
-                    </Button>
-                    <Button onClick={handlePayment} disabled={processing} className="flex-1">
-                      {processing ? (
-                        <>Processando...</>
-                      ) : (
-                        <>
-                          <Wallet className="mr-2 size-4" />
-                          Pagar {selectedPlanData?.price}
-                          {selectedPlanData?.period}
-                        </>
-                      )}
+                ) : clientSecret ? (
+                  <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>
+                    <PaymentForm
+                      planPrice={selectedPlanData?.price ?? ""}
+                      planPeriod={selectedPlanData?.period ?? ""}
+                      onCancel={() => setPaymentDialogOpen(false)}
+                    />
+                  </Elements>
+                ) : (
+                  <div className="flex flex-col items-center gap-2 py-8 text-center">
+                    <p className="text-muted-foreground text-sm">
+                      Não foi possível carregar o formulário de pagamento.
+                    </p>
+                    <Button variant="outline" size="sm" onClick={openPaymentDialog}>
+                      Tentar novamente
                     </Button>
                   </div>
                 )}
