@@ -14,7 +14,9 @@
     "generate:presets": "ts-node -P tsconfig.scripts.json src/scripts/generate-theme-presets.ts"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": ["biome check --write --no-errors-on-unmatched"]
+    "*.{js,ts,jsx,tsx}": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -24,6 +26,7 @@
     "@fullcalendar/react": "^7.0.2",
     "@hookform/resolvers": "^5.7.1",
     "@shadcn/react": "^0.3.0",
+    "@stripe/react-stripe-js": "^6.8.0",
     "@stripe/stripe-js": "^9.13.0",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.2",
