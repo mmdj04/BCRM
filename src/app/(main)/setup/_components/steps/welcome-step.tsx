@@ -22,8 +22,11 @@ const steps = [
     details: [
       "Nome da empresa é obrigatório para identificação no sistema",
       "CNPJ é opcional, mas necessário para emissão de notas fiscais",
+      "Website, logo e setor/indústria personalizam a experiência",
       "Cidade e Estado ajudam a personalizar configurações regionais",
-      "Telefone e e-mail são usados para contato e notificações",
+      "Telefone e e-mail corporativo são usados para contato e notificações",
+      "Fuso horário afeta relatórios e agendamentos",
+      "Todos os dados podem ser alterados depois em Configurações da Conta",
     ],
   },
   {
@@ -35,8 +38,10 @@ const steps = [
     details: [
       "Nome do projeto aparece no título do navegador e no menu lateral",
       "URL do projeto é usada para links internos e compartilhamento",
+      "Domínio personalizado permite acesso via seu próprio domínio",
       "Logo personaliza a aparência do painel com a identidade visual da sua marca",
-      "Descrição ajuda a documentar o propósito do projeto para a equipe",
+      "Idioma, tema e modo podem ser ajustados conforme a preferência da equipe",
+      "Todos os dados podem ser alterados depois em Configurações da Conta",
     ],
   },
   {
@@ -71,12 +76,14 @@ const steps = [
     title: "Gestão de Usuários",
     tag: "Opcional",
     tagColor: "text-amber-600 bg-amber-50",
-    description: "Convide membros da equipe para acessar o painel.",
+    description: "Convide membros da equipe, crie equipes e migre dados.",
     details: [
-      "Adicione usuários com nome, e-mail e função definida",
+      "Adicione usuários com nome, e-mail, função e equipe",
       "Cada função determina o nível de acesso e permissões",
-      "Administradores têm acesso total ao sistema",
-      "Você pode convidar mais usuários depois nas configurações",
+      "Crie equipes personalizadas para organizar os membros",
+      "Importe dados de outros sistemas (CSV, Google, Azure AD, Okta)",
+      "Faça merge ou preservação de dados durante a migração",
+      "Envie convites personalizados com mensagem customizada",
     ],
   },
   {

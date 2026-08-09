@@ -14,12 +14,21 @@ export interface SetupData {
     state: string;
     phone: string;
     email: string;
+    website: string;
+    logo: string;
+    industry: string;
+    size: string;
+    timezone: string;
   };
   project: {
     name: string;
     url: string;
     logo: string;
     description: string;
+    customDomain: string;
+    language: string;
+    theme: string;
+    mode: string;
   };
   modules: {
     crm: boolean;
@@ -52,6 +61,11 @@ export interface SetupData {
     name: string;
     email: string;
     role: string;
+    team: string;
+  }[];
+  teams: {
+    name: string;
+    description: string;
   }[];
   notifications: {
     email: boolean;
@@ -71,12 +85,21 @@ const defaultSetupData: SetupData = {
     state: "",
     phone: "",
     email: "",
+    website: "",
+    logo: "",
+    industry: "",
+    size: "",
+    timezone: "America/Sao_Paulo",
   },
   project: {
     name: "BCRM",
     url: "",
     logo: "",
     description: "",
+    customDomain: "",
+    language: "pt-BR",
+    theme: "light",
+    mode: "production",
   },
   modules: {
     crm: false,
@@ -106,6 +129,7 @@ const defaultSetupData: SetupData = {
     bankTransfer: false,
   },
   users: [],
+  teams: [],
   notifications: {
     email: true,
     whatsapp: false,
