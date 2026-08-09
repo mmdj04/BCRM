@@ -1,33 +1,28 @@
 import { NextResponse } from "next/server";
 
-import { stripe } from "@/lib/stripe/server";
-
-const PLAN_PRICES = {
-  starter: { monthly: 78990, yearly: 947880 },
-  pro: { monthly: 188990, yearly: 2267880 },
-  team: { monthly: 798990, yearly: 9587880 },
-} as const;
+import { createCheckoutSession } from "@/lib/stripe/billing";
 
 export async function POST(request: Request) {
   try {
-    const { plan, interval = "monthly" } = await request.json();
+    const { plan, interval = "monthly", userId, email } = await request.json();
 
-    if (!plan || !PLAN_PRICES[plan as keyof typeof PLAN_PRICES]) {
+    if (!plan || !["starter", "pro", "team"].includes(plan)) {
       return NextResponse.json({ error: "Plano inválido" }, { status: 400 });
     }
 
-    const priceAmount = PLAN_PRICES[plan as keyof typeof PLAN_PRICES][interval as "monthly" | "yearly"];
+    if (!userId || !email) {
+      return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
+    }
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: priceAmount,
-      currency: "brl",
-      automatic_payment_methods: { enabled: true },
-      metadata: { plan, interval },
-    });
+    const { url } = await createCheckoutSession(userId, email, plan, interval);
 
-    return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+    if (!url) {
+      return NextResponse.json({ error: "Não foi possível criar a sessão de checkout" }, { status: 500 });
+    }
+
+    return NextResponse.json({ url });
   } catch (error) {
-    console.error("Error creating payment intent:", error);
+    console.error("Error creating checkout session:", error);
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
   }
 }

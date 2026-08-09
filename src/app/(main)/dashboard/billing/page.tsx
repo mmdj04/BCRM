@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/supabase/auth-context";
 
 import { BillingHistory } from "./_components/billing-history";
 import { CurrentPlan } from "./_components/current-plan";
-import { billingHistory, computeOptions, faqItems, featureComparison, plans } from "./_components/data";
+import { computeOptions, faqItems, featureComparison, plans } from "./_components/data";
 import { Faq } from "./_components/faq";
 import { FeatureComparison } from "./_components/feature-comparison";
 import { FineTune } from "./_components/fine-tune";
@@ -32,7 +32,7 @@ export default function BillingPage() {
         </div>
         <div className="flex flex-col gap-4 xl:col-span-4">
           <CurrentPlan />
-          <BillingHistory entries={billingHistory} />
+          <BillingHistory />
         </div>
       </div>
     </div>

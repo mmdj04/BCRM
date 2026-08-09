@@ -1,85 +1,152 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useAuth } from "@/lib/supabase/auth-context";
+import { createClient } from "@supabase/supabase-js";
 
-const currentPlan = {
-  name: "Pro",
-  status: "ativo",
-  nextBilling: "Set 1, 2026",
-  amount: 1889.9,
-  usage: {
-    storage: { used: 42, total: 100, unit: "GB" },
-    teamMembers: { used: 12, total: 25 },
-    apiCalls: { used: 85000, total: 100000 },
-  },
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
+);
+
+type SubscriptionData = {
+  plan: string;
+  status: string;
+  currentPeriodEnd: string | null;
+  cancelAtPeriodEnd: boolean;
+};
+
+const PLAN_NAMES: Record<string, string> = {
+  free: "Gratuito",
+  starter: "Inicial",
+  pro: "Pro",
+  team: "Equipe",
+};
+
+const PLAN_PRICES: Record<string, number> = {
+  starter: 789.9,
+  pro: 1889.9,
+  team: 7989.9,
 };
 
 export function CurrentPlan() {
+  const { user } = useAuth();
+  const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSubscription() {
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const { data } = await supabase
+          .from("users")
+          .select("plan, subscription_status, current_period_end, cancel_at_period_end")
+          .eq("id", user.id)
+          .single();
+
+        if (data) {
+          setSubscription({
+            plan: data.plan ?? "free",
+            status: data.subscription_status ?? "free",
+            currentPeriodEnd: data.current_period_end,
+            cancelAtPeriodEnd: data.cancel_at_period_end ?? false,
+          });
+        }
+      } catch {
+        // User might not exist in DB yet (demo mode)
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchSubscription();
+  }, [user?.id]);
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Plano Atual</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            <div className="size-6 animate-spin rounded-full border-2 border-current border-t-transparent text-primary" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const plan = subscription?.plan ?? "free";
+  const status = subscription?.status ?? "free";
+  const price = PLAN_PRICES[plan] ?? 0;
+  const periodEnd = subscription?.currentPeriodEnd
+    ? new Date(subscription.currentPeriodEnd).toLocaleDateString("pt-BR", { month: "short", day: "numeric", year: "numeric" })
+    : null;
+
   return (
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg">Plano Atual</CardTitle>
-            <CardDescription>Sua assinatura ativa e uso.</CardDescription>
+            <CardDescription>Sua assinatura ativa.</CardDescription>
           </div>
           <Badge
             variant="outline"
-            className="border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+            className={
+              status === "active"
+                ? "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+                : "border-muted"
+            }
           >
-            {currentPlan.status}
+            {status === "active" ? "Ativo" : status === "past_due" ? "Atrasado" : status === "canceled" ? "Cancelado" : "Gratuito"}
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
+      <CardContent className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-muted-foreground text-sm">Plano</p>
-            <p className="font-medium text-lg">{currentPlan.name}</p>
+            <p className="font-medium text-lg">{PLAN_NAMES[plan] ?? plan}</p>
           </div>
-          <div className="text-right">
-            <p className="text-muted-foreground text-sm">Próximo faturamento</p>
-            <p className="font-medium text-lg">{currentPlan.nextBilling}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-muted-foreground text-sm">Valor</p>
-            <p className="font-medium text-lg">
-              R$ {currentPlan.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
-            </p>
-          </div>
+          {price > 0 && (
+            <div className="text-right">
+              <p className="text-muted-foreground text-sm">Valor</p>
+              <p className="font-medium text-lg">
+                R$ {price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+              </p>
+            </div>
+          )}
+          {periodEnd && (
+            <div className="text-right">
+              <p className="text-muted-foreground text-sm">
+                {subscription?.cancelAtPeriodEnd ? "Cancela em" : "Próximo faturamento"}
+              </p>
+              <p className="font-medium text-lg">{periodEnd}</p>
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Armazenamento</span>
-              <span>
-                {currentPlan.usage.storage.used} / {currentPlan.usage.storage.total} {currentPlan.usage.storage.unit}
-              </span>
-            </div>
-            <Progress value={(currentPlan.usage.storage.used / currentPlan.usage.storage.total) * 100} />
+        {subscription?.cancelAtPeriodEnd && (
+          <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-xs dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
+            Sua assinatura será cancelada ao final do período. Você ainda tem acesso até {periodEnd}.
           </div>
+        )}
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Membros da Equipe</span>
-              <span>
-                {currentPlan.usage.teamMembers.used} / {currentPlan.usage.teamMembers.total}
-              </span>
-            </div>
-            <Progress value={(currentPlan.usage.teamMembers.used / currentPlan.usage.teamMembers.total) * 100} />
+        {plan === "free" && (
+          <div className="rounded-lg border bg-muted/50 p-4 text-center text-muted-foreground text-sm">
+            Você está no plano gratuito. Escolha um plano acima para desbloquear todos os recursos.
           </div>
-
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Chamadas API</span>
-              <span>
-                {currentPlan.usage.apiCalls.used.toLocaleString()} / {currentPlan.usage.apiCalls.total.toLocaleString()}
-              </span>
-            </div>
-            <Progress value={(currentPlan.usage.apiCalls.used / currentPlan.usage.apiCalls.total) * 100} />
-          </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );

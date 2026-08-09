@@ -1,0 +1,151 @@
+import { createClient } from "@supabase/supabase-js";
+import Stripe from "stripe";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.SUPABASE_SECRET_KEY ?? "",
+);
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
+
+const PLAN_AMOUNTS: Record<string, Record<string, number>> = {
+  starter: { monthly: 78990, yearly: 947880 },
+  pro: { monthly: 188990, yearly: 2267880 },
+  team: { monthly: 798990, yearly: 9587880 },
+};
+
+export async function getOrCreateCustomer(userId: string, email: string): Promise<Stripe.Customer> {
+  const { data: user } = await supabase.from("users").select("stripe_customer_id").eq("id", userId).single();
+
+  if (user?.stripe_customer_id) {
+    const customer = await stripe.customers.retrieve(user.stripe_customer_id);
+    return customer as Stripe.Customer;
+  }
+
+  const customer = await stripe.customers.create({
+    email,
+    metadata: { userId },
+  });
+
+  await supabase.from("users").update({ stripe_customer_id: customer.id }).eq("id", userId);
+
+  return customer;
+}
+
+export async function createCheckoutSession(
+  userId: string,
+  email: string,
+  plan: string,
+  interval: string,
+): Promise<{ url: string | null }> {
+  const customer = await getOrCreateCustomer(userId, email);
+
+  const session = await stripe.checkout.sessions.create({
+    customer: customer.id,
+    mode: "subscription",
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        price_data: {
+          currency: "brl",
+          product: undefined,
+          product_data: {
+            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)}`,
+            metadata: { plan, interval },
+          },
+          unit_amount: PLAN_AMOUNTS[plan]?.[interval] ?? PLAN_AMOUNTS.pro.monthly,
+          recurring: { interval: interval === "yearly" ? "year" : "month" },
+        },
+        quantity: 1,
+      },
+    ],
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`,
+    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?canceled=true`,
+    metadata: { userId, plan, interval },
+  });
+
+  return { url: session.url };
+}
+
+export async function handleWebhookEvent(event: Stripe.Event) {
+  switch (event.type) {
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const userId = session.metadata?.userId;
+      const plan = session.metadata?.plan;
+      const interval = session.metadata?.interval;
+
+      if (userId && plan) {
+        await supabase.from("users").update({
+          plan,
+          plan_interval: interval ?? "monthly",
+          subscription_status: "active",
+        }).eq("id", userId);
+      }
+      break;
+    }
+
+    case "invoice.payment_succeeded": {
+      const invoice = event.data.object as Stripe.Invoice;
+      const customerId = invoice.customer as string;
+
+      const { data: user } = await supabase.from("users").select("id").eq("stripe_customer_id", customerId).single();
+
+      if (user) {
+        await supabase.from("payments").insert({
+          user_id: user.id,
+          stripe_payment_id: invoice.id,
+          stripe_invoice_id: invoice.id,
+          amount: invoice.amount_paid,
+          currency: invoice.currency,
+          status: "succeeded",
+          description: invoice.description ?? "Assinatura BCRM",
+        });
+
+        await supabase.from("users").update({
+          subscription_status: "active",
+        }).eq("id", user.id);
+      }
+      break;
+    }
+
+    case "invoice.payment_failed": {
+      const invoice = event.data.object as Stripe.Invoice;
+      const customerId = invoice.customer as string;
+
+      const { data: user } = await supabase.from("users").select("id").eq("stripe_customer_id", customerId).single();
+
+      if (user) {
+        await supabase.from("payments").insert({
+          user_id: user.id,
+          stripe_payment_id: invoice.id,
+          stripe_invoice_id: invoice.id,
+          amount: invoice.amount_paid,
+          currency: invoice.currency,
+          status: "failed",
+          description: invoice.description ?? "Assinatura BCRM",
+        });
+
+        await supabase.from("users").update({ subscription_status: "past_due" }).eq("id", user.id);
+      }
+      break;
+    }
+
+    case "customer.subscription.deleted": {
+      const subscription = event.data.object as Stripe.Subscription;
+      const customerId = subscription.customer as string;
+
+      const { data: user } = await supabase.from("users").select("id").eq("stripe_customer_id", customerId).single();
+
+      if (user) {
+        await supabase.from("users").update({
+          subscription_status: "free",
+          plan: "free",
+          subscription_id: null,
+          cancel_at_period_end: false,
+        }).eq("id", user.id);
+      }
+      break;
+    }
+  }
+}
