@@ -1,8 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-
-import { DEMO_CONFIG } from "@/config/demo-config";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 export interface SetupData {
   company: {

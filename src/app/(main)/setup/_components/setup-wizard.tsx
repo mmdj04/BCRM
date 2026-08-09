@@ -40,7 +40,7 @@ export function SetupWizard() {
               <div key={step.title} className="flex flex-1 items-center">
                 <div
                   className={cn(
-                    "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-medium transition-colors",
+                    "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full font-medium text-xs transition-colors",
                     index <= currentStep && "bg-primary text-primary-foreground",
                     index > currentStep && "bg-muted text-muted-foreground",
                   )}
@@ -58,16 +58,16 @@ export function SetupWizard() {
               </div>
             ))}
           </div>
-          <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+          <div className="mt-2 flex items-center justify-between text-muted-foreground text-xs">
             <span className="hidden sm:inline">
               {currentStepData?.title}
               {currentStepData?.required === true && (
-                <span className="ml-2 rounded bg-destructive/10 px-1.5 py-0.5 text-destructive text-[10px] font-medium">
+                <span className="ml-2 rounded bg-destructive/10 px-1.5 py-0.5 font-medium text-[10px] text-destructive">
                   Obrigatório
                 </span>
               )}
               {currentStepData?.required === false && (
-                <span className="ml-2 rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium">
+                <span className="ml-2 rounded bg-muted px-1.5 py-0.5 font-medium text-[10px]">
                   Opcional
                 </span>
               )}

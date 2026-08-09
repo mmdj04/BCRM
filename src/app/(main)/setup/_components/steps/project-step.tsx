@@ -47,7 +47,7 @@ export function ProjectStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="project-name">
               Nome do Projeto
-              <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                 Obrigatório
               </span>
             </FieldLabel>
@@ -65,7 +65,7 @@ export function ProjectStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="project-url">
               URL do Projeto
-              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                 Opcional
               </span>
             </FieldLabel>
@@ -83,7 +83,7 @@ export function ProjectStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="project-custom-domain">
               Domínio Personalizado
-              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                 Opcional
               </span>
             </FieldLabel>
@@ -101,7 +101,7 @@ export function ProjectStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="project-logo">
               URL do Logo
-              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                 Opcional
               </span>
             </FieldLabel>
@@ -119,7 +119,7 @@ export function ProjectStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="project-description">
               Descrição do Projeto
-              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                 Opcional
               </span>
             </FieldLabel>
@@ -136,7 +136,7 @@ export function ProjectStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="project-language">
                 Idioma
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -156,7 +156,7 @@ export function ProjectStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="project-theme">
                 Tema Padrão
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -176,7 +176,7 @@ export function ProjectStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="project-mode">
                 Modo
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>

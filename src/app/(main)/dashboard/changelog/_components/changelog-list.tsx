@@ -9,7 +9,6 @@ import Markdown from "react-markdown";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
-import { type getChangelogTypeFromContent } from "./changelog-icon";
 
 type ChangelogEntryType = "feature" | "fix" | "maintenance";
 

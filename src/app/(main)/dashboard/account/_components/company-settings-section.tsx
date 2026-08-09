@@ -4,10 +4,6 @@ import { useState } from "react";
 
 import {
   Building2,
-  Globe,
-  Mail,
-  MapPin,
-  Phone,
   Save,
 } from "lucide-react";
 

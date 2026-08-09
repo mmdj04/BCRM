@@ -282,12 +282,21 @@ export function ModulesStep() {
                 <div className="px-4 pb-4">
                   <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${Math.min(module.images.length, 3)}, 1fr)` }}>
                     {module.images.map((img, i) => (
-                      <div
+                      <button
                         key={i}
-                        className="overflow-hidden rounded-lg border bg-muted/30 cursor-pointer"
+                        type="button"
+                        className="cursor-pointer overflow-hidden rounded-lg border bg-muted/30"
+                        tabIndex={0}
                         onClick={(e) => {
                           e.stopPropagation();
                           setLightbox(img);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setLightbox(img);
+                          }
                         }}
                       >
                         <div className="relative aspect-video w-full">
@@ -300,7 +309,7 @@ export function ModulesStep() {
                             loading="lazy"
                           />
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>

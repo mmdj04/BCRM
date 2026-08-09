@@ -5,7 +5,6 @@ import { Bell, Mail, MessageSquare, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
 
@@ -65,6 +64,7 @@ export function NotificationsStep() {
             return (
               <label
                 key={notif.id}
+                htmlFor={`notif-${notif.id}`}
                 className={cn(
                   "flex items-center gap-3 rounded-lg border p-3 transition-colors",
                   isEnabled
@@ -73,6 +73,7 @@ export function NotificationsStep() {
                 )}
               >
                 <Checkbox
+                  id={`notif-${notif.id}`}
                   checked={isEnabled}
                   onCheckedChange={() => toggleNotification(notif.id)}
                 />

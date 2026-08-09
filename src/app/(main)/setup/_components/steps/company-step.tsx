@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Mail, MapPin, Phone, Globe, Image, Briefcase, Building, Clock } from "lucide-react";
+import { Building2, } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -57,7 +57,7 @@ export function CompanyStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="company-name">
               Nome da Empresa
-              <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                 Obrigatório
               </span>
             </FieldLabel>
@@ -73,7 +73,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-cnpj">
                 CNPJ
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -87,7 +87,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-website">
                 Website
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -103,7 +103,7 @@ export function CompanyStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="company-description">
               Descrição
-              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                 Opcional
               </span>
             </FieldLabel>
@@ -120,7 +120,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-industry">
                 Setor/Indústria
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -141,7 +141,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-size">
                 Tamanho da Empresa
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -165,7 +165,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-city">
                 Cidade
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -179,7 +179,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-state">
                 Estado
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -195,7 +195,7 @@ export function CompanyStep() {
           <Field className="gap-1.5">
             <FieldLabel htmlFor="company-address">
               Endereço
-              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+              <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                 Opcional
               </span>
             </FieldLabel>
@@ -211,7 +211,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-phone">
                 Telefone
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -225,7 +225,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-email">
                 E-mail Corporativo
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -243,7 +243,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-logo">
                 Logo da Empresa
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>
@@ -257,7 +257,7 @@ export function CompanyStep() {
             <Field className="gap-1.5">
               <FieldLabel htmlFor="company-timezone">
                 Fuso Horário
-                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </FieldLabel>

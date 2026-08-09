@@ -209,7 +209,7 @@ export function UsersStep() {
               <div className="flex items-center gap-2 text-left">
                 <UsersRound className="size-4 text-muted-foreground" />
                 <span className="font-medium text-sm">Equipes</span>
-                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
                 {teams.length > 0 && (
@@ -226,7 +226,7 @@ export function UsersStep() {
                     <Field className="gap-1.5">
                       <FieldLabel htmlFor="team-name">
                         Nome da Equipe
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                           Obrigatório
                         </span>
                       </FieldLabel>
@@ -240,7 +240,7 @@ export function UsersStep() {
                     <Field className="gap-1.5">
                       <FieldLabel htmlFor="team-description">
                         Descrição
-                        <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                        <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                           Opcional
                         </span>
                       </FieldLabel>
@@ -266,7 +266,7 @@ export function UsersStep() {
                                 "size-6 rounded-full border-2 transition-all",
                                 color,
                                 newTeamColor === color
-                                  ? "border-foreground scale-110"
+                                  ? "scale-110 border-foreground"
                                   : "border-transparent hover:scale-105",
                               )}
                               onClick={() => setNewTeamColor(color)}
@@ -379,7 +379,7 @@ export function UsersStep() {
               <div className="flex items-center gap-2 text-left">
                 <Shield className="size-4 text-muted-foreground" />
                 <span className="font-medium text-sm">Funções</span>
-                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
                 {customRoles.length > 0 && (
@@ -396,7 +396,7 @@ export function UsersStep() {
                     <Field className="gap-1.5">
                       <FieldLabel htmlFor="role-name">
                         Nome da Função
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                           Obrigatório
                         </span>
                       </FieldLabel>
@@ -410,7 +410,7 @@ export function UsersStep() {
                     <Field className="gap-1.5">
                       <FieldLabel htmlFor="role-description">
                         Descrição
-                        <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                        <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                           Opcional
                         </span>
                       </FieldLabel>
@@ -481,7 +481,7 @@ export function UsersStep() {
               <div className="flex items-center gap-2 text-left">
                 <ArrowRightLeft className="size-4 text-muted-foreground" />
                 <span className="font-medium text-sm">Migração e Integração</span>
-                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </div>
@@ -495,14 +495,16 @@ export function UsersStep() {
                 <div className="flex flex-col gap-2">
                   {/* CSV/Excel */}
                   <label
+                    htmlFor="migration-csv"
                     className={cn(
-                      "flex items-center gap-3 rounded-lg border p-3 transition-colors cursor-pointer",
+                      "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors",
                       selectedMigration === "csv"
                         ? "border-primary bg-primary/5"
                         : "border-border hover:border-muted-foreground/50",
                     )}
                   >
                     <Checkbox
+                      id="migration-csv"
                       checked={selectedMigration === "csv"}
                       onCheckedChange={() => toggleMigration("csv")}
                     />
@@ -514,14 +516,16 @@ export function UsersStep() {
 
                   {/* Google Workspace */}
                   <label
+                    htmlFor="migration-google"
                     className={cn(
-                      "flex items-center gap-3 rounded-lg border p-3 transition-colors cursor-pointer",
+                      "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors",
                       selectedMigration === "google"
                         ? "border-primary bg-primary/5"
                         : "border-border hover:border-muted-foreground/50",
                     )}
                   >
                     <Checkbox
+                      id="migration-google"
                       checked={selectedMigration === "google"}
                       onCheckedChange={() => toggleMigration("google")}
                     />
@@ -533,14 +537,16 @@ export function UsersStep() {
 
                   {/* Azure AD */}
                   <label
+                    htmlFor="migration-azure"
                     className={cn(
-                      "flex items-center gap-3 rounded-lg border p-3 transition-colors cursor-pointer",
+                      "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors",
                       selectedMigration === "azure"
                         ? "border-primary bg-primary/5"
                         : "border-border hover:border-muted-foreground/50",
                     )}
                   >
                     <Checkbox
+                      id="migration-azure"
                       checked={selectedMigration === "azure"}
                       onCheckedChange={() => toggleMigration("azure")}
                     />
@@ -558,14 +564,14 @@ export function UsersStep() {
                     <Field className="gap-1.5">
                       <FieldLabel>
                         Arquivo
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                           Obrigatório
                         </span>
                       </FieldLabel>
                       <div className="flex items-center gap-2">
                         <label
                           htmlFor="csv-upload"
-                          className="flex h-9 cursor-pointer items-center gap-2 rounded-md border border-dashed px-3 text-sm text-muted-foreground hover:bg-muted/50"
+                          className="flex h-9 cursor-pointer items-center gap-2 rounded-md border border-dashed px-3 text-muted-foreground text-sm hover:bg-muted/50"
                         >
                           <FileUp className="size-4" />
                           {csvFile ? csvFile.name : "Selecionar arquivo..."}
@@ -594,7 +600,7 @@ export function UsersStep() {
                       <Field className="gap-1.5">
                         <FieldLabel>
                           Coluna Nome
-                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                             Obrigatório
                           </span>
                         </FieldLabel>
@@ -607,7 +613,7 @@ export function UsersStep() {
                       <Field className="gap-1.5">
                         <FieldLabel>
                           Coluna E-mail
-                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                          <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                             Obrigatório
                           </span>
                         </FieldLabel>
@@ -620,7 +626,7 @@ export function UsersStep() {
                       <Field className="gap-1.5">
                         <FieldLabel>
                           Coluna Função
-                          <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                          <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                             Opcional
                           </span>
                         </FieldLabel>
@@ -650,7 +656,7 @@ export function UsersStep() {
                     <Field className="gap-1.5">
                       <FieldLabel>
                         Domínio
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                           Obrigatório
                         </span>
                       </FieldLabel>
@@ -662,16 +668,16 @@ export function UsersStep() {
                     </Field>
                     <div className="flex flex-col gap-2">
                       <p className="font-medium text-xs">Opções de Sincronização</p>
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox checked={googleSyncUsers} onCheckedChange={() => setGoogleSyncUsers(!googleSyncUsers)} />
+                      <label htmlFor="google-sync-users" className="flex items-center gap-2 text-sm">
+                        <Checkbox id="google-sync-users" checked={googleSyncUsers} onCheckedChange={() => setGoogleSyncUsers(!googleSyncUsers)} />
                         <span>Usuários</span>
                       </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox checked={googleSyncGroups} onCheckedChange={() => setGoogleSyncGroups(!googleSyncGroups)} />
+                      <label htmlFor="google-sync-groups" className="flex items-center gap-2 text-sm">
+                        <Checkbox id="google-sync-groups" checked={googleSyncGroups} onCheckedChange={() => setGoogleSyncGroups(!googleSyncGroups)} />
                         <span>Grupos</span>
                       </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox checked={googleSyncOu} onCheckedChange={() => setGoogleSyncOu(!googleSyncOu)} />
+                      <label htmlFor="google-sync-ou" className="flex items-center gap-2 text-sm">
+                        <Checkbox id="google-sync-ou" checked={googleSyncOu} onCheckedChange={() => setGoogleSyncOu(!googleSyncOu)} />
                         <span>Unidades Organizacionais</span>
                       </label>
                     </div>
@@ -689,7 +695,7 @@ export function UsersStep() {
                     <Field className="gap-1.5">
                       <FieldLabel>
                         Tenant ID
-                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                        <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                           Obrigatório
                         </span>
                       </FieldLabel>
@@ -700,8 +706,8 @@ export function UsersStep() {
                       />
                     </Field>
                     <div className="rounded-lg bg-background p-3 text-xs">
-                      <p className="font-medium mb-2">Instruções de Configuração</p>
-                      <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                      <p className="mb-2 font-medium">Instruções de Configuração</p>
+                      <ol className="list-inside list-decimal space-y-1 text-muted-foreground">
                         <li>Crie um App Registration no Azure Portal</li>
                         <li>Configure os-permissions: User.Read, Group.Read.All</li>
                         <li>Gere um Client Secret</li>
@@ -724,7 +730,7 @@ export function UsersStep() {
               <div className="flex items-center gap-2 text-left">
                 <UserPlus className="size-4 text-muted-foreground" />
                 <span className="font-medium text-sm">Convidar Usuário</span>
-                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                <span className="ml-2 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                   Opcional
                 </span>
               </div>
@@ -735,7 +741,7 @@ export function UsersStep() {
                   <Field className="gap-1.5">
                     <FieldLabel htmlFor="user-name">
                       Nome
-                      <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                      <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                         Obrigatório
                       </span>
                     </FieldLabel>
@@ -749,7 +755,7 @@ export function UsersStep() {
                   <Field className="gap-1.5">
                     <FieldLabel htmlFor="user-email">
                       E-mail
-                      <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 text-red-600 text-xs font-medium">
+                      <span className="ml-1.5 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-600 text-xs">
                         Obrigatório
                       </span>
                     </FieldLabel>
@@ -766,7 +772,7 @@ export function UsersStep() {
                   <Field className="gap-1.5">
                     <FieldLabel htmlFor="user-role">
                       Função
-                      <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                      <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                         Opcional
                       </span>
                     </FieldLabel>
@@ -786,7 +792,7 @@ export function UsersStep() {
                   <Field className="gap-1.5">
                     <FieldLabel htmlFor="user-team">
                       Equipe
-                      <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                      <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                         Opcional
                       </span>
                     </FieldLabel>
@@ -808,7 +814,7 @@ export function UsersStep() {
                 <Field className="gap-1.5">
                   <FieldLabel htmlFor="user-message">
                     Mensagem de Convite Personalizada
-                    <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-amber-600 text-xs font-medium">
+                    <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 font-medium text-amber-600 text-xs">
                       Opcional
                     </span>
                   </FieldLabel>

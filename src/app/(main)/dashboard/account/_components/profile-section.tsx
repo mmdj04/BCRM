@@ -47,7 +47,7 @@ export function ProfileSection() {
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         {isDemo && (
-          <div className="flex items-center gap-2 rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-sm dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
+          <div className="flex items-center gap-2 rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-sm text-yellow-800 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
             <AlertTriangle className="size-4 shrink-0" />
             <p>Esta é uma conta de demonstração. As alterações de perfil não serão salvas permanentemente.</p>
           </div>
