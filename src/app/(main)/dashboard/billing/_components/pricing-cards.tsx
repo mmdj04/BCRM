@@ -28,10 +28,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
 
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
-    const plan = plans.find((p) => p.id === planId);
-    if (plan && plan.allowedCompute.length > 0) {
-      setSelectedCompute(plan.allowedCompute[0]);
-    }
+    setSelectedCompute("medium");
   };
 
   const handleCheckout = async () => {
@@ -56,16 +53,11 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
     return price.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const getComputeForPlan = (plan: Plan) => {
-    return computeOptions.filter((c) => plan.allowedCompute.includes(c.id));
-  };
-
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
         {plans.map((plan) => {
           const isExpanded = selectedPlan === plan.id;
-          const allowedCompute = getComputeForPlan(plan);
           const compute = computeOptions.find((c) => c.id === selectedCompute);
           const planComputePrice = isExpanded && compute ? compute.price : 0;
           const planTotal = (plan.monthlyPrice ?? 0) + planComputePrice;
@@ -135,7 +127,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                         <p className="font-medium text-sm">Escolha o Compute</p>
                       </div>
                       <div className="grid gap-2">
-                        {allowedCompute.map((opt) => (
+                        {computeOptions.map((opt) => (
                           <button
                             key={opt.id}
                             type="button"

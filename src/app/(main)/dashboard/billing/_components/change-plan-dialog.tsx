@@ -17,14 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/supabase/auth-context";
 
@@ -64,7 +57,6 @@ function ChangePlanContent({
   onChangeTiming: (v: "now" | "period_end") => void;
 }) {
   const newPlanData = plans.find((p) => p.id === selectedPlan);
-  const currentPlanData = plans.find((p) => p.id === currentPlan);
 
   const availablePlans = plans.filter((p) => p.id !== currentPlan && p.monthlyPrice !== null);
 
@@ -78,7 +70,7 @@ function ChangePlanContent({
     return price.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const currentComputePrice = getComputePrice(currentPlanData?.allowedCompute[0] ?? "");
+  const currentComputePrice = getComputePrice("medium");
   const newComputePrice = getComputePrice(selectedCompute);
 
   if (success) {
@@ -125,8 +117,7 @@ function ChangePlanContent({
         <Label className="font-medium">Selecione o novo plano</Label>
         <RadioGroup value={selectedPlan} onValueChange={onSelectPlan} className="flex flex-col gap-3">
           {availablePlans.map((plan) => {
-            const isUpgrade =
-              (plan.monthlyPrice ?? 0) > (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0);
+            const isUpgrade = (plan.monthlyPrice ?? 0) > (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0);
             return (
               // biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally
               <label
@@ -152,9 +143,7 @@ function ChangePlanContent({
                     </Badge>
                   </div>
                   <p className="text-muted-foreground text-sm">{plan.description}</p>
-                  <p className="mt-1 font-medium text-sm">
-                    R$ {formatPrice(plan.monthlyPrice ?? 0)}/mês + Compute
-                  </p>
+                  <p className="mt-1 font-medium text-sm">R$ {formatPrice(plan.monthlyPrice ?? 0)}/mês + Compute</p>
                 </div>
               </label>
             );
@@ -170,29 +159,27 @@ function ChangePlanContent({
             <Label className="font-medium">Escolha o Compute</Label>
           </div>
           <div className="grid gap-2">
-            {computeOptions
-              .filter((c) => newPlanData.allowedCompute.includes(c.id))
-              .map((opt) => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => onSelectCompute(opt.id)}
-                  className={`flex items-center justify-between rounded-lg border p-3 text-left transition-all ${
-                    selectedCompute === opt.id
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-muted-foreground/50"
-                  }`}
-                >
-                  <div className="flex flex-col">
-                    <span className="font-medium text-sm">{opt.size}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {opt.cpu} / {opt.ram} RAM
-                      {opt.dedicated ? " (dedicado)" : ""}
-                    </span>
-                  </div>
-                  <span className="font-medium text-sm">+ R$ {formatPrice(opt.price)}/mês</span>
-                </button>
-              ))}
+            {computeOptions.map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => onSelectCompute(opt.id)}
+                className={`flex items-center justify-between rounded-lg border p-3 text-left transition-all ${
+                  selectedCompute === opt.id
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-muted-foreground/50"
+                }`}
+              >
+                <div className="flex flex-col">
+                  <span className="font-medium text-sm">{opt.size}</span>
+                  <span className="text-muted-foreground text-xs">
+                    {opt.cpu} / {opt.ram} RAM
+                    {opt.dedicated ? " (dedicado)" : ""}
+                  </span>
+                </div>
+                <span className="font-medium text-sm">+ R$ {formatPrice(opt.price)}/mês</span>
+              </button>
+            ))}
           </div>
         </div>
       )}
@@ -202,15 +189,10 @@ function ChangePlanContent({
         <div className="grid gap-4 sm:grid-cols-2">
           {benefitsGained.length > 0 && (
             <div className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950">
-              <p className="mb-2 font-medium text-green-800 text-sm dark:text-green-200">
-                Benefícios Adicionados
-              </p>
+              <p className="mb-2 font-medium text-green-800 text-sm dark:text-green-200">Benefícios Adicionados</p>
               <ul className="flex flex-col gap-1">
                 {benefitsGained.map((benefit) => (
-                  <li
-                    key={benefit}
-                    className="flex items-start gap-1.5 text-green-700 text-xs dark:text-green-300"
-                  >
+                  <li key={benefit} className="flex items-start gap-1.5 text-green-700 text-xs dark:text-green-300">
                     <Check className="mt-0.5 size-3 shrink-0" />
                     {benefit}
                   </li>
@@ -220,15 +202,10 @@ function ChangePlanContent({
           )}
           {benefitsLost.length > 0 && (
             <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 dark:border-yellow-800 dark:bg-yellow-950">
-              <p className="mb-2 font-medium text-yellow-800 text-sm dark:text-yellow-200">
-                Benefícios Removidos
-              </p>
+              <p className="mb-2 font-medium text-yellow-800 text-sm dark:text-yellow-200">Benefícios Removidos</p>
               <ul className="flex flex-col gap-1">
                 {benefitsLost.map((benefit) => (
-                  <li
-                    key={benefit}
-                    className="flex items-start gap-1.5 text-yellow-700 text-xs dark:text-yellow-300"
-                  >
+                  <li key={benefit} className="flex items-start gap-1.5 text-yellow-700 text-xs dark:text-yellow-300">
                     <span className="mt-0.5 size-3 shrink-0">⚠</span>
                     {benefit}
                   </li>
@@ -305,10 +282,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
 
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
-    const plan = plans.find((p) => p.id === planId);
-    if (plan && plan.allowedCompute.length > 0) {
-      setSelectedCompute(plan.allowedCompute[0]);
-    }
+    setSelectedCompute("medium");
   };
 
   const handleConfirmChange = async () => {

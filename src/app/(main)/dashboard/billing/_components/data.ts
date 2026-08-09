@@ -10,7 +10,6 @@ export type Plan = {
   extraFeatures: string[];
   featureHeader?: string;
   supabasePlan: string;
-  allowedCompute: string[];
 };
 
 export const plans: Plan[] = [
@@ -21,7 +20,6 @@ export const plans: Plan[] = [
     monthlyPrice: 899.9,
     cta: "Começar Agora",
     supabasePlan: "Pro",
-    allowedCompute: ["micro", "small", "medium", "large"],
     baseFeatures: [
       "Até 10 usuários",
       "5 módulos",
@@ -44,7 +42,6 @@ export const plans: Plan[] = [
     highlighted: true,
     cta: "Fazer Upgrade",
     supabasePlan: "Pro",
-    allowedCompute: ["micro", "small", "medium", "large", "xlarge"],
     baseFeatures: [],
     featureHeader: "Tudo no Plano Inicial, mais:",
     extraFeatures: [
@@ -65,7 +62,6 @@ export const plans: Plan[] = [
     monthlyPrice: 8999.9,
     cta: "Fazer Upgrade",
     supabasePlan: "Team",
-    allowedCompute: ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge"],
     baseFeatures: [],
     featureHeader: "Tudo no Plano Pro, mais:",
     extraFeatures: [
@@ -227,6 +223,7 @@ export type ComputeOption = {
   ram: string;
   directConnections: number;
   poolerConnections: number;
+  benefits: string[];
 };
 
 export const computeOptions: ComputeOption[] = [
@@ -241,6 +238,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "1 GB",
     directConnections: 60,
     poolerConnections: 200,
+    benefits: [
+      "Ideal para projetos em fase de desenvolvimento",
+      "Banco de dados com 1 GB de RAM",
+      "60 conexões diretas ao banco",
+      "200 conexões via pooler",
+      "Compartilhado — custo-benefício para começar",
+    ],
   },
   {
     id: "small",
@@ -253,6 +257,12 @@ export const computeOptions: ComputeOption[] = [
     ram: "2 GB",
     directConnections: 90,
     poolerConnections: 400,
+    benefits: [
+      "Banco de dados com 2 GB de RAM",
+      "90 conexões diretas ao banco",
+      "400 conexões via pooler",
+      "Compartilhado — para apps com tráfego leve",
+    ],
   },
   {
     id: "medium",
@@ -265,6 +275,12 @@ export const computeOptions: ComputeOption[] = [
     ram: "4 GB",
     directConnections: 120,
     poolerConnections: 600,
+    benefits: [
+      "Banco de dados com 4 GB de RAM",
+      "120 conexões diretas ao banco",
+      "600 conexões via pooler",
+      "Compartilhado — para apps em produção com tráfego moderado",
+    ],
   },
   {
     id: "large",
@@ -277,6 +293,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "8 GB",
     directConnections: 160,
     poolerConnections: 800,
+    benefits: [
+      "CPU dedicado — performance consistente",
+      "Banco de dados com 8 GB de RAM",
+      "160 conexões diretas ao banco",
+      "800 conexões via pooler",
+      "Ideal para apps de produção com tráfego alto",
+    ],
   },
   {
     id: "xlarge",
@@ -289,6 +312,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "16 GB",
     directConnections: 240,
     poolerConnections: 1000,
+    benefits: [
+      "4 núcleos ARM dedicados",
+      "Banco de dados com 16 GB de RAM",
+      "240 conexões diretas ao banco",
+      "1.000 conexões via pooler",
+      "Para apps com alta concorrência e consultas complexas",
+    ],
   },
   {
     id: "2xlarge",
@@ -301,6 +331,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "32 GB",
     directConnections: 380,
     poolerConnections: 1500,
+    benefits: [
+      "8 núcleos ARM dedicados",
+      "Banco de dados com 32 GB de RAM",
+      "380 conexões diretas ao banco",
+      "1.500 conexões via pooler",
+      "Para escalar horizontalmente com múltiplos projetos",
+    ],
   },
   {
     id: "4xlarge",
@@ -313,6 +350,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "64 GB",
     directConnections: 480,
     poolerConnections: 3000,
+    benefits: [
+      "16 núcleos ARM dedicados",
+      "Banco de dados com 64 GB de RAM",
+      "480 conexões diretas ao banco",
+      "3.000 conexões via pooler",
+      "Para organizações com múltiplos projetos e alto volume",
+    ],
   },
   {
     id: "8xlarge",
@@ -325,6 +369,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "128 GB",
     directConnections: 490,
     poolerConnections: 6000,
+    benefits: [
+      "32 núcleos ARM dedicados",
+      "Banco de dados com 128 GB de RAM",
+      "490 conexões diretas ao banco",
+      "6.000 conexões via pooler",
+      "Para workloads pesados e analytics em tempo real",
+    ],
   },
   {
     id: "12xlarge",
@@ -337,6 +388,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "192 GB",
     directConnections: 500,
     poolerConnections: 9000,
+    benefits: [
+      "48 núcleos ARM dedicados",
+      "Banco de dados com 192 GB de RAM",
+      "500 conexões diretas ao banco",
+      "9.000 conexões via pooler",
+      "Para infraestrutura enterprise com alta demanda",
+    ],
   },
   {
     id: "16xlarge",
@@ -349,6 +407,13 @@ export const computeOptions: ComputeOption[] = [
     ram: "256 GB",
     directConnections: 500,
     poolerConnections: 12000,
+    benefits: [
+      "64 núcleos ARM dedicados",
+      "Banco de dados com 256 GB de RAM",
+      "500 conexões diretas ao banco",
+      "12.000 conexões via pooler",
+      "Máxima performance para operações de grande escala",
+    ],
   },
 ];
 
