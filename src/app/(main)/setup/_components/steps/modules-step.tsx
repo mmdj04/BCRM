@@ -1,24 +1,31 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import {
   BarChart3,
   BookOpen,
   BrainCircuit,
-  Building,
+  Calendar,
   CheckSquare,
   CreditCard,
   FileStack,
+  FolderKanban,
   HeartPulse,
+  Inbox,
   LayoutDashboard,
+  MessageSquare,
   Server,
   ShoppingBag,
   Truck,
+  Users,
+  ShieldCheck,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Lightbox } from "@/components/lightbox";
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
 
@@ -26,35 +33,28 @@ const modules = [
   {
     id: "crm" as const,
     label: "CRM",
-    shortDescription: "Gestão de relacionamento com clientes",
     description:
-      "Gerencie todo o ciclo de vida dos seus clientes em um só lugar. Acompanhe leads do primeiro contato até o fechamento do negócio, visualize seu pipeline de vendas com métricas em tempo real, gerencie e-mails, chats e interações da equipe. Inclui controle de funis, automação de follow-up e relatórios de performance comercial.",
+      "Gerencie todo o ciclo de vida dos seus clientes. Pipeline de vendas com métricas em tempo real, leads qualificados, oportunidades abertas e taxas de conversão. Acompanhe o valor do pipeline e o fluxo de leads qualificados ao longo do tempo.",
     icon: BarChart3,
     images: [
       { src: "/modules/crm-pipeline.jpg", alt: "Pipeline de vendas com métricas de leads e oportunidades" },
-      { src: "/modules/crm-email.jpg", alt: "Caixa de entrada de e-mails integrados" },
-      { src: "/modules/crm-chat.jpg", alt: "Chat da equipe com canais integrados" },
-      { src: "/modules/crm-users.jpg", alt: "Gestão de usuários e permissões" },
     ],
   },
   {
     id: "finance" as const,
     label: "Finanças",
-    shortDescription: "Controle financeiro completo",
     description:
-      "Tenha visão total das suas finanças com dashboards de receita, despesas e fluxo de caixa. Crie e gerencie faturas, acompanhe pagamentos pendentes, projete receitas futuras e gere relatórios financeiros detalhados. Integração com Stripe para cobranças automáticas e reconciliation bancária.",
+      "Controle financeiro completo com patrimônio líquido, caixa disponível, gastos mensais e taxa de poupança. Dashboards de receita e despesas com visão consolidada da saúde financeira do negócio.",
     icon: CreditCard,
     images: [
       { src: "/modules/finance-overview.jpg", alt: "Painel financeiro com patrimônio líquido e despesas" },
-      { src: "/modules/finance-invoice.jpg", alt: "Criação de faturas com itens e valores" },
     ],
   },
   {
     id: "analytics" as const,
     label: "Análises",
-    shortDescription: "Dashboards e relatórios",
     description:
-      "Transforme dados em decisões com dashboards interativos e relatórios personalizáveis. Acompanhe visitantes únicos, sessões, taxa de engajamento, conversões e qualidade de tráfego. Gráficos dinâmicos com filtros por período, segmento e fonte de tráfego para análise profunda.",
+      "Dashboards interativos com visitantes únicos, sessões, pageviews, taxa de engajamento e conversão. Gráficos de qualidade de tráfego e análise de performance por período para decisões baseadas em dados.",
     icon: BrainCircuit,
     images: [
       { src: "/modules/analytics-overview.jpg", alt: "Dashboard de analytics com visitantes, sessões e taxa de conversão" },
@@ -63,23 +63,18 @@ const modules = [
   {
     id: "productivity" as const,
     label: "Produtividade",
-    shortDescription: "Tarefas e projetos",
     description:
-      "Organize seu trabalho com quadros Kanban, listas de tarefas, calendário integrado e timer de foco. Crie projetos, atribua responsáveis, defina prazos e acompanhe o progresso em tempo real. Inclui notas rápidas, templates de tarefas e integração com o fluxo de trabalho da equipe.",
+      "Organize seu trabalho com visão geral de tarefas, projetos e atividades. Acompanhe o progresso da equipe, prioridades do dia e métricas de produtividade em tempo real.",
     icon: CheckSquare,
     images: [
       { src: "/modules/productivity-overview.jpg", alt: "Painel de produtividade com tarefas e projetos" },
-      { src: "/modules/productivity-kanban.jpg", alt: "Quadro Kanban com colunas de status" },
-      { src: "/modules/productivity-calendar.jpg", alt: "Calendário com eventos e compromissos" },
-      { src: "/modules/productivity-tasks.jpg", alt: "Lista de tarefas com prioridades e status" },
     ],
   },
   {
     id: "ecommerce" as const,
     label: "Comércio Eletrônico",
-    shortDescription: "Loja virtual e pedidos",
     description:
-      "Gerencie sua loja virtual com painel completo de vendas, pedidos e estoque. Acompanhe receita total, pedidos processados, crescimento de clientes e ticket médio. Controle de devoluções, precisão de estoque e métricas de performance da loja em tempo real.",
+      "Visão geral da loja virtual com vendas totais, pedidos processados, crescimento de clientes e ticket médio. Controle de devoluções, precisão de estoque e métricas de performance da loja.",
     icon: ShoppingBag,
     images: [
       { src: "/modules/ecommerce-overview.jpg", alt: "Visão geral da loja com vendas, pedidos e crescimento" },
@@ -88,9 +83,8 @@ const modules = [
   {
     id: "academy" as const,
     label: "Academia",
-    shortDescription: "Cursos e treinamentos",
     description:
-      "Plataforma completa para gerenciar cursos, treinamentos e alunos. Acompanhe taxa de presença, atividades pendentes, cronograma de aulas e desempenho dos alunos. Crie materiais didáticos, acompanhe progresso e gere relatórios de aproveitamento.",
+      "Plataforma de cursos e treinamentos com painel de alunos atendidos, taxa de presença média, atividades pendentes e cronograma de aulas. Acompanhe o desempenho e progresso dos alunos.",
     icon: BookOpen,
     images: [
       { src: "/modules/academy-overview.jpg", alt: "Painel da academia com alunos, presença e atividades" },
@@ -99,9 +93,8 @@ const modules = [
   {
     id: "logistics" as const,
     label: "Logística",
-    shortDescription: "Entregas e rastreamento",
     description:
-      "Controle toda a operação logística com rastreamento de entregas em tempo real. Visualize rotas no mapa, acompanhe status de envios, gerencie transportadoras e otimize entregas. Inclui gestão de fretes, estoque e histórico de movimentações.",
+      "Rastreamento de envios em tempo real com mapa interativo, detalhes de entrega, informações de carga e visualização de rotas. Gestão completa da operação logística.",
     icon: Truck,
     images: [
       { src: "/modules/logistics-overview.jpg", alt: "Rastreamento de envios com mapa e detalhes de entrega" },
@@ -110,9 +103,8 @@ const modules = [
   {
     id: "infrastructure" as const,
     label: "Infraestrutura",
-    shortDescription: "Servidores e deploy",
     description:
-      "Monitore e gerencie toda a infraestrutura de TI em um painel centralizado. Acompanhe status de servidores, uptime, ambientes de deploy, projetos ativos e saúde do sistema. Alertas automáticos, métricas de performance e gestão de recursos em tempo real.",
+      "Monitore servidores, ambientes de deploy e projetos de TI. Acompanhe uptime, saúde dos servidores, número de ambientes e status geral da infraestrutura com alertas automáticos.",
     icon: Server,
     images: [
       { src: "/modules/infrastructure-overview.jpg", alt: "Visão geral da infraestrutura com servidores e uptime" },
@@ -121,9 +113,8 @@ const modules = [
   {
     id: "fileManager" as const,
     label: "Gerenciador de Arquivos",
-    shortDescription: "Gerenciamento de documentos",
     description:
-      "Organize e gerencie todos os seus arquivos e documentos em um local seguro. Crie pastas, faça upload de arquivos, compartilhe com a equipe e controle versões. Busca inteligente, preview de documentos e controle de permissões por pasta e arquivo.",
+      "Organize documentos em pastas hierárquicas com busca inteligente, upload de arquivos e gerenciamento de versões. Controle de permissões e compartilhamento seguro com a equipe.",
     icon: FileStack,
     images: [
       { src: "/modules/file-manager-overview.jpg", alt: "Gerenciador de arquivos com pastas e documentos" },
@@ -132,18 +123,98 @@ const modules = [
   {
     id: "patientMonitoring" as const,
     label: "Monitoramento de Pacientes",
-    shortDescription: "Acompanhamento de pacientes",
     description:
-      "Sistema completo de monitoramento de pacientes com sinais vitais em tempo real. Acompanhe ECG, SpO2, frequência cardíaca e alertas automáticos. Painel centralizado com visão de múltiplos pacientes, histórico de medições e notificações de emergência.",
+      "Sistema central de monitoramento com sinais vitais em tempo real: ECG, SpO2, frequência cardíaca e alertas automáticos. Visão de múltiplos pacientes com histórico de medições e notificações de emergência.",
     icon: HeartPulse,
     images: [
       { src: "/modules/patient-monitoring-overview.jpg", alt: "Monitoramento central de pacientes com sinais vitais" },
+    ],
+  },
+  {
+    id: "email" as const,
+    label: "E-mail",
+    description:
+      "Cliente de e-mail integrado com caixa de entrada organizada, mensagens fixadas, preview de e-mails com anexos e gestão de conversas. Interface limpa para produtividade no dia a dia.",
+    icon: Inbox,
+    images: [
+      { src: "/modules/crm-email.jpg", alt: "Caixa de entrada de e-mails integrados" },
+    ],
+  },
+  {
+    id: "chat" as const,
+    label: "Chat",
+    description:
+      "Chat da equipe com canais integrados (E-mail, Chat, WhatsApp, Instagram). Conversas organizadas, mensagens em tempo real e interface de comunicação unificada para a equipe.",
+    icon: MessageSquare,
+    images: [
+      { src: "/modules/crm-chat.jpg", alt: "Chat da equipe com canais integrados" },
+    ],
+  },
+  {
+    id: "calendar" as const,
+    label: "Calendário",
+    description:
+      "Calendário interativo com eventos, standups, review de design, check-ins de cliente e planejamento. Visão mensal com organização visual de compromissos e tarefas recorrentes.",
+    icon: Calendar,
+    images: [
+      { src: "/modules/productivity-calendar.jpg", alt: "Calendário com eventos e compromissos" },
+    ],
+  },
+  {
+    id: "kanban" as const,
+    label: "Kanban",
+    description:
+      "Quadro Kanban com colunas personalizáveis: Ideias, Planejado, Em construção, QA. Arraste cartões entre colunas para acompanhar o fluxo de trabalho dos projetos da equipe.",
+    icon: FolderKanban,
+    images: [
+      { src: "/modules/productivity-kanban.jpg", alt: "Quadro Kanban com colunas de status" },
+    ],
+  },
+  {
+    id: "tasks" as const,
+    label: "Tarefas",
+    description:
+      "Lista de tarefas com IDs, status (Em Andamento, Backlog, Concluído), prioridades e tipos (Bug, Funcionalidade). Gerencie o backlog da equipe com filtros e organização por categorias.",
+    icon: CheckSquare,
+    images: [
+      { src: "/modules/productivity-tasks.jpg", alt: "Lista de tarefas com prioridades e status" },
+    ],
+  },
+  {
+    id: "invoice" as const,
+    label: "Fatura",
+    description:
+      "Criação e gestão de faturas com seleção de cliente, itens com descrição e valores. Faturamento profissional com cálculos automáticos e acompanhamento de pagamentos.",
+    icon: CreditCard,
+    images: [
+      { src: "/modules/finance-invoice.jpg", alt: "Criação de faturas com itens e valores" },
+    ],
+  },
+  {
+    id: "users" as const,
+    label: "Usuários",
+    description:
+      "Gestão de usuários com tabela completa mostrando funções, times, workspace e status (Ativo, Bloqueado, Convite pendente). Controle de acesso e permissões por perfil.",
+    icon: Users,
+    images: [
+      { src: "/modules/crm-users.jpg", alt: "Gestão de usuários com funções e status" },
+    ],
+  },
+  {
+    id: "roles" as const,
+    label: "Funções",
+    description:
+      "Gestão de funções e permissões com níveis de acesso (Proprietário, Administrador, Gerente). Conjuntos de permissões granulares para controle seguro do acesso a cada funcionalidade do sistema.",
+    icon: ShieldCheck,
+    images: [
+      { src: "/modules/crm-roles.jpg", alt: "Funções e permissões com níveis de acesso" },
     ],
   },
 ];
 
 export function ModulesStep() {
   const { setupData, updateSetupData, setStep } = useSetup();
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
 
   const toggleModule = (moduleId: keyof typeof setupData.modules) => {
     updateSetupData({
@@ -166,14 +237,17 @@ export function ModulesStep() {
         </CardTitle>
         <CardDescription>
           Escolha os módulos que deseja habilitar. Cada módulo inclui funcionalidades completas para
-          sua área de atuação. Você pode alterar isso depois.
+          sua área de atuação. Clique nas imagens para visualizar em tela cheia.
           {enabledCount > 0 && (
-            <span className="ml-1 font-medium text-primary">{enabledCount} módulo(s) selecionado(s)</span>
+            <span className="ml-1 font-medium text-primary">
+              {" "}
+              {enabledCount} módulo(s) selecionado(s)
+            </span>
           )}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
-        <div className="flex flex-col gap-6">
+      <CardContent className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           {modules.map((module) => {
             const Icon = module.icon;
             const isEnabled = setupData.modules[module.id];
@@ -189,7 +263,7 @@ export function ModulesStep() {
                     : "border-border hover:border-muted-foreground/50 hover:shadow-sm",
                 )}
               >
-                <div className="flex items-start gap-4 p-4 pb-3">
+                <div className="flex items-start gap-3 p-4 pb-2">
                   <Checkbox
                     checked={isEnabled}
                     className="mt-1"
@@ -206,36 +280,29 @@ export function ModulesStep() {
                   </div>
                 </div>
                 <div className="px-4 pb-4">
-                  <div className="overflow-hidden rounded-lg border bg-muted/30">
-                    <div className="relative aspect-video w-full">
-                      <Image
-                        src={module.images[0].src}
-                        alt={module.images[0].alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 768px"
-                        className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                  {module.images.length > 1 && (
-                    <div className="mt-2 grid grid-cols-3 gap-2">
-                      {module.images.slice(1, 4).map((img, i) => (
-                        <div key={i} className="overflow-hidden rounded-lg border bg-muted/30">
-                          <div className="relative aspect-video w-full">
-                            <Image
-                              src={img.src}
-                              alt={img.alt}
-                              fill
-                              sizes="(max-width: 768px) 33vw, 250px"
-                              className="object-cover object-top"
-                              loading="lazy"
-                            />
-                          </div>
+                  <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${Math.min(module.images.length, 3)}, 1fr)` }}>
+                    {module.images.map((img, i) => (
+                      <div
+                        key={i}
+                        className="overflow-hidden rounded-lg border bg-muted/30 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLightbox(img);
+                        }}
+                      >
+                        <div className="relative aspect-video w-full">
+                          <Image
+                            src={img.src}
+                            alt={img.alt}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 300px"
+                            className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+                            loading="lazy"
+                          />
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </button>
             );
@@ -250,6 +317,13 @@ export function ModulesStep() {
           </Button>
         </div>
       </CardContent>
+
+      <Lightbox
+        src={lightbox?.src ?? ""}
+        alt={lightbox?.alt ?? ""}
+        open={!!lightbox}
+        onClose={() => setLightbox(null)}
+      />
     </Card>
   );
 }

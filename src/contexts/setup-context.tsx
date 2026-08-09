@@ -32,6 +32,14 @@ export interface SetupData {
     productivity: boolean;
     fileManager: boolean;
     patientMonitoring: boolean;
+    email: boolean;
+    chat: boolean;
+    calendar: boolean;
+    kanban: boolean;
+    tasks: boolean;
+    invoice: boolean;
+    users: boolean;
+    roles: boolean;
   };
   payment: {
     stripe: boolean;
@@ -81,6 +89,14 @@ const defaultSetupData: SetupData = {
     productivity: true,
     fileManager: false,
     patientMonitoring: false,
+    email: true,
+    chat: true,
+    calendar: true,
+    kanban: true,
+    tasks: true,
+    invoice: false,
+    users: true,
+    roles: false,
   },
   payment: {
     stripe: true,
