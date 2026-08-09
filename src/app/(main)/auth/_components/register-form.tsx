@@ -9,12 +9,11 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { Check, Info, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { PasswordStrengthIndicator } from "@/components/password-strength";
 import { getPasswordStrength } from "@/hooks/use-password-strength";
 import { cn } from "@/lib/utils";
@@ -104,27 +103,7 @@ export function RegisterForm() {
           name="password"
           render={({ field, fieldState }) => (
             <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-              <div className="flex items-center gap-1.5">
-                <FieldLabel htmlFor="register-password">Senha</FieldLabel>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="size-3.5 cursor-help text-muted-foreground" />
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="max-w-[280px]">
-                      <p className="font-medium">Requisitos da senha</p>
-                      <ul className="mt-1 list-inside list-disc space-y-0.5 text-background/80">
-                        <li>Pelo menos 8 caracteres</li>
-                        <li>1 letra maiúscula (A-Z)</li>
-                        <li>1 letra minúscula (a-z)</li>
-                        <li>1 número (0-9)</li>
-                        <li>1 caractere especial (!@#$%^&*)</li>
-                      </ul>
-                      <p className="mt-1.5 text-background/60">Quanto mais requisitos atendidos, mais segura será sua senha.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+              <FieldLabel htmlFor="register-password">Senha</FieldLabel>
               <Input
                 {...field}
                 id="register-password"
