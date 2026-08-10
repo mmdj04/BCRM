@@ -13,9 +13,9 @@ function supabaseToBrlCents(usd: number): number {
 }
 
 const PLAN_AMOUNTS: Record<string, number> = {
-  starter: 89990,
-  pro: 229990,
-  team: 899990,
+  starter: 94490,
+  pro: 241490,
+  team: 944990,
 };
 
 const COMPUTE_AMOUNTS: Record<string, number> = {

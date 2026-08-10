@@ -1,8 +1,13 @@
 export const EXCHANGE_RATE = 6.2;
 export const MARKUP = 2.5;
+export const STRIPE_FEE_RATE = 0.05;
 
 export function supabaseToBrl(usd: number): number {
   return Math.round(usd * EXCHANGE_RATE * MARKUP * 100) / 100;
+}
+
+export function overageWithStripe(basePrice: number): number {
+  return Math.round(basePrice * (1 + STRIPE_FEE_RATE) * 100) / 100;
 }
 
 export type PlanLimit = {
@@ -71,16 +76,16 @@ export const planLimits: Record<string, PlanLimit> = {
 };
 
 export const overageRates: OverageRate = {
-  diskPerGB: supabaseToBrl(0.125),
-  egressPerGB: supabaseToBrl(0.09),
-  cachedEgressPerGB: supabaseToBrl(0.03),
-  storagePerGB: supabaseToBrl(0.0213),
-  perMAU: supabaseToBrl(0.00325),
-  perMillionEdge: supabaseToBrl(2),
-  per1000RealtimeConn: supabaseToBrl(10),
-  perMillionRealtimeMsg: supabaseToBrl(2.5),
-  per1000ImageTransform: supabaseToBrl(5),
-  perSAMLMau: supabaseToBrl(0.015),
+  diskPerGB: overageWithStripe(supabaseToBrl(0.125)),
+  egressPerGB: overageWithStripe(supabaseToBrl(0.09)),
+  cachedEgressPerGB: overageWithStripe(supabaseToBrl(0.03)),
+  storagePerGB: overageWithStripe(supabaseToBrl(0.0213)),
+  perMAU: overageWithStripe(supabaseToBrl(0.00325)),
+  perMillionEdge: overageWithStripe(supabaseToBrl(2)),
+  per1000RealtimeConn: overageWithStripe(supabaseToBrl(10)),
+  perMillionRealtimeMsg: overageWithStripe(supabaseToBrl(2.5)),
+  per1000ImageTransform: overageWithStripe(supabaseToBrl(5)),
+  perSAMLMau: overageWithStripe(supabaseToBrl(0.015)),
 };
 
 export type Plan = {
@@ -102,7 +107,7 @@ export const plans: Plan[] = [
     id: "starter",
     name: "Inicial",
     description: "Para pequenas equipes começando",
-    monthlyPrice: 899.9,
+    monthlyPrice: 944.9,
     cta: "Começar Agora",
     supabasePlan: "Pro",
     baseFeatures: [
@@ -122,7 +127,7 @@ export const plans: Plan[] = [
     id: "pro",
     name: "Pro",
     description: "Para equipes em crescimento",
-    monthlyPrice: 2299.9,
+    monthlyPrice: 2414.9,
     badge: "Popular",
     highlighted: true,
     cta: "Fazer Upgrade",
@@ -144,7 +149,7 @@ export const plans: Plan[] = [
     id: "team",
     name: "Equipe",
     description: "Para organizações grandes",
-    monthlyPrice: 8999.9,
+    monthlyPrice: 9449.9,
     cta: "Fazer Upgrade",
     supabasePlan: "Team",
     baseFeatures: [],
@@ -292,10 +297,10 @@ export type BillingHistoryEntry = {
 };
 
 export const billingHistory: BillingHistoryEntry[] = [
-  { id: "inv_001", date: "Ago 1, 2026", description: "Plano Pro - Mensal", amount: 2299.9, status: "paid" },
-  { id: "inv_002", date: "Jul 1, 2026", description: "Plano Pro - Mensal", amount: 2299.9, status: "paid" },
-  { id: "inv_003", date: "Jun 1, 2026", description: "Plano Inicial - Mensal", amount: 899.9, status: "paid" },
-  { id: "inv_004", date: "Mai 1, 2026", description: "Plano Inicial - Mensal", amount: 899.9, status: "paid" },
+  { id: "inv_001", date: "Ago 1, 2026", description: "Plano Pro - Mensal", amount: 2414.9, status: "paid" },
+  { id: "inv_002", date: "Jul 1, 2026", description: "Plano Pro - Mensal", amount: 2414.9, status: "paid" },
+  { id: "inv_003", date: "Jun 1, 2026", description: "Plano Inicial - Mensal", amount: 944.9, status: "paid" },
+  { id: "inv_004", date: "Mai 1, 2026", description: "Plano Inicial - Mensal", amount: 944.9, status: "paid" },
 ];
 
 export type ComputeOption = {
