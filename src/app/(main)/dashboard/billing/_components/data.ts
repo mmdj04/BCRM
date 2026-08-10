@@ -305,7 +305,7 @@ export const addOns: AddOn[] = [
     name: "PITR Backup (7 dias)",
     description: "Recuperação ponto a ponto com retenção de 7 dias",
     priceUSD: 100,
-    priceBRL: planPrice(100),
+    priceBRL: Math.round(100 * EXCHANGE_RATE * 2 * 100) / 100,
     category: "Backups",
   },
   {
@@ -313,7 +313,7 @@ export const addOns: AddOn[] = [
     name: "PITR Backup (14 dias)",
     description: "Recuperação ponto a ponto com retenção de 14 dias",
     priceUSD: 200,
-    priceBRL: planPrice(200),
+    priceBRL: Math.round(200 * EXCHANGE_RATE * 2 * 100) / 100,
     category: "Backups",
   },
   {
@@ -321,7 +321,7 @@ export const addOns: AddOn[] = [
     name: "PITR Backup (28 dias)",
     description: "Recuperação ponto a ponto com retenção de 28 dias",
     priceUSD: 400,
-    priceBRL: planPrice(400),
+    priceBRL: Math.round(400 * EXCHANGE_RATE * 2 * 100) / 100,
     category: "Backups",
   },
 ];

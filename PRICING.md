@@ -126,13 +126,13 @@ Modelo: **Soft Cap** — o cliente pode exceder o limite e será cobrado no fina
 
 Fonte: [supabase.com/docs/guides/platform/backups](https://supabase.com/docs/guides/platform/backups)
 
-Fórmula: **Supabase_USD × 6,20 × 6** (mesmo multiplicador dos planos)
+Fórmula: **Supabase_USD × 6,20 × 2** (multiplicador 2x para add-ons)
 
 | Retenção | Supabase USD | Fórmula | Preço BCRM |
 |----------|-------------|---------|------------|
-| 7 dias | $100/mês | 100 × 6,20 × 6 | **R$ 3.720,00** |
-| 14 dias | $200/mês | 200 × 6,20 × 6 | **R$ 7.440,00** |
-| 28 dias | $400/mês | 400 × 6,20 × 6 | **R$ 14.880,00** |
+| 7 dias | $100/mês | 100 × 6,20 × 2 | **R$ 1.240,00** |
+| 14 dias | $200/mês | 200 × 6,20 × 2 | **R$ 2.480,00** |
+| 28 dias | $400/mês | 400 × 6,20 × 2 | **R$ 4.960,00** |
 
 > **Nota:** O PITR substitui os backups diários. Pro, Team e Enterprise podem adicionar PITR.
 > Requer pelo menos compute Small para funcionar corretamente.
