@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { createClient } from "@supabase/supabase-js";
-import { ArrowRight, Check, CreditCard, Server, Zap } from "lucide-react";
+import { ArrowRight, Check, CreditCard, Server, Shield, Zap } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/supabase/auth-context";
 
-import { computeOptions, getAllPlanFeatures, getComputePrice, plans } from "./data";
+import { addOns, computeOptions, getAllPlanFeatures, getComputePrice, plans } from "./data";
 
 const PLAN_NAMES: Record<string, string> = {
   free: "Gratuito",
@@ -34,6 +34,8 @@ type ChangePlanDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentPlan: string;
+  currentCompute: string;
+  currentPitr: string;
   onPlanChanged: (newPlan: string) => void;
 };
 
@@ -41,19 +43,23 @@ function ChangePlanContent({
   currentPlan,
   selectedPlan,
   selectedCompute,
+  selectedPitr,
   changeTiming,
   success,
   onSelectPlan,
   onSelectCompute,
+  onSelectPitr,
   onChangeTiming,
 }: {
   currentPlan: string;
   selectedPlan: string;
   selectedCompute: string;
+  selectedPitr: string;
   changeTiming: "now" | "period_end";
   success: boolean;
   onSelectPlan: (id: string) => void;
   onSelectCompute: (id: string) => void;
+  onSelectPitr: (id: string) => void;
   onChangeTiming: (v: "now" | "period_end") => void;
 }) {
   const newPlanData = plans.find((p) => p.id === selectedPlan);
@@ -72,6 +78,9 @@ function ChangePlanContent({
 
   const currentComputePrice = getComputePrice("medium");
   const newComputePrice = getComputePrice(selectedCompute);
+
+  const pitrAddOn = addOns.find((a) => a.id === selectedPitr);
+  const pitrPrice = pitrAddOn?.priceBRL ?? 0;
 
   if (success) {
     return (
@@ -239,6 +248,47 @@ function ChangePlanContent({
         </div>
       )}
 
+      {/* PITR Backup Selection */}
+      {selectedPlan && (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <Shield className="size-4 text-muted-foreground" />
+            <Label className="font-medium">PITR Backup (Point-in-Time Recovery)</Label>
+          </div>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <button
+              type="button"
+              className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all ${
+                selectedPitr === "none"
+                  ? "border-primary bg-primary/5"
+                  : "border-border hover:border-muted-foreground/50"
+              }`}
+              onClick={() => onSelectPitr("none")}
+            >
+              <span className="font-medium text-sm">Sem PITR</span>
+              <span className="text-muted-foreground text-xs">Backups diários 7 dias</span>
+            </button>
+            {addOns
+              .filter((a) => a.category === "Backups")
+              .map((addOn) => (
+                <button
+                  key={addOn.id}
+                  type="button"
+                  className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all ${
+                    selectedPitr === addOn.id
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-muted-foreground/50"
+                  }`}
+                  onClick={() => onSelectPitr(addOn.id)}
+                >
+                  <span className="font-medium text-sm">{addOn.name}</span>
+                  <span className="text-muted-foreground text-xs">R$ {formatPrice(addOn.priceBRL)}/mês</span>
+                </button>
+              ))}
+          </div>
+        </div>
+      )}
+
       {/* Benefits Comparison */}
       {selectedPlan && (
         <div className="grid gap-4 sm:grid-cols-2">
@@ -312,9 +362,13 @@ function ChangePlanContent({
             <ArrowRight className="size-4 text-muted-foreground" />
             <span className="font-medium">{newPlanData.name}</span>
             <span className="ml-auto font-medium">
-              R$ {formatPrice((newPlanData.monthlyPrice ?? 0) + newComputePrice)}/mês
+              R$ {formatPrice((newPlanData.monthlyPrice ?? 0) + newComputePrice + pitrPrice)}/mês
             </span>
           </div>
+          <p className="mt-1 text-muted-foreground text-xs">
+            Plano {formatPrice(newPlanData.monthlyPrice ?? 0)} + Compute {formatPrice(newComputePrice)}
+            {pitrPrice > 0 && <> + PITR {formatPrice(pitrPrice)}</>}
+          </p>
           <p className="mt-2 text-muted-foreground text-xs">
             {changeTiming === "now"
               ? "A alteração será aplicada imediatamente."
@@ -326,11 +380,19 @@ function ChangePlanContent({
   );
 }
 
-export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChanged }: ChangePlanDialogProps) {
+export function ChangePlanDialog({
+  open,
+  onOpenChange,
+  currentPlan,
+  currentCompute,
+  currentPitr,
+  onPlanChanged,
+}: ChangePlanDialogProps) {
   const { user, isDemo } = useAuth();
   const isMobile = useIsMobile();
   const [selectedPlan, setSelectedPlan] = useState<string>("");
-  const [selectedCompute, setSelectedCompute] = useState<string>("");
+  const [selectedCompute, setSelectedCompute] = useState<string>(currentCompute);
+  const [selectedPitr, setSelectedPitr] = useState<string>(currentPitr);
   const [changeTiming, setChangeTiming] = useState<"now" | "period_end">("period_end");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -338,6 +400,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
     setSelectedCompute("medium");
+    setSelectedPitr("none");
   };
 
   const handleConfirmChange = async () => {
@@ -354,6 +417,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
             ...parsed,
             plan: selectedPlan,
             compute: selectedCompute,
+            pitr: selectedPitr,
             status: "active",
           }),
         );
@@ -363,7 +427,8 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
           onOpenChange(false);
           setSuccess(false);
           setSelectedPlan("");
-          setSelectedCompute("");
+          setSelectedCompute(currentCompute);
+          setSelectedPitr(currentPitr);
         }, 1500);
       } else {
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -376,6 +441,7 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
               id: user.id,
               plan: selectedPlan,
               compute: selectedCompute,
+              pitr: selectedPitr,
               plan_interval: "monthly",
               subscription_status: "active",
               current_period_end: changeTiming === "now" ? periodEnd : undefined,
@@ -389,7 +455,8 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
           onOpenChange(false);
           setSuccess(false);
           setSelectedPlan("");
-          setSelectedCompute("");
+          setSelectedCompute(currentCompute);
+          setSelectedPitr(currentPitr);
         }, 1500);
       }
     } catch {
@@ -402,7 +469,8 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
   const handleOpenChange = (value: boolean) => {
     if (!value) {
       setSelectedPlan("");
-      setSelectedCompute("");
+      setSelectedCompute(currentCompute);
+      setSelectedPitr(currentPitr);
       setChangeTiming("period_end");
       setSuccess(false);
     }
@@ -413,10 +481,12 @@ export function ChangePlanDialog({ open, onOpenChange, currentPlan, onPlanChange
     currentPlan,
     selectedPlan,
     selectedCompute,
+    selectedPitr,
     changeTiming,
     success,
     onSelectPlan: handleSelectPlan,
     onSelectCompute: setSelectedCompute,
+    onSelectPitr: setSelectedPitr,
     onChangeTiming: setChangeTiming,
   };
 

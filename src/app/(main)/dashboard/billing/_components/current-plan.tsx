@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 
 import { createClient } from "@supabase/supabase-js";
-import { CreditCard } from "lucide-react";
+import { CreditCard, HardDrive, Shield } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/lib/supabase/auth-context";
 
+import { addOns, computeOptions } from "./data";
 import { ChangePlanDialog } from "./change-plan-dialog";
 
 const supabase = createClient(
@@ -19,6 +20,8 @@ const supabase = createClient(
 
 type SubscriptionData = {
   plan: string;
+  compute: string;
+  pitr: string;
   status: string;
   currentPeriodEnd: string | null;
   cancelAtPeriodEnd: boolean;
@@ -51,13 +54,15 @@ export function CurrentPlan() {
       try {
         const { data } = await supabase
           .from("users")
-          .select("plan, subscription_status, current_period_end, cancel_at_period_end")
+          .select("plan, compute, pitr, subscription_status, current_period_end, cancel_at_period_end")
           .eq("id", user.id)
           .single();
 
         if (data) {
           setSubscription({
             plan: data.plan ?? "free",
+            compute: data.compute ?? "medium",
+            pitr: data.pitr ?? "none",
             status: data.subscription_status ?? "free",
             currentPeriodEnd: data.current_period_end,
             cancelAtPeriodEnd: data.cancel_at_period_end ?? false,
@@ -75,6 +80,8 @@ export function CurrentPlan() {
           const parsed = JSON.parse(demoPlan);
           setSubscription({
             plan: parsed.plan ?? "free",
+            compute: parsed.compute ?? "medium",
+            pitr: parsed.pitr ?? "none",
             status: parsed.status ?? "active",
             currentPeriodEnd: parsed.currentPeriodEnd ?? null,
             cancelAtPeriodEnd: false,
@@ -106,8 +113,15 @@ export function CurrentPlan() {
   }
 
   const plan = subscription?.plan ?? "free";
+  const compute = subscription?.compute ?? "medium";
+  const pitr = subscription?.pitr ?? "none";
   const status = subscription?.status ?? "free";
-  const price = PLAN_PRICES[plan] ?? 0;
+  const planPrice = PLAN_PRICES[plan] ?? 0;
+  const computeData = computeOptions.find((c) => c.id === compute);
+  const computePrice = computeData?.price ?? 0;
+  const pitrData = pitr !== "none" ? addOns.find((a) => a.id === pitr) : null;
+  const pitrPrice = pitrData?.priceBRL ?? 0;
+  const totalPrice = planPrice + computePrice + pitrPrice;
   const periodEnd = subscription?.currentPeriodEnd
     ? new Date(subscription.currentPeriodEnd).toLocaleDateString("pt-BR", {
         month: "short",
@@ -116,8 +130,24 @@ export function CurrentPlan() {
       })
     : null;
 
-  const handlePlanChanged = (newPlan: string) => {
-    setSubscription((prev) => (prev ? { ...prev, plan: newPlan } : prev));
+  const handlePlanChanged = () => {
+    // Re-read from localStorage after plan change
+    try {
+      const demoPlan = localStorage.getItem("bcrm_demo_plan");
+      if (demoPlan) {
+        const parsed = JSON.parse(demoPlan);
+        setSubscription({
+          plan: parsed.plan ?? "free",
+          compute: parsed.compute ?? "medium",
+          pitr: parsed.pitr ?? "none",
+          status: parsed.status ?? "active",
+          currentPeriodEnd: parsed.currentPeriodEnd ?? null,
+          cancelAtPeriodEnd: false,
+        });
+      }
+    } catch {
+      // ignore
+    }
   };
 
   return (
@@ -148,28 +178,65 @@ export function CurrentPlan() {
           </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
+          {/* Plano + Valor */}
           <div className="flex items-center justify-between">
             <div>
               <p className="text-muted-foreground text-sm">Plano</p>
               <p className="font-medium text-lg">{PLAN_NAMES[plan] ?? plan}</p>
             </div>
-            {price > 0 && (
+            {totalPrice > 0 && (
               <div className="text-right">
-                <p className="text-muted-foreground text-sm">Valor</p>
+                <p className="text-muted-foreground text-sm">Valor Total</p>
                 <p className="font-medium text-lg">
-                  R$ {price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                  R$ {totalPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
                 </p>
-              </div>
-            )}
-            {periodEnd && (
-              <div className="text-right">
-                <p className="text-muted-foreground text-sm">
-                  {subscription?.cancelAtPeriodEnd ? "Cancela em" : "Próximo faturamento"}
-                </p>
-                <p className="font-medium text-lg">{periodEnd}</p>
               </div>
             )}
           </div>
+
+          {/* Compute */}
+          {plan !== "free" && computeData && (
+            <div className="flex items-center gap-2 rounded-lg border bg-muted/30 p-3">
+              <HardDrive className="size-4 text-muted-foreground" />
+              <div className="flex-1">
+                <p className="text-muted-foreground text-xs">Compute</p>
+                <p className="font-medium text-sm">
+                  {computeData.size} — {computeData.cpu} / {computeData.ram}
+                </p>
+              </div>
+              <span className="font-medium text-sm">
+                + R$ {computePrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+          )}
+
+          {/* PITR Backup */}
+          {plan !== "free" && (
+            <div className="flex items-center gap-2 rounded-lg border bg-muted/30 p-3">
+              <Shield className="size-4 text-muted-foreground" />
+              <div className="flex-1">
+                <p className="text-muted-foreground text-xs">PITR Backup</p>
+                <p className="font-medium text-sm">
+                  {pitrData ? pitrData.name : "Backups diários (7 dias)"}
+                </p>
+              </div>
+              {pitrData && (
+                <span className="font-medium text-sm">
+                  + R$ {pitrPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Próximo faturamento */}
+          {periodEnd && (
+            <div className="text-right">
+              <p className="text-muted-foreground text-xs">
+                {subscription?.cancelAtPeriodEnd ? "Cancela em" : "Próximo faturamento"}
+              </p>
+              <p className="font-medium text-sm">{periodEnd}</p>
+            </div>
+          )}
 
           {subscription?.cancelAtPeriodEnd && (
             <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-xs dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
@@ -196,6 +263,8 @@ export function CurrentPlan() {
         open={changePlanOpen}
         onOpenChange={setChangePlanOpen}
         currentPlan={plan}
+        currentCompute={compute}
+        currentPitr={pitr}
         onPlanChanged={handlePlanChanged}
       />
     </>

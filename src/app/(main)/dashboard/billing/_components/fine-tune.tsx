@@ -9,18 +9,15 @@ import type { ComputeOption } from "./data";
 
 type FineTuneProps = {
   options: ComputeOption[];
-  selectedCompute?: string;
-  onSelectCompute?: (id: string) => void;
 };
 
-export function FineTune({ options, selectedCompute, onSelectCompute }: FineTuneProps) {
+export function FineTune({ options }: FineTuneProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Como funciona o pricing do Compute</CardTitle>
+        <CardTitle className="text-lg">Tabela de Compute</CardTitle>
         <CardDescription>
-          Todos os projetos rodam em uma instância de computação. Cada compute adicionado ao seu plano é cobrado
-          mensalmente. Selecione o compute ideal para o seu projeto.
+          Referência das opções de compute disponíveis. Todos os projetos rodam em uma instância de computação.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -28,7 +25,6 @@ export function FineTune({ options, selectedCompute, onSelectCompute }: FineTune
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-8" />
                 <TableHead>Tamanho</TableHead>
                 <TableHead className="text-right">R$/mês</TableHead>
                 <TableHead>CPU</TableHead>
@@ -41,26 +37,8 @@ export function FineTune({ options, selectedCompute, onSelectCompute }: FineTune
             </TableHeader>
             <TableBody>
               {options.map((option) => {
-                const isSelected = selectedCompute === option.id;
                 return (
-                  <TableRow
-                    key={option.id}
-                    className={`cursor-pointer transition-colors ${
-                      isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50"
-                    }`}
-                    onClick={() => onSelectCompute?.(option.id)}
-                  >
-                    <TableCell className="w-8 pr-0">
-                      <div
-                        className={`flex size-5 items-center justify-center rounded-full border-2 transition-colors ${
-                          isSelected
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : "border-muted-foreground/30"
-                        }`}
-                      >
-                        {isSelected && <Check className="size-3" />}
-                      </div>
-                    </TableCell>
+                  <TableRow key={option.id} className="transition-colors hover:bg-muted/50">
                     <TableCell className="font-medium">{option.size}</TableCell>
                     <TableCell className="text-right font-medium">R$ {option.price.toLocaleString("pt-BR")}</TableCell>
                     <TableCell>{option.cpu}</TableCell>
@@ -84,27 +62,6 @@ export function FineTune({ options, selectedCompute, onSelectCompute }: FineTune
             </TableBody>
           </Table>
         </div>
-
-        {/* Mobile benefits (shown below table on small screens) */}
-        {selectedCompute && (
-          <div className="mt-4 lg:hidden">
-            {options
-              .filter((o) => o.id === selectedCompute)
-              .map((option) => (
-                <div key={option.id} className="rounded-lg border bg-muted/30 p-3">
-                  <p className="mb-2 font-medium text-sm">Benefícios — {option.size}</p>
-                  <ul className="flex flex-col gap-1">
-                    {option.benefits.map((benefit) => (
-                      <li key={benefit} className="flex items-start gap-1.5 text-muted-foreground text-xs">
-                        <Check className="mt-0.5 size-3 shrink-0 text-primary" />
-                        {benefit}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-          </div>
-        )}
       </CardContent>
     </Card>
   );

@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { useAuth } from "@/lib/supabase/auth-context";
 
 import { BillingHistory } from "./billing-history";
@@ -14,7 +12,6 @@ import { PricingCards } from "./pricing-cards";
 
 export function BillingContent() {
   const { user } = useAuth();
-  const [selectedCompute, setSelectedCompute] = useState<string>("");
 
   return (
     <div className="flex flex-col gap-6">
@@ -30,7 +27,7 @@ export function BillingContent() {
       <div className="flex flex-col gap-4 xl:grid xl:grid-cols-12">
         <div className="flex flex-col gap-6 xl:col-span-8">
           <FeatureComparison categories={featureComparison} />
-          <FineTune options={computeOptions} selectedCompute={selectedCompute} onSelectCompute={setSelectedCompute} />
+          <FineTune options={computeOptions} />
           <Faq items={faqItems} />
         </div>
         <div className="flex flex-col gap-4 xl:col-span-4">
