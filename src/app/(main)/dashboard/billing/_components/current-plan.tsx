@@ -32,7 +32,7 @@ const PLAN_NAMES: Record<string, string> = {
 
 const PLAN_PRICES: Record<string, number> = {
   pro: 930,
-  enterprise: 22198.8,
+  enterprise: 22282.8,
 };
 
 export function CurrentPlan() {

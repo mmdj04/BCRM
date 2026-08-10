@@ -36,8 +36,8 @@ Câmbio:    USD 1 = BRL 6,20 (fixo)
 | Mensagens Realtime | 5 milhões | 5 milhões |
 | Transformações de imagem | 100 | 100 |
 | SAML/SSO | 50 | 50 |
-| Backups | 7 dias | 14 dias |
-| Log retention | 7 dias | 28 dias |
+| Backups automáticos | 7 dias | 14 dias |
+| Retenção de logs | 7 dias | 28 dias |
 | **SOC2 + ISO 27001** | — | ✅ |
 | **HIPAA** | — | Adicional |
 | **SSO Dashboard** | — | ✅ |
@@ -117,6 +117,25 @@ Modelo: **Soft Cap** — o cliente pode exceder o limite e será cobrado no fina
 | Realtime mensagens | $2,50/Milhão | **R$ 46,50/Milhão** |
 | Transformações imagem | $5/1000 | **R$ 93/1000** |
 | SAML/SSO | $0,015/MAU | **R$ 0,28/MAU** |
+
+---
+
+## Adicionais (Add-ons)
+
+### PITR Backup — Recuperação Ponto a Ponto
+
+Fonte: [supabase.com/docs/guides/platform/backups](https://supabase.com/docs/guides/platform/backups)
+
+Fórmula: **Supabase_USD × 6,20 × 6** (mesmo multiplicador dos planos)
+
+| Retenção | Supabase USD | Fórmula | Preço BCRM |
+|----------|-------------|---------|------------|
+| 7 dias | $100/mês | 100 × 6,20 × 6 | **R$ 3.720,00** |
+| 14 dias | $200/mês | 200 × 6,20 × 6 | **R$ 7.440,00** |
+| 28 dias | $400/mês | 400 × 6,20 × 6 | **R$ 14.880,00** |
+
+> **Nota:** O PITR substitui os backups diários. Pro, Team e Enterprise podem adicionar PITR.
+> Requer pelo menos compute Small para funcionar corretamente.
 
 ---
 

@@ -77,12 +77,12 @@ const _notificationLabels: Record<string, string> = {
   weeklyReport: "Relatório Semanal",
 };
 
-const plans = [
+const summaryPlans = [
   {
     id: "pro",
     name: "Pro",
     price: planPrice(25),
-    period: "/mes",
+    period: "/mês",
     description: "Para equipes em crescimento",
     baseFeatures: [
       "Até 20 usuários",
@@ -92,11 +92,11 @@ const plans = [
       "8 GB de disco por projeto",
       "250 GB de egress mensal",
       "100 GB de armazenamento",
-      "Auth com 100K MAU",
+      "Auth com 100K MAUs",
       "2M Edge Functions",
-      "500 conexoes Realtime",
+      "500 conexões Realtime",
       "5M mensagens Realtime",
-      "100 transformacoes de imagem",
+      "100 transformações de imagem",
       "SAML/SSO (50 usuários)",
       "Backups automáticos (7 dias)",
       "Suporte prioritário",
@@ -110,8 +110,8 @@ const plans = [
     id: "enterprise",
     name: "Enterprise",
     price: planPrice(599),
-    period: "/mes",
-    description: "Para organizacoes compliance e escala",
+    period: "/mês",
+    description: "Para organizações compliance e escala",
     baseFeatures: [
       "Até 20 usuários",
       "Todos os módulos",
@@ -120,26 +120,22 @@ const plans = [
       "8 GB de disco por projeto",
       "250 GB de egress mensal",
       "100 GB de armazenamento",
-      "Auth com 100K MAU",
+      "Auth com 100K MAUs",
       "2M Edge Functions",
-      "500 conexoes Realtime",
+      "500 conexões Realtime",
       "5M mensagens Realtime",
-      "100 transformacoes de imagem",
+      "100 transformações de imagem",
       "SAML/SSO (50 usuários)",
-      "Backups automáticos (7 dias)",
-      "Suporte prioritário",
-      "Relatórios avançados",
-      "API de integração",
+      "Backups automáticos (14 dias)",
+      "Retenção de logs (28 dias)",
+      "Suporte prioritário com SLA",
     ],
     extraFeatures: [
       "SOC2 + ISO 27001",
-      "HIPAA (adicionais)",
+      "HIPAA (aditivo)",
       "SSO para Dashboard",
       "Platform Audit Logs",
       "AWS PrivateLink",
-      "Backups (14 dias)",
-      "Logs retidos (28 dias)",
-      "Suporte prioritário com SLA",
       "Access Roles: Read-only + Predefined",
     ],
   },
@@ -179,7 +175,7 @@ export function SummaryStep() {
     .filter(([_, v]) => !v)
     .map(([k]) => k);
 
-  const selectedPlanData = plans.find((p) => p.id === selectedPlan);
+  const selectedPlanData = summaryPlans.find((p) => p.id === selectedPlan);
 
   const openPaymentDialog = async () => {
     // Demo mode: skip Stripe entirely, mark payment as complete
@@ -601,8 +597,8 @@ export function SummaryStep() {
           {/* Seleção de Plano */}
           <div className="mt-2">
             <h3 className="mb-3 font-semibold text-base">Selecione seu Plano</h3>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {plans.map((plan) => (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {summaryPlans.map((plan) => (
                 <button
                   key={plan.id}
                   type="button"
