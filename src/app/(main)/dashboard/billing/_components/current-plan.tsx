@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/lib/supabase/auth-context";
 
 import { addOns, computeOptions } from "./data";
-import { ChangePlanDialog } from "./change-plan-dialog";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -38,11 +37,14 @@ const PLAN_PRICES: Record<string, number> = {
   enterprise: 22282.8,
 };
 
-export function CurrentPlan() {
+type CurrentPlanProps = {
+  onOpenChangePlan?: (plan: string, compute: string, pitr: string) => void;
+};
+
+export function CurrentPlan({ onOpenChangePlan }: CurrentPlanProps) {
   const { user } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [changePlanOpen, setChangePlanOpen] = useState(false);
 
   useEffect(() => {
     async function fetchSubscription() {
@@ -130,143 +132,116 @@ export function CurrentPlan() {
       })
     : null;
 
-  const handlePlanChanged = () => {
-    // Re-read from localStorage after plan change
-    try {
-      const demoPlan = localStorage.getItem("bcrm_demo_plan");
-      if (demoPlan) {
-        const parsed = JSON.parse(demoPlan);
-        setSubscription({
-          plan: parsed.plan ?? "free",
-          compute: parsed.compute ?? "medium",
-          pitr: parsed.pitr ?? "none",
-          status: parsed.status ?? "active",
-          currentPeriodEnd: parsed.currentPeriodEnd ?? null,
-          cancelAtPeriodEnd: false,
-        });
-      }
-    } catch {
-      // ignore
-    }
-  };
-
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-lg">Plano Atual</CardTitle>
-              <CardDescription>Sua assinatura ativa.</CardDescription>
-            </div>
-            <Badge
-              variant="outline"
-              className={
-                status === "active"
-                  ? "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
-                  : "border-muted"
-              }
-            >
-              {status === "active"
-                ? "Ativo"
-                : status === "past_due"
-                  ? "Atrasado"
-                  : status === "canceled"
-                    ? "Cancelado"
-                    : "Gratuito"}
-            </Badge>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-lg">Plano Atual</CardTitle>
+            <CardDescription>Sua assinatura ativa.</CardDescription>
           </div>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          {/* Plano + Valor */}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-muted-foreground text-sm">Plano</p>
-              <p className="font-medium text-lg">{PLAN_NAMES[plan] ?? plan}</p>
+          <Badge
+            variant="outline"
+            className={
+              status === "active"
+                ? "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+                : "border-muted"
+            }
+          >
+            {status === "active"
+              ? "Ativo"
+              : status === "past_due"
+                ? "Atrasado"
+                : status === "canceled"
+                  ? "Cancelado"
+                  : "Gratuito"}
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        {/* Plano + Valor */}
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-muted-foreground text-sm">Plano</p>
+            <p className="font-medium text-lg">{PLAN_NAMES[plan] ?? plan}</p>
+          </div>
+          {totalPrice > 0 && (
+            <div className="text-right">
+              <p className="text-muted-foreground text-sm">Valor Total</p>
+              <p className="font-medium text-lg">
+                R$ {totalPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+              </p>
             </div>
-            {totalPrice > 0 && (
-              <div className="text-right">
-                <p className="text-muted-foreground text-sm">Valor Total</p>
-                <p className="font-medium text-lg">
-                  R$ {totalPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
-                </p>
-              </div>
+          )}
+        </div>
+
+        {/* Compute */}
+        {plan !== "free" && computeData && (
+          <div className="flex items-center gap-2 rounded-lg border bg-muted/30 p-3">
+            <HardDrive className="size-4 text-muted-foreground" />
+            <div className="flex-1">
+              <p className="text-muted-foreground text-xs">Compute</p>
+              <p className="font-medium text-sm">
+                {computeData.size} — {computeData.cpu} / {computeData.ram}
+              </p>
+            </div>
+            <span className="font-medium text-sm">
+              + R$ {computePrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+            </span>
+          </div>
+        )}
+
+        {/* PITR Backup */}
+        {plan !== "free" && (
+          <div className="flex items-center gap-2 rounded-lg border bg-muted/30 p-3">
+            <Shield className="size-4 text-muted-foreground" />
+            <div className="flex-1">
+              <p className="text-muted-foreground text-xs">PITR Backup</p>
+              <p className="font-medium text-sm">
+                {pitrData ? pitrData.name : "Backups diários (7 dias)"}
+              </p>
+            </div>
+            {pitrData && (
+              <span className="font-medium text-sm">
+                + R$ {pitrPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+              </span>
             )}
           </div>
+        )}
 
-          {/* Compute */}
-          {plan !== "free" && computeData && (
-            <div className="flex items-center gap-2 rounded-lg border bg-muted/30 p-3">
-              <HardDrive className="size-4 text-muted-foreground" />
-              <div className="flex-1">
-                <p className="text-muted-foreground text-xs">Compute</p>
-                <p className="font-medium text-sm">
-                  {computeData.size} — {computeData.cpu} / {computeData.ram}
-                </p>
-              </div>
-              <span className="font-medium text-sm">
-                + R$ {computePrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-              </span>
-            </div>
-          )}
+        {/* Próximo faturamento */}
+        {periodEnd && (
+          <div className="text-right">
+            <p className="text-muted-foreground text-xs">
+              {subscription?.cancelAtPeriodEnd ? "Cancela em" : "Próximo faturamento"}
+            </p>
+            <p className="font-medium text-sm">{periodEnd}</p>
+          </div>
+        )}
 
-          {/* PITR Backup */}
-          {plan !== "free" && (
-            <div className="flex items-center gap-2 rounded-lg border bg-muted/30 p-3">
-              <Shield className="size-4 text-muted-foreground" />
-              <div className="flex-1">
-                <p className="text-muted-foreground text-xs">PITR Backup</p>
-                <p className="font-medium text-sm">
-                  {pitrData ? pitrData.name : "Backups diários (7 dias)"}
-                </p>
-              </div>
-              {pitrData && (
-                <span className="font-medium text-sm">
-                  + R$ {pitrPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-                </span>
-              )}
-            </div>
-          )}
+        {subscription?.cancelAtPeriodEnd && (
+          <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-xs dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
+            Sua assinatura será cancelada ao final do período. Você ainda tem acesso até {periodEnd}.
+          </div>
+        )}
 
-          {/* Próximo faturamento */}
-          {periodEnd && (
-            <div className="text-right">
-              <p className="text-muted-foreground text-xs">
-                {subscription?.cancelAtPeriodEnd ? "Cancela em" : "Próximo faturamento"}
-              </p>
-              <p className="font-medium text-sm">{periodEnd}</p>
-            </div>
-          )}
+        {plan === "free" && (
+          <div className="rounded-lg border bg-muted/50 p-4 text-center text-muted-foreground text-sm">
+            Você está no plano gratuito. Escolha um plano acima para desbloquear todos os recursos.
+          </div>
+        )}
 
-          {subscription?.cancelAtPeriodEnd && (
-            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-xs dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
-              Sua assinatura será cancelada ao final do período. Você ainda tem acesso até {periodEnd}.
-            </div>
-          )}
-
-          {plan === "free" && (
-            <div className="rounded-lg border bg-muted/50 p-4 text-center text-muted-foreground text-sm">
-              Você está no plano gratuito. Escolha um plano acima para desbloquear todos os recursos.
-            </div>
-          )}
-
-          {plan !== "free" && (
-            <Button variant="outline" onClick={() => setChangePlanOpen(true)} className="w-full">
-              <CreditCard className="mr-2 size-4" />
-              Alterar Plano
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-
-      <ChangePlanDialog
-        open={changePlanOpen}
-        onOpenChange={setChangePlanOpen}
-        currentPlan={plan}
-        currentCompute={compute}
-        currentPitr={pitr}
-        onPlanChanged={handlePlanChanged}
-      />
-    </>
+        {plan !== "free" && (
+          <Button
+            variant="outline"
+            onClick={() => onOpenChangePlan?.(plan, compute, pitr)}
+            className="w-full"
+          >
+            <CreditCard className="mr-2 size-4" />
+            Alterar Plano
+          </Button>
+        )}
+      </CardContent>
+    </Card>
   );
 }
