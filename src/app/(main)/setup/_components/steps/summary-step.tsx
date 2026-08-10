@@ -16,7 +16,8 @@ import {
   X,
 } from "lucide-react";
 
-import { addOns, computeOptions, planPrice } from "@/app/(main)/dashboard/billing/_components/data";
+import { addOns, billingIntervals, computeOptions, intervalPrice, intervalPricePerMonth, planPrice } from "@/app/(main)/dashboard/billing/_components/data";
+import type { BillingInterval } from "@/app/(main)/dashboard/billing/_components/data";
 import { PaymentForm } from "@/components/payment-form";
 import { StripeElementsProvider } from "@/components/stripe-provider";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -26,6 +27,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSetup } from "@/contexts/setup-context";
 import { useAuth } from "@/lib/supabase/auth-context";
 
@@ -141,6 +143,7 @@ export function SummaryStep() {
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
   const [selectedCompute, setSelectedCompute] = useState<string>("medium");
   const [selectedAddOn, setSelectedAddOn] = useState<string>("none");
+  const [selectedInterval, setSelectedInterval] = useState<BillingInterval>("monthly");
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -166,7 +169,11 @@ export function SummaryStep() {
   const selectedAddOnData = selectedAddOn !== "none" ? addOns.find((a) => a.id === selectedAddOn) : null;
   const addOnPrice = selectedAddOnData?.priceBRL ?? 0;
   const computePrice = computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0;
-  const totalMonthly = (selectedPlanData?.price ?? 0) + computePrice + addOnPrice;
+  const planPricePerMonth = intervalPricePerMonth(selectedPlanData?.price ?? 0, selectedInterval);
+  const totalMonthly = planPricePerMonth + computePrice + addOnPrice;
+
+  const intervalConfig = billingIntervals.find((i) => i.id === selectedInterval)!;
+  const monthsLabel = selectedInterval === "quarterly" ? "3 meses" : selectedInterval === "annual" ? "1 ano" : null;
 
   const openPaymentDialog = async () => {
     // Demo mode: skip Stripe entirely, mark payment as complete
@@ -177,6 +184,8 @@ export function SummaryStep() {
         JSON.stringify({
           plan: selectedPlan,
           compute: selectedCompute,
+          pitr: selectedAddOn,
+          plan_interval: selectedInterval,
           status: "active",
           currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         }),
@@ -198,6 +207,7 @@ export function SummaryStep() {
         body: JSON.stringify({
           plan: selectedPlan,
           compute: selectedCompute,
+          interval: selectedInterval,
           userId: user.id,
           email: user.email,
         }),
@@ -231,7 +241,7 @@ export function SummaryStep() {
             {
               id: user.id,
               plan: selectedPlan,
-              plan_interval: "monthly",
+              plan_interval: selectedInterval,
               subscription_status: "active",
               current_period_end: periodEnd,
             },
@@ -587,6 +597,42 @@ export function SummaryStep() {
 
           {/* Seleção de Plano */}
           <div className="mt-2">
+            {/* Billing Interval Selector */}
+            <div className="mb-4 flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <CreditCard className="size-4" />
+                <span>Forma de pagamento</span>
+              </div>
+              <ToggleGroup
+                type="single"
+                value={selectedInterval}
+                onValueChange={(value) => {
+                  if (value) setSelectedInterval(value as BillingInterval);
+                }}
+                className="rounded-lg border bg-muted p-1"
+              >
+                {billingIntervals.map((interval) => (
+                  <ToggleGroupItem
+                    key={interval.id}
+                    value={interval.id}
+                    className="relative gap-1.5 px-4 text-sm data-[state=on]:bg-background data-[state=on]:shadow-sm"
+                  >
+                    {interval.label}
+                    {interval.discount > 0 && (
+                      <Badge variant="default" className="ml-1 bg-green-600 text-white text-[10px] px-1.5 py-0">
+                        -{Math.round(interval.discount * 100)}%
+                      </Badge>
+                    )}
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
+              {monthsLabel && (
+                <p className="text-muted-foreground text-xs">
+                  Paga de uma vez — {monthsLabel} adiantado, sem mensalidade
+                </p>
+              )}
+            </div>
+
             <h3 className="mb-3 font-semibold text-base">Selecione seu Plano</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {summaryPlans.map((plan) => (
@@ -610,10 +656,15 @@ export function SummaryStep() {
                   <span className="font-semibold text-base">{plan.name}</span>
                   <div className="mt-1 flex items-baseline gap-0.5">
                     <span className="font-bold text-xl">
-                      R$ {plan.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                      R$ {intervalPricePerMonth(plan.price, selectedInterval).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                     </span>
-                    <span className="text-muted-foreground text-sm">{plan.period}</span>
+                    <span className="text-muted-foreground text-sm">/mês</span>
                   </div>
+                  {selectedInterval !== "monthly" && (
+                    <p className="text-muted-foreground text-xs">
+                      Total: R$ {intervalPrice(plan.price, selectedInterval).toLocaleString("pt-BR", { minimumFractionDigits: 2 })} ({monthsLabel} adiantado)
+                    </p>
+                  )}
                   <p className="mt-1 text-muted-foreground text-xs">{plan.description}</p>
 
                   {/* Base Features */}
@@ -805,6 +856,11 @@ export function SummaryStep() {
                     <span className="font-normal text-muted-foreground text-sm">/mês</span>
                   </span>
                 </div>
+                {selectedInterval !== "monthly" && (
+                  <p className="mt-1 text-muted-foreground text-xs">
+                    Total {intervalConfig.label}: R$ {intervalPrice(totalMonthly, selectedInterval).toLocaleString("pt-BR", { minimumFractionDigits: 2 })} ({monthsLabel} adiantado)
+                  </p>
+                )}
               </div>
             )}
           </div>

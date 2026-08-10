@@ -6,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { ArrowRight, Check, CreditCard, Server, Shield } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,7 +23,17 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/supabase/auth-context";
 
-import { addOns, computeOptions, getAllPlanFeatures, getComputePrice, plans } from "./data";
+import {
+  addOns,
+  billingIntervals,
+  computeOptions,
+  getAllPlanFeatures,
+  getComputePrice,
+  intervalPrice,
+  intervalPricePerMonth,
+  plans,
+  type BillingInterval,
+} from "./data";
 
 const PLAN_NAMES: Record<string, string> = {
   free: "Gratuito",
@@ -46,10 +57,12 @@ function ChangePlanContent({
   selectedPlan,
   selectedCompute,
   selectedPitr,
+  selectedInterval,
   success,
   onSelectPlan,
   onSelectCompute,
   onSelectPitr,
+  onSelectInterval,
 }: {
   currentPlan: string;
   currentCompute: string;
@@ -57,10 +70,12 @@ function ChangePlanContent({
   selectedPlan: string;
   selectedCompute: string;
   selectedPitr: string;
+  selectedInterval: BillingInterval;
   success: boolean;
   onSelectPlan: (id: string) => void;
   onSelectCompute: (id: string) => void;
   onSelectPitr: (id: string) => void;
+  onSelectInterval: (interval: BillingInterval) => void;
 }) {
   const newPlanData = plans.find((p) => p.id === selectedPlan);
 
@@ -82,6 +97,9 @@ function ChangePlanContent({
   const pitrAddOn = addOns.find((a) => a.id === selectedPitr);
   const pitrPrice = pitrAddOn?.priceBRL ?? 0;
 
+  const intervalConfig = billingIntervals.find((i) => i.id === selectedInterval)!;
+  const monthsLabel = selectedInterval === "quarterly" ? "3 meses" : selectedInterval === "annual" ? "1 ano" : null;
+
   if (success) {
     return (
       <div className="flex flex-col items-center gap-3 py-8">
@@ -98,6 +116,42 @@ function ChangePlanContent({
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Billing Interval */}
+      <div className="flex flex-col items-center gap-3">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm">
+          <CreditCard className="size-4" />
+          <span>Forma de pagamento</span>
+        </div>
+        <ToggleGroup
+          type="single"
+          value={selectedInterval}
+          onValueChange={(value) => {
+            if (value) onSelectInterval(value as BillingInterval);
+          }}
+          className="rounded-lg border bg-muted p-1"
+        >
+          {billingIntervals.map((interval) => (
+            <ToggleGroupItem
+              key={interval.id}
+              value={interval.id}
+              className="relative gap-1.5 px-4 text-sm data-[state=on]:bg-background data-[state=on]:shadow-sm"
+            >
+              {interval.label}
+              {interval.discount > 0 && (
+                <Badge variant="default" className="ml-1 bg-green-600 text-white text-[10px] px-1.5 py-0">
+                  -{Math.round(interval.discount * 100)}%
+                </Badge>
+              )}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        {monthsLabel && (
+          <p className="text-muted-foreground text-xs">
+            Paga de uma vez — {monthsLabel} adiantado, sem mensalidade
+          </p>
+        )}
+      </div>
+
       {/* Current Plan */}
       <div className="rounded-lg border bg-muted/30 p-4">
         <div className="flex items-center justify-between">
@@ -110,8 +164,10 @@ function ChangePlanContent({
             <p className="font-medium text-lg">
               R${" "}
               {formatPrice(
-                (PLAN_NAMES[currentPlan] ? (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0) : 0) +
-                  currentComputePrice,
+                intervalPricePerMonth(
+                  (PLAN_NAMES[currentPlan] ? (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0) : 0),
+                  selectedInterval,
+                ) + currentComputePrice,
               )}
               /mês
             </p>
@@ -124,6 +180,8 @@ function ChangePlanContent({
         <Label className="font-medium">Selecione o novo plano</Label>
         <RadioGroup value={selectedPlan} onValueChange={onSelectPlan} className="flex flex-col gap-3">
           {availablePlans.map((plan) => {
+            const planPPM = intervalPricePerMonth(plan.monthlyPrice ?? 0, selectedInterval);
+            const planTotal = intervalPrice(plan.monthlyPrice ?? 0, selectedInterval);
             const isUpgrade = (plan.monthlyPrice ?? 0) > (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0);
             return (
               // biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally
@@ -150,7 +208,15 @@ function ChangePlanContent({
                     </Badge>
                   </div>
                   <p className="text-muted-foreground text-sm">{plan.description}</p>
-                  <p className="mt-1 font-medium text-sm">R$ {formatPrice(plan.monthlyPrice ?? 0)}/mês + Compute</p>
+                  <p className="mt-1 font-medium text-sm">
+                    R$ {formatPrice(planPPM)}/mês
+                    {selectedInterval !== "monthly" && (
+                      <span className="text-muted-foreground text-xs font-normal ml-1">
+                        (Total: R$ {formatPrice(planTotal)})
+                      </span>
+                    )}
+                    {" "}+ Compute
+                  </p>
                 </div>
               </label>
             );
@@ -326,7 +392,7 @@ function ChangePlanContent({
               <ArrowRight className="size-4 text-muted-foreground" />
               <span className="font-medium">{newPlanData.name}</span>
               <span className="ml-auto font-medium">
-                R$ {formatPrice((newPlanData.monthlyPrice ?? 0) + newComputePrice + pitrPrice)}/mês
+                R$ {formatPrice(intervalPricePerMonth(newPlanData.monthlyPrice ?? 0, selectedInterval) + newComputePrice + pitrPrice)}/mês
               </span>
             </div>
           ) : (
@@ -334,16 +400,19 @@ function ChangePlanContent({
               <span>{PLAN_NAMES[currentPlan]}</span>
               <span className="ml-auto font-medium">
                 R$ {formatPrice(
-                  (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0) + newComputePrice + pitrPrice,
+                  intervalPricePerMonth(plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0, selectedInterval) + newComputePrice + pitrPrice,
                 )}/mês
               </span>
             </div>
           )}
           <p className="mt-1 text-muted-foreground text-xs">
             {selectedPlan && newPlanData
-              ? `Plano ${formatPrice(newPlanData.monthlyPrice ?? 0)} + Compute ${formatPrice(newComputePrice)}`
+              ? `Plano ${formatPrice(intervalPricePerMonth(newPlanData.monthlyPrice ?? 0, selectedInterval))} + Compute ${formatPrice(newComputePrice)}`
               : `Compute ${formatPrice(newComputePrice)}`}
             {pitrPrice > 0 && <> + PITR {formatPrice(pitrPrice)}</>}
+            {selectedInterval !== "monthly" && (
+              <> — {intervalConfig.label} ({monthsLabel} adiantado)</>
+            )}
           </p>
           <p className="mt-2 text-muted-foreground text-xs">
             A alteração entrará em vigor ao final do período atual.
@@ -367,6 +436,7 @@ export function ChangePlanDialog({
   const [selectedPlan, setSelectedPlan] = useState<string>("");
   const [selectedCompute, setSelectedCompute] = useState<string>(currentCompute);
   const [selectedPitr, setSelectedPitr] = useState<string>(currentPitr);
+  const [selectedInterval, setSelectedInterval] = useState<BillingInterval>("monthly");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -395,6 +465,7 @@ export function ChangePlanDialog({
             plan: updatedPlan,
             compute: selectedCompute,
             pitr: selectedPitr,
+            plan_interval: selectedInterval,
             status: "active",
           }),
         );
@@ -406,6 +477,7 @@ export function ChangePlanDialog({
           setSelectedPlan("");
           setSelectedCompute(currentCompute);
           setSelectedPitr(currentPitr);
+          setSelectedInterval("monthly");
         }, 1500);
       } else {
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -419,7 +491,7 @@ export function ChangePlanDialog({
               plan: updatedPlan,
               compute: selectedCompute,
               pitr: selectedPitr,
-              plan_interval: "monthly",
+              plan_interval: selectedInterval,
               subscription_status: "active",
             },
             { onConflict: "id" },
@@ -433,6 +505,7 @@ export function ChangePlanDialog({
           setSelectedPlan("");
           setSelectedCompute(currentCompute);
           setSelectedPitr(currentPitr);
+          setSelectedInterval("monthly");
         }, 1500);
       }
     } catch {
@@ -447,6 +520,7 @@ export function ChangePlanDialog({
       setSelectedPlan("");
       setSelectedCompute(currentCompute);
       setSelectedPitr(currentPitr);
+      setSelectedInterval("monthly");
       setSuccess(false);
     }
     onOpenChange(value);
@@ -459,10 +533,12 @@ export function ChangePlanDialog({
     selectedPlan,
     selectedCompute,
     selectedPitr,
+    selectedInterval,
     success,
     onSelectPlan: handleSelectPlan,
     onSelectCompute: setSelectedCompute,
     onSelectPitr: setSelectedPitr,
+    onSelectInterval: setSelectedInterval,
   };
 
   if (isMobile) {
