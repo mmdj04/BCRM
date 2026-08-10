@@ -5,7 +5,7 @@ import { useState } from "react";
 interface UseCheckoutOptions {
   plan: string;
   compute: string;
-  interval?: "monthly";
+  interval?: "monthly" | "quarterly" | "annual";
   email: string;
   userId: string;
 }

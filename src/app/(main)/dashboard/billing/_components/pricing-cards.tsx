@@ -2,17 +2,25 @@
 
 import { useState } from "react";
 
-import { Check, Server, Zap } from "lucide-react";
+import { Check, CreditCard, Server, Zap } from "lucide-react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useCheckout } from "@/hooks/use-checkout";
 import { useAuth } from "@/lib/supabase/auth-context";
 
-import { computeOptions, type Plan } from "./data";
+import {
+  billingIntervals,
+  computeOptions,
+  intervalPrice,
+  intervalPricePerMonth,
+  type BillingInterval,
+  type Plan,
+} from "./data";
 
 type PricingCardsProps = {
   plans: Plan[];
@@ -23,6 +31,7 @@ type PricingCardsProps = {
 export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [selectedCompute, setSelectedCompute] = useState<string>("");
+  const [selectedInterval, setSelectedInterval] = useState<BillingInterval>("monthly");
   const { checkout, loading } = useCheckout();
   const { isDemo } = useAuth();
 
@@ -43,7 +52,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
     await checkout({
       plan: selectedPlan,
       compute: selectedCompute,
-      interval: "monthly",
+      interval: selectedInterval,
       email: userEmail,
       userId,
     });
@@ -53,14 +62,48 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
     return price.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
+  const intervalConfig = billingIntervals.find((i) => i.id === selectedInterval)!;
+  const monthsLabel = selectedInterval === "quarterly" ? "3 meses" : selectedInterval === "annual" ? "1 ano" : null;
+
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-6">
+      {/* Billing Interval Selector */}
+      <div className="flex flex-col items-center gap-3">
+        <ToggleGroup
+          type="single"
+          value={selectedInterval}
+          onValueChange={(value) => {
+            if (value) setSelectedInterval(value as BillingInterval);
+          }}
+          className="rounded-lg border p-1"
+        >
+          {billingIntervals.map((interval) => (
+            <ToggleGroupItem key={interval.id} value={interval.id} className="gap-2 px-4">
+              {interval.label}
+              {interval.discount > 0 && (
+                <Badge variant="secondary" className="ml-1 text-xs">
+                  -{Math.round(interval.discount * 100)}%
+                </Badge>
+              )}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        {monthsLabel && (
+          <p className="text-muted-foreground text-sm">
+            Paga de uma vez — {monthsLabel} adiantado, sem mensalidade
+          </p>
+        )}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
         {plans.map((plan) => {
           const isExpanded = selectedPlan === plan.id;
           const compute = computeOptions.find((c) => c.id === selectedCompute);
-          const planComputePrice = isExpanded && compute ? compute.price : 0;
-          const planTotal = (plan.monthlyPrice ?? 0) + planComputePrice;
+          const planPricePerMonth = plan.monthlyPrice !== null ? intervalPricePerMonth(plan.monthlyPrice, selectedInterval) : 0;
+          const computePricePerMonth = isExpanded && compute ? intervalPricePerMonth(compute.price, selectedInterval) : 0;
+          const planTotalPerMonth = planPricePerMonth + computePricePerMonth;
+          const planTotal = plan.monthlyPrice !== null ? intervalPrice(plan.monthlyPrice, selectedInterval) : 0;
+          const computeTotal = isExpanded && compute ? intervalPrice(compute.price, selectedInterval) : 0;
 
           return (
             <Card key={plan.id} className={`flex flex-col ${plan.highlighted ? "border-primary shadow-md" : ""}`}>
@@ -77,13 +120,22 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                   {plan.monthlyPrice !== null ? (
                     <>
                       <span className="text-muted-foreground text-sm">R$</span>
-                      <span className="font-bold text-4xl">{formatPrice(plan.monthlyPrice)}</span>
+                      <span className="font-bold text-4xl">{formatPrice(planPricePerMonth)}</span>
                       <span className="text-muted-foreground text-sm">/mês</span>
                     </>
                   ) : (
                     <span className="font-bold text-4xl">Personalizado</span>
                   )}
                 </div>
+
+                {selectedInterval !== "monthly" && plan.monthlyPrice !== null && (
+                  <div className="flex items-center gap-1.5 text-sm">
+                    <CreditCard className="size-3.5 text-muted-foreground" />
+                    <span className="text-muted-foreground">
+                      Total: R$ {formatPrice(planTotal + computeTotal)} ({monthsLabel} adiantado)
+                    </span>
+                  </div>
+                )}
 
                 {/* Base Features */}
                 <div className="flex flex-col gap-2">
@@ -145,7 +197,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                                 {opt.dedicated ? " (dedicado)" : ""}
                               </span>
                             </div>
-                            <span className="font-medium text-sm">+ R$ {formatPrice(opt.price)}/mês</span>
+                            <span className="font-medium text-sm">+ R$ {formatPrice(intervalPricePerMonth(opt.price, selectedInterval))}/mês</span>
                           </button>
                         ))}
                       </div>
@@ -156,10 +208,18 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground text-sm">Plano + Compute</span>
                         <span className="font-bold text-lg">
-                          R$ {formatPrice(planTotal)}
+                          R$ {formatPrice(planTotalPerMonth)}
                           <span className="font-normal text-muted-foreground text-sm">/mês</span>
                         </span>
                       </div>
+                      {selectedInterval !== "monthly" && (
+                        <div className="mt-1 flex items-center gap-1.5 text-xs">
+                          <CreditCard className="size-3 text-muted-foreground" />
+                          <span className="text-muted-foreground">
+                            Total: R$ {formatPrice(planTotal + computeTotal)} ({monthsLabel} adiantado)
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </>
                 )}
@@ -186,7 +246,7 @@ export function PricingCards({ plans, userEmail, userId }: PricingCardsProps) {
                     ) : (
                       <>
                         <Zap className="size-4" />
-                        Assinar por R$ {formatPrice(planTotal)}/mês
+                        Assinar por R$ {formatPrice(planTotalPerMonth)}/mês
                       </>
                     )}
                   </Button>

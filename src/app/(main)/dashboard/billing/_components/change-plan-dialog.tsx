@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { createClient } from "@supabase/supabase-js";
-import { ArrowRight, Check, CreditCard, Server, Shield, Zap } from "lucide-react";
+import { ArrowRight, Check, CreditCard, Server, Shield } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -41,26 +41,26 @@ type ChangePlanDialogProps = {
 
 function ChangePlanContent({
   currentPlan,
+  currentCompute,
+  currentPitr,
   selectedPlan,
   selectedCompute,
   selectedPitr,
-  changeTiming,
   success,
   onSelectPlan,
   onSelectCompute,
   onSelectPitr,
-  onChangeTiming,
 }: {
   currentPlan: string;
+  currentCompute: string;
+  currentPitr: string;
   selectedPlan: string;
   selectedCompute: string;
   selectedPitr: string;
-  changeTiming: "now" | "period_end";
   success: boolean;
   onSelectPlan: (id: string) => void;
   onSelectCompute: (id: string) => void;
   onSelectPitr: (id: string) => void;
-  onChangeTiming: (v: "now" | "period_end") => void;
 }) {
   const newPlanData = plans.find((p) => p.id === selectedPlan);
 
@@ -90,9 +90,7 @@ function ChangePlanContent({
         </div>
         <p className="font-medium text-lg">Plano alterado com sucesso!</p>
         <p className="text-muted-foreground text-sm">
-          {changeTiming === "now"
-            ? "A alteração já está ativa."
-            : "A alteração entrará em vigor ao final do período atual."}
+          A alteração entrará em vigor ao final do período atual.
         </p>
       </div>
     );
@@ -160,134 +158,131 @@ function ChangePlanContent({
         </RadioGroup>
       </div>
 
-      {selectedPlan && (
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <Server className="size-4 text-muted-foreground" />
-            <Label className="font-medium">Escolha o Compute</Label>
-          </div>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-8" />
-                  <TableHead>Tamanho</TableHead>
-                  <TableHead className="text-right">R$/mês</TableHead>
-                  <TableHead>CPU</TableHead>
-                  <TableHead>Dedicado</TableHead>
-                  <TableHead>RAM</TableHead>
-                  <TableHead className="text-right">Conex. Diretas</TableHead>
-                  <TableHead className="text-right">Conex. Pooler</TableHead>
-                  <TableHead className="hidden min-w-[280px] lg:table-cell">Benefícios</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {computeOptions.map((option) => {
-                  const isSelected = selectedCompute === option.id;
-                  return (
-                    <TableRow
-                      key={option.id}
-                      className={`cursor-pointer transition-colors ${
-                        isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50"
-                      }`}
-                      onClick={() => onSelectCompute(option.id)}
-                    >
-                      <TableCell className="w-8 pr-0">
-                        <div
-                          className={`flex size-5 items-center justify-center rounded-full border-2 transition-colors ${
-                            isSelected
-                              ? "border-primary bg-primary text-primary-foreground"
-                              : "border-muted-foreground/30"
-                          }`}
-                        >
-                          {isSelected && <Check className="size-3" />}
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium">{option.size}</TableCell>
-                      <TableCell className="text-right font-medium">R$ {formatPrice(option.price)}</TableCell>
-                      <TableCell>{option.cpu}</TableCell>
-                      <TableCell>{option.dedicated ? "Sim" : "Não"}</TableCell>
-                      <TableCell>{option.ram}</TableCell>
-                      <TableCell className="text-right">{option.directConnections}</TableCell>
-                      <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>
-                      <TableCell className="hidden min-w-[280px] lg:table-cell">
-                        <ul className="flex flex-col gap-0.5">
-                          {option.benefits.map((benefit) => (
-                            <li key={benefit} className="flex items-start gap-1 text-muted-foreground text-xs">
-                              <Check className="mt-0.5 size-3 shrink-0 text-primary" />
-                              {benefit}
-                            </li>
-                          ))}
-                        </ul>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
-          {selectedCompute && (
-            <div className="lg:hidden">
-              {computeOptions
-                .filter((o) => o.id === selectedCompute)
-                .map((option) => (
-                  <div key={option.id} className="rounded-lg border bg-muted/30 p-3">
-                    <p className="mb-2 font-medium text-sm">Benefícios — {option.size}</p>
-                    <ul className="flex flex-col gap-1">
-                      {option.benefits.map((benefit) => (
-                        <li key={benefit} className="flex items-start gap-1.5 text-muted-foreground text-xs">
-                          <Check className="mt-0.5 size-3 shrink-0 text-primary" />
-                          {benefit}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-            </div>
-          )}
+      {/* Compute Selection */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <Server className="size-4 text-muted-foreground" />
+          <Label className="font-medium">Escolha o Compute</Label>
         </div>
-      )}
-
-      {/* PITR Backup Selection */}
-      {selectedPlan && (
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <Shield className="size-4 text-muted-foreground" />
-            <Label className="font-medium">PITR Backup (Point-in-Time Recovery)</Label>
-          </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            <button
-              type="button"
-              className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all ${
-                selectedPitr === "none"
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-muted-foreground/50"
-              }`}
-              onClick={() => onSelectPitr("none")}
-            >
-              <span className="font-medium text-sm">Sem PITR</span>
-              <span className="text-muted-foreground text-xs">Backups diários 7 dias</span>
-            </button>
-            {addOns
-              .filter((a) => a.category === "Backups")
-              .map((addOn) => (
-                <button
-                  key={addOn.id}
-                  type="button"
-                  className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all ${
-                    selectedPitr === addOn.id
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-muted-foreground/50"
-                  }`}
-                  onClick={() => onSelectPitr(addOn.id)}
-                >
-                  <span className="font-medium text-sm">{addOn.name}</span>
-                  <span className="text-muted-foreground text-xs">R$ {formatPrice(addOn.priceBRL)}/mês</span>
-                </button>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-8" />
+                <TableHead>Tamanho</TableHead>
+                <TableHead className="text-right">R$/mês</TableHead>
+                <TableHead>CPU</TableHead>
+                <TableHead>Dedicado</TableHead>
+                <TableHead>RAM</TableHead>
+                <TableHead className="text-right">Conex. Diretas</TableHead>
+                <TableHead className="text-right">Conex. Pooler</TableHead>
+                <TableHead className="hidden min-w-[280px] lg:table-cell">Benefícios</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {computeOptions.map((option) => {
+                const isSelected = selectedCompute === option.id;
+                return (
+                  <TableRow
+                    key={option.id}
+                    className={`cursor-pointer transition-colors ${
+                      isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50"
+                    }`}
+                    onClick={() => onSelectCompute(option.id)}
+                  >
+                    <TableCell className="w-8 pr-0">
+                      <div
+                        className={`flex size-5 items-center justify-center rounded-full border-2 transition-colors ${
+                          isSelected
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-muted-foreground/30"
+                        }`}
+                      >
+                        {isSelected && <Check className="size-3" />}
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-medium">{option.size}</TableCell>
+                    <TableCell className="text-right font-medium">R$ {formatPrice(option.price)}</TableCell>
+                    <TableCell>{option.cpu}</TableCell>
+                    <TableCell>{option.dedicated ? "Sim" : "Não"}</TableCell>
+                    <TableCell>{option.ram}</TableCell>
+                    <TableCell className="text-right">{option.directConnections}</TableCell>
+                    <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>
+                    <TableCell className="hidden min-w-[280px] lg:table-cell">
+                      <ul className="flex flex-col gap-0.5">
+                        {option.benefits.map((benefit) => (
+                          <li key={benefit} className="flex items-start gap-1 text-muted-foreground text-xs">
+                            <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+                            {benefit}
+                          </li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+        {selectedCompute && (
+          <div className="lg:hidden">
+            {computeOptions
+              .filter((o) => o.id === selectedCompute)
+              .map((option) => (
+                <div key={option.id} className="rounded-lg border bg-muted/30 p-3">
+                  <p className="mb-2 font-medium text-sm">Benefícios — {option.size}</p>
+                  <ul className="flex flex-col gap-1">
+                    {option.benefits.map((benefit) => (
+                      <li key={benefit} className="flex items-start gap-1.5 text-muted-foreground text-xs">
+                        <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
           </div>
+        )}
+      </div>
+
+      {/* PITR Backup Selection */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <Shield className="size-4 text-muted-foreground" />
+          <Label className="font-medium">PITR Backup (Point-in-Time Recovery)</Label>
         </div>
-      )}
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <button
+            type="button"
+            className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all ${
+              selectedPitr === "none"
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-muted-foreground/50"
+            }`}
+            onClick={() => onSelectPitr("none")}
+          >
+            <span className="font-medium text-sm">Sem PITR</span>
+            <span className="text-muted-foreground text-xs">Backups diários 7 dias</span>
+          </button>
+          {addOns
+            .filter((a) => a.category === "Backups")
+            .map((addOn) => (
+              <button
+                key={addOn.id}
+                type="button"
+                className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all ${
+                  selectedPitr === addOn.id
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-muted-foreground/50"
+                }`}
+                onClick={() => onSelectPitr(addOn.id)}
+              >
+                <span className="font-medium text-sm">{addOn.name}</span>
+                <span className="text-muted-foreground text-xs">R$ {formatPrice(addOn.priceBRL)}/mês</span>
+              </button>
+            ))}
+        </div>
+      </div>
 
       {/* Benefits Comparison */}
       {selectedPlan && (
@@ -321,58 +316,37 @@ function ChangePlanContent({
         </div>
       )}
 
-      {/* Change Timing */}
-      {selectedPlan && (
-        <div className="flex flex-col gap-3">
-          <Label className="font-medium">Quando aplicar a alteração?</Label>
-          <RadioGroup value={changeTiming} onValueChange={(v) => onChangeTiming(v as "now" | "period_end")}>
-            {/* biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally */}
-            <label className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all hover:bg-muted/50">
-              <RadioGroupItem value="period_end" aria-label="Ao final do período atual" />
-              <div>
-                <p className="font-medium text-sm">Ao final do período atual</p>
-                <p className="text-muted-foreground text-xs">
-                  A alteração será aplicada quando a assinatura atual vencer.
-                </p>
-              </div>
-            </label>
-            {/* biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally */}
-            <label className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all hover:bg-muted/50">
-              <RadioGroupItem value="now" aria-label="Agora (instantâneo)" />
-              <div className="flex items-center gap-2">
-                <Zap className="size-4 text-orange-500" />
-                <div>
-                  <p className="font-medium text-sm">Agora (instantâneo)</p>
-                  <p className="text-muted-foreground text-xs">
-                    A alteração será aplicada imediatamente. Valor proporcional será ajustado.
-                  </p>
-                </div>
-              </div>
-            </label>
-          </RadioGroup>
-        </div>
-      )}
-
       {/* Summary */}
-      {selectedPlan && newPlanData && (
+      {(selectedPlan || selectedCompute !== currentCompute || selectedPitr !== currentPitr) && (
         <div className="rounded-lg border bg-muted/30 p-4">
           <h4 className="mb-2 font-medium text-sm">Resumo da Alteração</h4>
-          <div className="flex items-center gap-3 text-sm">
-            <span>{PLAN_NAMES[currentPlan]}</span>
-            <ArrowRight className="size-4 text-muted-foreground" />
-            <span className="font-medium">{newPlanData.name}</span>
-            <span className="ml-auto font-medium">
-              R$ {formatPrice((newPlanData.monthlyPrice ?? 0) + newComputePrice + pitrPrice)}/mês
-            </span>
-          </div>
+          {selectedPlan && newPlanData ? (
+            <div className="flex items-center gap-3 text-sm">
+              <span>{PLAN_NAMES[currentPlan]}</span>
+              <ArrowRight className="size-4 text-muted-foreground" />
+              <span className="font-medium">{newPlanData.name}</span>
+              <span className="ml-auto font-medium">
+                R$ {formatPrice((newPlanData.monthlyPrice ?? 0) + newComputePrice + pitrPrice)}/mês
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 text-sm">
+              <span>{PLAN_NAMES[currentPlan]}</span>
+              <span className="ml-auto font-medium">
+                R$ {formatPrice(
+                  (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0) + newComputePrice + pitrPrice,
+                )}/mês
+              </span>
+            </div>
+          )}
           <p className="mt-1 text-muted-foreground text-xs">
-            Plano {formatPrice(newPlanData.monthlyPrice ?? 0)} + Compute {formatPrice(newComputePrice)}
+            {selectedPlan && newPlanData
+              ? `Plano ${formatPrice(newPlanData.monthlyPrice ?? 0)} + Compute ${formatPrice(newComputePrice)}`
+              : `Compute ${formatPrice(newComputePrice)}`}
             {pitrPrice > 0 && <> + PITR {formatPrice(pitrPrice)}</>}
           </p>
           <p className="mt-2 text-muted-foreground text-xs">
-            {changeTiming === "now"
-              ? "A alteração será aplicada imediatamente."
-              : "A alteração entrará em vigor ao final do período atual."}
+            A alteração entrará em vigor ao final do período atual.
           </p>
         </div>
       )}
@@ -393,7 +367,6 @@ export function ChangePlanDialog({
   const [selectedPlan, setSelectedPlan] = useState<string>("");
   const [selectedCompute, setSelectedCompute] = useState<string>(currentCompute);
   const [selectedPitr, setSelectedPitr] = useState<string>(currentPitr);
-  const [changeTiming, setChangeTiming] = useState<"now" | "period_end">("period_end");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -404,18 +377,22 @@ export function ChangePlanDialog({
   };
 
   const handleConfirmChange = async () => {
-    if (!selectedPlan || !user?.id) return;
+    if (!user?.id) return;
+
+    const hasChanges = selectedPlan || selectedCompute !== currentCompute || selectedPitr !== currentPitr;
+    if (!hasChanges) return;
 
     setLoading(true);
     try {
       if (isDemo) {
         const demoPlan = localStorage.getItem("bcrm_demo_plan");
         const parsed = demoPlan ? JSON.parse(demoPlan) : {};
+        const updatedPlan = selectedPlan || parsed.plan || currentPlan;
         localStorage.setItem(
           "bcrm_demo_plan",
           JSON.stringify({
             ...parsed,
-            plan: selectedPlan,
+            plan: updatedPlan,
             compute: selectedCompute,
             pitr: selectedPitr,
             status: "active",
@@ -423,7 +400,7 @@ export function ChangePlanDialog({
         );
         setSuccess(true);
         setTimeout(() => {
-          onPlanChanged(selectedPlan);
+          onPlanChanged(updatedPlan);
           onOpenChange(false);
           setSuccess(false);
           setSelectedPlan("");
@@ -435,23 +412,22 @@ export function ChangePlanDialog({
         const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
         if (supabaseUrl && supabaseKey) {
           const supabase = createClient(supabaseUrl, supabaseKey);
-          const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+          const updatedPlan = selectedPlan || currentPlan;
           await supabase.from("users").upsert(
             {
               id: user.id,
-              plan: selectedPlan,
+              plan: updatedPlan,
               compute: selectedCompute,
               pitr: selectedPitr,
               plan_interval: "monthly",
               subscription_status: "active",
-              current_period_end: changeTiming === "now" ? periodEnd : undefined,
             },
             { onConflict: "id" },
           );
         }
         setSuccess(true);
         setTimeout(() => {
-          onPlanChanged(selectedPlan);
+          onPlanChanged(selectedPlan || currentPlan);
           onOpenChange(false);
           setSuccess(false);
           setSelectedPlan("");
@@ -471,7 +447,6 @@ export function ChangePlanDialog({
       setSelectedPlan("");
       setSelectedCompute(currentCompute);
       setSelectedPitr(currentPitr);
-      setChangeTiming("period_end");
       setSuccess(false);
     }
     onOpenChange(value);
@@ -479,15 +454,15 @@ export function ChangePlanDialog({
 
   const contentProps = {
     currentPlan,
+    currentCompute,
+    currentPitr,
     selectedPlan,
     selectedCompute,
     selectedPitr,
-    changeTiming,
     success,
     onSelectPlan: handleSelectPlan,
     onSelectCompute: setSelectedCompute,
     onSelectPitr: setSelectedPitr,
-    onChangeTiming: setChangeTiming,
   };
 
   if (isMobile) {
@@ -509,7 +484,14 @@ export function ChangePlanDialog({
               Cancelar
             </Button>
             {!success && (
-              <Button onClick={handleConfirmChange} disabled={!selectedPlan || !selectedCompute || loading}>
+              <Button
+                onClick={handleConfirmChange}
+                disabled={
+                  (!selectedPlan && selectedCompute === currentCompute && selectedPitr === currentPitr) ||
+                  !selectedCompute ||
+                  loading
+                }
+              >
                 {loading ? "Processando..." : "Confirmar Alteração"}
               </Button>
             )}
@@ -539,7 +521,14 @@ export function ChangePlanDialog({
             Cancelar
           </Button>
           {!success && (
-            <Button onClick={handleConfirmChange} disabled={!selectedPlan || !selectedCompute || loading}>
+            <Button
+              onClick={handleConfirmChange}
+              disabled={
+                (!selectedPlan && selectedCompute === currentCompute && selectedPitr === currentPitr) ||
+                !selectedCompute ||
+                loading
+              }
+            >
               {loading ? "Processando..." : "Confirmar Alteração"}
             </Button>
           )}

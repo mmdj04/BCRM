@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/server";
 
 const EXCHANGE_RATE = 6.2;
-const STRIPE_FEE_RATE = 0.05;
 const PLAN_MULTIPLIER = 6;
 const COMPUTE_MULTIPLIER = 3;
 
@@ -33,21 +32,41 @@ const COMPUTE_EXTRA_AMOUNTS: Record<string, number> = {
   "16xlarge": computeAmount(3730),
 };
 
+type IntervalConfig = {
+  months: number;
+  discount: number;
+  stripeInterval: "month" | "year";
+  stripeIntervalCount: number;
+};
+
+const INTERVALS: Record<string, IntervalConfig> = {
+  monthly: { months: 1, discount: 0, stripeInterval: "month", stripeIntervalCount: 1 },
+  quarterly: { months: 3, discount: 0.05, stripeInterval: "month", stripeIntervalCount: 3 },
+  annual: { months: 12, discount: 0.15, stripeInterval: "year", stripeIntervalCount: 1 },
+};
+
 export async function POST(request: Request) {
   try {
-    const { plan, compute, email, userId } = await request.json();
+    const { plan, compute, email, userId, interval = "monthly" } = await request.json();
 
     if (!plan || !PLAN_BASE_AMOUNTS[plan as keyof typeof PLAN_BASE_AMOUNTS]) {
-      return NextResponse.json({ error: "Plano invalido" }, { status: 400 });
+      return NextResponse.json({ error: "Plano inválido" }, { status: 400 });
     }
 
     if (!compute || !(compute in COMPUTE_EXTRA_AMOUNTS)) {
-      return NextResponse.json({ error: "Compute invalido" }, { status: 400 });
+      return NextResponse.json({ error: "Compute inválido" }, { status: 400 });
     }
 
-    const priceAmount =
+    const intervalConfig = INTERVALS[interval as keyof typeof INTERVALS] ?? INTERVALS.monthly;
+
+    const monthlyAmount =
       PLAN_BASE_AMOUNTS[plan as keyof typeof PLAN_BASE_AMOUNTS] +
       COMPUTE_EXTRA_AMOUNTS[compute as keyof typeof COMPUTE_EXTRA_AMOUNTS];
+
+    const totalAmount = Math.round(monthlyAmount * intervalConfig.months * (1 - intervalConfig.discount));
+
+    const intervalLabel =
+      interval === "annual" ? "Anual" : interval === "quarterly" ? "Trimestral" : "Mensal";
 
     const session = await stripe.checkout.sessions.create({
       customer_email: email,
@@ -57,12 +76,16 @@ export async function POST(request: Request) {
           price_data: {
             currency: "brl",
             product_data: {
-              name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute}`,
-              description: "Faturamento mensal",
+              name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute} — ${intervalLabel}`,
+              description:
+                interval === "monthly"
+                  ? "Faturamento mensal"
+                  : `Cobrado a cada ${intervalConfig.months} meses (desconto de ${Math.round(intervalConfig.discount * 100)}%)`,
             },
-            unit_amount: priceAmount,
+            unit_amount: totalAmount,
             recurring: {
-              interval: "month",
+              interval: intervalConfig.stripeInterval,
+              interval_count: intervalConfig.stripeIntervalCount,
             },
           },
           quantity: 1,
@@ -75,7 +98,7 @@ export async function POST(request: Request) {
         userId,
         plan,
         compute,
-        interval: "monthly",
+        interval,
       },
     });
 

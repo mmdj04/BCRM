@@ -17,7 +17,7 @@ const VALID_COMPUTE = [
 
 export async function POST(request: Request) {
   try {
-    const { plan, compute, userId, email, isBusiness, companyName, cnpj } = await request.json();
+    const { plan, compute, userId, email, interval, isBusiness, companyName, cnpj } = await request.json();
 
     if (!plan || !["pro", "enterprise"].includes(plan)) {
       return NextResponse.json({ error: "Plano inválido" }, { status: 400 });
@@ -31,11 +31,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
     }
 
-    const { clientSecret } = await createCheckoutSessionElements(userId, email, plan, compute, {
-      isBusiness: !!isBusiness,
-      companyName: companyName || undefined,
-      cnpj: cnpj || undefined,
-    });
+    const validInterval = ["monthly", "quarterly", "annual"].includes(interval) ? interval : "monthly";
+
+    const { clientSecret } = await createCheckoutSessionElements(
+      userId,
+      email,
+      plan,
+      compute,
+      validInterval,
+      {
+        isBusiness: !!isBusiness,
+        companyName: companyName || undefined,
+        cnpj: cnpj || undefined,
+      },
+    );
 
     if (!clientSecret) {
       return NextResponse.json({ error: "Não foi possível criar a sessão de pagamento" }, { status: 500 });

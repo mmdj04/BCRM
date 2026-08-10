@@ -5,6 +5,26 @@ export const COMPUTE_CREDIT_USD = 10;
 export const PLAN_MULTIPLIER = 6;
 export const COMPUTE_MULTIPLIER = 3;
 
+export type BillingInterval = "monthly" | "quarterly" | "annual";
+
+export const billingIntervals: { id: BillingInterval; label: string; months: number; discount: number; stripeInterval: "month" | "year"; stripeIntervalCount: number }[] = [
+  { id: "monthly", label: "Mensal", months: 1, discount: 0, stripeInterval: "month", stripeIntervalCount: 1 },
+  { id: "quarterly", label: "Trimestral", months: 3, discount: 0.05, stripeInterval: "month", stripeIntervalCount: 3 },
+  { id: "annual", label: "Anual", months: 12, discount: 0.15, stripeInterval: "year", stripeIntervalCount: 1 },
+];
+
+export function intervalPrice(baseMonthly: number, interval: BillingInterval): number {
+  const config = billingIntervals.find((i) => i.id === interval) ?? billingIntervals[0];
+  const total = baseMonthly * config.months * (1 - config.discount);
+  return Math.round(total * 100) / 100;
+}
+
+export function intervalPricePerMonth(baseMonthly: number, interval: BillingInterval): number {
+  const config = billingIntervals.find((i) => i.id === interval) ?? billingIntervals[0];
+  const perMonth = baseMonthly * (1 - config.discount);
+  return Math.round(perMonth * 100) / 100;
+}
+
 export function planPrice(supabaseUSD: number): number {
   return Math.round(supabaseUSD * EXCHANGE_RATE * PLAN_MULTIPLIER * 100) / 100;
 }

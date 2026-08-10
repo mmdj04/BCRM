@@ -6,9 +6,21 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", proces
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
 
 const EXCHANGE_RATE = 6.2;
-const STRIPE_FEE_RATE = 0.05;
 const PLAN_MULTIPLIER = 6;
 const COMPUTE_MULTIPLIER = 3;
+
+type IntervalConfig = {
+  months: number;
+  discount: number;
+  stripeInterval: "month" | "year";
+  stripeIntervalCount: number;
+};
+
+const INTERVALS: Record<string, IntervalConfig> = {
+  monthly: { months: 1, discount: 0, stripeInterval: "month", stripeIntervalCount: 1 },
+  quarterly: { months: 3, discount: 0.05, stripeInterval: "month", stripeIntervalCount: 3 },
+  annual: { months: 12, discount: 0.15, stripeInterval: "year", stripeIntervalCount: 1 },
+};
 
 function planAmount(supabaseUSD: number): number {
   return Math.round(supabaseUSD * EXCHANGE_RATE * PLAN_MULTIPLIER);
@@ -63,10 +75,14 @@ export async function createCheckoutSessionElements(
   email: string,
   plan: string,
   compute: string,
+  interval = "monthly",
   business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ clientSecret: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
-  const totalAmount = getTotalAmount(plan, compute);
+  const monthlyAmount = getTotalAmount(plan, compute);
+  const intervalConfig = INTERVALS[interval] ?? INTERVALS.monthly;
+  const totalAmount = Math.round(monthlyAmount * intervalConfig.months * (1 - intervalConfig.discount));
+  const intervalLabel = interval === "annual" ? "Anual" : interval === "quarterly" ? "Trimestral" : "Mensal";
 
   const session = await stripe.checkout.sessions.create({
     customer: customer.id,
@@ -77,11 +93,14 @@ export async function createCheckoutSessionElements(
         price_data: {
           currency: "brl",
           product_data: {
-            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute}`,
-            metadata: { plan, compute },
+            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute} — ${intervalLabel}`,
+            metadata: { plan, compute, interval },
           },
           unit_amount: totalAmount,
-          recurring: { interval: "month" },
+          recurring: {
+            interval: intervalConfig.stripeInterval,
+            interval_count: intervalConfig.stripeIntervalCount,
+          },
         },
         quantity: 1,
       },
@@ -97,7 +116,7 @@ export async function createCheckoutSessionElements(
       userId,
       plan,
       compute,
-      interval: "monthly",
+      interval,
       isBusiness: business?.isBusiness ? "true" : "false",
       companyName: business?.companyName ?? "",
       cnpj: business?.cnpj ?? "",
@@ -112,10 +131,14 @@ export async function createCheckoutSession(
   email: string,
   plan: string,
   compute: string,
+  interval = "monthly",
   business?: { isBusiness: boolean; companyName?: string; cnpj?: string },
 ): Promise<{ url: string | null }> {
   const customer = await getOrCreateCustomer(userId, email);
-  const totalAmount = getTotalAmount(plan, compute);
+  const monthlyAmount = getTotalAmount(plan, compute);
+  const intervalConfig = INTERVALS[interval] ?? INTERVALS.monthly;
+  const totalAmount = Math.round(monthlyAmount * intervalConfig.months * (1 - intervalConfig.discount));
+  const intervalLabel = interval === "annual" ? "Anual" : interval === "quarterly" ? "Trimestral" : "Mensal";
 
   const customFields: Stripe.Checkout.SessionCreateParams.CustomField[] = [];
 
@@ -148,11 +171,14 @@ export async function createCheckoutSession(
           currency: "brl",
           product: undefined,
           product_data: {
-            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute}`,
-            metadata: { plan, compute },
+            name: `BCRM ${plan.charAt(0).toUpperCase() + plan.slice(1)} + Compute ${compute} — ${intervalLabel}`,
+            metadata: { plan, compute, interval },
           },
           unit_amount: totalAmount,
-          recurring: { interval: "month" },
+          recurring: {
+            interval: intervalConfig.stripeInterval,
+            interval_count: intervalConfig.stripeIntervalCount,
+          },
         },
         quantity: 1,
       },
@@ -163,7 +189,7 @@ export async function createCheckoutSession(
       userId,
       plan,
       compute,
-      interval: "monthly",
+      interval,
       isBusiness: business?.isBusiness ? "true" : "false",
       companyName: business?.companyName ?? "",
       cnpj: business?.cnpj ?? "",
