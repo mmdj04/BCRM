@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react";
 
-import { computeOptions } from "@/app/(main)/dashboard/billing/_components/data";
+import { computeOptions, planPrice } from "@/app/(main)/dashboard/billing/_components/data";
 import { PaymentForm } from "@/components/payment-form";
 import { StripeElementsProvider } from "@/components/stripe-provider";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -79,91 +79,68 @@ const _notificationLabels: Record<string, string> = {
 
 const plans = [
   {
-    id: "starter",
-    name: "Inicial",
-    price: 899.9,
-    period: "/mês",
-    description: "Para pequenas equipes começando",
-    allowedCompute: ["micro", "small", "medium", "large"],
-    baseFeatures: [
-      "Até 10 usuários",
-      "5 módulos",
-      "100 GB de armazenamento",
-      "1 projeto ativo",
-      "Banco Postgres dedicado",
-      "Auth com 100K MAU",
-      "Backups automáticos (7 dias)",
-      "Suporte por e-mail",
-      "Relatórios básicos",
-    ],
-    extraFeatures: [],
-  },
-  {
     id: "pro",
     name: "Pro",
-    price: 2299.9,
-    period: "/mês",
+    price: planPrice(25 - 10),
+    period: "/mes",
     description: "Para equipes em crescimento",
-    allowedCompute: ["micro", "small", "medium", "large", "xlarge"],
     baseFeatures: [
-      "Até 10 usuários",
-      "5 módulos",
-      "100 GB de armazenamento",
+      "Ate 20 usuarios",
+      "Todos os modulos",
       "1 projeto ativo",
       "Banco Postgres dedicado",
+      "8 GB de disco por projeto",
+      "250 GB de egress mensal",
+      "100 GB de armazenamento",
       "Auth com 100K MAU",
-      "Backups automáticos (7 dias)",
-      "Suporte por e-mail",
-      "Relatórios básicos",
+      "2M Edge Functions",
+      "500 conexoes Realtime",
+      "5M mensagens Realtime",
+      "100 transformacoes de imagem",
+      "SAML/SSO (50 usuarios)",
+      "Backups automaticos (7 dias)",
+      "Suporte prioritario",
+      "Relatorios avancados",
+      "API de integracao",
     ],
-    extraFeatures: [
-      "Até 50 usuários",
-      "Todos os módulos",
-      "3 projetos ativos",
-      "Banco com 4 GB RAM",
-      "SAML/SSO (50 usuários)",
-      "Suporte prioritário",
-      "Relatórios avançados",
-      "API de integração",
-      "Faturamento e Finanças",
-    ],
+    extraFeatures: [],
     popular: true,
   },
   {
-    id: "team",
-    name: "Equipe",
-    price: 8999.9,
-    period: "/mês",
-    description: "Para organizações grandes",
-    allowedCompute: ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge"],
+    id: "enterprise",
+    name: "Enterprise",
+    price: planPrice(599 - 10),
+    period: "/mes",
+    description: "Para organizacoes compliance e escala",
     baseFeatures: [
-      "Até 10 usuários",
-      "5 módulos",
-      "100 GB de armazenamento",
+      "Ate 20 usuarios",
+      "Todos os modulos",
       "1 projeto ativo",
       "Banco Postgres dedicado",
+      "8 GB de disco por projeto",
+      "250 GB de egress mensal",
+      "100 GB de armazenamento",
       "Auth com 100K MAU",
-      "Backups automáticos (7 dias)",
-      "Suporte por e-mail",
-      "Relatórios básicos",
+      "2M Edge Functions",
+      "500 conexoes Realtime",
+      "5M mensagens Realtime",
+      "100 transformacoes de imagem",
+      "SAML/SSO (50 usuarios)",
+      "Backups automaticos (7 dias)",
+      "Suporte prioritario",
+      "Relatorios avancados",
+      "API de integracao",
     ],
     extraFeatures: [
-      "Até 50 usuários",
-      "Todos os módulos",
-      "3 projetos ativos",
-      "Banco com 4 GB RAM",
-      "SAML/SSO (50 usuários)",
-      "Suporte prioritário",
-      "Relatórios avançados",
-      "API de integração",
-      "Faturamento e Finanças",
-      "Usuários ilimitados",
-      "5 projetos ativos",
-      "Banco com 8 GB RAM (dedicado)",
-      "Backups automáticos (14 dias)",
       "SOC2 + ISO 27001",
-      "SSO Dashboard + Audit Logs",
-      "Suporte prioritário com SLA",
+      "HIPAA (adicionais)",
+      "SSO para Dashboard",
+      "Platform Audit Logs",
+      "AWS PrivateLink",
+      "Backups (14 dias)",
+      "Logs retidos (28 dias)",
+      "Suporte prioritario com SLA",
+      "Access Roles: Read-only + Predefined",
     ],
   },
 ];
@@ -631,7 +608,6 @@ export function SummaryStep() {
                   type="button"
                   onClick={() => {
                     setSelectedPlan(plan.id);
-                    if (plan.allowedCompute.length > 0) setSelectedCompute(plan.allowedCompute[0]);
                   }}
                   className={`flex flex-col rounded-xl border-2 p-4 text-left transition-all ${
                     selectedPlan === plan.id
@@ -666,7 +642,7 @@ export function SummaryStep() {
                   {/* Extra Features */}
                   {plan.extraFeatures.length > 0 && (
                     <>
-                      <p className="mt-2 font-medium text-primary text-xs">Tudo no Plano Inicial, mais:</p>
+                      <p className="mt-2 font-medium text-primary text-xs">Tudo no Plano Pro, mais:</p>
                       <ul className="mt-1 flex flex-col gap-1.5">
                         {plan.extraFeatures.map((f) => (
                           <li key={f} className="flex items-center gap-1.5 text-xs">
@@ -701,51 +677,49 @@ export function SummaryStep() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {computeOptions
-                        .filter((c) => plans.find((p) => p.id === selectedPlan)?.allowedCompute.includes(c.id))
-                        .map((option) => {
-                          const isSelected = selectedCompute === option.id;
-                          return (
-                            <TableRow
-                              key={option.id}
-                              className={`cursor-pointer transition-colors ${
-                                isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50"
-                              }`}
-                              onClick={() => setSelectedCompute(option.id)}
-                            >
-                              <TableCell className="w-8 pr-0">
-                                <div
-                                  className={`flex size-5 items-center justify-center rounded-full border-2 transition-colors ${
-                                    isSelected
-                                      ? "border-primary bg-primary text-primary-foreground"
-                                      : "border-muted-foreground/30"
-                                  }`}
-                                >
-                                  {isSelected && <Check className="size-3" />}
-                                </div>
-                              </TableCell>
-                              <TableCell className="font-medium">{option.size}</TableCell>
-                              <TableCell className="text-right font-medium">
-                                R$ {option.price.toLocaleString("pt-BR")}
-                              </TableCell>
-                              <TableCell>{option.cpu}</TableCell>
-                              <TableCell>{option.dedicated ? "Sim" : "Não"}</TableCell>
-                              <TableCell>{option.ram}</TableCell>
-                              <TableCell className="text-right">{option.directConnections}</TableCell>
-                              <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>
-                              <TableCell className="hidden min-w-[280px] lg:table-cell">
-                                <ul className="flex flex-col gap-0.5">
-                                  {option.benefits.map((benefit) => (
-                                    <li key={benefit} className="flex items-start gap-1 text-muted-foreground text-xs">
-                                      <Check className="mt-0.5 size-3 shrink-0 text-primary" />
-                                      {benefit}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
+                      {computeOptions.map((option) => {
+                        const isSelected = selectedCompute === option.id;
+                        return (
+                          <TableRow
+                            key={option.id}
+                            className={`cursor-pointer transition-colors ${
+                              isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50"
+                            }`}
+                            onClick={() => setSelectedCompute(option.id)}
+                          >
+                            <TableCell className="w-8 pr-0">
+                              <div
+                                className={`flex size-5 items-center justify-center rounded-full border-2 transition-colors ${
+                                  isSelected
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "border-muted-foreground/30"
+                                }`}
+                              >
+                                {isSelected && <Check className="size-3" />}
+                              </div>
+                            </TableCell>
+                            <TableCell className="font-medium">{option.size}</TableCell>
+                            <TableCell className="text-right font-medium">
+                              R$ {option.price.toLocaleString("pt-BR")}
+                            </TableCell>
+                            <TableCell>{option.cpu}</TableCell>
+                            <TableCell>{option.dedicated ? "Sim" : "Não"}</TableCell>
+                            <TableCell>{option.ram}</TableCell>
+                            <TableCell className="text-right">{option.directConnections}</TableCell>
+                            <TableCell className="text-right">{option.poolerConnections.toLocaleString()}</TableCell>
+                            <TableCell className="hidden min-w-[280px] lg:table-cell">
+                              <ul className="flex flex-col gap-0.5">
+                                {option.benefits.map((benefit) => (
+                                  <li key={benefit} className="flex items-start gap-1 text-muted-foreground text-xs">
+                                    <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+                                    {benefit}
+                                  </li>
+                                ))}
+                              </ul>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 </div>
@@ -753,11 +727,7 @@ export function SummaryStep() {
                 {selectedCompute && (
                   <div className="mt-4 lg:hidden">
                     {computeOptions
-                      .filter(
-                        (o) =>
-                          o.id === selectedCompute &&
-                          plans.find((p) => p.id === selectedPlan)?.allowedCompute.includes(o.id),
-                      )
+                      .filter((o) => o.id === selectedCompute)
                       .map((option) => (
                         <div key={option.id} className="rounded-lg border bg-muted/30 p-3">
                           <p className="mb-2 font-medium text-sm">Benefícios — {option.size}</p>

@@ -59,18 +59,16 @@ export function FeatureComparison({ categories }: FeatureComparisonProps) {
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
                       <TableHead className="w-[200px]">Recurso</TableHead>
-                      <TableHead className="text-center">Inicial</TableHead>
                       <TableHead className="text-center">Pro</TableHead>
-                      <TableHead className="text-center">Equipe</TableHead>
+                      <TableHead className="text-center">Enterprise</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {cat.features.map((feature) => (
                       <TableRow key={feature.name}>
                         <TableCell className="text-muted-foreground">{feature.name}</TableCell>
-                        <TableCell className="text-center text-sm">{feature.starter}</TableCell>
                         <TableCell className="text-center text-sm">{feature.pro}</TableCell>
-                        <TableCell className="text-center text-sm">{feature.team}</TableCell>
+                        <TableCell className="text-center text-sm">{feature.enterprise}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

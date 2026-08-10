@@ -26,15 +26,13 @@ type SubscriptionData = {
 
 const PLAN_NAMES: Record<string, string> = {
   free: "Gratuito",
-  starter: "Inicial",
   pro: "Pro",
-  team: "Equipe",
+  enterprise: "Enterprise",
 };
 
 const PLAN_PRICES: Record<string, number> = {
-  starter: 899.9,
-  pro: 2299.9,
-  team: 8999.9,
+  pro: 489.47,
+  enterprise: 19220,
 };
 
 export function CurrentPlan() {

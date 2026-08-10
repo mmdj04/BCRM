@@ -6,33 +6,51 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", proces
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
 
 const EXCHANGE_RATE = 6.2;
-const MARKUP = 2.5;
+const STRIPE_FEE_RATE = 0.05;
+const COMPUTE_CREDIT_USD = 10;
 
-function supabaseToBrlCents(usd: number): number {
-  return Math.round(usd * EXCHANGE_RATE * MARKUP * 100);
+function smartPrice(totalCostBRL: number): number {
+  let multiplier: number;
+  if (totalCostBRL <= 5000) {
+    multiplier = 5;
+  } else if (totalCostBRL >= 50000) {
+    multiplier = 3.5;
+  } else {
+    multiplier = 5 - ((totalCostBRL - 5000) / 45000) * 1.5;
+  }
+  return Math.round(((totalCostBRL * multiplier) / (1 - STRIPE_FEE_RATE)) * 100);
 }
 
-const PLAN_AMOUNTS: Record<string, number> = {
-  starter: 94490,
-  pro: 241490,
-  team: 944990,
+function planAmount(supabaseUSD: number): number {
+  return smartPrice(supabaseUSD * EXCHANGE_RATE);
+}
+
+function computeExtraAmount(computeUSD: number): number {
+  const effectiveUSD = Math.max(0, computeUSD - COMPUTE_CREDIT_USD);
+  if (effectiveUSD <= 0) return 0;
+  return smartPrice(effectiveUSD * EXCHANGE_RATE);
+}
+
+const PLAN_BASE_AMOUNTS: Record<string, number> = {
+  pro: planAmount(25 - 10),
+  enterprise: planAmount(599 - 10),
 };
 
-const COMPUTE_AMOUNTS: Record<string, number> = {
-  micro: supabaseToBrlCents(10),
-  small: supabaseToBrlCents(15),
-  medium: supabaseToBrlCents(60),
-  large: supabaseToBrlCents(110),
-  xlarge: supabaseToBrlCents(210),
-  "2xlarge": supabaseToBrlCents(410),
-  "4xlarge": supabaseToBrlCents(960),
-  "8xlarge": supabaseToBrlCents(1870),
-  "12xlarge": supabaseToBrlCents(2800),
-  "16xlarge": supabaseToBrlCents(3730),
+const COMPUTE_EXTRA_AMOUNTS: Record<string, number> = {
+  micro: computeExtraAmount(10),
+  small: computeExtraAmount(15),
+  medium: computeExtraAmount(60),
+  large: computeExtraAmount(110),
+  xlarge: computeExtraAmount(210),
+  "2xlarge": computeExtraAmount(410),
+  "4xlarge": computeExtraAmount(960),
+  "8xlarge": computeExtraAmount(1870),
+  "12xlarge": computeExtraAmount(2800),
+  "16xlarge": computeExtraAmount(3730),
 };
 
 function getTotalAmount(plan: string, compute: string): number {
-  return (PLAN_AMOUNTS[plan] ?? 0) + (COMPUTE_AMOUNTS[compute] ?? 0);
+  return (PLAN_BASE_AMOUNTS[plan] ?? 0) + (COMPUTE_EXTRA_AMOUNTS[compute] ?? 0);
 }
 
 export async function getOrCreateCustomer(userId: string, email: string): Promise<Stripe.Customer> {

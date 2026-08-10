@@ -26,9 +26,8 @@ import { computeOptions, getAllPlanFeatures, getComputePrice, plans } from "./da
 
 const PLAN_NAMES: Record<string, string> = {
   free: "Gratuito",
-  starter: "Inicial",
   pro: "Pro",
-  team: "Equipe",
+  enterprise: "Enterprise",
 };
 
 type ChangePlanDialogProps = {
