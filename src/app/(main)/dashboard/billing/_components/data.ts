@@ -10,7 +10,7 @@ export type BillingInterval = "monthly" | "quarterly" | "annual";
 export const billingIntervals: { id: BillingInterval; label: string; months: number; discount: number; stripeInterval: "month" | "year"; stripeIntervalCount: number }[] = [
   { id: "monthly", label: "Mensal", months: 1, discount: 0, stripeInterval: "month", stripeIntervalCount: 1 },
   { id: "quarterly", label: "Trimestral", months: 3, discount: 0.05, stripeInterval: "month", stripeIntervalCount: 3 },
-  { id: "annual", label: "Anual", months: 12, discount: 0.15, stripeInterval: "year", stripeIntervalCount: 1 },
+  { id: "annual", label: "Anual", months: 12, discount: 0.10, stripeInterval: "year", stripeIntervalCount: 1 },
 ];
 
 export function intervalPrice(baseMonthly: number, interval: BillingInterval): number {

@@ -42,7 +42,7 @@ type IntervalConfig = {
 const INTERVALS: Record<string, IntervalConfig> = {
   monthly: { months: 1, discount: 0, stripeInterval: "month", stripeIntervalCount: 1 },
   quarterly: { months: 3, discount: 0.05, stripeInterval: "month", stripeIntervalCount: 3 },
-  annual: { months: 12, discount: 0.15, stripeInterval: "year", stripeIntervalCount: 1 },
+  annual: { months: 12, discount: 0.10, stripeInterval: "year", stripeIntervalCount: 1 },
 };
 
 export async function POST(request: Request) {
