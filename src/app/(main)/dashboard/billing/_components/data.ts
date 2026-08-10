@@ -1,44 +1,24 @@
 export const EXCHANGE_RATE = 6.2;
 export const STRIPE_FEE_RATE = 0.05;
-
 export const COMPUTE_CREDIT_USD = 10;
 
-export function smartPrice(totalCostBRL: number): number {
-  let multiplier: number;
-  if (totalCostBRL <= 5000) {
-    multiplier = 5;
-  } else if (totalCostBRL >= 50000) {
-    multiplier = 3.5;
-  } else {
-    multiplier = 5 - ((totalCostBRL - 5000) / 45000) * 1.5;
-  }
-  return Math.round(((totalCostBRL * multiplier) / (1 - STRIPE_FEE_RATE)) * 100) / 100;
-}
-
-export function getProfitMultiplier(totalCostBRL: number): number {
-  if (totalCostBRL <= 5000) return 4;
-  if (totalCostBRL >= 50000) return 2.5;
-  return 4 - ((totalCostBRL - 5000) / 45000) * 1.5;
-}
+export const PLAN_MULTIPLIER = 6;
+export const COMPUTE_MULTIPLIER = 3;
 
 export function planPrice(supabaseUSD: number): number {
-  const costBRL = supabaseUSD * EXCHANGE_RATE;
-  return smartPrice(costBRL);
+  return Math.round(supabaseUSD * EXCHANGE_RATE * PLAN_MULTIPLIER * 100) / 100;
 }
 
-export function computeExtraPrice(computeUSD: number): number {
-  const effectiveUSD = Math.max(0, computeUSD - COMPUTE_CREDIT_USD);
-  const costBRL = effectiveUSD * EXCHANGE_RATE;
-  if (costBRL <= 0) return 0;
-  return smartPrice(costBRL);
+export function computePrice(supabaseUSD: number): number {
+  return Math.round(supabaseUSD * EXCHANGE_RATE * COMPUTE_MULTIPLIER * 100) / 100;
 }
 
 export function overagePrice(usd: number): number {
-  return Math.round(((usd * EXCHANGE_RATE * 5) / (1 - STRIPE_FEE_RATE)) * 100) / 100;
+  return Math.round(((usd * EXCHANGE_RATE * COMPUTE_MULTIPLIER) / (1 - STRIPE_FEE_RATE)) * 100) / 100;
 }
 
 export function supabaseToBrl(usd: number): number {
-  return Math.round(((usd * EXCHANGE_RATE * 5) / (1 - STRIPE_FEE_RATE)) * 100) / 100;
+  return Math.round(((usd * EXCHANGE_RATE * COMPUTE_MULTIPLIER) / (1 - STRIPE_FEE_RATE)) * 100) / 100;
 }
 
 export type PlanLimit = {
@@ -126,10 +106,10 @@ export const plans: Plan[] = [
     id: "pro",
     name: "Pro",
     description: "Para equipes em crescimento",
-    monthlyPrice: planPrice(25 - 10),
+    monthlyPrice: planPrice(25),
     badge: "Popular",
     highlighted: true,
-    cta: "Começar Agora",
+    cta: "Comecar Agora",
     supabasePlan: "Pro",
     baseFeatures: [
       "Até 20 usuários",
@@ -141,9 +121,9 @@ export const plans: Plan[] = [
       "100 GB de armazenamento",
       "Auth com 100K MAU",
       "2M Edge Functions",
-      "500 conexões Realtime",
+      "500 conexoes Realtime",
       "5M mensagens Realtime",
-      "100 transformações de imagem",
+      "100 transformacoes de imagem",
       "SAML/SSO (50 usuários)",
       "Backups automáticos (7 dias)",
       "Suporte prioritário",
@@ -155,8 +135,8 @@ export const plans: Plan[] = [
   {
     id: "enterprise",
     name: "Enterprise",
-    description: "Para organizações compliance e escala",
-    monthlyPrice: planPrice(599 - 10),
+    description: "Para organizacoes compliance e escala",
+    monthlyPrice: planPrice(599),
     cta: "Falar com Vendas",
     supabasePlan: "Team",
     baseFeatures: [],
@@ -206,7 +186,7 @@ export const featureComparison: FeatureCategory[] = [
       { name: "Disco por projeto", pro: "8 GB", enterprise: "8 GB" },
       { name: "Egress mensal", pro: "250 GB", enterprise: "250 GB" },
       { name: "Egress em cache", pro: "250 GB", enterprise: "250 GB" },
-      { name: "Backups automaticos", pro: "7 dias", enterprise: "14 dias" },
+      { name: "Backups automáticos", pro: "7 dias", enterprise: "14 dias" },
       { name: "Recuperacao ponto a ponto", pro: "Adicional ($100/mes)", enterprise: "Adicional ($100/mes)" },
       { name: "Branching", pro: "Adicional ($0,013/branch/h)", enterprise: "Adicional ($0,013/branch/h)" },
       { name: "Pipelines", pro: "Adicional", enterprise: "Adicional" },
@@ -226,17 +206,17 @@ export const featureComparison: FeatureCategory[] = [
   {
     category: "Autenticacao",
     features: [
-      { name: "Usuarios ativos mensais (MAU)", pro: "100.000", enterprise: "100.000" },
-      { name: "Propriedade dos dados do usuario", pro: "Incluso", enterprise: "Incluso" },
+      { name: "Usuários ativos mensais (MAU)", pro: "100.000", enterprise: "100.000" },
+      { name: "Propriedade dos dados do usuário", pro: "Incluso", enterprise: "Incluso" },
       { name: "Login anonimo", pro: "Incluso", enterprise: "Incluso" },
       { name: "Provedores OAuth sociais", pro: "Incluso", enterprise: "Incluso" },
       { name: "SMTP personalizado", pro: "Incluso", enterprise: "Incluso" },
       { name: "Remove branding de emails", pro: "Incluso", enterprise: "Incluso" },
       { name: "MFA basico", pro: "Incluso", enterprise: "Incluso" },
-      { name: "MFA avancado (Telefone)", pro: "$75/mes primeiro projeto", enterprise: "$75/mes primeiro projeto" },
+      { name: "MFA avançado (Telefone)", pro: "$75/mês primeiro projeto", enterprise: "$75/mês primeiro projeto" },
       { name: "Single Sign-On (SAML 2.0)", pro: "50 incluidos", enterprise: "50 incluidos" },
       { name: "Protecao contra senhas vazadas", pro: "Incluso", enterprise: "Incluso" },
-      { name: "Sessao unica por usuario", pro: "Incluso", enterprise: "Incluso" },
+      { name: "Sessão única por usuário", pro: "Incluso", enterprise: "Incluso" },
       { name: "Timeouts de sessao", pro: "Incluso", enterprise: "Incluso" },
       { name: "Logs de auditoria de auth", pro: "7 dias", enterprise: "28 dias" },
       { name: "Auth Hooks", pro: "JWT + Email/SMS", enterprise: "Todos" },
@@ -333,8 +313,8 @@ export const computeOptions: ComputeOption[] = [
     size: "Micro",
     supabaseCostUSD: 10,
     supabaseCostBRL: 62,
-    markupBRL: computeExtraPrice(10),
-    price: computeExtraPrice(10),
+    markupBRL: computePrice(10),
+    price: computePrice(10),
     cpu: "2 nucleos ARM",
     dedicated: false,
     ram: "1 GB",
@@ -345,7 +325,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 1 GB de RAM",
       "60 conexoes diretas ao banco",
       "200 conexoes via pooler",
-      "Compartilhado - custo-beneficio para comecar",
+      "Compartilhado - custo-benefício para começar",
     ],
   },
   {
@@ -353,8 +333,8 @@ export const computeOptions: ComputeOption[] = [
     size: "Pequeno",
     supabaseCostUSD: 15,
     supabaseCostBRL: 93,
-    markupBRL: computeExtraPrice(15),
-    price: computeExtraPrice(15),
+    markupBRL: computePrice(15),
+    price: computePrice(15),
     cpu: "2 nucleos ARM",
     dedicated: false,
     ram: "2 GB",
@@ -364,7 +344,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 2 GB de RAM",
       "90 conexoes diretas ao banco",
       "400 conexoes via pooler",
-      "Compartilhado - para apps com trafego leve",
+      "Compartilhado - para apps com tráfego leve",
     ],
   },
   {
@@ -372,8 +352,8 @@ export const computeOptions: ComputeOption[] = [
     size: "Medio",
     supabaseCostUSD: 60,
     supabaseCostBRL: 372,
-    markupBRL: computeExtraPrice(60),
-    price: computeExtraPrice(60),
+    markupBRL: computePrice(60),
+    price: computePrice(60),
     cpu: "2 nucleos ARM",
     dedicated: false,
     ram: "4 GB",
@@ -383,7 +363,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 4 GB de RAM",
       "120 conexoes diretas ao banco",
       "600 conexoes via pooler",
-      "Compartilhado - para apps em producao com trafego moderado",
+      "Compartilhado - para apps em produção com tráfego moderado",
     ],
   },
   {
@@ -391,8 +371,8 @@ export const computeOptions: ComputeOption[] = [
     size: "Grande",
     supabaseCostUSD: 110,
     supabaseCostBRL: 682,
-    markupBRL: computeExtraPrice(110),
-    price: computeExtraPrice(110),
+    markupBRL: computePrice(110),
+    price: computePrice(110),
     cpu: "2 nucleos ARM",
     dedicated: true,
     ram: "8 GB",
@@ -403,7 +383,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 8 GB de RAM",
       "160 conexoes diretas ao banco",
       "800 conexoes via pooler",
-      "Ideal para apps de producao com trafego alto",
+      "Ideal para apps de produção com tráfego alto",
     ],
   },
   {
@@ -411,8 +391,8 @@ export const computeOptions: ComputeOption[] = [
     size: "XL",
     supabaseCostUSD: 210,
     supabaseCostBRL: 1302,
-    markupBRL: computeExtraPrice(210),
-    price: computeExtraPrice(210),
+    markupBRL: computePrice(210),
+    price: computePrice(210),
     cpu: "4 nucleos ARM",
     dedicated: true,
     ram: "16 GB",
@@ -423,7 +403,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 16 GB de RAM",
       "240 conexoes diretas ao banco",
       "1.000 conexoes via pooler",
-      "Para apps com alta concorrencia e consultas complexas",
+      "Para apps com alta concorrência e consultas complexas",
     ],
   },
   {
@@ -431,8 +411,8 @@ export const computeOptions: ComputeOption[] = [
     size: "2XL",
     supabaseCostUSD: 410,
     supabaseCostBRL: 2542,
-    markupBRL: computeExtraPrice(410),
-    price: computeExtraPrice(410),
+    markupBRL: computePrice(410),
+    price: computePrice(410),
     cpu: "8 nucleos ARM",
     dedicated: true,
     ram: "32 GB",
@@ -443,7 +423,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 32 GB de RAM",
       "380 conexoes diretas ao banco",
       "1.500 conexoes via pooler",
-      "Para escalar horizontalmente com multiplos projetos",
+      "Para escalar horizontalmente com múltiplos projetos",
     ],
   },
   {
@@ -451,8 +431,8 @@ export const computeOptions: ComputeOption[] = [
     size: "4XL",
     supabaseCostUSD: 960,
     supabaseCostBRL: 5952,
-    markupBRL: computeExtraPrice(960),
-    price: computeExtraPrice(960),
+    markupBRL: computePrice(960),
+    price: computePrice(960),
     cpu: "16 nucleos ARM",
     dedicated: true,
     ram: "64 GB",
@@ -463,7 +443,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 64 GB de RAM",
       "480 conexoes diretas ao banco",
       "3.000 conexoes via pooler",
-      "Para organizacoes com multiplos projetos e alto volume",
+      "Para organizações com múltiplos projetos e alto volume",
     ],
   },
   {
@@ -471,8 +451,8 @@ export const computeOptions: ComputeOption[] = [
     size: "8XL",
     supabaseCostUSD: 1870,
     supabaseCostBRL: 11594,
-    markupBRL: computeExtraPrice(1870),
-    price: computeExtraPrice(1870),
+    markupBRL: computePrice(1870),
+    price: computePrice(1870),
     cpu: "32 nucleos ARM",
     dedicated: true,
     ram: "128 GB",
@@ -491,8 +471,8 @@ export const computeOptions: ComputeOption[] = [
     size: "12XL",
     supabaseCostUSD: 2800,
     supabaseCostBRL: 17360,
-    markupBRL: computeExtraPrice(2800),
-    price: computeExtraPrice(2800),
+    markupBRL: computePrice(2800),
+    price: computePrice(2800),
     cpu: "48 nucleos ARM",
     dedicated: true,
     ram: "192 GB",
@@ -511,8 +491,8 @@ export const computeOptions: ComputeOption[] = [
     size: "16XL",
     supabaseCostUSD: 3730,
     supabaseCostBRL: 23126,
-    markupBRL: computeExtraPrice(3730),
-    price: computeExtraPrice(3730),
+    markupBRL: computePrice(3730),
+    price: computePrice(3730),
     cpu: "64 nucleos ARM",
     dedicated: true,
     ram: "256 GB",
@@ -523,7 +503,7 @@ export const computeOptions: ComputeOption[] = [
       "Banco de dados com 256 GB de RAM",
       "500 conexoes diretas ao banco",
       "12.000 conexoes via pooler",
-      "Maxima performance para operacoes de grande escala",
+      "Máxima performance para operações de grande escala",
     ],
   },
 ];

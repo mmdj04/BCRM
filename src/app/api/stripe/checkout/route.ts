@@ -4,46 +4,33 @@ import { stripe } from "@/lib/stripe/server";
 
 const EXCHANGE_RATE = 6.2;
 const STRIPE_FEE_RATE = 0.05;
-const COMPUTE_CREDIT_USD = 10;
-
-function smartPrice(totalCostBRL: number): number {
-  let multiplier: number;
-  if (totalCostBRL <= 5000) {
-    multiplier = 5;
-  } else if (totalCostBRL >= 50000) {
-    multiplier = 3.5;
-  } else {
-    multiplier = 5 - ((totalCostBRL - 5000) / 45000) * 1.5;
-  }
-  return Math.round(((totalCostBRL * multiplier) / (1 - STRIPE_FEE_RATE)) * 100);
-}
+const PLAN_MULTIPLIER = 6;
+const COMPUTE_MULTIPLIER = 3;
 
 function planAmount(supabaseUSD: number): number {
-  return smartPrice(supabaseUSD * EXCHANGE_RATE);
+  return Math.round(supabaseUSD * EXCHANGE_RATE * PLAN_MULTIPLIER);
 }
 
-function computeExtraAmount(computeUSD: number): number {
-  const effectiveUSD = Math.max(0, computeUSD - COMPUTE_CREDIT_USD);
-  if (effectiveUSD <= 0) return 0;
-  return smartPrice(effectiveUSD * EXCHANGE_RATE);
+function computeAmount(supabaseUSD: number): number {
+  return Math.round(supabaseUSD * EXCHANGE_RATE * COMPUTE_MULTIPLIER);
 }
 
 const PLAN_BASE_AMOUNTS: Record<string, number> = {
-  pro: planAmount(25 - 10),
-  enterprise: planAmount(599 - 10),
+  pro: planAmount(25),
+  enterprise: planAmount(599),
 };
 
 const COMPUTE_EXTRA_AMOUNTS: Record<string, number> = {
-  micro: computeExtraAmount(10),
-  small: computeExtraAmount(15),
-  medium: computeExtraAmount(60),
-  large: computeExtraAmount(110),
-  xlarge: computeExtraAmount(210),
-  "2xlarge": computeExtraAmount(410),
-  "4xlarge": computeExtraAmount(960),
-  "8xlarge": computeExtraAmount(1870),
-  "12xlarge": computeExtraAmount(2800),
-  "16xlarge": computeExtraAmount(3730),
+  micro: computeAmount(10),
+  small: computeAmount(15),
+  medium: computeAmount(60),
+  large: computeAmount(110),
+  xlarge: computeAmount(210),
+  "2xlarge": computeAmount(410),
+  "4xlarge": computeAmount(960),
+  "8xlarge": computeAmount(1870),
+  "12xlarge": computeAmount(2800),
+  "16xlarge": computeAmount(3730),
 };
 
 export async function POST(request: Request) {
