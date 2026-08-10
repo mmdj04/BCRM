@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 
 import { stripe } from "@/lib/stripe/server";
 
+const EXCHANGE_RATE = 6.2;
+const MARKUP = 2.5;
+
+function supabaseToBrlCents(usd: number): number {
+  return Math.round(usd * EXCHANGE_RATE * MARKUP * 100);
+}
+
 const PLAN_PRICES: Record<string, number> = {
   starter: 89990,
   pro: 229990,
@@ -9,16 +16,16 @@ const PLAN_PRICES: Record<string, number> = {
 };
 
 const COMPUTE_PRICES: Record<string, number> = {
-  micro: 9500,
-  small: 13500,
-  medium: 49500,
-  large: 85300,
-  xlarge: 147000,
-  "2xlarge": 273000,
-  "4xlarge": 525000,
-  "8xlarge": 1008000,
-  "12xlarge": 1512000,
-  "16xlarge": 2016000,
+  micro: supabaseToBrlCents(10),
+  small: supabaseToBrlCents(15),
+  medium: supabaseToBrlCents(60),
+  large: supabaseToBrlCents(110),
+  xlarge: supabaseToBrlCents(210),
+  "2xlarge": supabaseToBrlCents(410),
+  "4xlarge": supabaseToBrlCents(960),
+  "8xlarge": supabaseToBrlCents(1870),
+  "12xlarge": supabaseToBrlCents(2800),
+  "16xlarge": supabaseToBrlCents(3730),
 };
 
 export async function POST(request: Request) {

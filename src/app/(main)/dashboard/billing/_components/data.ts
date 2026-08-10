@@ -1,3 +1,88 @@
+export const EXCHANGE_RATE = 6.2;
+export const MARKUP = 2.5;
+
+export function supabaseToBrl(usd: number): number {
+  return Math.round(usd * EXCHANGE_RATE * MARKUP * 100) / 100;
+}
+
+export type PlanLimit = {
+  diskGB: number;
+  egressGB: number;
+  cachedEgressGB: number;
+  storageGB: number;
+  mau: number;
+  edgeInvocations: number;
+  realtimeConnections: number;
+  realtimeMessages: number;
+  imageTransformations: number;
+  samlUsers: number;
+};
+
+export type OverageRate = {
+  diskPerGB: number;
+  egressPerGB: number;
+  cachedEgressPerGB: number;
+  storagePerGB: number;
+  perMAU: number;
+  perMillionEdge: number;
+  per1000RealtimeConn: number;
+  perMillionRealtimeMsg: number;
+  per1000ImageTransform: number;
+  perSAMLMau: number;
+};
+
+export const planLimits: Record<string, PlanLimit> = {
+  starter: {
+    diskGB: 8,
+    egressGB: 250,
+    cachedEgressGB: 250,
+    storageGB: 100,
+    mau: 10_000,
+    edgeInvocations: 500_000,
+    realtimeConnections: 100,
+    realtimeMessages: 1_000_000,
+    imageTransformations: 100,
+    samlUsers: 0,
+  },
+  pro: {
+    diskGB: 50,
+    egressGB: 1024,
+    cachedEgressGB: 512,
+    storageGB: 512,
+    mau: 100_000,
+    edgeInvocations: 5_000_000,
+    realtimeConnections: 500,
+    realtimeMessages: 5_000_000,
+    imageTransformations: 1000,
+    samlUsers: 50,
+  },
+  team: {
+    diskGB: 200,
+    egressGB: 5120,
+    cachedEgressGB: 2048,
+    storageGB: 2048,
+    mau: 500_000,
+    edgeInvocations: 20_000_000,
+    realtimeConnections: 2000,
+    realtimeMessages: 25_000_000,
+    imageTransformations: 5000,
+    samlUsers: 200,
+  },
+};
+
+export const overageRates: OverageRate = {
+  diskPerGB: supabaseToBrl(0.125),
+  egressPerGB: supabaseToBrl(0.09),
+  cachedEgressPerGB: supabaseToBrl(0.03),
+  storagePerGB: supabaseToBrl(0.0213),
+  perMAU: supabaseToBrl(0.00325),
+  perMillionEdge: supabaseToBrl(2),
+  per1000RealtimeConn: supabaseToBrl(10),
+  perMillionRealtimeMsg: supabaseToBrl(2.5),
+  per1000ImageTransform: supabaseToBrl(5),
+  perSAMLMau: supabaseToBrl(0.015),
+};
+
 export type Plan = {
   id: string;
   name: string;
@@ -26,7 +111,7 @@ export const plans: Plan[] = [
       "100 GB de armazenamento",
       "1 projeto ativo",
       "Banco Postgres dedicado",
-      "Auth com 100K MAU",
+      "Auth com 10K MAU",
       "Backups automáticos (7 dias)",
       "Suporte por e-mail",
       "Relatórios básicos",
@@ -81,12 +166,12 @@ export function getAllPlanFeatures(planId: string): string[] {
   if (plan.id === "starter") {
     return [...plan.baseFeatures];
   }
-  const prevPlan =
-    plan.id === "pro"
-      ? plans.find((p) => p.id === "starter")
-      : plan.id === "team"
-        ? plans.find((p) => p.id === "pro")
-        : undefined;
+  let prevPlan: Plan | undefined;
+  if (plan.id === "pro") {
+    prevPlan = plans.find((p) => p.id === "starter");
+  } else if (plan.id === "team") {
+    prevPlan = plans.find((p) => p.id === "pro");
+  }
   return [...(prevPlan ? getAllPlanFeatures(prevPlan.id) : []), ...plan.extraFeatures];
 }
 
@@ -106,8 +191,9 @@ export const featureComparison: FeatureCategory[] = [
     features: [
       { name: "Banco Postgres Dedicado", starter: "Incluso", pro: "Incluso", team: "Incluso" },
       { name: "Requisições API ilimitadas", starter: "Incluso", pro: "Incluso", team: "Incluso" },
-      { name: "Disco por projeto", starter: "8 GB", pro: "8 GB", team: "8 GB" },
-      { name: "Egress mensal", starter: "250 GB", pro: "250 GB", team: "250 GB" },
+      { name: "Disco por projeto", starter: "8 GB", pro: "50 GB", team: "200 GB" },
+      { name: "Egress mensal", starter: "250 GB", pro: "1 TB", team: "5 TB" },
+      { name: "Egress em cache", starter: "250 GB", pro: "512 GB", team: "2 TB" },
       { name: "Backups automáticos", starter: "7 dias", pro: "7 dias", team: "14 dias" },
       { name: "Recuperação ponto a ponto", starter: "-", pro: "Adicional", team: "Adicional" },
       { name: "Branching", starter: "-", pro: "Adicional", team: "Adicional" },
@@ -122,20 +208,20 @@ export const featureComparison: FeatureCategory[] = [
       { name: "Conexões diretas", starter: "90", pro: "120", team: "160" },
       { name: "Pooler connections", starter: "400", pro: "600", team: "800" },
       { name: "Compute dedicado", starter: "-", pro: "-", team: "Incluso" },
-      { name: "Créditos compute", starter: "R$ 50/mês", pro: "R$ 50/mês", team: "R$ 50/mês" },
+      { name: "Créditos compute", starter: "R$ 62/mês", pro: "R$ 62/mês", team: "R$ 62/mês" },
     ],
   },
   {
     category: "Autenticação",
     features: [
-      { name: "Usuários ativos mensais (MAU)", starter: "100.000", pro: "100.000", team: "100.000" },
+      { name: "Usuários ativos mensais (MAU)", starter: "10.000", pro: "100.000", team: "500.000" },
       { name: "Propriedade dos dados do usuário", starter: "Incluso", pro: "Incluso", team: "Incluso" },
       { name: "Login anônimo", starter: "Incluso", pro: "Incluso", team: "Incluso" },
       { name: "Provedores OAuth sociais", starter: "Incluso", pro: "Incluso", team: "Incluso" },
       { name: "SMTP personalizado", starter: "Incluso", pro: "Incluso", team: "Incluso" },
       { name: "MFA básico", starter: "Incluso", pro: "Incluso", team: "Incluso" },
       { name: "MFA avançado (Telefone)", starter: "-", pro: "Adicional", team: "Adicional" },
-      { name: "Single Sign-On (SAML 2.0)", starter: "-", pro: "50 incluídos", team: "50 incluídos" },
+      { name: "Single Sign-On (SAML 2.0)", starter: "-", pro: "50 incluídos", team: "200 incluídos" },
       { name: "Proteção contra senhas vazadas", starter: "-", pro: "Incluso", team: "Incluso" },
       { name: "Sessão única por usuário", starter: "-", pro: "Incluso", team: "Incluso" },
       { name: "Timeouts de sessão", starter: "-", pro: "Incluso", team: "Incluso" },
@@ -146,24 +232,24 @@ export const featureComparison: FeatureCategory[] = [
   {
     category: "Armazenamento",
     features: [
-      { name: "Armazenamento de arquivos", starter: "100 GB", pro: "100 GB", team: "100 GB" },
-      { name: "Egress em cache", starter: "250 GB", pro: "250 GB", team: "250 GB" },
+      { name: "Armazenamento de arquivos", starter: "100 GB", pro: "512 GB", team: "2 TB" },
+      { name: "Egress em cache", starter: "250 GB", pro: "512 GB", team: "2 TB" },
       { name: "Controles de acesso personalizados", starter: "Incluso", pro: "Incluso", team: "Incluso" },
       { name: "Tamanho máximo de upload", starter: "500 GB", pro: "500 GB", team: "500 GB" },
       { name: "CDN", starter: "Smart CDN", pro: "Smart CDN", team: "Smart CDN" },
-      { name: "Transformações de imagem", starter: "100 grátis", pro: "100 grátis", team: "100 grátis" },
+      { name: "Transformações de imagem", starter: "100 grátis", pro: "1.000 grátis", team: "5.000 grátis" },
     ],
   },
   {
     category: "Funções Edge",
-    features: [{ name: "Invocações mensais", starter: "2 Milhões", pro: "2 Milhões", team: "2 Milhões" }],
+    features: [{ name: "Invocações mensais", starter: "500K", pro: "5 Milhões", team: "20 Milhões" }],
   },
   {
     category: "Tempo Real",
     features: [
       { name: "Mudanças no Postgres", starter: "Incluso", pro: "Incluso", team: "Incluso" },
-      { name: "Conexões simultâneas no pico", starter: "500", pro: "500", team: "500" },
-      { name: "Mensagens por mês", starter: "5 Milhões", pro: "5 Milhões", team: "5 Milhões" },
+      { name: "Conexões simultâneas no pico", starter: "100", pro: "500", team: "2.000" },
+      { name: "Mensagens por mês", starter: "1 Milhão", pro: "5 Milhões", team: "25 Milhões" },
       { name: "Tamanho máximo da mensagem", starter: "3 MB", pro: "3 MB", team: "3 MB" },
     ],
   },
@@ -215,8 +301,9 @@ export const billingHistory: BillingHistoryEntry[] = [
 export type ComputeOption = {
   id: string;
   size: string;
-  supabaseCost: number;
-  markupPercent: number;
+  supabaseCostUSD: number;
+  supabaseCostBRL: number;
+  markupBRL: number;
   price: number;
   cpu: string;
   dedicated: boolean;
@@ -230,9 +317,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "micro",
     size: "Micro",
-    supabaseCost: 50,
-    markupPercent: 90,
-    price: 95,
+    supabaseCostUSD: 10,
+    supabaseCostBRL: 62,
+    markupBRL: 155,
+    price: 155,
     cpu: "2 núcleos ARM",
     dedicated: false,
     ram: "1 GB",
@@ -249,9 +337,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "small",
     size: "Pequeno",
-    supabaseCost: 75,
-    markupPercent: 80,
-    price: 135,
+    supabaseCostUSD: 15,
+    supabaseCostBRL: 93,
+    markupBRL: 232.5,
+    price: 232.5,
     cpu: "2 núcleos ARM",
     dedicated: false,
     ram: "2 GB",
@@ -267,9 +356,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "medium",
     size: "Médio",
-    supabaseCost: 300,
-    markupPercent: 65,
-    price: 495,
+    supabaseCostUSD: 60,
+    supabaseCostBRL: 372,
+    markupBRL: 930,
+    price: 930,
     cpu: "2 núcleos ARM",
     dedicated: false,
     ram: "4 GB",
@@ -285,9 +375,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "large",
     size: "Grande",
-    supabaseCost: 550,
-    markupPercent: 55,
-    price: 853,
+    supabaseCostUSD: 110,
+    supabaseCostBRL: 682,
+    markupBRL: 1705,
+    price: 1705,
     cpu: "2 núcleos ARM",
     dedicated: true,
     ram: "8 GB",
@@ -304,9 +395,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "xlarge",
     size: "XL",
-    supabaseCost: 1050,
-    markupPercent: 40,
-    price: 1470,
+    supabaseCostUSD: 210,
+    supabaseCostBRL: 1302,
+    markupBRL: 3255,
+    price: 3255,
     cpu: "4 núcleos ARM",
     dedicated: true,
     ram: "16 GB",
@@ -323,9 +415,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "2xlarge",
     size: "2XL",
-    supabaseCost: 2100,
-    markupPercent: 30,
-    price: 2730,
+    supabaseCostUSD: 410,
+    supabaseCostBRL: 2542,
+    markupBRL: 6355,
+    price: 6355,
     cpu: "8 núcleos ARM",
     dedicated: true,
     ram: "32 GB",
@@ -342,9 +435,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "4xlarge",
     size: "4XL",
-    supabaseCost: 4200,
-    markupPercent: 25,
-    price: 5250,
+    supabaseCostUSD: 960,
+    supabaseCostBRL: 5952,
+    markupBRL: 14880,
+    price: 14880,
     cpu: "16 núcleos ARM",
     dedicated: true,
     ram: "64 GB",
@@ -361,9 +455,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "8xlarge",
     size: "8XL",
-    supabaseCost: 8400,
-    markupPercent: 20,
-    price: 10080,
+    supabaseCostUSD: 1870,
+    supabaseCostBRL: 11594,
+    markupBRL: 28985,
+    price: 28985,
     cpu: "32 núcleos ARM",
     dedicated: true,
     ram: "128 GB",
@@ -380,9 +475,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "12xlarge",
     size: "12XL",
-    supabaseCost: 12600,
-    markupPercent: 20,
-    price: 15120,
+    supabaseCostUSD: 2800,
+    supabaseCostBRL: 17360,
+    markupBRL: 43400,
+    price: 43400,
     cpu: "48 núcleos ARM",
     dedicated: true,
     ram: "192 GB",
@@ -399,9 +495,10 @@ export const computeOptions: ComputeOption[] = [
   {
     id: "16xlarge",
     size: "16XL",
-    supabaseCost: 16800,
-    markupPercent: 20,
-    price: 20160,
+    supabaseCostUSD: 3730,
+    supabaseCostBRL: 23126,
+    markupBRL: 57815,
+    price: 57815,
     cpu: "64 núcleos ARM",
     dedicated: true,
     ram: "256 GB",

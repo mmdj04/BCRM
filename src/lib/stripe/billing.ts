@@ -5,23 +5,30 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", proces
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
 
+const EXCHANGE_RATE = 6.2;
+const MARKUP = 2.5;
+
+function supabaseToBrlCents(usd: number): number {
+  return Math.round(usd * EXCHANGE_RATE * MARKUP * 100);
+}
+
 const PLAN_AMOUNTS: Record<string, number> = {
-  starter: 89990, // R$ 899,90
-  pro: 229990, // R$ 2.299,90
-  team: 899990, // R$ 8.999,90
+  starter: 89990,
+  pro: 229990,
+  team: 899990,
 };
 
 const COMPUTE_AMOUNTS: Record<string, number> = {
-  micro: 9500, // R$ 95
-  small: 13500, // R$ 135
-  medium: 49500, // R$ 495
-  large: 85300, // R$ 853
-  xlarge: 147000, // R$ 1.470
-  "2xlarge": 273000, // R$ 2.730
-  "4xlarge": 525000, // R$ 5.250
-  "8xlarge": 1008000, // R$ 10.080
-  "12xlarge": 1512000, // R$ 15.120
-  "16xlarge": 2016000, // R$ 20.160
+  micro: supabaseToBrlCents(10),
+  small: supabaseToBrlCents(15),
+  medium: supabaseToBrlCents(60),
+  large: supabaseToBrlCents(110),
+  xlarge: supabaseToBrlCents(210),
+  "2xlarge": supabaseToBrlCents(410),
+  "4xlarge": supabaseToBrlCents(960),
+  "8xlarge": supabaseToBrlCents(1870),
+  "12xlarge": supabaseToBrlCents(2800),
+  "16xlarge": supabaseToBrlCents(3730),
 };
 
 function getTotalAmount(plan: string, compute: string): number {
@@ -87,8 +94,8 @@ export async function createCheckoutSessionElements(
       compute,
       interval: "monthly",
       isBusiness: business?.isBusiness ? "true" : "false",
-      companyName: business?.companyName || "",
-      cnpj: business?.cnpj || "",
+      companyName: business?.companyName ?? "",
+      cnpj: business?.cnpj ?? "",
     },
   });
 
@@ -153,8 +160,8 @@ export async function createCheckoutSession(
       compute,
       interval: "monthly",
       isBusiness: business?.isBusiness ? "true" : "false",
-      companyName: business?.companyName || "",
-      cnpj: business?.cnpj || "",
+      companyName: business?.companyName ?? "",
+      cnpj: business?.cnpj ?? "",
     },
     ...(customFields.length > 0 ? { custom_fields: customFields } : {}),
   });
