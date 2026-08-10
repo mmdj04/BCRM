@@ -54,8 +54,7 @@ export function LoginForm() {
           isDemo: true,
         })}; path=/; ${maxAge ? `max-age=${maxAge}; ` : ""}SameSite=Lax`;
         toast.success("Modo de demonstração ativado!");
-        router.push("/dashboard/default");
-        router.refresh();
+        window.location.href = "/dashboard/default";
         return;
       }
 
@@ -70,8 +69,7 @@ export function LoginForm() {
       }
 
       toast.success("Login realizado com sucesso!");
-      router.push("/dashboard/default");
-      router.refresh();
+      window.location.href = "/dashboard/default";
     } catch {
       toast.error("Ocorreu um erro inesperado");
     } finally {
