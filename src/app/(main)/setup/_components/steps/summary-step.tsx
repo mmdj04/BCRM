@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react";
 
-import { computeOptions, planPrice } from "@/app/(main)/dashboard/billing/_components/data";
+import { addOns, computeOptions, planPrice } from "@/app/(main)/dashboard/billing/_components/data";
 import { PaymentForm } from "@/components/payment-form";
 import { StripeElementsProvider } from "@/components/stripe-provider";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -112,30 +112,16 @@ const summaryPlans = [
     price: planPrice(599),
     period: "/mês",
     description: "Para organizações compliance e escala",
-    baseFeatures: [
-      "Até 20 usuários",
-      "Todos os módulos",
-      "1 projeto ativo",
-      "Banco Postgres dedicado",
-      "8 GB de disco por projeto",
-      "250 GB de egress mensal",
-      "100 GB de armazenamento",
-      "Auth com 100K MAUs",
-      "2M Edge Functions",
-      "500 conexões Realtime",
-      "5M mensagens Realtime",
-      "100 transformações de imagem",
-      "SAML/SSO (50 usuários)",
-      "Backups automáticos (14 dias)",
-      "Retenção de logs (28 dias)",
-      "Suporte prioritário com SLA",
-    ],
+    baseFeatures: [],
     extraFeatures: [
       "SOC2 + ISO 27001",
       "HIPAA (aditivo)",
       "SSO para Dashboard",
       "Platform Audit Logs",
       "AWS PrivateLink",
+      "Backups automáticos (14 dias)",
+      "Retenção de logs (28 dias)",
+      "Suporte prioritário com SLA",
       "Access Roles: Read-only + Predefined",
     ],
   },
@@ -154,6 +140,7 @@ export function SummaryStep() {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
   const [selectedCompute, setSelectedCompute] = useState<string>("medium");
+  const [selectedAddOn, setSelectedAddOn] = useState<string>("none");
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -176,6 +163,10 @@ export function SummaryStep() {
     .map(([k]) => k);
 
   const selectedPlanData = summaryPlans.find((p) => p.id === selectedPlan);
+  const selectedAddOnData = selectedAddOn !== "none" ? addOns.find((a) => a.id === selectedAddOn) : null;
+  const addOnPrice = selectedAddOnData?.priceBRL ?? 0;
+  const computePrice = computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0;
+  const totalMonthly = (selectedPlanData?.price ?? 0) + computePrice + addOnPrice;
 
   const openPaymentDialog = async () => {
     // Demo mode: skip Stripe entirely, mark payment as complete
@@ -266,7 +257,7 @@ export function SummaryStep() {
     <StripeElementsProvider clientSecret={clientSecret}>
       <PaymentForm
         planName={selectedPlanData?.name ?? ""}
-        planPrice={`R$ ${((selectedPlanData?.price ?? 0) + (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`}
+        planPrice={`R$ ${totalMonthly.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`}
         onSuccess={handlePaymentSuccess}
         onCancel={handlePaymentCancel}
       />
@@ -755,6 +746,67 @@ export function SummaryStep() {
                 </div>
               </div>
             )}
+
+            {/* PITR Backup Add-on */}
+            {selectedPlan && (
+              <div className="mt-4">
+                <h3 className="mb-3 font-semibold text-base">Backup PITR (Opcional)</h3>
+                <p className="mb-3 text-muted-foreground text-sm">
+                  Recuperação ponto a ponto — restaure seu banco para qualquer momento nos últimos N dias.
+                </p>
+                <div className="grid gap-2 sm:grid-cols-4">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedAddOn("none")}
+                    className={`flex flex-col rounded-lg border p-3 text-left transition-all ${
+                      selectedAddOn === "none"
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-muted-foreground/50"
+                    }`}
+                  >
+                    <span className="font-medium text-sm">Sem PITR</span>
+                    <span className="text-muted-foreground text-xs">Backups diários (7 dias)</span>
+                  </button>
+                  {addOns.map((addon) => (
+                    <button
+                      key={addon.id}
+                      type="button"
+                      onClick={() => setSelectedAddOn(addon.id)}
+                      className={`flex flex-col rounded-lg border p-3 text-left transition-all ${
+                        selectedAddOn === addon.id
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-muted-foreground/50"
+                      }`}
+                    >
+                      <span className="font-medium text-sm">{addon.name}</span>
+                      <span className="text-muted-foreground text-xs">
+                        R$ {addon.priceBRL.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Total Geral */}
+            {selectedPlan && (
+              <div className="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-sm">Total Mensal</p>
+                    <p className="text-muted-foreground text-xs">
+                      Plano {selectedPlanData?.name} + Compute
+                      {selectedAddOnData ? ` + ${selectedAddOnData.name}` : ""}
+                    </p>
+                  </div>
+                  <span className="font-bold text-2xl">
+                    R${" "}
+                    {totalMonthly.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    <span className="font-normal text-muted-foreground text-sm">/mês</span>
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Botão de Pagamento */}
@@ -766,7 +818,7 @@ export function SummaryStep() {
                   ? `Selecionar Plano ${selectedPlanData?.name} (Demo)`
                   : loadingPaymentIntent
                     ? "Preparando pagamento..."
-                    : `Confirmar Plano ${selectedPlanData?.name} (R$ ${((selectedPlanData?.price ?? 0) + (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês)`}
+                    : `Confirmar Plano ${selectedPlanData?.name} (R$ ${totalMonthly.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}/mês)`}
               </Button>
             </div>
           ) : (
@@ -821,10 +873,7 @@ export function SummaryStep() {
                   <span className="font-medium text-sm">Total</span>
                   <span className="font-bold text-lg">
                     R${" "}
-                    {(
-                      (selectedPlanData?.price ?? 0) +
-                      (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)
-                    ).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    {totalMonthly.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                     <span className="font-normal text-muted-foreground text-sm">/mês</span>
                   </span>
                 </div>
@@ -856,10 +905,7 @@ export function SummaryStep() {
                   <span className="text-muted-foreground text-sm">Total</span>
                   <span className="font-bold text-lg">
                     R${" "}
-                    {(
-                      (selectedPlanData?.price ?? 0) +
-                      (computeOptions.find((c) => c.id === selectedCompute)?.price ?? 0)
-                    ).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    {totalMonthly.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                     /mês
                   </span>
                 </div>
