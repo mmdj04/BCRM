@@ -167,11 +167,13 @@
     <div class="offline-version">BCRM v1.0.0</div>
   </div>
 
+  <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
   <script>
     const SERVER_URL = 'https://bcrm-lilac.vercel.app/';
     const STATUS_EL = document.getElementById('loading-status');
     const MAX_RETRIES = 3;
     let retries = 0;
+    let isCapacitor = false;
 
     function applyTheme() {
       const match = document.cookie.split('; ').find(c => c.startsWith('theme_mode='));
@@ -209,44 +211,81 @@
       document.getElementById('screen-offline').classList.add('active');
     }
 
-    function tryConnect() {
-      if (!navigator.onLine) {
-        showOffline();
-        return;
-      }
-
-      fetch(SERVER_URL, {
-        mode: 'no-cors',
-        cache: 'no-store',
-        signal: AbortSignal.timeout(5000),
-      })
-        .then(() => {
-          clearInterval(msgInterval);
-          window.location.replace(SERVER_URL);
-        })
-        .catch(() => {
-          retries++;
-          if (retries >= MAX_RETRIES) {
-            showOffline();
-          } else {
-            setTimeout(tryConnect, 1500);
-          }
-        });
-    }
-
-    function retryConnection() {
-      retries = 0;
+    function showLoading() {
       document.getElementById('screen-offline').classList.remove('active');
       document.getElementById('screen-loading').classList.add('active');
       STATUS_EL.textContent = 'Verificando conexão...';
       msgIdx = 0;
+    }
+
+    async function checkNetwork() {
+      try {
+        if (isCapacitor && Capacitor.Plugins.Network) {
+          const status = await Capacitor.Plugins.Network.getStatus();
+          return status.connected;
+        }
+      } catch (e) {}
+      return navigator.onLine;
+    }
+
+    async function preflightFetch() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const response = await fetch(SERVER_URL, {
+          method: 'HEAD',
+          mode: 'no-cors',
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function tryConnect() {
+      const connected = await checkNetwork();
+      if (!connected) {
+        showOffline();
+        return;
+      }
+
+      const reachable = await preflightFetch();
+      if (!reachable) {
+        retries++;
+        if (retries >= MAX_RETRIES) {
+          showOffline();
+        } else {
+          setTimeout(tryConnect, 1500);
+        }
+        return;
+      }
+
+      clearInterval(msgInterval);
+      window.location.replace(SERVER_URL);
+    }
+
+    function retryConnection() {
+      retries = 0;
+      showLoading();
       setTimeout(tryConnect, 500);
     }
 
-    // Start connection attempt
-    setTimeout(tryConnect, 2500);
+    // Initialize Capacitor if available
+    async function init() {
+      try {
+        if (typeof Capacitor !== 'undefined') {
+          isCapacitor = true;
+        }
+      } catch (e) {}
 
-    // Listen for online event
+      setTimeout(tryConnect, 2500);
+    }
+
+    init();
+
     window.addEventListener('online', () => {
       if (document.getElementById('screen-offline').classList.contains('active')) {
         retryConnection();
