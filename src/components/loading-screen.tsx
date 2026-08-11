@@ -2,6 +2,14 @@
 
 import { useEffect, useState } from "react";
 
+const MESSAGES = [
+  "Iniciando sistema...",
+  "Carregando módulos...",
+  "Conectando ao servidor...",
+  "Preparando interface...",
+  "Quase pronto...",
+];
+
 function getThemeFromCookie(): "light" | "dark" {
   if (typeof document === "undefined") return "dark";
   const match = document.cookie.split("; ").find((c) => c.startsWith("theme_mode="));
@@ -16,17 +24,13 @@ function getThemeFromCookie(): "light" | "dark" {
 export function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [status, setStatus] = useState("Iniciando sistema...");
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-
-  const messages = ["Iniciando sistema...", "Carregando módulos...", "Conectando ao servidor...", "Preparando interface...", "Quase pronto..."];
+  const [theme] = useState<"light" | "dark">(() => getThemeFromCookie());
 
   useEffect(() => {
-    setTheme(getThemeFromCookie());
-
     let msgIdx = 0;
     const msgInterval = setInterval(() => {
-      msgIdx = (msgIdx + 1) % messages.length;
-      setStatus(messages[msgIdx]);
+      msgIdx = (msgIdx + 1) % MESSAGES.length;
+      setStatus(MESSAGES[msgIdx]);
     }, 800);
 
     const timer = setTimeout(() => {
