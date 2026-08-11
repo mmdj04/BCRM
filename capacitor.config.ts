@@ -20,10 +20,6 @@ const config: CapacitorConfig = {
     Network: {
       monitoring: true,
     },
-    Stripe: {
-      merchantIdentifier: "com.bcrm.app",
-      urlScheme: "bcrm",
-    },
   },
   android: {
     buildOptions: {
