@@ -24,11 +24,13 @@ function getResolvedTheme(): "light" | "dark" {
 }
 
 export function LoadingScreen() {
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(true);
   const [status, setStatus] = useState("Iniciando sistema...");
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useBrowserEffect(() => {
+    setMounted(true);
     setTheme(getResolvedTheme());
 
     let msgIdx = 0;
@@ -47,7 +49,7 @@ export function LoadingScreen() {
     };
   }, []);
 
-  if (!visible) return null;
+  if (!mounted || !visible) return null;
 
   const bg = theme === "dark" ? "#09090b" : "#ffffff";
   const fg = theme === "dark" ? "#fafafa" : "#09090b";
