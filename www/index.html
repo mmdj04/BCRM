@@ -169,7 +169,7 @@
 
   <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
   <script>
-    const SERVER_URL = 'https://bcrm-lilac.vercel.app/';
+    const SERVER_URL = 'https://bcrm-lilac.vercel.app';
     const STATUS_EL = document.getElementById('loading-status');
     const MAX_RETRIES = 3;
     let retries = 0;
@@ -291,6 +291,12 @@
         retryConnection();
       }
     });
+
+    window.addEventListener('error', (e) => {
+      if (e.target && e.target.tagName === 'SCRIPT' && e.target.src) {
+        showOffline();
+      }
+    }, true);
   </script>
 </body>
 </html>
