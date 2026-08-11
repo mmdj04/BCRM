@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useAuth } from "@/lib/supabase/auth-context";
+import { useAuth } from "@/lib/auth/auth-context";
 
 interface SetupUserData {
   name: string;
@@ -51,13 +51,13 @@ export function useSetupStorage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user?.id) {
+    if (!user?.userId) {
       setLoading(false);
       return;
     }
 
     try {
-      const keys = getStorageKeys(user.id);
+      const keys = getStorageKeys(user.userId);
       const raw = localStorage.getItem(isDemo ? keys.demo : keys.real);
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -71,9 +71,9 @@ export function useSetupStorage() {
   }, [user?.id, isDemo]);
 
   const saveSetupData = (data: SetupStorageData) => {
-    if (!user?.id) return;
+    if (!user?.userId) return;
     try {
-      const keys = getStorageKeys(user.id);
+      const keys = getStorageKeys(user.userId);
       const storageKey = isDemo ? keys.demo : keys.real;
       localStorage.setItem(storageKey, JSON.stringify(data));
       setSetupData(data);

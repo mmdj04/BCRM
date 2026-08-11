@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { useAuth } from "@/lib/supabase/auth-context";
+import { useAuth } from "@/lib/auth/auth-context";
 
 export function SetupGuard({ children }: { children: React.ReactNode }) {
   const { user, isDemo, loading } = useAuth();

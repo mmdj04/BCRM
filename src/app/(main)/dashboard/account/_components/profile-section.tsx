@@ -19,9 +19,9 @@ export function ProfileSection() {
   const { user } = useAuth();
   const { isNative } = useCapacitor();
   const isDemo = user?.id === DEMO_CONFIG.user.id;
-  const [name, setName] = useState(user?.user_metadata?.full_name || "Matheus Moraes");
+  const [name, setName] = useState(user?.name || "Matheus Moraes");
   const [email] = useState(user?.email || "admin@bcrm.com");
-  const [avatarUrl, setAvatarUrl] = useState(user?.user_metadata?.avatar_url || "");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

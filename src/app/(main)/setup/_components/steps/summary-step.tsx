@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { createClient } from "@supabase/supabase-js";
 import {
   Banknote,
   Building2,
@@ -29,7 +28,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSetup } from "@/contexts/setup-context";
-import { useAuth } from "@/lib/supabase/auth-context";
+import { useAuth } from "@/lib/auth/auth-context";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -229,25 +228,21 @@ export function SummaryStep() {
     setPaymentComplete(true);
     setClientSecret(null);
 
-    // Save plan to Supabase directly (backup to webhook)
+    // Save plan to database directly (backup to webhook)
     if (user?.id) {
       try {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-        if (supabaseUrl && supabaseKey) {
-          const supabase = createClient(supabaseUrl, supabaseKey);
-          const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-          await supabase.from("users").upsert(
-            {
-              id: user.id,
-              plan: selectedPlan,
-              plan_interval: selectedInterval,
-              subscription_status: "active",
-              current_period_end: periodEnd,
-            },
-            { onConflict: "id" },
-          );
-        }
+        const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        await fetch("/api/user", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id,
+            plan: selectedPlan,
+            planInterval: selectedInterval,
+            subscriptionStatus: "active",
+            currentPeriodEnd: periodEnd,
+          }),
+        });
       } catch {
         // Webhook will handle it as backup
       }
@@ -259,7 +254,12 @@ export function SummaryStep() {
     setClientSecret(null);
   };
 
-  const handleComplete = () => completeSetup();
+  const handleComplete = () => {
+    completeSetup();
+    if (isDemo) {
+      window.location.href = "/activate";
+    }
+  };
 
   const fmt = (value: string, fallback = "Não preenchido") => value || fallback;
 
@@ -897,7 +897,7 @@ export function SummaryStep() {
             </Button>
             <Button onClick={handleComplete} size="lg" disabled={!paymentComplete}>
               <Check className="mr-2 size-4" />
-              Iniciar BCRM
+              {isDemo ? "Ativar Conta Demo" : "Iniciar BCRM"}
             </Button>
           </div>
         </CardContent>

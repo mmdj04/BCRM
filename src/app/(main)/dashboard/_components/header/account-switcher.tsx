@@ -23,9 +23,9 @@ export function AccountSwitcher() {
 
   if (!user) return null;
 
-  const name = user.user_metadata?.full_name || user.email || "Usuário";
+  const name = user.name || user.email || "Usuário";
   const email = user.email || "";
-  const avatar = user.user_metadata?.avatar_url || "";
+  const avatar = "";
 
   return (
     <DropdownMenu>

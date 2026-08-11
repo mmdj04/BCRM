@@ -2,17 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-import { createClient } from "@supabase/supabase-js";
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useAuth } from "@/lib/supabase/auth-context";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
-);
+import { useAuth } from "@/lib/auth/auth-context";
 
 type PaymentEntry = {
   id: string;
@@ -48,18 +41,14 @@ export function BillingHistory() {
       }
 
       try {
-        const { data } = await supabase
-          .from("payments")
-          .select("id, created_at, description, amount, status")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-          .limit(10);
+        const response = await fetch(`/api/payments?userId=${user.id}`);
+        const data = await response.json();
 
-        if (data) {
+        if (data && Array.isArray(data)) {
           setEntries(
             data.map((p) => ({
               id: p.id,
-              date: new Date(p.created_at).toLocaleDateString("pt-BR", {
+              date: new Date(p.createdAt).toLocaleDateString("pt-BR", {
                 month: "short",
                 day: "numeric",
                 year: "numeric",

@@ -14,7 +14,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { DEMO_CONFIG } from "@/config/demo-config";
-import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
   email: z.email({ message: "Por favor, digite um endereço de e-mail válido." }),
@@ -25,7 +24,6 @@ const formSchema = z.object({
 export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,22 +52,34 @@ export function LoginForm() {
           isDemo: true,
         })}; path=/; ${maxAge ? `max-age=${maxAge}; ` : ""}SameSite=Lax`;
         toast.success("Modo de demonstração ativado!");
-        window.location.href = "/dashboard/default";
+        window.location.href = "/activate";
         return;
       }
 
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, password: data.password }),
       });
 
-      if (error) {
-        toast.error(error.message);
+      const result = await res.json();
+
+      if (!res.ok) {
+        toast.error(result.error || "Credenciais inválidas");
         return;
       }
 
-      toast.success("Login realizado com sucesso!");
-      window.location.href = "/dashboard/default";
+      document.cookie = `bcrm_token=${result.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+      
+      if (result.requiresActivation) {
+        toast.info("Ative sua conta para continuar");
+        window.location.href = "/activate";
+      } else if (result.redirect) {
+        window.location.href = result.redirect;
+      } else {
+        toast.success("Login realizado com sucesso!");
+        window.location.href = "/dashboard/default";
+      }
     } catch {
       toast.error("Ocorreu um erro inesperado");
     } finally {

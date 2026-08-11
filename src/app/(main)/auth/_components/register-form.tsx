@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { getPasswordStrength } from "@/hooks/use-password-strength";
-import { createClient } from "@/lib/supabase/client";
+
 import { cn } from "@/lib/utils";
 
 const formSchema = z
@@ -38,7 +38,6 @@ const formSchema = z
 export function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,18 +56,36 @@ export function RegisterForm() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, password: data.password, name: "" }),
       });
 
-      if (error) {
-        toast.error(error.message);
+      const result = await res.json();
+
+      if (!res.ok) {
+        toast.error(result.error || "Erro ao criar conta");
         return;
       }
 
-      toast.success("Conta criada! Verifique seu e-mail para confirmar.");
-      router.push("/auth/v1/login");
+      const loginRes = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      });
+
+      const loginResult = await loginRes.json();
+
+      if (!loginRes.ok) {
+        toast.success("Conta criada! Faça login para continuar.");
+        router.push("/auth/v1/login");
+        return;
+      }
+
+      document.cookie = `bcrm_token=${loginResult.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+      toast.success("Conta criada e login realizado!");
+      window.location.href = "/dashboard/default";
     } catch {
       toast.error("Ocorreu um erro inesperado");
     } finally {

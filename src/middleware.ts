@@ -1,20 +1,27 @@
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-import { createClient } from "@/lib/supabase/middleware";
+import { verifyToken, getTokenFromRequest } from "@/lib/auth/jwt";
 
 export async function middleware(request: NextRequest) {
-  // Check for demo session cookie
+  const response = NextResponse.next();
+
   const demoCookie = request.cookies.get("bcrm_demo_session");
   const isDemo = !!demoCookie;
 
-  const { supabase, supabaseResponse } = createClient(request);
+  const token = getTokenFromRequest(request);
+  let user = null;
+  if (token) {
+    user = await verifyToken(token);
+  }
 
-  // Refresh session if expired - required for Server Components
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  if (user) {
+    response.headers.set("x-user-id", user.userId);
+    response.headers.set("x-user-email", user.email);
+    response.headers.set("x-user-name", user.name);
+    response.headers.set("x-user-role", user.role);
+  }
 
-  // Redirect unauthenticated users away from protected routes
   const protectedPaths = ["/dashboard", "/chat", "/mail"];
   const isProtected = protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path));
 
@@ -25,7 +32,6 @@ export async function middleware(request: NextRequest) {
     return Response.redirect(url);
   }
 
-  // Redirect authenticated users away from auth pages to dashboard
   const authPaths = ["/auth"];
   const isAuth = authPaths.some((path) => request.nextUrl.pathname.startsWith(path));
 
@@ -36,18 +42,16 @@ export async function middleware(request: NextRequest) {
     return Response.redirect(url);
   }
 
-  return supabaseResponse;
+  // Allow /activate page without restrictions
+  if (request.nextUrl.pathname === "/activate") {
+    return response;
+  }
+
+  return response;
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

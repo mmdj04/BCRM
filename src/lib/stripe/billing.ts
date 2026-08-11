@@ -1,9 +1,15 @@
-import { createClient } from "@supabase/supabase-js";
 import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", process.env.SUPABASE_SECRET_KEY ?? "");
+import { prisma } from "@/lib/database/prisma-client";
+import { generateLicenseKey, getExpirationDate } from "@/lib/license/key-generator";
+import { sendLicenseKey } from "@/lib/license/email-sender";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const EXCHANGE_RATE = 6.2;
 const PLAN_MULTIPLIER = 6;
@@ -53,10 +59,10 @@ function getTotalAmount(plan: string, compute: string): number {
 }
 
 export async function getOrCreateCustomer(userId: string, email: string): Promise<Stripe.Customer> {
-  const { data: user } = await supabase.from("users").select("stripe_customer_id").eq("id", userId).single();
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { stripeCustomerId: true } });
 
-  if (user?.stripe_customer_id) {
-    const customer = await stripe.customers.retrieve(user.stripe_customer_id);
+  if (user?.stripeCustomerId) {
+    const customer = await stripe.customers.retrieve(user.stripeCustomerId);
     return customer as Stripe.Customer;
   }
 
@@ -65,7 +71,7 @@ export async function getOrCreateCustomer(userId: string, email: string): Promis
     metadata: { userId },
   });
 
-  await supabase.from("users").update({ stripe_customer_id: customer.id }).eq("id", userId);
+  await prisma.user.update({ where: { id: userId }, data: { stripeCustomerId: customer.id } });
 
   return customer;
 }
@@ -207,7 +213,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const userId = session.metadata?.userId;
       const plan = session.metadata?.plan;
       const compute = session.metadata?.compute;
-      const interval = session.metadata?.interval;
+      const interval = session.metadata?.interval ?? "monthly";
       const isBusiness = session.metadata?.isBusiness === "true";
       const companyName = session.metadata?.companyName;
       const cnpj = session.metadata?.cnpj;
@@ -216,7 +222,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
         const updateData: Record<string, unknown> = {
           plan,
           compute: compute ?? "medium",
-          plan_interval: interval ?? "monthly",
+          plan_interval: interval,
           subscription_status: "active",
         };
 
@@ -226,7 +232,43 @@ export async function handleWebhookEvent(event: Stripe.Event) {
           if (cnpj) updateData.cnpj = cnpj;
         }
 
+        // Update user in Supabase
         await supabase.from("users").update(updateData).eq("id", userId);
+
+        // Generate license key and send email
+        try {
+          const key = generateLicenseKey();
+          const expiresAt = getExpirationDate(interval);
+
+          // Get user email from Supabase
+          const { data: userData } = await supabase
+            .from("users")
+            .select("email, name")
+            .eq("id", userId)
+            .single();
+
+          if (userData) {
+            // Store license key in Supabase (we'll use raw SQL since Prisma is for local SQLite)
+            await supabase.from("license_keys").insert({
+              key,
+              user_id: userId,
+              plan,
+              interval,
+              expires_at: expiresAt.toISOString(),
+            });
+
+            // Send email with license key
+            await sendLicenseKey({
+              email: userData.email,
+              name: userData.name || "Usuário",
+              key,
+              plan,
+              interval,
+            });
+          }
+        } catch (error) {
+          console.error("Failed to generate license key:", error);
+        }
       }
       break;
     }
@@ -275,7 +317,13 @@ export async function handleWebhookEvent(event: Stripe.Event) {
           description: invoice.description ?? "Assinatura BCRM",
         });
 
-        await supabase.from("users").update({ subscription_status: "past_due" }).eq("id", user.id);
+        // Start grace period
+        await supabase
+          .from("users")
+          .update({
+            subscription_status: "past_due",
+          })
+          .eq("id", user.id);
       }
       break;
     }

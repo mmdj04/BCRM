@@ -4,6 +4,7 @@ export const DEMO_CONFIG = {
     email: "admin@bcrm.com",
     password: "10092004m",
   },
+  licenseKey: "BCRM-DEMO-DEMO-DEMO-DEMO",
   user: {
     id: "demo-user-001",
     email: "admin@bcrm.com",

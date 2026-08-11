@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { SetupProvider, useSetup } from "@/contexts/setup-context";
-import { useAuth } from "@/lib/supabase/auth-context";
+import { useAuth } from "@/lib/auth/auth-context";
 
 import { SetupWizard } from "./_components/setup-wizard";
 
@@ -64,7 +64,7 @@ function SetupPageInner() {
   }
 
   return (
-    <SetupProvider userId={user.id || "demo-user-001"} isDemo={isDemo}>
+    <SetupProvider userId={user.userId || "demo-user-001"} isDemo={isDemo}>
       <SetupContent />
     </SetupProvider>
   );

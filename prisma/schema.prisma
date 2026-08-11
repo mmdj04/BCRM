@@ -1,0 +1,830 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ============================================================
+// Core Tables
+// ============================================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  avatarUrl     String?
+  phone         String?
+  company       String?
+  jobTitle      String?
+  website       String?
+  stripeCustomerId   String?
+  stripeSubscriptionId String?
+  plan           String?
+  planInterval   String?
+  compute        String?
+  pitr           String?
+  subscriptionStatus String?
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean  @default(false)
+  planExpiresAt  DateTime?
+  onboardedAt    DateTime?
+  status            String    @default("pending") // pending, active, grace_period
+  gracePeriodStart  DateTime?
+  setupCompleted    Boolean   @default(false)
+  companyName   String?
+  cnpj          String?
+  isBusiness    Boolean  @default(false)
+  passwordHash      String?
+  lastActiveAt   DateTime?
+  role           String    @default("user")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Sync fields
+  supabaseId   String?   @unique
+  isDirty      Boolean   @default(false)
+  syncVersion  Int       @default(0)
+  deletedAt    DateTime?
+
+  // Relations
+  platformUser     PlatformUser?
+  createdTasks     Task[]            @relation("TaskCreator")
+  assignedTasks    Task[]            @relation("TaskAssignee")
+  kanbanColumns    KanbanColumn[]
+  kanbanTasks      KanbanTask[]
+  conversations    Conversation[]
+  sentMessages     Message[]          @relation("MessageSender")
+  emails           Email[]
+  calendarEvents   CalendarEvent[]
+  folders          Folder[]
+  files            File[]
+  invoices         Invoice[]
+  licenseKeys       LicenseKey[]
+
+  @@index([email])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("User")
+}
+
+model PlatformUser {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  bio        String?
+  department String?
+  timezone   String?
+  language   String?  @default("pt-BR")
+  theme      String?  @default("system")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([supabaseId])
+  @@map("PlatformUser")
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  permissions String   @default("[]") // JSON array of permissions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  @@index([supabaseId])
+  @@map("Role")
+}
+
+// ============================================================
+// CRM Tables
+// ============================================================
+
+model Customer {
+  id           String   @id @default(cuid())
+  name         String
+  email        String?
+  phone        String?
+  company      String?
+  address      String?
+  city         String?
+  state        String?
+  country      String?
+  zipCode      String?
+  notes        String?
+  tags         String   @default("[]") // JSON array
+  status       String   @default("active")
+  source       String?
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  deals        Deal[]
+  orders       Order[]
+  invoices     InvoiceClient[]
+
+  @@index([email])
+  @@index([name])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Customer")
+}
+
+model Deal {
+  id           String   @id @default(cuid())
+  title        String
+  value        Float    @default(0)
+  currency     String   @default("BRL")
+  status       String   @default("lead") // lead, qualified, proposal, negotiation, closed_won, closed_lost
+  probability  Int      @default(0)
+  expectedCloseDate DateTime?
+  closedAt     DateTime?
+  notes        String?
+  customerId   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  customer     Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@index([status])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Deal")
+}
+
+// ============================================================
+// E-Commerce Tables
+// ============================================================
+
+model Order {
+  id           String   @id @default(cuid())
+  orderNumber  String   @unique
+  status       String   @default("pending") // pending, confirmed, shipped, delivered, cancelled
+  total        Float    @default(0)
+  currency     String   @default("BRL")
+  notes        String?
+  customerId   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@index([status])
+  @@index([orderNumber])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Order")
+}
+
+// ============================================================
+// Task Tables
+// ============================================================
+
+model Task {
+  id           String    @id @default(cuid())
+  title        String
+  description  String?
+  status       String    @default("pending") // pending, in_progress, completed, cancelled
+  priority     String    @default("medium")  // low, medium, high, urgent
+  dueDate      DateTime?
+  completedAt  DateTime?
+  tags         String    @default("[]") // JSON array
+  creatorId    String
+  assigneeId   String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  creator   User   @relation("TaskCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  assignee  User?  @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+
+  @@index([creatorId])
+  @@index([assigneeId])
+  @@index([status])
+  @@index([dueDate])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Task")
+}
+
+model KanbanColumn {
+  id          String   @id @default(cuid())
+  name        String
+  position    Int      @default(0)
+  color       String?
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks KanbanTask[]
+
+  @@index([userId])
+  @@index([position])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("KanbanColumn")
+}
+
+model KanbanTask {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  position    Int      @default(0)
+  color       String?
+  dueDate     DateTime?
+  tags        String   @default("[]") // JSON array
+  columnId    String
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  column  KanbanColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([columnId])
+  @@index([userId])
+  @@index([position])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("KanbanTask")
+}
+
+// ============================================================
+// Chat Tables
+// ============================================================
+
+model Contact {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  phone       String?
+  avatarUrl   String?
+  isOnline    Boolean  @default(false)
+  lastSeenAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  conversations Conversation[]
+
+  @@index([name])
+  @@index([email])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Contact")
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  name        String?
+  type        String   @default("direct") // direct, group
+  lastMessageAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  contact  Contact?      @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  contactId String?
+  messages Message[]
+
+  @@index([userId])
+  @@index([contactId])
+  @@index([lastMessageAt])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Conversation")
+}
+
+model Message {
+  id              String   @id @default(cuid())
+  content         String
+  type            String   @default("text") // text, image, file
+  senderId        String
+  conversationId  String
+  readAt          DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  sender       User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([conversationId])
+  @@index([createdAt])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Message")
+}
+
+// ============================================================
+// Mail Tables
+// ============================================================
+
+model Email {
+  id          String   @id @default(cuid())
+  from        String
+  subject     String
+  body        String
+  htmlBody    String?
+  isRead      Boolean  @default(false)
+  isStarred   Boolean  @default(false)
+  folder      String   @default("inbox") // inbox, sent, drafts, trash, spam
+  labels      String   @default("[]") // JSON array
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipients   EmailRecipient[]
+  attachments  EmailAttachment[]
+
+  @@index([userId])
+  @@index([folder])
+  @@index([isRead])
+  @@index([createdAt])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Email")
+}
+
+model EmailRecipient {
+  id      String  @id @default(cuid())
+  type    String  @default("to") // to, cc, bcc
+  address String
+  name    String?
+  emailId String
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  email Email @relation(fields: [emailId], references: [id], onDelete: Cascade)
+
+  @@index([emailId])
+  @@index([address])
+  @@index([supabaseId])
+  @@map("EmailRecipient")
+}
+
+model EmailAttachment {
+  id        String  @id @default(cuid())
+  fileName  String
+  fileSize  Int
+  mimeType  String
+  url       String
+  emailId   String
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  email Email @relation(fields: [emailId], references: [id], onDelete: Cascade)
+
+  @@index([emailId])
+  @@index([supabaseId])
+  @@map("EmailAttachment")
+}
+
+// ============================================================
+// Finance Tables
+// ============================================================
+
+model InvoiceClient {
+  id         String   @id @default(cuid())
+  name       String
+  email      String?
+  phone      String?
+  address    String?
+  city       String?
+  state      String?
+  country    String?
+  zipCode    String?
+  document   String? // CPF/CNPJ
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  customer  Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerId String?
+  invoices  Invoice[]
+
+  @@index([name])
+  @@index([customerId])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("InvoiceClient")
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  invoiceNumber   String   @unique
+  status          String   @default("draft") // draft, sent, paid, overdue, cancelled
+  subtotal        Float    @default(0)
+  taxRate         Float    @default(0)
+  taxAmount       Float    @default(0)
+  total           Float    @default(0)
+  currency        String   @default("BRL")
+  notes           String?
+  dueDate         DateTime?
+  paidAt          DateTime?
+  clientId        String
+  userId          String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  client    InvoiceClient    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lineItems InvoiceLineItem[]
+  payments  Payment[]
+
+  @@index([clientId])
+  @@index([userId])
+  @@index([status])
+  @@index([invoiceNumber])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Invoice")
+}
+
+model InvoiceLineItem {
+  id          String  @id @default(cuid())
+  description String
+  quantity    Int     @default(1)
+  unitPrice   Float   @default(0)
+  total       Float   @default(0)
+  invoiceId   String
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@index([supabaseId])
+  @@map("InvoiceLineItem")
+}
+
+model Payment {
+  id         String   @id @default(cuid())
+  amount     Float
+  method     String   // credit_card, bank_transfer, cash, pix, other
+  reference  String?
+  notes      String?
+  paidAt     DateTime @default(now())
+  invoiceId  String
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@index([paidAt])
+  @@index([supabaseId])
+  @@map("Payment")
+}
+
+// ============================================================
+// Calendar Tables
+// ============================================================
+
+model CalendarEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  location    String?
+  startTime   DateTime
+  endTime     DateTime
+  allDay      Boolean  @default(false)
+  color       String?
+  recurrence  String?  // RRULE string
+  reminders   String   @default("[]") // JSON array of minutes
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([startTime])
+  @@index([endTime])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("CalendarEvent")
+}
+
+// ============================================================
+// File Manager Tables
+// ============================================================
+
+model Folder {
+  id         String   @id @default(cuid())
+  name       String
+  path       String   // full path e.g. "/Documents/Projects"
+  parentId   String?
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  Folder[] @relation("FolderHierarchy")
+  files     File[]
+
+  @@index([userId])
+  @@index([parentId])
+  @@index([path])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Folder")
+}
+
+model File {
+  id         String   @id @default(cuid())
+  name       String
+  mimeType   String?
+  size       Int      @default(0)
+  url        String?
+  folderId   String?
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder Folder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([folderId])
+  @@index([name])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("File")
+}
+
+// ============================================================
+// Infrastructure Tables
+// ============================================================
+
+model InfrastructureEnvironment {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   @default("server") // server, container, lambda, database
+  status      String   @default("active") // active, inactive, error
+  host        String?
+  port        Int?
+  config      String   @default("{}") // JSON config
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  @@index([name])
+  @@index([status])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("InfrastructureEnvironment")
+}
+
+// ============================================================
+// Patient Monitoring Tables
+// ============================================================
+
+model Patient {
+  id          String   @id @default(cuid())
+  name        String
+  dateOfBirth DateTime?
+  gender      String?
+  phone       String?
+  email       String?
+  address     String?
+  notes       String?
+  status      String   @default("active") // active, inactive, discharged
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  events PatientEvent[]
+
+  @@index([name])
+  @@index([status])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("Patient")
+}
+
+model PatientEvent {
+  id          String   @id @default(cuid())
+  type        String   // admission, discharge, vitals, note, alert
+  title       String
+  description String?
+  severity    String?  // low, medium, high, critical
+  data        String   @default("{}") // JSON for flexible event data
+  patientId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sync fields
+  supabaseId  String?  @unique
+  isDirty     Boolean  @default(false)
+  syncVersion Int      @default(0)
+  deletedAt   DateTime?
+
+  // Relations
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@index([type])
+  @@index([createdAt])
+  @@index([supabaseId])
+  @@index([isDirty])
+  @@map("PatientEvent")
+}
+
+// ============================================================
+// Sync Tables
+// ============================================================
+
+model SyncLog {
+  id         String   @id @default(cuid())
+  tableName  String
+  recordId   String
+  operation  String   // create, update, delete
+  status     String   @default("pending") // pending, completed, failed
+  error      String?
+  createdAt  DateTime @default(now())
+
+  @@index([tableName])
+  @@index([recordId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("SyncLog")
+}
+
+// ============================================================
+// License Key Tables
+// ============================================================
+
+model LicenseKey {
+  id            String   @id @default(cuid())
+  key           String   @unique
+  userId        String
+  plan          String
+  interval      String
+  expiresAt     DateTime
+  usedAt        DateTime?
+  isDemo        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([key])
+  @@index([userId])
+  @@map("LicenseKey")
+}

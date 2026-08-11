@@ -27,7 +27,15 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# database
+*.db
+.bcrm/
+
+# prisma
+prisma.config.ts
 
 # vercel
 .vercel
@@ -36,3 +44,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 app-debug.apk
+
+/src/generated/prisma

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { createClient } from "@supabase/supabase-js";
 import { Building2, Save } from "lucide-react";
 import { toast } from "sonner";
 
@@ -11,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/lib/supabase/auth-context";
+import { useAuth } from "@/lib/auth/auth-context";
 
 const industries = [
   "Tecnologia",
@@ -63,8 +62,8 @@ export function CompanySettingsSection() {
   const [company, setCompany] = useState(defaultCompany);
 
   useEffect(() => {
-    if (!user?.id) return;
-    const keys = getStorageKeys(user.id);
+    if (!user?.userId) return;
+    const keys = getStorageKeys(user.userId);
     const raw = localStorage.getItem(isDemo ? keys.demo : keys.real);
     if (raw) {
       try {
@@ -82,8 +81,8 @@ export function CompanySettingsSection() {
     setSaving(true);
     try {
       // Save to localStorage
-      if (user?.id) {
-        const keys = getStorageKeys(user.id);
+      if (user?.userId) {
+        const keys = getStorageKeys(user.userId);
         const storageKey = isDemo ? keys.demo : keys.real;
         const raw = localStorage.getItem(storageKey);
         const parsed = raw ? JSON.parse(raw) : {};
@@ -96,21 +95,17 @@ export function CompanySettingsSection() {
         );
       }
 
-      // Save to Supabase (real mode only)
+      // Save to database (real mode only)
       if (!isDemo && user?.id) {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-        if (supabaseUrl && supabaseKey) {
-          const supabase = createClient(supabaseUrl, supabaseKey);
-          await supabase.from("users").upsert(
-            {
-              id: user.id,
-              company_name: company.name,
-              cnpj: company.cnpj,
-            },
-            { onConflict: "id" },
-          );
-        }
+        await fetch("/api/user", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.userId,
+            companyName: company.name,
+            cnpj: company.cnpj,
+          }),
+        });
       }
 
       toast.success("Dados da empresa salvos com sucesso!");

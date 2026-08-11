@@ -47,8 +47,8 @@ export function ProjectSettingsSection() {
   const [project, setProject] = useState(defaultProject);
 
   useEffect(() => {
-    if (!user?.id) return;
-    const keys = getStorageKeys(user.id);
+    if (!user?.userId) return;
+    const keys = getStorageKeys(user.userId);
     const raw = localStorage.getItem(isDemo ? keys.demo : keys.real);
     if (raw) {
       try {
@@ -66,8 +66,8 @@ export function ProjectSettingsSection() {
     setSaving(true);
     try {
       // Save to localStorage
-      if (user?.id) {
-        const keys = getStorageKeys(user.id);
+      if (user?.userId) {
+        const keys = getStorageKeys(user.userId);
         const storageKey = isDemo ? keys.demo : keys.real;
         const raw = localStorage.getItem(storageKey);
         const parsed = raw ? JSON.parse(raw) : {};

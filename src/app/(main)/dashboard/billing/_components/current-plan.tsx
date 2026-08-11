@@ -2,20 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-import { createClient } from "@supabase/supabase-js";
 import { CreditCard, HardDrive, Shield } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/lib/supabase/auth-context";
+import { useAuth } from "@/lib/auth/auth-context";
 
 import { addOns, computeOptions } from "./data";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
-);
 
 type SubscriptionData = {
   plan: string;
@@ -54,20 +48,17 @@ export function CurrentPlan({ onOpenChangePlan }: CurrentPlanProps) {
       }
 
       try {
-        const { data } = await supabase
-          .from("users")
-          .select("plan, compute, pitr, subscription_status, current_period_end, cancel_at_period_end")
-          .eq("id", user.id)
-          .single();
+        const response = await fetch(`/api/user?userId=${user.id}`);
+        const data = await response.json();
 
         if (data) {
           setSubscription({
             plan: data.plan ?? "free",
             compute: data.compute ?? "medium",
             pitr: data.pitr ?? "none",
-            status: data.subscription_status ?? "free",
-            currentPeriodEnd: data.current_period_end,
-            cancelAtPeriodEnd: data.cancel_at_period_end ?? false,
+            status: data.subscriptionStatus ?? "free",
+            currentPeriodEnd: data.currentPeriodEnd ? new Date(data.currentPeriodEnd).toISOString() : null,
+            cancelAtPeriodEnd: data.cancelAtPeriodEnd ?? false,
           });
           return;
         }

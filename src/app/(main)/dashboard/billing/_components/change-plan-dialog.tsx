@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-import { createClient } from "@supabase/supabase-js";
 import { ArrowRight, Check, CreditCard, Server, Shield } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +20,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useAuth } from "@/lib/supabase/auth-context";
+import { useAuth } from "@/lib/auth/auth-context";
 
 import {
   addOns,
@@ -480,23 +479,19 @@ export function ChangePlanDialog({
           setSelectedInterval("monthly");
         }, 1500);
       } else {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-        if (supabaseUrl && supabaseKey) {
-          const supabase = createClient(supabaseUrl, supabaseKey);
-          const updatedPlan = selectedPlan || currentPlan;
-          await supabase.from("users").upsert(
-            {
-              id: user.id,
-              plan: updatedPlan,
-              compute: selectedCompute,
-              pitr: selectedPitr,
-              plan_interval: selectedInterval,
-              subscription_status: "active",
-            },
-            { onConflict: "id" },
-          );
-        }
+        const updatedPlan = selectedPlan || currentPlan;
+        await fetch("/api/user", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id,
+            plan: updatedPlan,
+            compute: selectedCompute,
+            pitr: selectedPitr,
+            planInterval: selectedInterval,
+            subscriptionStatus: "active",
+          }),
+        });
         setSuccess(true);
         setTimeout(() => {
           onPlanChanged(selectedPlan || currentPlan);

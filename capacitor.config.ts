@@ -20,6 +20,9 @@ const config: CapacitorConfig = {
     Network: {
       monitoring: true,
     },
+    CapacitorSQLite: {
+      // No special config needed, defaults are fine
+    },
   },
   android: {
     buildOptions: {
