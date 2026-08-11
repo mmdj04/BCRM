@@ -4,8 +4,10 @@ const config: CapacitorConfig = {
   appId: "com.bcrm.app",
   appName: "BCRM",
   server: {
+    url: "https://bcrm-lilac.vercel.app",
     androidScheme: "https",
     errorPath: "offline.html",
+    cleartext: true,
   },
   plugins: {
     SplashScreen: {
