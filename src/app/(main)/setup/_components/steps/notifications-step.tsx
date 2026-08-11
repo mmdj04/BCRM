@@ -3,7 +3,6 @@
 import { Bell, Mail, MessageSquare, Smartphone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
@@ -11,19 +10,19 @@ import { cn } from "@/lib/utils";
 const notificationOptions = [
   {
     id: "email" as const,
-    label: "Notificações por E-mail",
+    label: "E-mail",
     description: "Receba alertas importantes por e-mail",
     icon: Mail,
   },
   {
     id: "whatsapp" as const,
-    label: "Notificações por WhatsApp",
+    label: "WhatsApp",
     description: "Receba alertas via WhatsApp",
     icon: MessageSquare,
   },
   {
     id: "push" as const,
-    label: "Notificações Push",
+    label: "Push",
     description: "Notificações no navegador em tempo real",
     icon: Smartphone,
   },
@@ -48,49 +47,50 @@ export function NotificationsStep() {
   };
 
   return (
-    <Card className="border-0 shadow-none">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Bell className="size-5" />
-          Configurações de Notificação
-        </CardTitle>
-        <CardDescription>Escolha como deseja receber notificações do sistema.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3">
-          {notificationOptions.map((notif) => {
-            const Icon = notif.icon;
-            const isEnabled = setupData.notifications[notif.id];
-            return (
-              <label
-                key={notif.id}
-                htmlFor={`notif-${notif.id}`}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg border p-3 transition-colors",
-                  isEnabled ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground/50",
-                )}
-              >
-                <Checkbox
-                  id={`notif-${notif.id}`}
-                  checked={isEnabled}
-                  onCheckedChange={() => toggleNotification(notif.id)}
-                />
-                <Icon className="size-4 shrink-0" />
-                <div className="flex-1">
-                  <span className="font-medium text-sm">{notif.label}</span>
-                  <p className="text-muted-foreground text-xs">{notif.description}</p>
-                </div>
-              </label>
-            );
-          })}
-        </div>
-        <div className="flex justify-between">
-          <Button variant="outline" onClick={() => setStep(4)}>
-            Voltar
-          </Button>
-          <Button onClick={() => setStep(6)}>Próximo</Button>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="flex flex-1 flex-col">
+      {/* Title */}
+      <div className="mb-6">
+        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Notificações</h1>
+        <p className="text-base text-muted-foreground">Escolha como deseja receber notificações do sistema.</p>
+      </div>
+
+      {/* Options */}
+      <div className="flex flex-1 flex-col gap-3">
+        {notificationOptions.map((notif) => {
+          const Icon = notif.icon;
+          const isEnabled = setupData.notifications[notif.id];
+          return (
+            <label
+              key={notif.id}
+              htmlFor={`notif-${notif.id}`}
+              className={cn(
+                "flex cursor-pointer items-center gap-4 rounded-xl border px-4 py-3.5 transition-all",
+                isEnabled
+                  ? "border-[#16a34a]/30 bg-[#16a34a]/5"
+                  : "border-border/60 bg-background/80 hover:border-border",
+              )}
+            >
+              <Checkbox
+                id={`notif-${notif.id}`}
+                checked={isEnabled}
+                onCheckedChange={() => toggleNotification(notif.id)}
+              />
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted/50">
+                <Icon className={cn("size-4", isEnabled ? "text-[#16a34a]" : "text-muted-foreground")} />
+              </div>
+              <div className="flex-1">
+                <span className="text-sm font-medium text-foreground">{notif.label}</span>
+                <p className="text-xs text-muted-foreground">{notif.description}</p>
+              </div>
+            </label>
+          );
+        })}
+      </div>
+
+      {/* CTA */}
+      <Button size="lg" className="mt-6 w-full bg-[#16a34a] text-white hover:bg-[#15803d]" onClick={() => setStep(6)}>
+        Continuar
+      </Button>
+    </div>
   );
 }

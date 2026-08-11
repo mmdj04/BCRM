@@ -1,11 +1,13 @@
 "use client";
 
-import { Bell, Building2, Check, FileCheck, Globe, LayoutDashboard, Sparkles, Users } from "lucide-react";
+import { ArrowLeft, Building2, Check, FileCheck, Globe, LayoutDashboard, Sparkles, Users } from "lucide-react";
 
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
 
+import { Button } from "@/components/ui/button";
 import { CompanyStep } from "./steps/company-step";
+import { DashboardPreview } from "./dashboard-preview";
 import { ModulesStep } from "./steps/modules-step";
 import { NotificationsStep } from "./steps/notifications-step";
 import { ProjectStep } from "./steps/project-step";
@@ -19,193 +21,79 @@ const steps = [
   { title: "Projeto", icon: Globe, component: ProjectStep, required: true },
   { title: "Módulos", icon: LayoutDashboard, component: ModulesStep, required: true },
   { title: "Usuários", icon: Users, component: UsersStep, required: false },
-  { title: "Notificações", icon: Bell, component: NotificationsStep, required: false },
+  { title: "Notificações", icon: Users, component: NotificationsStep, required: false },
   { title: "Resumo", icon: FileCheck, component: SummaryStep, required: null },
 ];
-
-type VisibleStep = {
-  title: string;
-  icon: typeof Sparkles;
-  index: number;
-  type: "completed" | "current" | "next" | "future";
-  collapsedCount?: number;
-  required?: boolean | null;
-};
-
-function getVisibleSteps(current: number): VisibleStep[] {
-  const total = steps.length;
-  const maxVisible = 5;
-
-  if (total <= maxVisible) {
-    return steps.map((s, i) => ({
-      title: s.title,
-      icon: s.icon,
-      index: i,
-      type: getStepType(i, current),
-      required: s.required,
-    }));
-  }
-
-  const result: VisibleStep[] = [];
-
-  if (current <= 2) {
-    for (let i = 0; i <= Math.min(current + 1, total - 1); i++) {
-      result.push({
-        title: steps[i].title,
-        icon: steps[i].icon,
-        index: i,
-        type: getStepType(i, current),
-        required: steps[i].required,
-      });
-    }
-    if (current + 2 < total) {
-      result.push({ title: "...", icon: Sparkles, index: -1, type: "future" });
-    }
-  } else if (current >= total - 2) {
-    if (current - 1 > 0) {
-      result.push({ title: "...", icon: Sparkles, index: -1, type: "completed", collapsedCount: current - 1 });
-    }
-    for (let i = current; i < total; i++) {
-      result.push({
-        title: steps[i].title,
-        icon: steps[i].icon,
-        index: i,
-        type: getStepType(i, current),
-        required: steps[i].required,
-      });
-    }
-  } else {
-    if (current - 1 > 0) {
-      result.push({ title: "...", icon: Sparkles, index: -1, type: "completed", collapsedCount: current - 1 });
-    }
-    for (let i = current; i <= current + 1; i++) {
-      result.push({
-        title: steps[i].title,
-        icon: steps[i].icon,
-        index: i,
-        type: getStepType(i, current),
-        required: steps[i].required,
-      });
-    }
-    if (current + 2 < total) {
-      result.push({ title: "...", icon: Sparkles, index: -1, type: "future" });
-    }
-  }
-
-  return result;
-}
-
-function getStepType(index: number, current: number): "completed" | "current" | "next" | "future" {
-  if (index < current) return "completed";
-  if (index === current) return "current";
-  if (index === current + 1) return "next";
-  return "future";
-}
 
 export function SetupWizard() {
   const { currentStep, setStep } = useSetup();
   const StepComponent = steps[currentStep]?.component || WelcomeStep;
-  const progress = (currentStep / (steps.length - 1)) * 100;
-  const visibleSteps = getVisibleSteps(currentStep);
+  const totalSteps = steps.length;
+  const canGoBack = currentStep > 0 && currentStep < totalSteps - 1;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
-      <div className="w-full max-w-2xl">
-        {/* Smart Progress */}
-        <div className="mb-8">
-          {/* Adaptive step indicators */}
-          <div className="mb-4 flex items-center justify-center gap-1 sm:gap-2">
-            {visibleSteps.map((step, i) => {
-              const isEllipsis = step.index === -1;
-
-              if (isEllipsis) {
-                return (
-                  <div key={`ellipsis-${step.type}-${i}`} className="flex items-center gap-1">
-                    {step.type === "completed" && step.collapsedCount && step.collapsedCount > 0 && (
-                      <div className="flex items-center gap-1.5 rounded-full border border-dashed border-primary/30 bg-primary/5 px-2.5 py-1">
-                        <Check className="size-3 text-primary" />
-                        <span className="font-medium text-primary text-xs">
-                          {step.collapsedCount} {step.collapsedCount === 1 ? "etapa" : "etapas"}
-                        </span>
-                      </div>
-                    )}
-                    {step.type === "future" && (
-                      <div className="flex items-center gap-1 text-muted-foreground/50">
-                        <div className="size-1 rounded-full bg-current" />
-                        <div className="size-1 rounded-full bg-current" />
-                        <div className="size-1 rounded-full bg-current" />
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              const Icon = step.icon;
-
-              return (
-                <div key={`${step.title}-${step.index}`} className="flex items-center gap-1 sm:gap-2">
-                  {/* Connector line */}
-                  {i > 0 && visibleSteps[i - 1]?.index !== -1 && (
-                    <div
-                      className={cn(
-                        "h-px w-3 transition-colors sm:w-6",
-                        step.type === "completed" || step.type === "current" ? "bg-primary/40" : "bg-muted",
-                      )}
-                    />
-                  )}
-
-                  {/* Step pill */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (step.type === "completed" || step.type === "current") {
-                        setStep(step.index);
-                      }
-                    }}
-                    disabled={step.type === "next" || step.type === "future"}
-                    className={cn(
-                      "group flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-medium transition-all",
-                      step.type === "completed" && "cursor-pointer bg-primary/10 text-primary hover:bg-primary/20",
-                      step.type === "current" && "ring-primary/30 bg-primary text-primary-foreground shadow-sm ring-2",
-                      step.type === "next" &&
-                        "border border-dashed border-muted-foreground/30 bg-muted/50 text-muted-foreground",
-                      step.type === "future" && "bg-muted/30 text-muted-foreground/50",
-                    )}
-                  >
-                    {step.type === "completed" ? <Check className="size-3.5" /> : <Icon className="size-3.5" />}
-                    <span className={cn("hidden sm:inline", step.type === "future" && "hidden")}>{step.title}</span>
-                    {step.type === "current" && step.required === true && (
-                      <span className="ml-0.5 rounded-full bg-primary-foreground/20 px-1 py-0.5 text-[9px] leading-none">
-                        Obrig.
-                      </span>
-                    )}
-                    {step.type === "current" && step.required === false && (
-                      <span className="ml-0.5 rounded-full bg-primary-foreground/20 px-1 py-0.5 text-[9px] leading-none">
-                        Opcional
-                      </span>
-                    )}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Progress bar */}
-          <div className="flex items-center gap-3">
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-500 ease-out"
-                style={{ width: `${progress}%` }}
-              />
+    <div className="flex min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a]">
+      {/* Left panel - Form */}
+      <div className="flex w-full flex-col lg:w-[55%]">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-6 py-4 lg:px-10">
+          <div className="flex items-center gap-2">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-[#16a34a] text-white">
+              <Sparkles className="size-4" />
             </div>
-            <span className="shrink-0 font-medium text-muted-foreground text-xs tabular-nums">
-              {currentStep + 1}/{steps.length}
-            </span>
+            <span className="text-lg font-bold text-foreground">BCRM</span>
           </div>
         </div>
 
-        {/* Step Content */}
-        <StepComponent />
+        {/* Progress segments */}
+        <div className="px-6 lg:px-10">
+          <div className="flex gap-1.5">
+            {Array.from({ length: totalSteps }, (_, i) => (
+              <div
+                key={`segment-${i}`}
+                className={cn(
+                  "h-1 flex-1 rounded-full transition-all duration-300",
+                  i < currentStep
+                    ? "bg-[#16a34a]"
+                    : i === currentStep
+                      ? "bg-[#16a34a]"
+                      : "bg-border",
+                )}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Form content */}
+        <div className="flex flex-1 flex-col px-6 py-8 lg:px-10">
+          {/* Back button */}
+          {canGoBack && (
+            <button
+              type="button"
+              onClick={() => setStep(currentStep - 1)}
+              className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <ArrowLeft className="size-4" />
+              Voltar
+            </button>
+          )}
+
+          {/* Step component */}
+          <div className="flex flex-1 flex-col">
+            <StepComponent />
+          </div>
+        </div>
+      </div>
+
+      {/* Right panel - Dashboard preview (hidden on mobile) */}
+      <div className="hidden w-[45%] items-center justify-center p-6 lg:flex">
+        <div className="relative w-full max-w-md">
+          {/* Decorative gradient */}
+          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#16a34a]/5 to-transparent" />
+
+          {/* Dashboard preview */}
+          <DashboardPreview className="relative" />
+        </div>
       </div>
     </div>
   );
