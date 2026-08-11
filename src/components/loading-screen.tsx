@@ -10,23 +10,25 @@ const MESSAGES = [
   "Quase pronto...",
 ];
 
-function getThemeFromCookie(): "light" | "dark" {
-  if (typeof document === "undefined") return "dark";
-  const match = document.cookie.split("; ").find((c) => c.startsWith("theme_mode="));
-  const value = match ? decodeURIComponent(match.split("=")[1]) : null;
-  if (value === "light" || value === "dark") return value;
-  if (value === "system" || !value) {
+function getResolvedTheme(): "light" | "dark" {
+  if (typeof document === "undefined") return "light";
+  const attr = document.documentElement.getAttribute("data-theme-mode");
+  if (attr === "dark") return "dark";
+  if (attr === "light") return "light";
+  if (attr === "system" || !attr) {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
-  return "dark";
+  return "light";
 }
 
 export function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [status, setStatus] = useState("Iniciando sistema...");
-  const [theme] = useState<"light" | "dark">(() => getThemeFromCookie());
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
+    setTheme(getResolvedTheme());
+
     let msgIdx = 0;
     const msgInterval = setInterval(() => {
       msgIdx = (msgIdx + 1) % MESSAGES.length;
