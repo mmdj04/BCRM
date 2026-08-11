@@ -4,11 +4,12 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-function createPrismaClient() {
+function createPrismaClient(): PrismaClient {
   // During build time, DATABASE_URL may not be available
   if (!process.env.DATABASE_URL) {
-    // Return a dummy client that will be replaced at runtime
-    return new PrismaClient() as never;
+    // Return a dummy client - will be replaced at runtime
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return {} as any;
   }
 
   try {
@@ -20,9 +21,8 @@ function createPrismaClient() {
       log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
     });
   } catch {
-    return new PrismaClient({
-      log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
-    } as never);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return {} as any;
   }
 }
 
