@@ -1,70 +1,33 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/database/prisma-client";
-import { hashPassword } from "@/lib/auth/password";
 import { signToken } from "@/lib/auth/jwt";
 
-const DEMO_KEY = "BCRM-DEMO-DEMO-DEMO-DEMO";
-const DEMO_EMAIL = "admin@bcrm.com";
-const DEMO_PASSWORD = "10092004m";
+// Demo account - hardcoded, no database needed
+const DEMO_USER = {
+  id: "demo-user-001",
+  email: "admin@bcrm.com",
+  name: "Matheus Moraes",
+  role: "admin",
+  plan: "pro",
+};
 
 export async function POST() {
   try {
-    // Find or create demo user
-    let user = await prisma.user.findUnique({ where: { email: DEMO_EMAIL } });
-
-    if (!user) {
-      const passwordHash = await hashPassword(DEMO_PASSWORD);
-      user = await prisma.user.create({
-        data: {
-          email: DEMO_EMAIL,
-          name: "Matheus Moraes",
-          passwordHash,
-          role: "admin",
-          status: "pending",
-        },
-      });
-    }
-
-    // Find or create demo license key
-    let license = await prisma.licenseKey.findUnique({ where: { key: DEMO_KEY } });
-
-    if (!license) {
-      const expiresAt = new Date();
-      expiresAt.setFullYear(expiresAt.getFullYear() + 100);
-
-      license = await prisma.licenseKey.create({
-        data: {
-          key: DEMO_KEY,
-          userId: user.id,
-          plan: "pro",
-          interval: "annual",
-          expiresAt,
-        },
-      });
-    } else if (license.userId !== user.id) {
-      // Update license to point to current demo user
-      await prisma.licenseKey.update({
-        where: { id: license.id },
-        data: { userId: user.id },
-      });
-    }
-
-    // Generate JWT token
+    // Generate JWT token directly - no database needed
     const token = await signToken({
-      userId: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
+      userId: DEMO_USER.id,
+      email: DEMO_USER.email,
+      name: DEMO_USER.name,
+      role: DEMO_USER.role,
     });
 
     return NextResponse.json({
       token,
       user: {
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        status: user.status,
+        userId: DEMO_USER.id,
+        email: DEMO_USER.email,
+        name: DEMO_USER.name,
+        role: DEMO_USER.role,
+        status: "active",
       },
       requiresActivation: true,
       redirect: "/activate",

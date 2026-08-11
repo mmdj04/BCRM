@@ -1,8 +1,0 @@
-services:
-  apk-builder:
-    build:
-      context: .
-      dockerfile: Dockerfile.apk
-    volumes:
-      - ./output:/output
-    container_name: bcrm-apk-builder
