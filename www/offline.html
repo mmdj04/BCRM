@@ -2,19 +2,61 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>BCRM - Sem Conexão</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #ffffff;
+      --surface: #f4f4f5;
+      --text: #18181b;
+      --text-secondary: #71717a;
+      --text-hint: #a1a1aa;
+      --icon-bg: #f4f4f5;
+      --icon-stroke: #71717a;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --text-secondary: #94a3b8;
+        --text-hint: #64748b;
+        --icon-bg: #1e293b;
+        --icon-stroke: #64748b;
+      }
+    }
+    .theme-light {
+      --bg: #ffffff;
+      --surface: #f4f4f5;
+      --text: #18181b;
+      --text-secondary: #71717a;
+      --text-hint: #a1a1aa;
+      --icon-bg: #f4f4f5;
+      --icon-stroke: #71717a;
+    }
+    .theme-dark {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-hint: #64748b;
+      --icon-bg: #1e293b;
+      --icon-stroke: #64748b;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
+      background: var(--bg);
+      color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      min-height: 100dvh;
       padding: 20px;
+      transition: background 0.3s, color 0.3s;
     }
     .container {
       text-align: center;
@@ -24,7 +66,7 @@
       width: 80px;
       height: 80px;
       margin: 0 auto 24px;
-      background: #1e293b;
+      background: var(--icon-bg);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -33,17 +75,21 @@
     .icon svg {
       width: 40px;
       height: 40px;
-      stroke: #64748b;
+      stroke: var(--icon-stroke);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     h1 {
       font-size: 24px;
       font-weight: 600;
       margin-bottom: 12px;
-      color: #f8fafc;
+      color: var(--text);
     }
     p {
       font-size: 16px;
-      color: #94a3b8;
+      color: var(--text-secondary);
       margin-bottom: 32px;
       line-height: 1.5;
     }
@@ -59,25 +105,66 @@
       transition: background 0.2s;
     }
     .retry-btn:hover { background: #2563eb; }
-    .retry-btn:active { background: #1d4ed8; }
+    .retry-btn:active { background: #1d4ed8; transform: scale(0.98); }
+    .loading { display: none; }
+    .loading.active { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--surface);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .hint {
       margin-top: 24px;
       font-size: 14px;
-      color: #64748b;
+      color: var(--text-hint);
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="icon">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-      </svg>
+    <div id="screen-offline">
+      <div class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <line x1="1" y1="1" x2="23" y2="23"></line>
+          <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+          <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+          <path d="M10.71 5.05A16 16 0 0 1 22.56 9"></path>
+          <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+          <line x1="12" y1="20" x2="12.01" y2="20"></line>
+        </svg>
+      </div>
+      <h1>Sem Conexão</h1>
+      <p>Verifique sua conexão com a internet e tente novamente.</p>
+      <button class="retry-btn" id="retryBtn">Tentar Novamente</button>
+      <p class="hint">O BCRM precisa de internet para funcionar.</p>
     </div>
-    <h1>Sem Conexão</h1>
-    <p>Verifique sua conexão com a internet e tente novamente.</p>
-    <button class="retry-btn" onclick="window.location.reload()">Tentar Novamente</button>
-    <p class="hint">O BCRM precisa de internet para funcionar.</p>
+    <div class="loading" id="screen-loading">
+      <div class="spinner"></div>
+      <p>Verificando conexão...</p>
+    </div>
   </div>
+  <script>
+    var SERVER_URL = 'https://bcrm-lilac.vercel.app';
+
+    function applyTheme() {
+      try {
+        var stored = localStorage.getItem('theme_mode');
+        if (stored === 'light') document.documentElement.className = 'theme-light';
+        else if (stored === 'dark') document.documentElement.className = 'theme-dark';
+        else document.documentElement.className = '';
+      } catch(e) {}
+    }
+    applyTheme();
+
+    document.getElementById('retryBtn').addEventListener('click', function() {
+      document.getElementById('screen-offline').style.display = 'none';
+      document.getElementById('screen-loading').classList.add('active');
+      window.location.href = SERVER_URL;
+    });
+  </script>
 </body>
 </html>
