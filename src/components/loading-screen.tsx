@@ -12,26 +12,30 @@ const MESSAGES = [
   "Quase pronto...",
 ];
 
-function getResolvedTheme(): "light" | "dark" {
+function readThemeFromCookie(): "light" | "dark" {
+  if (typeof document === "undefined") return "light";
+  const match = document.cookie.split("; ").find((c) => c.startsWith("theme_mode="));
+  const value = match ? decodeURIComponent(match.split("=")[1]) : null;
+  if (value === "dark") return "dark";
+  if (value === "light") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function readThemeFromAttr(): "light" | "dark" {
   if (typeof document === "undefined") return "light";
   const attr = document.documentElement.getAttribute("data-theme-mode");
   if (attr === "dark") return "dark";
   if (attr === "light") return "light";
-  if (attr === "system" || !attr) {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-  return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 export function LoadingScreen() {
-  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(true);
   const [status, setStatus] = useState("Iniciando sistema...");
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useBrowserEffect(() => {
-    setMounted(true);
-    setTheme(getResolvedTheme());
+    setTheme(readThemeFromAttr());
 
     let msgIdx = 0;
     const msgInterval = setInterval(() => {
@@ -49,7 +53,7 @@ export function LoadingScreen() {
     };
   }, []);
 
-  if (!mounted || !visible) return null;
+  if (!visible) return null;
 
   const bg = theme === "dark" ? "#09090b" : "#ffffff";
   const fg = theme === "dark" ? "#fafafa" : "#09090b";
