@@ -5,23 +5,39 @@ const config: CapacitorConfig = {
   appName: "BCRM",
   server: {
     androidScheme: "https",
+    errorPath: "offline.html",
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 0,
+      launchShowDuration: 2000,
       launchAutoHide: true,
-      showSpinner: false,
-      splashFullScreen: false,
-      splashImmersive: false,
+      showSpinner: true,
+      spinnerColor: "#3b82f6",
+      splashFullScreen: true,
+      splashImmersive: true,
     },
     Camera: {
-      androidPermissions: ["android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE"],
+      androidPermissions: [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+      ],
     },
     Network: {
       monitoring: true,
     },
-    CapacitorSQLite: {
-      // No special config needed, defaults are fine
+    CapacitorSQLite: {},
+    Preferences: {
+      group: "com.bcrm.app",
+    },
+    StatusBar: {
+      style: "DARK",
+      backgroundColor: "#0f172a",
+      overlaysWebView: false,
+    },
+    Keyboard: {},
+    LocalNotifications: {
+      smallIcon: "ic_stat_icon_config_sample",
+      iconColor: "#3b82f6",
     },
   },
   android: {
