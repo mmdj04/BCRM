@@ -3,7 +3,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
-  throw new Error("DATABASE_URL is not set");
+  console.error("DATABASE_URL is not set. Please set it before running this script.");
+  process.exit(1);
 }
 
 const adapter = new PrismaPg({ connectionString });
