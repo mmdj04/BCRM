@@ -14,6 +14,16 @@ const config: CapacitorConfig = {
       splashFullScreen: false,
       splashImmersive: false,
     },
+    Camera: {
+      androidPermissions: ["android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE"],
+    },
+    Network: {
+      monitoring: true,
+    },
+    Stripe: {
+      merchantIdentifier: "com.bcrm.app",
+      urlScheme: "bcrm",
+    },
   },
   android: {
     buildOptions: {
