@@ -249,7 +249,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
           const expiresAt = getExpirationDate(interval);
 
           // Get user email from Supabase
-          const { data: userData } = await supabase
+          const { data: userData } = await getSupabase()
             .from("users")
             .select("email, name")
             .eq("id", userId)
@@ -298,7 +298,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
           description: invoice.description ?? "Assinatura BCRM",
         });
 
-        await supabase
+        await getSupabase()
           .from("users")
           .update({
             subscription_status: "active",
@@ -326,7 +326,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
         });
 
         // Start grace period
-        await supabase
+        await getSupabase()
           .from("users")
           .update({
             subscription_status: "past_due",
@@ -343,7 +343,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const { data: user } = await getSupabase().from("users").select("id").eq("stripe_customer_id", customerId).single();
 
       if (user) {
-        await supabase
+        await getSupabase()
           .from("users")
           .update({
             subscription_status: "free",
