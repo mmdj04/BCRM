@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/prisma-client";
 import { verifyToken, getTokenFromRequest } from "@/lib/auth/jwt";
 
-const DEMO_KEY = "BCRM-DEMO-DEMO-DEMO-DEMO";
-
 export async function POST(request: Request) {
   try {
     const { key } = await request.json();
@@ -25,25 +23,8 @@ export async function POST(request: Request) {
       }
     }
 
-    // Handle demo key - activate directly without database lookup
-    if (cleanKey === DEMO_KEY) {
-      if (!userId) {
-        return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
-      }
-
-      await prisma.user.update({
-        where: { id: userId },
-        data: {
-          status: "active",
-          plan: "pro",
-        },
-      });
-
-      return NextResponse.json({
-        success: true,
-        message: "Conta demo ativada com sucesso",
-        plan: "pro",
-      });
+    if (!userId) {
+      return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
     }
 
     // Find the license key
@@ -55,9 +36,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Chave inválida" }, { status: 404 });
     }
 
-    // Check if already used
-    if (license.usedAt) {
-      return NextResponse.json({ error: "Chave já utilizada" }, { status: 400 });
+    // Check if already used by a different user
+    if (license.usedAt && license.userId !== userId) {
+      return NextResponse.json({ error: "Chave já utilizada por outro usuário" }, { status: 400 });
     }
 
     // Check if expired
@@ -65,8 +46,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Chave expirada" }, { status: 400 });
     }
 
-    if (!userId) {
-      userId = license.userId;
+    // Check if this key belongs to this user (demo key is user-specific)
+    if (license.userId !== userId) {
+      return NextResponse.json({ error: "Chave não pertence a esta conta" }, { status: 400 });
     }
 
     // Activate user account

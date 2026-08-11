@@ -38,9 +38,22 @@ export default function ActivatePage() {
 
     setLoading(true);
     try {
+      // Get JWT token from cookie
+      const tokenCookie = document.cookie
+        .split("; ")
+        .find((c) => c.startsWith("bcrm_token="));
+      const token = tokenCookie ? tokenCookie.split("=")[1] : null;
+
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch("/api/license/activate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ key: key.trim() }),
       });
 
