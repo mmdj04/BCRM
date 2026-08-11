@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 
 import { CapacitorProvider } from "@/components/capacitor-provider";
-import { LoadingScreen } from "@/components/loading-screen";
+import { LoadingScreen } from "@/components/loading-screen-server";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { APP_CONFIG } from "@/config/app-config";
