@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+
+const useBrowserEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const MESSAGES = [
   "Iniciando sistema...",
@@ -26,7 +28,7 @@ export function LoadingScreen() {
   const [status, setStatus] = useState("Iniciando sistema...");
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  useEffect(() => {
+  useBrowserEffect(() => {
     setTheme(getResolvedTheme());
 
     let msgIdx = 0;
