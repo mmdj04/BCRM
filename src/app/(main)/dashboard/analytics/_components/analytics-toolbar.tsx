@@ -11,8 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useShare } from "@/hooks/use-capacitor";
 
 export function AnalyticsToolbar() {
+  const { share } = useShare();
+
   return (
     <div className="flex items-center gap-2">
       <Select defaultValue="last-4-weeks">
@@ -46,7 +49,7 @@ export function AnalyticsToolbar() {
               <FileUp />
               Importar dados
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => share({ title: "BCRM Analytics", text: "Compartilhar painel de analytics", url: window.location.href })}>
               <Share2 />
               Compartilhar painel
             </DropdownMenuItem>

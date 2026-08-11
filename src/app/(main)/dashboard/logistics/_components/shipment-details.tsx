@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useClipboard } from "@/hooks/use-capacitor";
 import { cn } from "@/lib/utils";
 
 import type { Shipment } from "./shipment-data";
@@ -74,6 +75,7 @@ function EmptyShipmentOverview() {
 }
 
 function ShipmentOverview({ shipment }: { shipment: Shipment }) {
+  const { write: copyToClipboard } = useClipboard();
   const ContactIcon = modeIcons[shipment.mode];
   const contactLabel = getContactLabel(shipment.mode);
   const transportNumberLabel = getTransportNumberLabel(shipment.mode);
@@ -83,7 +85,7 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="flex items-center gap-2">
           <h1 className="font-medium text-lg tabular-nums tracking-tight sm:text-xl">#{shipment.id}</h1>
-          <Button variant="ghost" size="icon-sm" aria-label="Copiar ID do envio">
+          <Button variant="ghost" size="icon-sm" aria-label="Copiar ID do envio" onClick={() => copyToClipboard(shipment.id)}>
             <Copy />
           </Button>
         </div>
@@ -114,7 +116,7 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
             <div className="font-medium text-sm leading-none">{shipment.customer.name}</div>
             <div className="flex items-center gap-2 text-muted-foreground">
               <span className="text-xs tabular-nums leading-none tracking-tight">{shipment.customer.id}</span>{" "}
-              <Copy className="size-3" />
+              <Copy className="size-3 cursor-pointer" onClick={() => copyToClipboard(shipment.customer.id)} />
             </div>
           </div>
         </div>

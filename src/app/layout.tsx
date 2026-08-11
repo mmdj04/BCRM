@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 
+import { CapacitorProvider } from "@/components/capacitor-provider";
 import { LoadingScreen } from "@/components/loading-screen";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -41,15 +42,16 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       </head>
       <body className={`${fontVars} min-h-screen antialiased`}>
         <LoadingScreen />
-        <TooltipProvider>
-          <AuthProvider>
-            <PreferencesStoreProvider initialValues={PREFERENCE_DEFAULTS}>
-              {children}
-              <Toaster />
-            </PreferencesStoreProvider>
-          </AuthProvider>
-        </TooltipProvider>
-        {/* Used for this project's hosted demo. Feel free to remove it; it is not required for template functionality. */}
+        <CapacitorProvider>
+          <TooltipProvider>
+            <AuthProvider>
+              <PreferencesStoreProvider initialValues={PREFERENCE_DEFAULTS}>
+                {children}
+                <Toaster />
+              </PreferencesStoreProvider>
+            </AuthProvider>
+          </TooltipProvider>
+        </CapacitorProvider>
         <Analytics />
       </body>
     </html>

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 
+import { Camera as CapCamera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { AlertTriangle, Camera } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,12 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCapacitor } from "@/components/capacitor-provider";
 import { DEMO_CONFIG } from "@/config/demo-config";
 import { useAuth } from "@/lib/supabase/auth-context";
 import { getInitials } from "@/lib/utils";
 
 export function ProfileSection() {
   const { user } = useAuth();
+  const { isNative } = useCapacitor();
   const isDemo = user?.id === DEMO_CONFIG.user.id;
   const [name, setName] = useState(user?.user_metadata?.full_name || "Matheus Moraes");
   const [email] = useState(user?.email || "admin@bcrm.com");
@@ -36,6 +39,31 @@ export function ProfileSection() {
         setAvatarUrl(ev.target?.result as string);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCameraCapture = async () => {
+    try {
+      const photo = await CapCamera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Prompt,
+      });
+      if (photo.dataUrl) {
+        setAvatarUrl(photo.dataUrl);
+      }
+    } catch {
+      // User cancelled or error
+    }
+  };
+
+  const handleAvatarClick = () => {
+    if (isDemo) return;
+    if (isNative) {
+      handleCameraCapture();
+    } else {
+      fileInputRef.current?.click();
     }
   };
 
@@ -62,10 +90,7 @@ export function ProfileSection() {
             <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
             <button
               type="button"
-              onClick={() => {
-                if (isDemo) return;
-                fileInputRef.current?.click();
-              }}
+              onClick={handleAvatarClick}
               className="absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border bg-background shadow-sm transition-colors hover:bg-muted"
               disabled={isDemo}
             >

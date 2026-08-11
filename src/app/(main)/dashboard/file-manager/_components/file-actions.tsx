@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useShare } from "@/hooks/use-capacitor";
 
 import type { FileManagerFile } from "./data";
 
@@ -18,6 +19,8 @@ interface FileActionsProps {
 }
 
 export function FileActions({ file, onToggleStar }: FileActionsProps) {
+  const { share } = useShare();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,7 +38,7 @@ export function FileActions({ file, onToggleStar }: FileActionsProps) {
             <Download />
             Baixar
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => share({ title: file.name, text: `Compartilhar: ${file.name}`, url: window.location.href })}>
             <Share2 />
             Copiar link de compartilhamento
           </DropdownMenuItem>

@@ -42,6 +42,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useClipboard } from "@/hooks/use-capacitor";
 import { cn, getInitials } from "@/lib/utils";
 
 import { type Message as ChatMessage, type Contact, currentUser } from "./data";
@@ -56,6 +57,8 @@ interface ChatThreadProps {
 }
 
 export function ChatThread({ contact, messages, onOpenContact, onBack, showBackButton, className }: ChatThreadProps) {
+  const { write: copyToClipboard } = useClipboard();
+
   return (
     <div className={cn("flex h-full flex-col py-3", className)}>
       <div className="flex flex-col gap-3">
@@ -119,7 +122,7 @@ export function ChatThread({ contact, messages, onOpenContact, onBack, showBackB
                     <UserRound />
                     Ver perfil
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => copyToClipboard(contact.email)}>
                     <Copy />
                     Copiar e-mail
                   </DropdownMenuItem>
