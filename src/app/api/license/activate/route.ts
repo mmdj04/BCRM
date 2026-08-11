@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/prisma-client";
 import { verifyToken, getTokenFromRequest } from "@/lib/auth/jwt";
 
+const DEMO_KEY = "BCRM-DEMO-DEMO-DEMO-DEMO";
+
 export async function POST(request: Request) {
   try {
     const { key } = await request.json();
@@ -11,6 +13,38 @@ export async function POST(request: Request) {
     }
 
     const cleanKey = key.trim().toUpperCase();
+
+    // Get current user from token
+    const token = getTokenFromRequest(request);
+    let userId: string | null = null;
+
+    if (token) {
+      const payload = await verifyToken(token);
+      if (payload) {
+        userId = payload.userId;
+      }
+    }
+
+    // Handle demo key - activate directly without database lookup
+    if (cleanKey === DEMO_KEY) {
+      if (!userId) {
+        return NextResponse.json({ error: "Usuário não autenticado" }, { status: 401 });
+      }
+
+      await prisma.user.update({
+        where: { id: userId },
+        data: {
+          status: "active",
+          plan: "pro",
+        },
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: "Conta demo ativada com sucesso",
+        plan: "pro",
+      });
+    }
 
     // Find the license key
     const license = await prisma.licenseKey.findUnique({
@@ -31,15 +65,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Chave expirada" }, { status: 400 });
     }
 
-    // Get current user from token
-    const token = getTokenFromRequest(request);
-    let userId = license.userId;
-
-    if (token) {
-      const payload = await verifyToken(token);
-      if (payload) {
-        userId = payload.userId;
-      }
+    if (!userId) {
+      userId = license.userId;
     }
 
     // Activate user account
