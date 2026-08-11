@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 
+import { LoadingScreen } from "@/components/loading-screen";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { APP_CONFIG } from "@/config/app-config";
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <ThemeBootScript />
       </head>
       <body className={`${fontVars} min-h-screen antialiased`}>
+        <LoadingScreen />
         <TooltipProvider>
           <AuthProvider>
             <PreferencesStoreProvider initialValues={PREFERENCE_DEFAULTS}>

@@ -1,1 +1,253 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>BCRM</title></head><body></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#09090b">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>BCRM</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #09090b;
+      color: #fafafa;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      height: 100dvh;
+      gap: 32px;
+      padding: 24px;
+    }
+    .screen.active { display: flex; }
+
+    /* Loading Screen */
+    .loading-logo {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loading-logo-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fafafa 0%, #a1a1aa 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #09090b;
+      letter-spacing: -1px;
+      box-shadow: 0 0 40px rgba(250, 250, 250, 0.1);
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 40px rgba(250, 250, 250, 0.1); }
+      50% { box-shadow: 0 0 60px rgba(250, 250, 250, 0.2); }
+    }
+    .loading-text {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #fafafa;
+    }
+    .loading-bar-container {
+      width: 200px;
+      height: 3px;
+      background: rgba(250, 250, 250, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .loading-bar {
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, transparent, #fafafa, transparent);
+      border-radius: 2px;
+      animation: loading-slide 1.5s ease-in-out infinite;
+    }
+    @keyframes loading-slide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
+    .loading-status {
+      font-size: 13px;
+      color: #71717a;
+      letter-spacing: 0.5px;
+    }
+
+    /* Offline Screen */
+    .offline-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.1);
+      border: 2px solid rgba(239, 68, 68, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .offline-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: #ef4444;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .offline-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fafafa;
+    }
+    .offline-desc {
+      font-size: 14px;
+      color: #71717a;
+      text-align: center;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+    .offline-btn {
+      background: #fafafa;
+      color: #09090b;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.3px;
+      min-width: 160px;
+    }
+    .offline-btn:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+    .offline-version {
+      position: absolute;
+      bottom: 24px;
+      font-size: 11px;
+      color: #3f3f46;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="screen active" id="screen-loading">
+    <div class="loading-logo">
+      <div class="loading-logo-icon">B</div>
+    </div>
+    <div class="loading-text">BCRM</div>
+    <div class="loading-bar-container">
+      <div class="loading-bar"></div>
+    </div>
+    <div class="loading-status" id="loading-status">Iniciando sistema...</div>
+  </div>
+
+  <!-- Offline Screen -->
+  <div class="screen" id="screen-offline">
+    <div class="offline-icon">
+      <svg viewBox="0 0 24 24">
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+        <path d="M10.71 5.05A16 16 0 0 1 22.56 9"></path>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+      </svg>
+    </div>
+    <div class="offline-title">Sem conexão</div>
+    <div class="offline-desc">
+      Não foi possível conectar ao servidor.<br>
+      Verifique sua conexão com a internet e tente novamente.
+    </div>
+    <button class="offline-btn" onclick="retryConnection()">Tentar Novamente</button>
+    <div class="offline-version">BCRM v1.0.0</div>
+  </div>
+
+  <script>
+    const SERVER_URL = 'https://bcrm-lilac.vercel.app/';
+    const STATUS_EL = document.getElementById('loading-status');
+    const MAX_RETRIES = 3;
+    let retries = 0;
+
+    const messages = [
+      'Iniciando sistema...',
+      'Carregando módulos...',
+      'Conectando ao servidor...',
+      'Preparando interface...',
+    ];
+
+    let msgIdx = 0;
+    const msgInterval = setInterval(() => {
+      msgIdx = (msgIdx + 1) % messages.length;
+      STATUS_EL.textContent = messages[msgIdx];
+    }, 800);
+
+    function showOffline() {
+      clearInterval(msgInterval);
+      document.getElementById('screen-loading').classList.remove('active');
+      document.getElementById('screen-offline').classList.add('active');
+    }
+
+    function tryConnect() {
+      if (!navigator.onLine) {
+        showOffline();
+        return;
+      }
+
+      fetch(SERVER_URL, {
+        mode: 'no-cors',
+        cache: 'no-store',
+        signal: AbortSignal.timeout(5000),
+      })
+        .then(() => {
+          clearInterval(msgInterval);
+          window.location.replace(SERVER_URL);
+        })
+        .catch(() => {
+          retries++;
+          if (retries >= MAX_RETRIES) {
+            showOffline();
+          } else {
+            setTimeout(tryConnect, 1500);
+          }
+        });
+    }
+
+    function retryConnection() {
+      retries = 0;
+      document.getElementById('screen-offline').classList.remove('active');
+      document.getElementById('screen-loading').classList.add('active');
+      STATUS_EL.textContent = 'Verificando conexão...';
+      msgIdx = 0;
+      setTimeout(tryConnect, 500);
+    }
+
+    // Start connection attempt
+    setTimeout(tryConnect, 600);
+
+    // Listen for online event
+    window.addEventListener('online', () => {
+      if (document.getElementById('screen-offline').classList.contains('active')) {
+        retryConnection();
+      }
+    });
+  </script>
+</body>
+</html>

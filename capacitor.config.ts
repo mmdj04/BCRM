@@ -4,17 +4,15 @@ const config: CapacitorConfig = {
   appId: "com.bcrm.app",
   appName: "BCRM",
   server: {
-    url: "https://bcrm-lilac.vercel.app",
-    cleartext: false,
+    androidScheme: "https",
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 2000,
+      launchShowDuration: 0,
       launchAutoHide: true,
-      androidScaleType: "CENTER_CROP",
       showSpinner: false,
-      splashFullScreen: true,
-      splashImmersive: true,
+      splashFullScreen: false,
+      splashImmersive: false,
     },
   },
   android: {
