@@ -1,15 +1,23 @@
 import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import { prisma } from "@/lib/database/prisma-client";
 import { generateLicenseKey, getExpirationDate } from "@/lib/license/key-generator";
 import { sendLicenseKey } from "@/lib/license/email-sender";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", { typescript: true });
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { typescript: true })
+  : (null as unknown as Stripe);
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+let _supabase: SupabaseClient | null = null;
+function getSupabase(): SupabaseClient {
+  if (!_supabase) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+    _supabase = createClient(url, key);
+  }
+  return _supabase;
+}
 
 const EXCHANGE_RATE = 6.2;
 const PLAN_MULTIPLIER = 6;
@@ -233,7 +241,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
         }
 
         // Update user in Supabase
-        await supabase.from("users").update(updateData).eq("id", userId);
+        await getSupabase().from("users").update(updateData).eq("id", userId);
 
         // Generate license key and send email
         try {
@@ -249,7 +257,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
 
           if (userData) {
             // Store license key in Supabase (we'll use raw SQL since Prisma is for local SQLite)
-            await supabase.from("license_keys").insert({
+            await getSupabase().from("license_keys").insert({
               key,
               user_id: userId,
               plan,
@@ -277,10 +285,10 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const invoice = event.data.object as Stripe.Invoice;
       const customerId = invoice.customer as string;
 
-      const { data: user } = await supabase.from("users").select("id").eq("stripe_customer_id", customerId).single();
+      const { data: user } = await getSupabase().from("users").select("id").eq("stripe_customer_id", customerId).single();
 
       if (user) {
-        await supabase.from("payments").insert({
+        await getSupabase().from("payments").insert({
           user_id: user.id,
           stripe_payment_id: invoice.id,
           stripe_invoice_id: invoice.id,
@@ -304,10 +312,10 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const invoice = event.data.object as Stripe.Invoice;
       const customerId = invoice.customer as string;
 
-      const { data: user } = await supabase.from("users").select("id").eq("stripe_customer_id", customerId).single();
+      const { data: user } = await getSupabase().from("users").select("id").eq("stripe_customer_id", customerId).single();
 
       if (user) {
-        await supabase.from("payments").insert({
+        await getSupabase().from("payments").insert({
           user_id: user.id,
           stripe_payment_id: invoice.id,
           stripe_invoice_id: invoice.id,
@@ -332,7 +340,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const subscription = event.data.object as Stripe.Subscription;
       const customerId = subscription.customer as string;
 
-      const { data: user } = await supabase.from("users").select("id").eq("stripe_customer_id", customerId).single();
+      const { data: user } = await getSupabase().from("users").select("id").eq("stripe_customer_id", customerId).single();
 
       if (user) {
         await supabase
