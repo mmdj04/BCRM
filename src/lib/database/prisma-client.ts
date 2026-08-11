@@ -4,28 +4,31 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-function createPrismaClient(): PrismaClient {
-  // During build time, DATABASE_URL may not be available
-  if (!process.env.DATABASE_URL) {
-    // Return a dummy client - will be replaced at runtime
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return {} as any;
+function createPrismaClient() {
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    console.warn("DATABASE_URL not set, Prisma client unavailable");
+    return undefined;
   }
 
   try {
     const { PrismaPg } = require("@prisma/adapter-pg");
-    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-
+    const adapter = new PrismaPg({ connectionString: url });
     return new PrismaClient({
       adapter,
-      log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+      log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
     });
-  } catch {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return {} as any;
+  } catch (err) {
+    console.error("Failed to create Prisma client with adapter:", err);
+    return undefined;
   }
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+// Only create client when DATABASE_URL exists (not during build)
+const client = process.env.DATABASE_URL ? createPrismaClient() : undefined;
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+export const prisma = globalForPrisma.prisma ?? client;
+
+if (process.env.NODE_ENV !== "production" && prisma) {
+  globalForPrisma.prisma = prisma;
+}
