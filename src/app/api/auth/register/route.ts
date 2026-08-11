@@ -7,8 +7,8 @@ export async function POST(request: Request) {
   try {
     const { email, password, name } = await request.json();
 
-    if (!email || !password || !name) {
-      return NextResponse.json({ error: "Email, senha e nome são obrigatórios" }, { status: 400 });
+    if (!email || !password) {
+      return NextResponse.json({ error: "Email e senha são obrigatórios" }, { status: 400 });
     }
 
     // Check if user already exists
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const user = await prisma.user.create({
       data: {
         email,
-        name,
+        name: name || email.split("@")[0],
         passwordHash,
         role: "user",
         status: "pending",
