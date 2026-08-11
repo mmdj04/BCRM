@@ -174,7 +174,8 @@
     let retries = 0;
 
     function applyTheme() {
-      const stored = localStorage.getItem('theme_mode');
+      const match = document.cookie.split('; ').find(c => c.startsWith('theme_mode='));
+      const stored = match ? decodeURIComponent(match.split('=')[1]) : null;
       let dark = true;
       if (stored === 'light') dark = false;
       else if (stored === 'dark') dark = true;

@@ -2,6 +2,17 @@
 
 import { useEffect, useState } from "react";
 
+function getThemeFromCookie(): "light" | "dark" {
+  if (typeof document === "undefined") return "dark";
+  const match = document.cookie.split("; ").find((c) => c.startsWith("theme_mode="));
+  const value = match ? decodeURIComponent(match.split("=")[1]) : null;
+  if (value === "light" || value === "dark") return value;
+  if (value === "system" || !value) {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return "dark";
+}
+
 export function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [status, setStatus] = useState("Iniciando sistema...");
@@ -10,14 +21,7 @@ export function LoadingScreen() {
   const messages = ["Iniciando sistema...", "Carregando módulos...", "Conectando ao servidor...", "Preparando interface..."];
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme_mode");
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-    } else if (stored === "system" || !stored) {
-      setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    } else {
-      setTheme("dark");
-    }
+    setTheme(getThemeFromCookie());
 
     let msgIdx = 0;
     const msgInterval = setInterval(() => {
