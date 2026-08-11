@@ -194,6 +194,7 @@
       'Carregando módulos...',
       'Conectando ao servidor...',
       'Preparando interface...',
+      'Quase pronto...',
     ];
 
     let msgIdx = 0;
@@ -243,7 +244,7 @@
     }
 
     // Start connection attempt
-    setTimeout(tryConnect, 600);
+    setTimeout(tryConnect, 2500);
 
     // Listen for online event
     window.addEventListener('online', () => {

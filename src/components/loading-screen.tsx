@@ -18,7 +18,7 @@ export function LoadingScreen() {
   const [status, setStatus] = useState("Iniciando sistema...");
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
-  const messages = ["Iniciando sistema...", "Carregando módulos...", "Conectando ao servidor...", "Preparando interface..."];
+  const messages = ["Iniciando sistema...", "Carregando módulos...", "Conectando ao servidor...", "Preparando interface...", "Quase pronto..."];
 
   useEffect(() => {
     setTheme(getThemeFromCookie());
@@ -31,7 +31,7 @@ export function LoadingScreen() {
 
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 2000);
+    }, 3500);
 
     return () => {
       clearInterval(msgInterval);
