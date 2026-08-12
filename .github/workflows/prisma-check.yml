@@ -1,6 +1,10 @@
 name: Prisma Schema Check
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'prisma/**'
   pull_request:
     branches: [main]
     paths:
