@@ -46,7 +46,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: bcrm-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
