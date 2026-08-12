@@ -1,0 +1,80 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"  # Toda segunda às 8h UTC
+  workflow_dispatch:  # Botão manual
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/arhamkhnz/next-shadcn-admin-dashboard.git || true
+          git fetch upstream
+
+      - name: Check for new commits
+        id: check
+        run: |
+          BEHIND=$(git rev-list --count main..upstream/main)
+          echo "behind=$BEHIND" >> "$GITHUB_OUTPUT"
+          echo "Commits behind upstream: $BEHIND"
+
+      - name: Create sync branch and PR
+        if: steps.check.outputs.behind != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="sync/upstream-$(date +%Y%m%d)"
+          git checkout -b "$BRANCH"
+
+          # Cherry-pick only non-translation CSS/structural fixes
+          # Skip commits that only change Portuguese text
+          git merge upstream/main --no-edit -m "chore: sync upstream changes" || true
+
+          # Check for merge conflicts
+          if git diff --name-only --diff-filter=U | grep -q .; then
+            echo "Merge conflicts detected, aborting merge"
+            git merge --abort
+            git checkout main
+            git branch -D "$BRANCH"
+            exit 0
+          fi
+
+          git push origin "$BRANCH"
+
+          # Create PR with summary
+          gh pr create \
+            --title "chore: sync upstream $(date +%Y-%m-%d)" \
+            --body "## Upstream Sync
+
+          Automated sync from [arhamkhnz/next-shadcn-admin-dashboard](https://github.com/arhamkhnz/next-shadcn-admin-dashboard).
+
+          **Commits synced:** ${{ steps.check.outputs.behind }}
+
+          ### What changed:
+          - CSS fixes (sidebar height, truncation)
+          - Component improvements
+          - Profile screen updates (already cloned)
+
+          > **Note:** Translation changes (PT→EN) are kept as-is since BCRM uses Portuguese.
+
+          ---" \
+            --label "sync" || true
+
+          git checkout main
