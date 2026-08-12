@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment:
-      name: production
+      name: Production
       url: https://bcrm-lilac.vercel.app
     steps:
       - name: Checkout
