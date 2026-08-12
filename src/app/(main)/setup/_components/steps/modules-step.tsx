@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
-
 import {
   BarChart3,
   BookOpen,
@@ -15,7 +13,6 @@ import {
   FolderKanban,
   HeartPulse,
   Inbox,
-  LayoutDashboard,
   MessageSquare,
   Server,
   ShieldCheck,
@@ -179,7 +176,7 @@ export function ModulesStep() {
     <div className="flex flex-1 flex-col">
       {/* Title */}
       <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Módulos</h1>
+        <h1 className="mb-2 font-bold text-3xl text-foreground tracking-tight">Módulos</h1>
         <p className="text-base text-muted-foreground">
           Escolha os módulos que deseja habilitar.
           {enabledCount > 0 && <span className="ml-1 font-medium text-primary"> {enabledCount} selecionado(s)</span>}
@@ -208,8 +205,8 @@ export function ModulesStep() {
                 <Icon className={cn("size-4", isEnabled ? "text-primary" : "text-muted-foreground")} />
               </div>
               <div className="flex-1">
-                <span className="text-sm font-medium text-foreground">{module.label}</span>
-                <p className="text-xs text-muted-foreground">{module.description}</p>
+                <span className="font-medium text-foreground text-sm">{module.label}</span>
+                <p className="text-muted-foreground text-xs">{module.description}</p>
               </div>
             </button>
           );

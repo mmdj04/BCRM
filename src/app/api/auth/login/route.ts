@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/database/prisma-client";
-import { verifyPassword } from "@/lib/auth/password";
+
 import { signToken } from "@/lib/auth/jwt";
+import { verifyPassword } from "@/lib/auth/password";
+import { prisma } from "@/lib/database/prisma-client";
 
 export async function POST(request: Request) {
   try {
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user || !user.passwordHash) {
+    if (!user?.passwordHash) {
       return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
     }
 
@@ -63,7 +64,7 @@ export async function POST(request: Request) {
     // If in grace period, add warning
     if (user.status === "grace_period" && user.gracePeriodStart) {
       const daysLeft = Math.ceil(
-        (new Date(user.gracePeriodStart).getTime() + 90 * 24 * 60 * 60 * 1000 - Date.now()) / (24 * 60 * 60 * 1000)
+        (new Date(user.gracePeriodStart).getTime() + 90 * 24 * 60 * 60 * 1000 - Date.now()) / (24 * 60 * 60 * 1000),
       );
       response.warning = `Sua assinatura expirou. Renove em ${daysLeft} dias.`;
     }

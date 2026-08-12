@@ -60,7 +60,7 @@ export function ProjectSettingsSection() {
         /* ignore */
       }
     }
-  }, [user?.id, isDemo]);
+  }, [user?.userId, isDemo]);
 
   const handleSave = async () => {
     setSaving(true);

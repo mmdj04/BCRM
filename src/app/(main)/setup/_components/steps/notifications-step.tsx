@@ -50,7 +50,7 @@ export function NotificationsStep() {
     <div className="flex flex-1 flex-col">
       {/* Title */}
       <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Notificações</h1>
+        <h1 className="mb-2 font-bold text-3xl text-foreground tracking-tight">Notificações</h1>
         <p className="text-base text-muted-foreground">Escolha como deseja receber notificações do sistema.</p>
       </div>
 
@@ -77,8 +77,8 @@ export function NotificationsStep() {
                 <Icon className={cn("size-4", isEnabled ? "text-primary" : "text-muted-foreground")} />
               </div>
               <div className="flex-1">
-                <span className="text-sm font-medium text-foreground">{notif.label}</span>
-                <p className="text-xs text-muted-foreground">{notif.description}</p>
+                <span className="font-medium text-foreground text-sm">{notif.label}</span>
+                <p className="text-muted-foreground text-xs">{notif.description}</p>
               </div>
             </label>
           );

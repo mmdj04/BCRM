@@ -33,18 +33,11 @@ export async function POST(request: Request) {
 
     const validInterval = ["monthly", "quarterly", "annual"].includes(interval) ? interval : "monthly";
 
-    const { clientSecret } = await createCheckoutSessionElements(
-      userId,
-      email,
-      plan,
-      compute,
-      validInterval,
-      {
-        isBusiness: !!isBusiness,
-        companyName: companyName || undefined,
-        cnpj: cnpj || undefined,
-      },
-    );
+    const { clientSecret } = await createCheckoutSessionElements(userId, email, plan, compute, validInterval, {
+      isBusiness: !!isBusiness,
+      companyName: companyName || undefined,
+      cnpj: cnpj || undefined,
+    });
 
     if (!clientSecret) {
       return NextResponse.json({ error: "Não foi possível criar a sessão de pagamento" }, { status: 500 });

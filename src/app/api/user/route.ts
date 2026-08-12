@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { prisma } from "@/lib/database/prisma-client";
 
 export async function GET(request: Request) {
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
     });
 
     return NextResponse.json(user);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch user" }, { status: 500 });
   }
 }
@@ -51,7 +52,7 @@ export async function PUT(request: Request) {
     });
 
     return NextResponse.json(user);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
   }
 }

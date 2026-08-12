@@ -2,15 +2,15 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { Capacitor } from "@capacitor/core";
 import { App } from "@capacitor/app";
+import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
-import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
-import { Network, NetworkStatus } from "@capacitor/network";
-import { StatusBar, Style } from "@capacitor/status-bar";
-import { SplashScreen } from "@capacitor/splash-screen";
-import { LocalNotifications } from "@capacitor/local-notifications";
 import { Haptics } from "@capacitor/haptics";
+import { Keyboard, type KeyboardInfo } from "@capacitor/keyboard";
+import { LocalNotifications } from "@capacitor/local-notifications";
+import { Network, type NetworkStatus } from "@capacitor/network";
+import { SplashScreen } from "@capacitor/splash-screen";
+import { StatusBar, Style } from "@capacitor/status-bar";
 import { toast } from "sonner";
 
 type HapticsImpactStyle = "LIGHT" | "MEDIUM" | "HEAVY" | "RIGID" | "SOFT";
@@ -34,8 +34,12 @@ const CapacitorContext = createContext<CapacitorContextValue>({
   networkStatus: { connected: true, connectionType: "unknown" },
   appInfo: null,
   deviceInfo: null,
-  hapticImpact: async () => {},
-  hapticNotification: async () => {},
+  hapticImpact: async () => {
+    // Default - overridden by provider
+  },
+  hapticNotification: async () => {
+    // Default - overridden by provider
+  },
 });
 
 export function useCapacitor() {
@@ -68,14 +72,18 @@ export function CapacitorProvider({ children }: { children: React.ReactNode }) {
     if (!isNative) return;
     try {
       await Haptics.impact({ style: style as any });
-    } catch {}
+    } catch {
+      // Silently fail on web
+    }
   };
 
   const hapticNotification = async (type: HapticsNotificationType) => {
     if (!isNative) return;
     try {
       await Haptics.notification({ type: type as any });
-    } catch {}
+    } catch {
+      // Silently fail on web
+    }
   };
 
   useEffect(() => {
@@ -118,7 +126,7 @@ export function CapacitorProvider({ children }: { children: React.ReactNode }) {
         if (network) setNetworkStatus(network);
 
         // Listen for network changes
-        Network.addListener("networkStatusChange", (status) => {
+        await Network.addListener("networkStatusChange", (status) => {
           setNetworkStatus(status);
           if (!status.connected) {
             toast.error("Sem conexão com a internet", {
@@ -132,20 +140,22 @@ export function CapacitorProvider({ children }: { children: React.ReactNode }) {
         });
 
         // Listen for keyboard
-        Keyboard.addListener("keyboardWillShow", (info: KeyboardInfo) => {
+        await Keyboard.addListener("keyboardWillShow", (info: KeyboardInfo) => {
           setIsKeyboardOpen(true);
           setKeyboardHeight(info.keyboardHeight);
         });
 
-        Keyboard.addListener("keyboardWillHide", () => {
+        await Keyboard.addListener("keyboardWillHide", () => {
           setIsKeyboardOpen(false);
           setKeyboardHeight(0);
         });
 
         // Refresh network on app resume
-        App.addListener("appStateChange", ({ isActive }) => {
+        await App.addListener("appStateChange", ({ isActive }) => {
           if (isActive) {
-            Network.getStatus().then(setNetworkStatus);
+            Network.getStatus().then(setNetworkStatus).catch(() => {
+              // Ignore network status errors
+            });
           }
         });
       } catch {
@@ -153,8 +163,10 @@ export function CapacitorProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    init();
-  }, []);
+    init().catch(() => {
+      // Silently fail on web
+    });
+  }, [networkStatus]);
 
   return (
     <CapacitorContext.Provider

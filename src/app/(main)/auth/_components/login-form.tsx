@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import { useRouter } from "next/navigation";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -23,7 +21,6 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,8 +35,8 @@ export function LoginForm() {
     setLoading(true);
     try {
       // Check for demo credentials first
-      // biome-ignore lint/suspicious/noUnnecessaryConditions: DEMO_CONFIG.enabled is a runtime config flag
       if (
+        // biome-ignore lint/suspicious/noUnnecessaryConditions: DEMO_CONFIG.enabled is a runtime config flag
         DEMO_CONFIG.enabled &&
         data.email === DEMO_CONFIG.credentials.email &&
         data.password === DEMO_CONFIG.credentials.password
@@ -58,7 +55,6 @@ export function LoginForm() {
 
         // Store demo session flag
         const maxAge = data.remember ? 30 * 24 * 60 * 60 : "";
-        // biome-ignore lint/suspicious/noDocumentCookie: Demo session cookie must be set client-side
         document.cookie = `bcrm_demo_session=${JSON.stringify({
           user: DEMO_CONFIG.user,
           isDemo: true,
@@ -83,7 +79,7 @@ export function LoginForm() {
       }
 
       document.cookie = `bcrm_token=${result.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
-      
+
       if (result.requiresActivation) {
         toast.info("Ative sua conta para continuar");
         window.location.href = "/activate";

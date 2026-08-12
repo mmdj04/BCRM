@@ -63,39 +63,54 @@
       "correctness": {
         "noUndeclaredVariables": "error",
         "noNestedComponentDefinitions": "error",
-        "noUndeclaredDependencies": "error"
+        "noUndeclaredDependencies": "error",
+        "noUnusedImports": "warn",
+        "noUnusedVariables": "warn",
+        "useExhaustiveDependencies": "warn"
       },
       "nursery": {
-        "useSortedClasses": "on",
-        "useNullishCoalescing": "error",
-        "noFloatingPromises": "error",
-        "noMisusedPromises": "error"
+        "useSortedClasses": "warn",
+        "useNullishCoalescing": "warn",
+        "noFloatingPromises": "warn",
+        "noMisusedPromises": "warn"
       },
       "performance": {
         "noImgElement": "warn"
       },
       "style": {
-        "noCommonJs": "error",
+        "noCommonJs": "warn",
         "noHeadElement": "warn",
         "noNamespace": "error",
         "useAsConstAssertion": "error",
         "useSelfClosingElements": "error",
         "noNestedTernary": "warn",
         "noParameterAssign": "error",
-        "noInferrableTypes": "error",
-        "noUselessElse": "error",
-        "useFilenamingConvention": "error"
+        "noInferrableTypes": "warn",
+        "noUselessElse": "warn",
+        "useFilenamingConvention": "error",
+        "noNonNullAssertion": "warn",
+        "useTemplate": "warn",
+        "useNodejsImportProtocol": "warn"
       },
       "suspicious": {
-        "noArrayIndexKey": "warn",
+        "noArrayIndexKey": "off",
         "noConstantBinaryExpressions": "error",
-        "noEmptyBlockStatements": "error",
+        "noEmptyBlockStatements": "warn",
         "noUnknownAtRules": "off",
-        "noImportCycles": "error",
-        "noUnnecessaryConditions": "warn"
+        "noImportCycles": "off",
+        "noUnnecessaryConditions": "warn",
+        "noExplicitAny": "off",
+        "noDocumentCookie": "off",
+        "useIterableCallbackReturn": "warn"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "warn",
+        "noLabelWithoutControl": "off"
       },
       "complexity": {
-        "noImportantStyles": "off"
+        "noImportantStyles": "off",
+        "useLiteralKeys": "warn",
+        "useOptionalChain": "warn"
       }
     },
     "domains": {

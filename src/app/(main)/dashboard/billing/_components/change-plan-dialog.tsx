@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ArrowRight, Check, CreditCard, Server, Shield } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,11 +18,13 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/auth/auth-context";
 
 import {
   addOns,
+  type BillingInterval,
   billingIntervals,
   computeOptions,
   getAllPlanFeatures,
@@ -31,7 +32,6 @@ import {
   intervalPrice,
   intervalPricePerMonth,
   plans,
-  type BillingInterval,
 } from "./data";
 
 const PLAN_NAMES: Record<string, string> = {
@@ -96,8 +96,9 @@ function ChangePlanContent({
   const pitrAddOn = addOns.find((a) => a.id === selectedPitr);
   const pitrPrice = pitrAddOn?.priceBRL ?? 0;
 
-  const intervalConfig = billingIntervals.find((i) => i.id === selectedInterval)!;
-  const monthsLabel = selectedInterval === "quarterly" ? "3 meses" : selectedInterval === "annual" ? "1 ano" : null;
+  const intervalConfig = billingIntervals.find((i) => i.id === selectedInterval);
+  const intervalLabels: Record<string, string> = { quarterly: "3 meses", annual: "1 ano" };
+  const monthsLabel = intervalLabels[selectedInterval] ?? null;
 
   if (success) {
     return (
@@ -106,9 +107,7 @@ function ChangePlanContent({
           <Check className="size-6 text-green-600 dark:text-green-400" />
         </div>
         <p className="font-medium text-lg">Plano alterado com sucesso!</p>
-        <p className="text-muted-foreground text-sm">
-          A alteração entrará em vigor ao final do período atual.
-        </p>
+        <p className="text-muted-foreground text-sm">A alteração entrará em vigor ao final do período atual.</p>
       </div>
     );
   }
@@ -137,7 +136,7 @@ function ChangePlanContent({
             >
               {interval.label}
               {interval.discount > 0 && (
-                <Badge variant="default" className="ml-1 bg-green-600 text-white text-[10px] px-1.5 py-0">
+                <Badge variant="default" className="ml-1 bg-green-600 px-1.5 py-0 text-[10px] text-white">
                   -{Math.round(interval.discount * 100)}%
                 </Badge>
               )}
@@ -145,9 +144,7 @@ function ChangePlanContent({
           ))}
         </ToggleGroup>
         {monthsLabel && (
-          <p className="text-muted-foreground text-xs">
-            Paga de uma vez — {monthsLabel} adiantado, sem mensalidade
-          </p>
+          <p className="text-muted-foreground text-xs">Paga de uma vez — {monthsLabel} adiantado, sem mensalidade</p>
         )}
       </div>
 
@@ -164,7 +161,7 @@ function ChangePlanContent({
               R${" "}
               {formatPrice(
                 intervalPricePerMonth(
-                  (PLAN_NAMES[currentPlan] ? (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0) : 0),
+                  PLAN_NAMES[currentPlan] ? (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0) : 0,
                   selectedInterval,
                 ) + currentComputePrice,
               )}
@@ -183,7 +180,6 @@ function ChangePlanContent({
             const planTotal = intervalPrice(plan.monthlyPrice ?? 0, selectedInterval);
             const isUpgrade = (plan.monthlyPrice ?? 0) > (plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0);
             return (
-              // biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally
               <label
                 key={plan.id}
                 className={`flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-all ${
@@ -192,7 +188,6 @@ function ChangePlanContent({
                     : "border-border hover:border-muted-foreground/50"
                 }`}
               >
-                {/* biome-ignore lint/a11y/noLabelWithoutControl: Radix RadioGroup handles association internally */}
                 <RadioGroupItem value={plan.id} aria-label={plan.name} />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
@@ -210,11 +205,11 @@ function ChangePlanContent({
                   <p className="mt-1 font-medium text-sm">
                     R$ {formatPrice(planPPM)}/mês
                     {selectedInterval !== "monthly" && (
-                      <span className="text-muted-foreground text-xs font-normal ml-1">
+                      <span className="ml-1 font-normal text-muted-foreground text-xs">
                         (Total: R$ {formatPrice(planTotal)})
                       </span>
-                    )}
-                    {" "}+ Compute
+                    )}{" "}
+                    + Compute
                   </p>
                 </div>
               </label>
@@ -320,9 +315,7 @@ function ChangePlanContent({
           <button
             type="button"
             className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all ${
-              selectedPitr === "none"
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-muted-foreground/50"
+              selectedPitr === "none" ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground/50"
             }`}
             onClick={() => onSelectPitr("none")}
           >
@@ -367,10 +360,10 @@ function ChangePlanContent({
           )}
           {benefitsLost.length > 0 && (
             <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 dark:border-yellow-800 dark:bg-yellow-950">
-              <p className="mb-2 font-medium text-yellow-800 text-sm dark:text-yellow-200">Benefícios Removidos</p>
+              <p className="mb-2 font-medium text-sm text-yellow-800 dark:text-yellow-200">Benefícios Removidos</p>
               <ul className="flex flex-col gap-1">
                 {benefitsLost.map((benefit) => (
-                  <li key={benefit} className="flex items-start gap-1.5 text-yellow-700 text-xs dark:text-yellow-300">
+                  <li key={benefit} className="flex items-start gap-1.5 text-xs text-yellow-700 dark:text-yellow-300">
                     <span className="mt-0.5 size-3 shrink-0">⚠</span>
                     {benefit}
                   </li>
@@ -391,16 +384,24 @@ function ChangePlanContent({
               <ArrowRight className="size-4 text-muted-foreground" />
               <span className="font-medium">{newPlanData.name}</span>
               <span className="ml-auto font-medium">
-                R$ {formatPrice(intervalPricePerMonth(newPlanData.monthlyPrice ?? 0, selectedInterval) + newComputePrice + pitrPrice)}/mês
+                R${" "}
+                {formatPrice(
+                  intervalPricePerMonth(newPlanData.monthlyPrice ?? 0, selectedInterval) + newComputePrice + pitrPrice,
+                )}
+                /mês
               </span>
             </div>
           ) : (
             <div className="flex items-center gap-3 text-sm">
               <span>{PLAN_NAMES[currentPlan]}</span>
               <span className="ml-auto font-medium">
-                R$ {formatPrice(
-                  intervalPricePerMonth(plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0, selectedInterval) + newComputePrice + pitrPrice,
-                )}/mês
+                R${" "}
+                {formatPrice(
+                  intervalPricePerMonth(plans.find((p) => p.id === currentPlan)?.monthlyPrice ?? 0, selectedInterval) +
+                    newComputePrice +
+                    pitrPrice,
+                )}
+                /mês
               </span>
             </div>
           )}
@@ -410,12 +411,13 @@ function ChangePlanContent({
               : `Compute ${formatPrice(newComputePrice)}`}
             {pitrPrice > 0 && <> + PITR {formatPrice(pitrPrice)}</>}
             {selectedInterval !== "monthly" && (
-              <> — {intervalConfig.label} ({monthsLabel} adiantado)</>
+              <>
+                {" "}
+                — {intervalConfig?.label} ({monthsLabel} adiantado)
+              </>
             )}
           </p>
-          <p className="mt-2 text-muted-foreground text-xs">
-            A alteração entrará em vigor ao final do período atual.
-          </p>
+          <p className="mt-2 text-muted-foreground text-xs">A alteração entrará em vigor ao final do período atual.</p>
         </div>
       )}
     </div>
@@ -550,7 +552,7 @@ export function ChangePlanDialog({
           <div className="flex-1 overflow-y-auto px-4 py-4">
             <ChangePlanContent {...contentProps} />
           </div>
-          <SheetFooter className="px-4 pb-4 pt-0">
+          <SheetFooter className="px-4 pt-0 pb-4">
             <Button variant="outline" onClick={() => handleOpenChange(false)}>
               Cancelar
             </Button>

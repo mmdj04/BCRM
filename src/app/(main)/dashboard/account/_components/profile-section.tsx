@@ -2,15 +2,15 @@
 
 import { useRef, useState } from "react";
 
-import { Camera as CapCamera, CameraResultType, CameraSource } from "@capacitor/camera";
+import { CameraResultType, CameraSource, Camera as CapCamera } from "@capacitor/camera";
 import { AlertTriangle, Camera } from "lucide-react";
 
+import { useCapacitor } from "@/components/capacitor-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCapacitor } from "@/components/capacitor-provider";
 import { DEMO_CONFIG } from "@/config/demo-config";
 import { useAuth } from "@/lib/supabase/auth-context";
 import { getInitials } from "@/lib/utils";
@@ -61,7 +61,9 @@ export function ProfileSection() {
   const handleAvatarClick = () => {
     if (isDemo) return;
     if (isNative) {
-      handleCameraCapture();
+      handleCameraCapture().catch(() => {
+        // User cancelled or error
+      });
     } else {
       fileInputRef.current?.click();
     }

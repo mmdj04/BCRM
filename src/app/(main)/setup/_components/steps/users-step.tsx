@@ -13,14 +13,12 @@ import {
   Shield,
   Trash2,
   UserPlus,
-  Users,
   UsersRound,
   X,
 } from "lucide-react";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -169,7 +167,7 @@ export function UsersStep() {
   return (
     <div className="flex flex-1 flex-col">
       <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Usuários</h1>
+        <h1 className="mb-2 font-bold text-3xl text-foreground tracking-tight">Usuários</h1>
         <p className="text-base text-muted-foreground">
           Convide membros da equipe, crie equipes e configure permissões.
         </p>
@@ -700,7 +698,7 @@ export function UsersStep() {
       {/* Usuários Adicionados */}
       {setupData.users.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
-          <span className="font-medium text-sm text-muted-foreground">
+          <span className="font-medium text-muted-foreground text-sm">
             Usuários adicionados ({setupData.users.length})
           </span>
           {setupData.users.map((user, index) => (

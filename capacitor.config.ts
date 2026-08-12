@@ -19,10 +19,7 @@ const config: CapacitorConfig = {
       splashImmersive: true,
     },
     Camera: {
-      androidPermissions: [
-        "android.permission.CAMERA",
-        "android.permission.READ_EXTERNAL_STORAGE",
-      ],
+      androidPermissions: ["android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE"],
     },
     Network: {
       monitoring: true,

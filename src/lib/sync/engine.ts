@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+
 import { prisma } from "@/lib/database/prisma-client";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
@@ -37,7 +38,9 @@ class SyncEngine {
 
   private setStatus(status: SyncStatus) {
     this.status = status;
-    this.listeners.forEach((cb) => cb(status));
+    this.listeners.forEach((cb) => {
+      cb(status);
+    });
   }
 
   async pushLocalChanges(userId: string): Promise<number> {
@@ -58,20 +61,18 @@ class SyncEngine {
         try {
           const { id, supabaseId, isDirty, syncVersion, lastSyncedAt, createdAt, updatedAt, ...data } = record;
 
-          const cleanData = Object.fromEntries(
-            Object.entries(data).filter(([_, v]) => v !== undefined)
-          );
+          const cleanData = Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined));
 
           if (supabaseId) {
             const { error } = await this.supabase
-              .from(table + "s")
+              .from(`${table}s`)
               .update(cleanData)
               .eq("id", supabaseId);
 
             if (error) throw error;
           } else {
             const { data: remoteRecord, error } = await this.supabase
-              .from(table + "s")
+              .from(`${table}s`)
               .insert({ ...cleanData, user_id: userId })
               .select("id")
               .single();

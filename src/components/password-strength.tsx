@@ -19,7 +19,6 @@ export function PasswordStrengthIndicator({ strength, className }: PasswordStren
         <div className="flex gap-1">
           {Array.from({ length: 5 }).map((_, i) => (
             <div
-              // biome-ignore lint/suspicious/noArrayIndexKey: static length-5 array
               key={i}
               className={cn(
                 "h-1.5 flex-1 rounded-full transition-all duration-300",

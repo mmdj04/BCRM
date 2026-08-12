@@ -1,0 +1,53 @@
+name: SBOM Generation
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0
+
+      - name: Generate CycloneDX SBOM
+        run: syft dir:. -o cyclonedx-json=sbom-cdx.json
+
+      - name: Generate SPDX SBOM
+        run: syft dir:. -o spdx-json=sbom-spdx.json
+
+      - name: Upload SBOM Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: |
+            sbom-cdx.json
+            sbom-spdx.json
+          retention-days: 90
+
+      - name: Attach SBOM to Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            sbom-cdx.json
+            sbom-spdx.json

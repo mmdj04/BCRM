@@ -1,0 +1,19 @@
+name: DAST - OWASP ZAP
+
+on:
+  schedule:
+    - cron: '0 3 1 * *'
+  workflow_dispatch:
+
+jobs:
+  zap:
+    name: OWASP ZAP Full Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.14.0
+        with:
+          target: https://bcrm-lilac.vercel.app
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+          allow_issue_writing: false

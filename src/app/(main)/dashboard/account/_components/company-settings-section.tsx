@@ -75,7 +75,7 @@ export function CompanySettingsSection() {
         /* ignore */
       }
     }
-  }, [user?.id, isDemo]);
+  }, [user?.userId, isDemo]);
 
   const handleSave = async () => {
     setSaving(true);

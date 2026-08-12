@@ -1,9 +1,9 @@
-import Stripe from "stripe";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import Stripe from "stripe";
 
 import { prisma } from "@/lib/database/prisma-client";
-import { generateLicenseKey, getExpirationDate } from "@/lib/license/key-generator";
 import { sendLicenseKey } from "@/lib/license/email-sender";
+import { generateLicenseKey, getExpirationDate } from "@/lib/license/key-generator";
 
 const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, { typescript: true })
@@ -33,7 +33,7 @@ type IntervalConfig = {
 const INTERVALS: Record<string, IntervalConfig> = {
   monthly: { months: 1, discount: 0, stripeInterval: "month", stripeIntervalCount: 1 },
   quarterly: { months: 3, discount: 0.05, stripeInterval: "month", stripeIntervalCount: 3 },
-  annual: { months: 12, discount: 0.10, stripeInterval: "year", stripeIntervalCount: 1 },
+  annual: { months: 12, discount: 0.1, stripeInterval: "year", stripeIntervalCount: 1 },
 };
 
 function planAmount(supabaseUSD: number): number {
@@ -96,7 +96,14 @@ export async function createCheckoutSessionElements(
   const monthlyAmount = getTotalAmount(plan, compute);
   const intervalConfig = INTERVALS[interval] ?? INTERVALS.monthly;
   const totalAmount = Math.round(monthlyAmount * intervalConfig.months * (1 - intervalConfig.discount));
-  const intervalLabel = interval === "annual" ? "Anual" : interval === "quarterly" ? "Trimestral" : "Mensal";
+  let intervalLabel: string;
+  if (interval === "annual") {
+    intervalLabel = "Anual";
+  } else if (interval === "quarterly") {
+    intervalLabel = "Trimestral";
+  } else {
+    intervalLabel = "Mensal";
+  }
 
   const session = await stripe.checkout.sessions.create({
     customer: customer.id,
@@ -152,7 +159,14 @@ export async function createCheckoutSession(
   const monthlyAmount = getTotalAmount(plan, compute);
   const intervalConfig = INTERVALS[interval] ?? INTERVALS.monthly;
   const totalAmount = Math.round(monthlyAmount * intervalConfig.months * (1 - intervalConfig.discount));
-  const intervalLabel = interval === "annual" ? "Anual" : interval === "quarterly" ? "Trimestral" : "Mensal";
+  let intervalLabel: string;
+  if (interval === "annual") {
+    intervalLabel = "Anual";
+  } else if (interval === "quarterly") {
+    intervalLabel = "Trimestral";
+  } else {
+    intervalLabel = "Mensal";
+  }
 
   const customFields: Stripe.Checkout.SessionCreateParams.CustomField[] = [];
 
@@ -249,11 +263,7 @@ export async function handleWebhookEvent(event: Stripe.Event) {
           const expiresAt = getExpirationDate(interval);
 
           // Get user email from Supabase
-          const { data: userData } = await getSupabase()
-            .from("users")
-            .select("email, name")
-            .eq("id", userId)
-            .single();
+          const { data: userData } = await getSupabase().from("users").select("email, name").eq("id", userId).single();
 
           if (userData) {
             // Store license key in Supabase (we'll use raw SQL since Prisma is for local SQLite)
@@ -285,18 +295,24 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const invoice = event.data.object as Stripe.Invoice;
       const customerId = invoice.customer as string;
 
-      const { data: user } = await getSupabase().from("users").select("id").eq("stripe_customer_id", customerId).single();
+      const { data: user } = await getSupabase()
+        .from("users")
+        .select("id")
+        .eq("stripe_customer_id", customerId)
+        .single();
 
       if (user) {
-        await getSupabase().from("payments").insert({
-          user_id: user.id,
-          stripe_payment_id: invoice.id,
-          stripe_invoice_id: invoice.id,
-          amount: invoice.amount_paid,
-          currency: invoice.currency,
-          status: "succeeded",
-          description: invoice.description ?? "Assinatura BCRM",
-        });
+        await getSupabase()
+          .from("payments")
+          .insert({
+            user_id: user.id,
+            stripe_payment_id: invoice.id,
+            stripe_invoice_id: invoice.id,
+            amount: invoice.amount_paid,
+            currency: invoice.currency,
+            status: "succeeded",
+            description: invoice.description ?? "Assinatura BCRM",
+          });
 
         await getSupabase()
           .from("users")
@@ -312,18 +328,24 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const invoice = event.data.object as Stripe.Invoice;
       const customerId = invoice.customer as string;
 
-      const { data: user } = await getSupabase().from("users").select("id").eq("stripe_customer_id", customerId).single();
+      const { data: user } = await getSupabase()
+        .from("users")
+        .select("id")
+        .eq("stripe_customer_id", customerId)
+        .single();
 
       if (user) {
-        await getSupabase().from("payments").insert({
-          user_id: user.id,
-          stripe_payment_id: invoice.id,
-          stripe_invoice_id: invoice.id,
-          amount: invoice.amount_paid,
-          currency: invoice.currency,
-          status: "failed",
-          description: invoice.description ?? "Assinatura BCRM",
-        });
+        await getSupabase()
+          .from("payments")
+          .insert({
+            user_id: user.id,
+            stripe_payment_id: invoice.id,
+            stripe_invoice_id: invoice.id,
+            amount: invoice.amount_paid,
+            currency: invoice.currency,
+            status: "failed",
+            description: invoice.description ?? "Assinatura BCRM",
+          });
 
         // Start grace period
         await getSupabase()
@@ -340,7 +362,11 @@ export async function handleWebhookEvent(event: Stripe.Event) {
       const subscription = event.data.object as Stripe.Subscription;
       const customerId = subscription.customer as string;
 
-      const { data: user } = await getSupabase().from("users").select("id").eq("stripe_customer_id", customerId).single();
+      const { data: user } = await getSupabase()
+        .from("users")
+        .select("id")
+        .eq("stripe_customer_id", customerId)
+        .single();
 
       if (user) {
         await getSupabase()

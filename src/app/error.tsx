@@ -4,13 +4,7 @@ import { useEffect } from "react";
 
 import { ErrorDisplay } from "@/components/error-display";
 
-export default function RouteError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function RouteError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     // Log error to console for debugging
     console.error("[Route Error]", error);
@@ -29,7 +23,11 @@ export default function RouteError({
     }
 
     // Network error
-    if (message.includes("Failed to fetch") || message.includes("NetworkError") || message.includes("Network request failed")) {
+    if (
+      message.includes("Failed to fetch") ||
+      message.includes("NetworkError") ||
+      message.includes("Network request failed")
+    ) {
       return {
         title: "Erro de conexão",
         message: "Verifique sua conexão com a internet e tente novamente.",
@@ -76,13 +74,5 @@ export default function RouteError({
 
   const { title, message } = getErrorInfo(error);
 
-  return (
-    <ErrorDisplay
-      title={title}
-      message={message}
-      stack={error.stack}
-      digest={error.digest}
-      onRestart={reset}
-    />
-  );
+  return <ErrorDisplay title={title} message={message} stack={error.stack} digest={error.digest} onRestart={reset} />;
 }

@@ -1,8 +1,6 @@
-import { SignJWT, jwtVerify, type JWTPayload } from "jose";
+import { type JWTPayload, jwtVerify, SignJWT } from "jose";
 
-const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET || "bcrm-default-secret-change-in-production"
-);
+const secret = new TextEncoder().encode(process.env.JWT_SECRET || "bcrm-default-secret-change-in-production");
 
 const ALGORITHM = "HS256";
 const EXPIRY = "7d"; // 7 days

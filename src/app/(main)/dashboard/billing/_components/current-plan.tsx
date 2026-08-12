@@ -87,7 +87,9 @@ export function CurrentPlan({ onOpenChangePlan }: CurrentPlanProps) {
       }
     }
 
-    fetchSubscription();
+    fetchSubscription().catch(() => {
+      // Ignore errors
+    });
   }, [user?.id]);
 
   if (loading) {
@@ -139,13 +141,12 @@ export function CurrentPlan({ onOpenChangePlan }: CurrentPlanProps) {
                 : "border-muted"
             }
           >
-            {status === "active"
-              ? "Ativo"
-              : status === "past_due"
-                ? "Atrasado"
-                : status === "canceled"
-                  ? "Cancelado"
-                  : "Gratuito"}
+            {(() => {
+              if (status === "active") return "Ativo";
+              if (status === "past_due") return "Atrasado";
+              if (status === "canceled") return "Cancelado";
+              return "Gratuito";
+            })()}
           </Badge>
         </div>
       </CardHeader>
@@ -188,9 +189,7 @@ export function CurrentPlan({ onOpenChangePlan }: CurrentPlanProps) {
             <Shield className="size-4 text-muted-foreground" />
             <div className="flex-1">
               <p className="text-muted-foreground text-xs">PITR Backup</p>
-              <p className="font-medium text-sm">
-                {pitrData ? pitrData.name : "Backups diários (7 dias)"}
-              </p>
+              <p className="font-medium text-sm">{pitrData ? pitrData.name : "Backups diários (7 dias)"}</p>
             </div>
             {pitrData && (
               <span className="font-medium text-sm">
@@ -211,7 +210,7 @@ export function CurrentPlan({ onOpenChangePlan }: CurrentPlanProps) {
         )}
 
         {subscription?.cancelAtPeriodEnd && (
-          <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-yellow-800 text-xs dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
+          <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-xs text-yellow-800 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
             Sua assinatura será cancelada ao final do período. Você ainda tem acesso até {periodEnd}.
           </div>
         )}
@@ -223,11 +222,7 @@ export function CurrentPlan({ onOpenChangePlan }: CurrentPlanProps) {
         )}
 
         {plan !== "free" && (
-          <Button
-            variant="outline"
-            onClick={() => onOpenChangePlan?.(plan, compute, pitr)}
-            className="w-full"
-          >
+          <Button variant="outline" onClick={() => onOpenChangePlan?.(plan, compute, pitr)} className="w-full">
             <CreditCard className="mr-2 size-4" />
             Alterar Plano
           </Button>

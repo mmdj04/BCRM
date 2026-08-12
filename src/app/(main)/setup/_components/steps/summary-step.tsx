@@ -158,7 +158,7 @@ export function SummaryStep() {
   return (
     <div className="flex flex-1 flex-col">
       <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Configuração Completa</h1>
+        <h1 className="mb-2 font-bold text-3xl text-foreground tracking-tight">Configuração Completa</h1>
         <p className="text-base text-muted-foreground">Revise suas configurações e escolha o plano ideal.</p>
       </div>
 
@@ -218,8 +218,7 @@ export function SummaryStep() {
                   : fmt(setupData.project.language, "Não selecionado")}
               </p>
               <p>
-                <strong>Tema:</strong>{" "}
-                {setupData.project.theme === "light" && "Claro"}
+                <strong>Tema:</strong> {setupData.project.theme === "light" && "Claro"}
                 {setupData.project.theme === "dark" && "Escuro"}
                 {setupData.project.theme === "system" && "Sistema"}
               </p>

@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { getPasswordStrength } from "@/hooks/use-password-strength";
-
 import { cn } from "@/lib/utils";
 
 const formSchema = z

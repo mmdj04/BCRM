@@ -1,0 +1,30 @@
+name: Uptime Monitor
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  uptime:
+    name: Check Uptime
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check site is up
+        uses: JCsoul/action-check-url@v1.1.0
+        with:
+          url: https://bcrm-lilac.vercel.app
+          timeout: 30
+
+      - name: Notify on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "🚨 BCRM site is DOWN! https://bcrm-lilac.vercel.app"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

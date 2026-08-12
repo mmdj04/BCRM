@@ -5,9 +5,7 @@ export function generateLicenseKey(): string {
   const segmentLength = 4;
 
   const key = Array.from({ length: segments }, () =>
-    Array.from({ length: segmentLength }, () =>
-      CHARS[Math.floor(Math.random() * CHARS.length)]
-    ).join("")
+    Array.from({ length: segmentLength }, () => CHARS[Math.floor(Math.random() * CHARS.length)]).join(""),
   ).join("-");
 
   return `BCRM-${key}`;
@@ -29,9 +27,13 @@ export function getExpirationDate(interval: string): Date {
 
 export function getIntervalLabel(interval: string): string {
   switch (interval) {
-    case "monthly": return "1 mês";
-    case "quarterly": return "3 meses";
-    case "annual": return "12 meses";
-    default: return "1 mês";
+    case "monthly":
+      return "1 mês";
+    case "quarterly":
+      return "3 meses";
+    case "annual":
+      return "12 meses";
+    default:
+      return "1 mês";
   }
 }

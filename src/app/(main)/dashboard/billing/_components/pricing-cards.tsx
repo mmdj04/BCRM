@@ -10,13 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-import {
-  billingIntervals,
-  intervalPrice,
-  intervalPricePerMonth,
-  type BillingInterval,
-  type Plan,
-} from "./data";
+import { type BillingInterval, billingIntervals, intervalPrice, intervalPricePerMonth, type Plan } from "./data";
 
 type PricingCardsProps = {
   plans: Plan[];
@@ -30,8 +24,8 @@ export function PricingCards({ plans, onSelectPlan }: PricingCardsProps) {
     return price.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const intervalConfig = billingIntervals.find((i) => i.id === selectedInterval)!;
-  const monthsLabel = selectedInterval === "quarterly" ? "3 meses" : selectedInterval === "annual" ? "1 ano" : null;
+  const intervalLabels: Record<string, string> = { quarterly: "3 meses", annual: "1 ano" };
+  const monthsLabel = intervalLabels[selectedInterval] ?? null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -57,7 +51,7 @@ export function PricingCards({ plans, onSelectPlan }: PricingCardsProps) {
             >
               {interval.label}
               {interval.discount > 0 && (
-                <Badge variant="default" className="ml-1 bg-green-600 text-white text-[10px] px-1.5 py-0">
+                <Badge variant="default" className="ml-1 bg-green-600 px-1.5 py-0 text-[10px] text-white">
                   -{Math.round(interval.discount * 100)}%
                 </Badge>
               )}
@@ -65,16 +59,15 @@ export function PricingCards({ plans, onSelectPlan }: PricingCardsProps) {
           ))}
         </ToggleGroup>
         {monthsLabel && (
-          <p className="text-muted-foreground text-xs">
-            Paga de uma vez — {monthsLabel} adiantado, sem mensalidade
-          </p>
+          <p className="text-muted-foreground text-xs">Paga de uma vez — {monthsLabel} adiantado, sem mensalidade</p>
         )}
       </div>
 
       {/* Plan Cards */}
       <div className="grid gap-6 lg:grid-cols-2">
         {plans.map((plan) => {
-          const planPricePerMonth = plan.monthlyPrice !== null ? intervalPricePerMonth(plan.monthlyPrice, selectedInterval) : 0;
+          const planPricePerMonth =
+            plan.monthlyPrice !== null ? intervalPricePerMonth(plan.monthlyPrice, selectedInterval) : 0;
           const planTotal = plan.monthlyPrice !== null ? intervalPrice(plan.monthlyPrice, selectedInterval) : 0;
 
           return (

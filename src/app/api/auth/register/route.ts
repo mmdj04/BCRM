@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/database/prisma-client";
-import { hashPassword } from "@/lib/auth/password";
+
 import { signToken } from "@/lib/auth/jwt";
+import { hashPassword } from "@/lib/auth/password";
+import { prisma } from "@/lib/database/prisma-client";
 
 export async function POST(request: Request) {
   try {

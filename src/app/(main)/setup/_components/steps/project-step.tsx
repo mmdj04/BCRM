@@ -32,7 +32,7 @@ export function ProjectStep() {
     <div className="flex flex-1 flex-col">
       {/* Title */}
       <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Configurações do projeto</h1>
+        <h1 className="mb-2 font-bold text-3xl text-foreground tracking-tight">Configurações do projeto</h1>
         <p className="text-base text-muted-foreground">Defina as informações do seu projeto BCRM.</p>
       </div>
 

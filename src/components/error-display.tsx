@@ -24,13 +24,7 @@ export function ErrorDisplay({
   const [copied, setCopied] = useState(false);
   const [showStack, setShowStack] = useState(true);
 
-  const fullError = [
-    title,
-    message,
-    digest ? `Digest: ${digest}` : "",
-    "",
-    stack || "No stack trace available.",
-  ]
+  const fullError = [title, message, digest ? `Digest: ${digest}` : "", "", stack ?? "No stack trace available."]
     .filter(Boolean)
     .join("\n");
 
@@ -72,7 +66,7 @@ export function ErrorDisplay({
         "",
         "Stack Trace:",
         "```",
-        stack || "No stack trace available.",
+        stack ?? "No stack trace available.",
         "```",
         "",
         `URL: ${typeof window !== "undefined" ? window.location.href : "N/A"}`,
@@ -102,7 +96,7 @@ export function ErrorDisplay({
       {/* Logo */}
       <div className="mb-8 select-none">
         <span
-          className="font-mono text-3xl font-bold tracking-wider"
+          className="font-bold font-mono text-3xl tracking-wider"
           style={{
             background: "linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7)",
             WebkitBackgroundClip: "text",
@@ -114,20 +108,20 @@ export function ErrorDisplay({
       </div>
 
       {/* Title */}
-      <h1 className="mb-2 font-semibold text-xl text-white">{title}</h1>
-      <p className="mb-8 text-sm text-gray-400">{message}</p>
+      <h1 className="mb-2 font-semibold text-white text-xl">{title}</h1>
+      <p className="mb-8 text-gray-400 text-sm">{message}</p>
 
       {/* Error log box */}
       <div className="mb-8 w-full max-w-2xl">
         <div className="relative rounded-lg border border-gray-800 bg-[#111111]">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-800 px-4 py-2">
-            <span className="font-mono text-xs text-gray-500">error.log</span>
+          <div className="flex items-center justify-between border-gray-800 border-b px-4 py-2">
+            <span className="font-mono text-gray-500 text-xs">error.log</span>
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setShowStack(!showStack)}
-                className="rounded px-2 py-0.5 font-mono text-xs text-gray-500 transition-colors hover:bg-gray-800 hover:text-gray-300"
+                className="rounded px-2 py-0.5 font-mono text-gray-500 text-xs transition-colors hover:bg-gray-800 hover:text-gray-300"
               >
                 {showStack ? "Recolher" : "Expandir"}
               </button>
@@ -139,10 +133,12 @@ export function ErrorDisplay({
               >
                 {copied ? (
                   <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <title>Copiado</title>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (
                   <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <title>Copiar</title>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -157,12 +153,12 @@ export function ErrorDisplay({
           {/* Error content */}
           {showStack && (
             <div className="overflow-auto p-4" style={{ maxHeight: "400px" }}>
-              <pre className="whitespace-pre-wrap break-words font-mono text-sm leading-relaxed text-red-400">
-                {stack || message}
+              <pre className="whitespace-pre-wrap break-words font-mono text-red-400 text-sm leading-relaxed">
+                {stack ?? message}
               </pre>
               {digest && (
-                <div className="mt-3 border-t border-gray-800 pt-3">
-                  <span className="font-mono text-xs text-gray-500">Digest: {digest}</span>
+                <div className="mt-3 border-gray-800 border-t pt-3">
+                  <span className="font-mono text-gray-500 text-xs">Digest: {digest}</span>
                 </div>
               )}
             </div>
@@ -189,7 +185,7 @@ export function ErrorDisplay({
       </div>
 
       {/* Footer */}
-      <p className="mt-6 text-center text-xs text-gray-500">
+      <p className="mt-6 text-center text-gray-500 text-xs">
         Por favor, reporte este erro para a equipe do BCRM no{" "}
         <a
           href="https://wa.me/"
@@ -200,7 +196,7 @@ export function ErrorDisplay({
           WhatsApp
         </a>
       </p>
-      <p className="mt-1 font-mono text-xs text-gray-600">Versão: {version}</p>
+      <p className="mt-1 font-mono text-gray-600 text-xs">Versão: {version}</p>
     </div>
   );
 }

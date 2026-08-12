@@ -1,8 +1,9 @@
 "use client";
 
+import { AlertTriangle, CreditCard, Wifi } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, CreditCard, Wifi } from "lucide-react";
 
 interface AccessBlockedProps {
   reason: "no-internet" | "expired" | "grace-period" | "pending";
@@ -54,29 +55,24 @@ export function AccessBlocked({ reason, onRetry, daysLeft }: AccessBlockedProps)
           <Button onClick={onRetry} size="lg" className="w-full">
             {config.action}
           </Button>
-          
+
           {reason === "pending" && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full"
-              onClick={() => window.location.href = "/activate"}
-            >
+            <Button variant="outline" size="lg" className="w-full" onClick={() => (window.location.href = "/activate")}>
               Digitar Chave de Licença
             </Button>
           )}
-          
+
           {reason === "grace-period" && (
             <Button
               variant="outline"
               size="lg"
               className="w-full"
-              onClick={() => window.location.href = "/dashboard/billing"}
+              onClick={() => (window.location.href = "/dashboard/billing")}
             >
               Ver Planos
             </Button>
           )}
-          
+
           <p className="text-center text-muted-foreground text-xs">
             O BCRM requer conexão com a internet para verificar sua assinatura.
           </p>

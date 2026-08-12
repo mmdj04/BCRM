@@ -25,13 +25,12 @@ export function AccountSwitcher() {
 
   const name = user.name || user.email || "Usuário";
   const email = user.email || "";
-  const avatar = "";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="size-8 cursor-pointer rounded-lg">
-          <AvatarImage src={avatar || undefined} alt={name} />
+          <AvatarImage src={undefined} alt={name} />
           <AvatarFallback>{getInitials(name)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -39,7 +38,7 @@ export function AccountSwitcher() {
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={avatar || undefined} alt={name} />
+              <AvatarImage src={undefined} alt={name} />
               <AvatarFallback className="rounded-lg">{getInitials(name)}</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { verifyToken } from "@/lib/auth/jwt";
 
 export async function POST(request: Request) {

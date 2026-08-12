@@ -1,8 +1,7 @@
 "use client";
 
-import { ArrowLeft, Building2, Check, FileCheck, Globe, LayoutDashboard, Sparkles, Users } from "lucide-react";
+import { ArrowLeft, Building2, FileCheck, Globe, LayoutDashboard, Sparkles, Users } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
 
@@ -41,7 +40,7 @@ export function SetupWizard() {
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
               <Sparkles className="size-4" />
             </div>
-            <span className="text-lg font-bold text-foreground">BCRM</span>
+            <span className="font-bold text-foreground text-lg">BCRM</span>
           </div>
         </div>
 
@@ -53,7 +52,7 @@ export function SetupWizard() {
                 key={`segment-${i}`}
                 className={cn(
                   "h-1 flex-1 rounded-full transition-all duration-300",
-                  i < currentStep ? "bg-primary" : i === currentStep ? "bg-primary" : "bg-border",
+                  i <= currentStep ? "bg-primary" : "bg-border",
                 )}
               />
             ))}
@@ -67,7 +66,7 @@ export function SetupWizard() {
             <button
               type="button"
               onClick={() => setStep(currentStep - 1)}
-              className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="mb-6 flex items-center gap-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground"
             >
               <ArrowLeft className="size-4" />
               Voltar

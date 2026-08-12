@@ -1,8 +1,10 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+
 import { useAuth } from "@/lib/auth/auth-context";
-import { syncEngine, type SyncStatus, type SyncResult } from "./engine";
+
+import { type SyncResult, type SyncStatus, syncEngine } from "./engine";
 
 type SyncContextValue = {
   status: SyncStatus;
@@ -16,8 +18,12 @@ const SyncContext = createContext<SyncContextValue>({
   status: "idle",
   lastSync: null,
   sync: async () => ({ pushed: 0, pulled: 0, errors: [], timestamp: new Date() }),
-  startAutoSync: () => {},
-  stopAutoSync: () => {},
+  startAutoSync: () => {
+    // Default - overridden by provider
+  },
+  stopAutoSync: () => {
+    // Default - overridden by provider
+  },
 });
 
 export function useSync() {

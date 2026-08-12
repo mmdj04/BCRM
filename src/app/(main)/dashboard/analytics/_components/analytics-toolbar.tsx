@@ -49,7 +49,11 @@ export function AnalyticsToolbar() {
               <FileUp />
               Importar dados
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => share({ title: "BCRM Analytics", text: "Compartilhar painel de analytics", url: window.location.href })}>
+            <DropdownMenuItem
+              onSelect={() =>
+                share({ title: "BCRM Analytics", text: "Compartilhar painel de analytics", url: window.location.href })
+              }
+            >
               <Share2 />
               Compartilhar painel
             </DropdownMenuItem>

@@ -1,6 +1,6 @@
-import { execSync } from "child_process";
-import { existsSync, mkdirSync } from "fs";
-import path from "path";
+import { execSync } from "node:child_process";
+import { existsSync, mkdirSync } from "node:fs";
+import path from "node:path";
 
 export function runMigrations() {
   const dbPath = path.join(process.env.HOME || process.env.USERPROFILE || "", ".bcrm");

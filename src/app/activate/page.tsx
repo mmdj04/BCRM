@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+
 import { CheckCircle2, Key, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,10 +22,8 @@ export default function ActivatePage() {
 
   useEffect(() => {
     // Check if demo mode
-    const demoCookie = document.cookie
-      .split("; ")
-      .find((c) => c.startsWith("bcrm_demo_session="));
-    
+    const demoCookie = document.cookie.split("; ").find((c) => c.startsWith("bcrm_demo_session="));
+
     if (demoCookie) {
       setIsDemo(true);
       setKey(DEMO_CONFIG.licenseKey);
@@ -39,16 +39,14 @@ export default function ActivatePage() {
     setLoading(true);
     try {
       // Get JWT token from cookie
-      const tokenCookie = document.cookie
-        .split("; ")
-        .find((c) => c.startsWith("bcrm_token="));
+      const tokenCookie = document.cookie.split("; ").find((c) => c.startsWith("bcrm_token="));
       const token = tokenCookie ? tokenCookie.split("=")[1] : null;
 
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
       };
       if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+        headers.Authorization = `Bearer ${token}`;
       }
 
       const response = await fetch("/api/license/activate", {
@@ -66,7 +64,7 @@ export default function ActivatePage() {
 
       setSuccess(true);
       toast.success("Conta ativada com sucesso!");
-      
+
       setTimeout(() => {
         router.push("/dashboard/default");
       }, 2000);
@@ -86,7 +84,7 @@ export default function ActivatePage() {
               <CheckCircle2 className="size-8 text-green-600" />
             </div>
             <div className="text-center">
-              <h2 className="text-xl font-semibold">Conta Ativada!</h2>
+              <h2 className="font-semibold text-xl">Conta Ativada!</h2>
               <p className="text-muted-foreground">Redirecionando para o painel...</p>
             </div>
           </CardContent>
@@ -118,35 +116,28 @@ export default function ActivatePage() {
               value={key}
               onChange={(e) => setKey(e.target.value.toUpperCase())}
               placeholder="BCRM-XXXX-XXXX-XXXX-XXXX"
-              className="font-mono text-center text-lg tracking-wider"
+              className="text-center font-mono text-lg tracking-wider"
               disabled={isDemo}
               autoComplete="off"
             />
           </div>
 
-          <Button
-            onClick={handleActivate}
-            disabled={loading || !key.trim()}
-            className="w-full"
-            size="lg"
-          >
-            {loading ? (
+          <Button onClick={handleActivate} disabled={loading || !key.trim()} className="w-full" size="lg">
+            {loading && (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" />
                 Ativando...
               </>
-            ) : isDemo ? (
-              "Ativar Conta Demo"
-            ) : (
-              "Ativar Conta"
             )}
+            {!loading && isDemo && "Ativar Conta Demo"}
+            {!loading && !isDemo && "Ativar Conta"}
           </Button>
 
           {!isDemo && (
             <div className="text-center">
               <button
                 type="button"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground text-sm hover:text-foreground"
                 onClick={() => {
                   toast.success("Chave reenviada para seu e-mail");
                 }}
@@ -159,7 +150,7 @@ export default function ActivatePage() {
           <div className="text-center">
             <button
               type="button"
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground text-sm hover:text-foreground"
               onClick={() => router.push("/auth/v1/login")}
             >
               Voltar para o login

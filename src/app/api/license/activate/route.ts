@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { verifyToken, getTokenFromRequest } from "@/lib/auth/jwt";
+
+import { getTokenFromRequest, verifyToken } from "@/lib/auth/jwt";
 
 const DEMO_KEY = "BCRM-DEMO-DEMO-DEMO-DEMO";
 const DEMO_USER_ID = "demo-user-001";

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { verifyToken, getTokenFromRequest } from "@/lib/auth/jwt";
+
+import { getTokenFromRequest, verifyToken } from "@/lib/auth/jwt";
 import { syncEngine } from "@/lib/sync/engine";
 
 export async function POST(request: Request) {

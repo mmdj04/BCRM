@@ -7,11 +7,11 @@ import { useAuth } from "@/lib/supabase/auth-context";
 import { BillingHistory } from "./billing-history";
 import { ChangePlanDialog } from "./change-plan-dialog";
 import { CurrentPlan } from "./current-plan";
+import type { BillingInterval } from "./data";
 import { faqItems, featureComparison, plans } from "./data";
 import { Faq } from "./faq";
 import { FeatureComparison } from "./feature-comparison";
 import { PricingCards } from "./pricing-cards";
-import type { BillingInterval } from "./data";
 
 export function BillingContent() {
   const { isDemo } = useAuth();
@@ -61,7 +61,9 @@ export function BillingContent() {
         currentPlan={changePlanTrigger.plan}
         currentCompute={changePlanTrigger.compute}
         currentPitr={changePlanTrigger.pitr}
-        onPlanChanged={() => {}}
+        onPlanChanged={() => {
+          // Plan changed - handled by parent
+        }}
       />
     </div>
   );

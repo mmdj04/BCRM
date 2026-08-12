@@ -10,6 +10,7 @@ export function getPrisma(): PrismaClient {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL is not set");
 
+  // biome-ignore lint/style/noCommonJs: Dynamic require for Prisma adapter
   const { PrismaPg } = require("@prisma/adapter-pg");
   const adapter = new PrismaPg({ connectionString: url });
 

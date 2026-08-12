@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { signToken } from "@/lib/auth/jwt";
 
 // Demo account - hardcoded, no database needed

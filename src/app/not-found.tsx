@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+
+import { useRouter } from "next/navigation";
 
 export default function NotFound() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function NotFound() {
       {/* Logo */}
       <div className="mb-8 select-none">
         <span
-          className="font-mono text-3xl font-bold tracking-wider"
+          className="font-bold font-mono text-3xl tracking-wider"
           style={{
             background: "linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7)",
             WebkitBackgroundClip: "text",
@@ -27,17 +28,17 @@ export default function NotFound() {
       </div>
 
       {/* Title */}
-      <h1 className="mb-2 font-semibold text-xl text-white">Página não encontrada</h1>
-      <p className="mb-8 text-sm text-gray-400">A página que você procura não existe ou foi movida.</p>
+      <h1 className="mb-2 font-semibold text-white text-xl">Página não encontrada</h1>
+      <p className="mb-8 text-gray-400 text-sm">A página que você procura não existe ou foi movida.</p>
 
       {/* Error log box */}
       <div className="mb-8 w-full max-w-2xl">
         <div className="rounded-lg border border-gray-800 bg-[#111111]">
-          <div className="flex items-center justify-between border-b border-gray-800 px-4 py-2">
-            <span className="font-mono text-xs text-gray-500">error.log</span>
+          <div className="flex items-center justify-between border-gray-800 border-b px-4 py-2">
+            <span className="font-mono text-gray-500 text-xs">error.log</span>
           </div>
           <div className="overflow-auto p-4">
-            <pre className="whitespace-pre-wrap break-words font-mono text-sm leading-relaxed text-amber-400">
+            <pre className="whitespace-pre-wrap break-words font-mono text-amber-400 text-sm leading-relaxed">
               {`Error: 404 - Page Not Found
   The requested URL "${typeof window !== "undefined" ? window.location.pathname : "/"}" was not found on this server.
 
@@ -77,7 +78,7 @@ export default function NotFound() {
       </div>
 
       {/* Footer */}
-      <p className="mt-6 text-center text-xs text-gray-500">
+      <p className="mt-6 text-center text-gray-500 text-xs">
         Se você acredita que isto é um erro, reporte no{" "}
         <a
           href="https://wa.me/5521974699723"
@@ -88,7 +89,7 @@ export default function NotFound() {
           WhatsApp
         </a>
       </p>
-      <p className="mt-1 font-mono text-xs text-gray-600">Versão: 1.0.0</p>
+      <p className="mt-1 font-mono text-gray-600 text-xs">Versão: 1.0.0</p>
     </div>
   );
 }

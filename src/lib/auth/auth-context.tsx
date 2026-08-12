@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+
 import type { AuthPayload } from "./jwt";
 
 type AuthContextValue = {
@@ -20,7 +21,9 @@ const AuthContext = createContext<AuthContextValue>({
   isDemo: false,
   signIn: async () => ({}),
   signUp: async () => ({}),
-  signOut: () => {},
+  signOut: () => {
+    // Default signOut - overridden by provider
+  },
 });
 
 export function useAuth() {
@@ -38,9 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const loadSession = async () => {
       try {
         // Check demo mode first
-        const demoCookie = document.cookie
-          .split("; ")
-          .find((c) => c.startsWith("bcrm_demo_session="));
+        const demoCookie = document.cookie.split("; ").find((c) => c.startsWith("bcrm_demo_session="));
 
         if (demoCookie) {
           const demoData = JSON.parse(decodeURIComponent(demoCookie.split("=")[1]));
@@ -56,9 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
 
         // Check JWT token
-        const tokenCookie = document.cookie
-          .split("; ")
-          .find((c) => c.startsWith("bcrm_token="));
+        const tokenCookie = document.cookie.split("; ").find((c) => c.startsWith("bcrm_token="));
 
         if (tokenCookie) {
           const token = tokenCookie.split("=")[1];
@@ -84,7 +83,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    loadSession();
+    loadSession().catch(() => {
+      // Ignore errors during session load
+    });
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
@@ -112,26 +113,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const signUp = useCallback(async (email: string, password: string, name: string) => {
-    try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, name }),
-      });
+  const signUp = useCallback(
+    async (email: string, password: string, name: string) => {
+      try {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, name }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (!response.ok) {
-        return { error: data.error || "Erro ao criar conta" };
+        if (!response.ok) {
+          return { error: data.error || "Erro ao criar conta" };
+        }
+
+        // Auto-login after registration
+        return signIn(email, password);
+      } catch {
+        return { error: "Erro ao conectar com o servidor" };
       }
-
-      // Auto-login after registration
-      return signIn(email, password);
-    } catch {
-      return { error: "Erro ao conectar com o servidor" };
-    }
-  }, [signIn]);
+    },
+    [signIn],
+  );
 
   const signOut = useCallback(() => {
     document.cookie = "bcrm_token=; path=/; max-age=0";

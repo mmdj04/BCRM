@@ -66,7 +66,9 @@ export function BillingHistory() {
       }
     }
 
-    fetchPayments();
+    fetchPayments().catch(() => {
+      // Ignore errors
+    });
   }, [user?.id]);
 
   return (
@@ -76,13 +78,15 @@ export function BillingHistory() {
         <CardDescription>Seus pagamentos recentes.</CardDescription>
       </CardHeader>
       <CardContent>
-        {loading ? (
+        {loading && (
           <div className="flex items-center justify-center py-8">
             <div className="size-6 animate-spin rounded-full border-2 border-current border-t-transparent text-primary" />
           </div>
-        ) : entries.length === 0 ? (
+        )}
+        {!loading && entries.length === 0 && (
           <p className="py-4 text-center text-muted-foreground text-sm">Nenhum pagamento registrado.</p>
-        ) : (
+        )}
+        {!loading && entries.length > 0 && (
           <Table>
             <TableHeader>
               <TableRow>

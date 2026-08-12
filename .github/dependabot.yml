@@ -1,64 +1,24 @@
 version: 2
 updates:
-  # npm dependencies
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
       day: monday
-      time: "09:00"
-      timezone: America/Sao_Paulo
     open-pull-requests-limit: 10
     labels:
       - dependencies
-      - automated
-    groups:
-      production:
-        dependency-type: production
-        update-types:
-          - minor
-          - patch
-      development:
-        dependency-type: development
-        update-types:
-          - minor
-          - patch
-      major:
-        dependency-type: production
-        update-types:
-          - major
     commit-message:
       prefix: "chore(deps):"
-      include: scope
 
-  # GitHub Actions
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
       day: monday
-      time: "09:00"
-      timezone: America/Sao_Paulo
     open-pull-requests-limit: 5
     labels:
       - dependencies
       - github-actions
-      - automated
     commit-message:
-      prefix: "ci(deps):"
-
-  # Docker (if needed in future)
-  - package-ecosystem: docker
-    directory: /
-    schedule:
-      interval: weekly
-      day: monday
-      time: "09:00"
-      timezone: America/Sao_Paulo
-    open-pull-requests-limit: 3
-    labels:
-      - dependencies
-      - docker
-      - automated
-    commit-message:
-      prefix: "chore(deps):"
+      prefix: "chore(ci):"

@@ -3,7 +3,7 @@
 import { Building2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useSetup } from "@/contexts/setup-context";
@@ -29,12 +29,6 @@ const companySizes = [
   "500+ funcionários",
 ];
 
-const timezones = [
-  { value: "America/Sao_Paulo", label: "Horário de Brasília (GMT-3)" },
-  { value: "America/Manaus", label: "Horário de Manaus (GMT-4)" },
-  { value: "America/Rio_Branco", label: "Horário do Acre (GMT-5)" },
-];
-
 export function CompanyStep() {
   const { setupData, updateSetupData, setStep } = useSetup();
   const canProceed = setupData.company.name.trim().length > 0;
@@ -43,7 +37,7 @@ export function CompanyStep() {
     <div className="flex flex-1 flex-col">
       {/* Title */}
       <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Dados da empresa</h1>
+        <h1 className="mb-2 font-bold text-3xl text-foreground tracking-tight">Dados da empresa</h1>
         <p className="text-base text-muted-foreground">Informações básicas da sua organização.</p>
       </div>
 
@@ -127,7 +121,7 @@ export function CompanyStep() {
         </Field>
 
         {/* Info */}
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Todos os dados podem ser alterados depois em <strong>Configurações da Conta</strong>.
         </p>
       </div>

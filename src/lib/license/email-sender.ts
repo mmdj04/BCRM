@@ -17,7 +17,14 @@ export async function sendLicenseKey({ email, name, key, plan, interval }: SendL
   }
 
   try {
-    const intervalLabel = interval === "annual" ? "12 meses" : interval === "quarterly" ? "3 meses" : "1 mês";
+    let intervalLabel: string;
+    if (interval === "annual") {
+      intervalLabel = "12 meses";
+    } else if (interval === "quarterly") {
+      intervalLabel = "3 meses";
+    } else {
+      intervalLabel = "1 mês";
+    }
 
     await resend.emails.send({
       from: "BCRM <noreply@bcrm.com>",

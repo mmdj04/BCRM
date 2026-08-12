@@ -5,25 +5,18 @@ import {
   Bell,
   Building2,
   Calendar,
-  CheckCircle2,
   Command,
-  CreditCard,
   DollarSign,
   Download,
   FileText,
   FolderOpen,
-  Globe,
   LayoutDashboard,
-  LayoutList,
   Mail,
   MessageSquare,
   PieChart,
   Search,
   Settings,
   ShoppingCart,
-  Sparkles,
-  TrendingDown,
-  TrendingUp,
   UserPlus,
   Users,
   Waves,
@@ -99,13 +92,13 @@ export function DashboardPreview({ className }: { className?: string }) {
     >
       <div className="flex h-[520px]">
         {/* Sidebar */}
-        <div className="flex w-44 flex-col border-r border-border/50 bg-muted/30 p-2.5">
+        <div className="flex w-44 flex-col border-border/50 border-r bg-muted/30 p-2.5">
           {/* Logo */}
           <div className="mb-4 flex items-center gap-2 px-2">
             <div className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Command className="size-3.5" />
             </div>
-            <span className="text-sm font-semibold">BCRM</span>
+            <span className="font-semibold text-sm">BCRM</span>
           </div>
 
           {/* Nav items */}
@@ -128,10 +121,10 @@ export function DashboardPreview({ className }: { className?: string }) {
         {/* Main content */}
         <div className="flex flex-1 flex-col overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-border/50 px-4 py-2">
+          <div className="flex items-center justify-between border-border/50 border-b px-4 py-2">
             <div className="flex items-center gap-2">
               <Building2 className="size-4 text-muted-foreground" />
-              <span className="text-xs font-medium">Dashboard</span>
+              <span className="font-medium text-xs">Dashboard</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="flex size-6 items-center justify-center rounded-full bg-muted">
@@ -141,7 +134,7 @@ export function DashboardPreview({ className }: { className?: string }) {
                 <Bell className="size-3 text-muted-foreground" />
               </div>
               <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <span className="text-[10px] font-semibold">M</span>
+                <span className="font-semibold text-[10px]">M</span>
               </div>
             </div>
           </div>
@@ -159,10 +152,10 @@ export function DashboardPreview({ className }: { className?: string }) {
                   </div>
                   <p className="mb-0.5 text-[9px] text-muted-foreground">{card.title}</p>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-bold">{card.value}</span>
+                    <span className="font-bold text-sm">{card.value}</span>
                     <span
                       className={cn(
-                        "text-[8px] font-medium",
+                        "font-medium text-[8px]",
                         card.trend === "up" ? "text-emerald-600" : "text-red-600",
                       )}
                     >
@@ -178,7 +171,7 @@ export function DashboardPreview({ className }: { className?: string }) {
             <div className="mb-3 rounded-xl border border-border/50 bg-background p-2.5">
               <div className="mb-2 flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] font-medium">Atividade dos Clientes</p>
+                  <p className="font-medium text-[10px]">Atividade dos Clientes</p>
                   <p className="text-[8px] text-muted-foreground">Últimos 3 meses</p>
                 </div>
                 <div className="flex gap-1.5">
@@ -188,11 +181,7 @@ export function DashboardPreview({ className }: { className?: string }) {
               </div>
               <div className="flex items-end gap-px" style={{ height: 50 }}>
                 {chartBars.map((h, i) => (
-                  <div
-                    key={`bar-${i}`}
-                    className="flex-1 rounded-t-sm bg-primary/20"
-                    style={{ height: `${h}%` }}
-                  />
+                  <div key={`bar-${i}`} className="flex-1 rounded-t-sm bg-primary/20" style={{ height: `${h}%` }} />
                 ))}
               </div>
               <div className="mt-1.5 flex items-center justify-end gap-3">
@@ -215,7 +204,7 @@ export function DashboardPreview({ className }: { className?: string }) {
             <div className="rounded-xl border border-border/50 bg-background p-2.5">
               <div className="mb-2 flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] font-medium">18,426 Clientes</p>
+                  <p className="font-medium text-[10px]">18,426 Clientes</p>
                   <p className="text-[8px] text-muted-foreground">Registros recentes</p>
                 </div>
                 <div className="flex size-4 items-center justify-center rounded-md border">
@@ -226,21 +215,21 @@ export function DashboardPreview({ className }: { className?: string }) {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b bg-muted/50">
-                      <th className="px-2 py-1 text-left text-[7px] font-medium text-muted-foreground">Nome</th>
-                      <th className="px-2 py-1 text-left text-[7px] font-medium text-muted-foreground">Plano</th>
-                      <th className="px-2 py-1 text-left text-[7px] font-medium text-muted-foreground">Status</th>
-                      <th className="px-2 py-1 text-left text-[7px] font-medium text-muted-foreground">Data</th>
+                      <th className="px-2 py-1 text-left font-medium text-[7px] text-muted-foreground">Nome</th>
+                      <th className="px-2 py-1 text-left font-medium text-[7px] text-muted-foreground">Plano</th>
+                      <th className="px-2 py-1 text-left font-medium text-[7px] text-muted-foreground">Status</th>
+                      <th className="px-2 py-1 text-left font-medium text-[7px] text-muted-foreground">Data</th>
                     </tr>
                   </thead>
                   <tbody>
                     {tableRows.map((row) => (
                       <tr key={row.name} className="border-b last:border-0">
-                        <td className="px-2 py-1 text-[8px] font-medium">{row.name}</td>
+                        <td className="px-2 py-1 font-medium text-[8px]">{row.name}</td>
                         <td className="px-2 py-1 text-[8px] text-muted-foreground">{row.plan}</td>
                         <td className="px-2 py-1">
                           <span
                             className={cn(
-                              "rounded-full px-1.5 py-0.5 text-[7px] font-medium",
+                              "rounded-full px-1.5 py-0.5 font-medium text-[7px]",
                               row.status === "Ativo"
                                 ? "bg-emerald-500/10 text-emerald-600"
                                 : "bg-amber-500/10 text-amber-600",

@@ -68,7 +68,7 @@ export function useSetupStorage() {
     } finally {
       setLoading(false);
     }
-  }, [user?.id, isDemo]);
+  }, [user?.userId, isDemo]);
 
   const saveSetupData = (data: SetupStorageData) => {
     if (!user?.userId) return;

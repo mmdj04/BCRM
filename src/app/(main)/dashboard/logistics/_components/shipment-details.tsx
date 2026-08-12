@@ -85,7 +85,12 @@ function ShipmentOverview({ shipment }: { shipment: Shipment }) {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="flex items-center gap-2">
           <h1 className="font-medium text-lg tabular-nums tracking-tight sm:text-xl">#{shipment.id}</h1>
-          <Button variant="ghost" size="icon-sm" aria-label="Copiar ID do envio" onClick={() => copyToClipboard(shipment.id)}>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Copiar ID do envio"
+            onClick={() => copyToClipboard(shipment.id)}
+          >
             <Copy />
           </Button>
         </div>

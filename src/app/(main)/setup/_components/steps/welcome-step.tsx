@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, CreditCard, Globe, LayoutDashboard, Mail, Sparkles, Users } from "lucide-react";
+import { Building2, CreditCard, Globe, LayoutDashboard, Mail, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useSetup } from "@/contexts/setup-context";
@@ -52,13 +52,13 @@ export function WelcomeStep() {
     <div className="flex flex-1 flex-col">
       {/* Title */}
       <div className="mb-8">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Vamos configurar seu BCRM</h1>
+        <h1 className="mb-2 font-bold text-3xl text-foreground tracking-tight">Vamos configurar seu BCRM</h1>
         <p className="text-base text-muted-foreground">Configurar seu painel leva menos de 5 minutos.</p>
       </div>
 
       {/* Steps list */}
       <div className="mb-8 flex flex-1 flex-col gap-3">
-        {steps.map((step, index) => {
+        {steps.map((step) => {
           const Icon = step.icon;
           return (
             <div
@@ -70,7 +70,7 @@ export function WelcomeStep() {
               </div>
               <div className="flex flex-1 items-center justify-between">
                 <span className="font-medium text-foreground">{step.title}</span>
-                <span className={cn("rounded-full px-2.5 py-1 text-xs font-medium", step.tagColor)}>{step.tag}</span>
+                <span className={cn("rounded-full px-2.5 py-1 font-medium text-xs", step.tagColor)}>{step.tag}</span>
               </div>
             </div>
           );
@@ -82,7 +82,7 @@ export function WelcomeStep() {
         Continuar
       </Button>
 
-      <p className="mt-4 text-center text-sm text-muted-foreground">
+      <p className="mt-4 text-center text-muted-foreground text-sm">
         Já tem uma conta?{" "}
         <a href="/auth/v1/login" className="font-medium text-primary hover:underline">
           Entrar

@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Capacitor } from "@capacitor/core";
+
 import { App } from "@capacitor/app";
-import { Device } from "@capacitor/device";
-import { StatusBar, Style } from "@capacitor/status-bar";
-import { SplashScreen } from "@capacitor/splash-screen";
-import { Haptics } from "@capacitor/haptics";
 import { Clipboard } from "@capacitor/clipboard";
+import { Capacitor } from "@capacitor/core";
+import { Device } from "@capacitor/device";
 import { Dialog } from "@capacitor/dialog";
-import { Share } from "@capacitor/share";
-import { Preferences } from "@capacitor/preferences";
+import { Haptics } from "@capacitor/haptics";
 import { LocalNotifications } from "@capacitor/local-notifications";
+import { Preferences } from "@capacitor/preferences";
+import { Share } from "@capacitor/share";
+import { SplashScreen } from "@capacitor/splash-screen";
+import { StatusBar, Style } from "@capacitor/status-bar";
 import { toast } from "sonner";
 
 // Status Bar
@@ -96,10 +97,7 @@ export async function showConfirm(title: string, message: string): Promise<boole
   }
 }
 
-export async function showPrompt(
-  title: string,
-  message: string
-): Promise<string | null> {
+export async function showPrompt(title: string, message: string): Promise<string | null> {
   if (!Capacitor.isNativePlatform()) {
     return window.prompt(message);
   }
@@ -186,12 +184,7 @@ export async function secureRemove(key: string) {
 }
 
 // Local Notifications
-export async function scheduleNotification(
-  title: string,
-  body: string,
-  id: number,
-  schedule?: Date
-) {
+export async function scheduleNotification(title: string, body: string, id: number, schedule?: Date) {
   if (!Capacitor.isNativePlatform()) return;
   try {
     const hasPermission = await LocalNotifications.checkPermissions();
@@ -216,38 +209,56 @@ export async function scheduleNotification(
 
 // App State Listener
 export function onAppStateChanged(callback: (state: "active" | "inactive" | "background") => void) {
-  if (!Capacitor.isNativePlatform()) return () => {};
+  if (!Capacitor.isNativePlatform()) {
+    return () => {
+      // noop on web
+    };
+  }
 
   const listener = App.addListener("appStateChange", ({ isActive }) => {
     callback(isActive ? "active" : "background");
   });
 
   return () => {
-    listener.then((handle) => handle.remove());
+    listener.then((handle) => handle.remove()).catch(() => {
+      // Ignore cleanup errors
+    });
   };
 }
 
 // Back Button Handler
 export function onBackButton(callback: () => void) {
-  if (!Capacitor.isNativePlatform()) return () => {};
+  if (!Capacitor.isNativePlatform()) {
+    return () => {
+      // noop on web
+    };
+  }
 
   const listener = App.addListener("backButton", callback);
 
   return () => {
-    listener.then((handle) => handle.remove());
+    listener.then((handle) => handle.remove()).catch(() => {
+      // Ignore cleanup errors
+    });
   };
 }
 
 // Deep Links
 export function onDeepLink(callback: (url: string) => void) {
-  if (!Capacitor.isNativePlatform()) return () => {};
+  if (!Capacitor.isNativePlatform()) {
+    return () => {
+      // noop on web
+    };
+  }
 
   const listener = App.addListener("appUrlOpen", ({ url }) => {
     callback(url);
   });
 
   return () => {
-    listener.then((handle) => handle.remove());
+    listener.then((handle) => handle.remove()).catch(() => {
+      // Ignore cleanup errors
+    });
   };
 }
 
@@ -255,19 +266,13 @@ export function onDeepLink(callback: (url: string) => void) {
 export async function initCapacitorPlugins() {
   if (!Capacitor.isNativePlatform()) return;
 
-  await Promise.all([
-    initStatusBar(),
-    hideSplashScreen(),
-    LocalNotifications.requestPermissions(),
-  ]);
+  await Promise.all([initStatusBar(), hideSplashScreen(), LocalNotifications.requestPermissions()]);
 }
 
 // React Hook for Capacitor
 export function useCapacitor() {
   const [isReady, setIsReady] = useState(false);
-  const [deviceInfo, setDeviceInfo] = useState<Awaited<ReturnType<typeof getDeviceInfo>> | null>(
-    null
-  );
+  const [deviceInfo, setDeviceInfo] = useState<Awaited<ReturnType<typeof getDeviceInfo>> | null>(null);
 
   useEffect(() => {
     async function init() {
@@ -277,7 +282,9 @@ export function useCapacitor() {
       setIsReady(true);
     }
 
-    init();
+    init().catch(() => {
+      // Ignore init errors
+    });
   }, []);
 
   return { isReady, deviceInfo };

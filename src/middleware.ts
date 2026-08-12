@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { verifyToken, getTokenFromRequest } from "@/lib/auth/jwt";
+import { getTokenFromRequest, verifyToken } from "@/lib/auth/jwt";
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
@@ -51,7 +51,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };

@@ -42,7 +42,7 @@ type IntervalConfig = {
 const INTERVALS: Record<string, IntervalConfig> = {
   monthly: { months: 1, discount: 0, stripeInterval: "month", stripeIntervalCount: 1 },
   quarterly: { months: 3, discount: 0.05, stripeInterval: "month", stripeIntervalCount: 3 },
-  annual: { months: 12, discount: 0.10, stripeInterval: "year", stripeIntervalCount: 1 },
+  annual: { months: 12, discount: 0.1, stripeInterval: "year", stripeIntervalCount: 1 },
 };
 
 export async function POST(request: Request) {
@@ -65,8 +65,14 @@ export async function POST(request: Request) {
 
     const totalAmount = Math.round(monthlyAmount * intervalConfig.months * (1 - intervalConfig.discount));
 
-    const intervalLabel =
-      interval === "annual" ? "Anual" : interval === "quarterly" ? "Trimestral" : "Mensal";
+    let intervalLabel: string;
+    if (interval === "annual") {
+      intervalLabel = "Anual";
+    } else if (interval === "quarterly") {
+      intervalLabel = "Trimestral";
+    } else {
+      intervalLabel = "Mensal";
+    }
 
     const session = await stripe.checkout.sessions.create({
       customer_email: email,

@@ -38,7 +38,9 @@ export function FileActions({ file, onToggleStar }: FileActionsProps) {
             <Download />
             Baixar
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => share({ title: file.name, text: `Compartilhar: ${file.name}`, url: window.location.href })}>
+          <DropdownMenuItem
+            onSelect={() => share({ title: file.name, text: `Compartilhar: ${file.name}`, url: window.location.href })}
+          >
             <Share2 />
             Copiar link de compartilhamento
           </DropdownMenuItem>
