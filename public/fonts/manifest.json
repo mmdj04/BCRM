@@ -1,0 +1,180 @@
+{
+  "inter": {
+    "name": "Inter",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "inter-400.woff2",
+      "inter-700.woff2"
+    ]
+  },
+  "noto-sans": {
+    "name": "Noto Sans",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "noto-sans-400.woff2",
+      "noto-sans-700.woff2"
+    ]
+  },
+  "roboto": {
+    "name": "Roboto",
+    "weights": [
+      400,
+      500,
+      700
+    ],
+    "files": [
+      "roboto-400.woff2",
+      "roboto-500.woff2",
+      "roboto-700.woff2"
+    ]
+  },
+  "outfit": {
+    "name": "Outfit",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "outfit-400.woff2",
+      "outfit-700.woff2"
+    ]
+  },
+  "dm-sans": {
+    "name": "DM Sans",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "dm-sans-400.woff2",
+      "dm-sans-700.woff2"
+    ]
+  },
+  "nunito-sans": {
+    "name": "Nunito Sans",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "nunito-sans-400.woff2",
+      "nunito-sans-700.woff2"
+    ]
+  },
+  "figtree": {
+    "name": "Figtree",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "figtree-400.woff2",
+      "figtree-700.woff2"
+    ]
+  },
+  "raleway": {
+    "name": "Raleway",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "raleway-400.woff2",
+      "raleway-700.woff2"
+    ]
+  },
+  "public-sans": {
+    "name": "Public Sans",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "public-sans-400.woff2",
+      "public-sans-700.woff2"
+    ]
+  },
+  "jetbrains-mono": {
+    "name": "JetBrains Mono",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "jetbrains-mono-400.woff2",
+      "jetbrains-mono-700.woff2"
+    ]
+  },
+  "noto-serif": {
+    "name": "Noto Serif",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "noto-serif-400.woff2",
+      "noto-serif-700.woff2"
+    ]
+  },
+  "roboto-slab": {
+    "name": "Roboto Slab",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "roboto-slab-400.woff2",
+      "roboto-slab-700.woff2"
+    ]
+  },
+  "merriweather": {
+    "name": "Merriweather",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "merriweather-400.woff2",
+      "merriweather-700.woff2"
+    ]
+  },
+  "lora": {
+    "name": "Lora",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "lora-400.woff2",
+      "lora-700.woff2"
+    ]
+  },
+  "playfair-display": {
+    "name": "Playfair Display",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "playfair-display-400.woff2",
+      "playfair-display-700.woff2"
+    ]
+  },
+  "geist-mono": {
+    "name": "Geist Mono",
+    "weights": [
+      400,
+      700
+    ],
+    "files": [
+      "geist-mono-400.woff2",
+      "geist-mono-700.woff2"
+    ]
+  }
+}

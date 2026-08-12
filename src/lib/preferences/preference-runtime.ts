@@ -1,5 +1,7 @@
 "use client";
 
+import { applyFont } from "@/lib/fonts/font-loader";
+
 import { PREFERENCE_REGISTRY, type PreferenceKey, type PreferenceValueMap } from "./preferences-config";
 import type { ResolvedThemeMode } from "./theme";
 import { applyThemeMode } from "./theme-utils";
@@ -13,5 +15,10 @@ export function applyPreference<K extends PreferenceKey>(
   }
 
   document.documentElement.setAttribute(PREFERENCE_REGISTRY[key].attribute, value);
+
+  if (key === "font") {
+    applyFont(value as string);
+  }
+
   return undefined;
 }

@@ -1,110 +1,19 @@
 import {
-  DM_Sans,
-  Figtree,
   Geist,
   Geist_Mono,
-  Inter,
-  JetBrains_Mono,
-  Lora,
-  Merriweather,
-  Noto_Sans,
-  Noto_Serif,
-  Nunito_Sans,
-  Outfit,
-  Playfair_Display,
-  Public_Sans,
-  Raleway,
-  Roboto,
-  Roboto_Slab,
 } from "next/font/google";
 
 import { GeistPixelSquare } from "geist/font/pixel";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
-const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  variable: "--font-noto-sans",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
-});
-
+// Build-time fonts (loaded via next/font/google, self-hosted at build)
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
 });
 
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
-});
-
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-dm-sans",
-});
-
-const nunitoSans = Nunito_Sans({
-  subsets: ["latin"],
-  variable: "--font-nunito-sans",
-});
-
-const figtree = Figtree({
-  subsets: ["latin"],
-  variable: "--font-figtree",
-});
-
-const raleway = Raleway({
-  subsets: ["latin"],
-  variable: "--font-raleway",
-});
-
-const publicSans = Public_Sans({
-  subsets: ["latin"],
-  variable: "--font-public-sans",
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-});
-
-const notoSerif = Noto_Serif({
-  subsets: ["latin"],
-  variable: "--font-noto-serif",
-});
-
-const robotoSlab = Roboto_Slab({
-  subsets: ["latin"],
-  variable: "--font-roboto-slab",
-});
-
-const merriweather = Merriweather({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-merriweather",
-});
-
-const lora = Lora({
-  subsets: ["latin"],
-  variable: "--font-lora",
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair-display",
 });
 
 export const fontRegistry = {
@@ -114,39 +23,39 @@ export const fontRegistry = {
   },
   inter: {
     label: "Inter",
-    font: inter,
+    font: null,
   },
   notoSans: {
     label: "Noto Sans",
-    font: notoSans,
+    font: null,
   },
   nunitoSans: {
     label: "Nunito Sans",
-    font: nunitoSans,
+    font: null,
   },
   figtree: {
     label: "Figtree",
-    font: figtree,
+    font: null,
   },
   roboto: {
     label: "Roboto",
-    font: roboto,
+    font: null,
   },
   raleway: {
     label: "Raleway",
-    font: raleway,
+    font: null,
   },
   dmSans: {
     label: "DM Sans",
-    font: dmSans,
+    font: null,
   },
   publicSans: {
     label: "Public Sans",
-    font: publicSans,
+    font: null,
   },
   outfit: {
     label: "Outfit",
-    font: outfit,
+    font: null,
   },
   geistMono: {
     label: "Geist Mono",
@@ -158,27 +67,27 @@ export const fontRegistry = {
   },
   jetBrainsMono: {
     label: "JetBrains Mono",
-    font: jetBrainsMono,
+    font: null,
   },
   notoSerif: {
     label: "Noto Serif",
-    font: notoSerif,
+    font: null,
   },
   robotoSlab: {
     label: "Roboto Slab",
-    font: robotoSlab,
+    font: null,
   },
   merriweather: {
     label: "Merriweather",
-    font: merriweather,
+    font: null,
   },
   lora: {
     label: "Lora",
-    font: lora,
+    font: null,
   },
   playfairDisplay: {
     label: "Playfair Display",
-    font: playfairDisplay,
+    font: null,
   },
 } as const;
 
@@ -186,11 +95,35 @@ export type FontKey = keyof typeof fontRegistry;
 
 export const fontKeys = Object.keys(fontRegistry) as FontKey[];
 
+// Only build-time fonts have CSS variables (others loaded dynamically)
 export const fontVars = Object.values(fontRegistry)
-  .map(({ font }) => font.variable)
+  .filter((entry) => entry.font !== null)
+  .map(({ font }) => font!.variable)
   .join(" ");
 
 export const fontOptions = fontKeys.map((key) => ({
   key,
   label: fontRegistry[key].label,
 }));
+
+// CSS variable names for all fonts (used by ThemeBootScript + applyPreference)
+export const fontCssVars: Record<string, string> = {
+  geist: "--font-geist",
+  inter: "--font-inter",
+  notoSans: "--font-noto-sans",
+  nunitoSans: "--font-nunito-sans",
+  figtree: "--font-figtree",
+  roboto: "--font-roboto",
+  raleway: "--font-raleway",
+  dmSans: "--font-dm-sans",
+  publicSans: "--font-public-sans",
+  outfit: "--font-outfit",
+  geistMono: "--font-geist-mono",
+  geistPixelSquare: "--font-geist-pixel-square",
+  jetBrainsMono: "--font-jetbrains-mono",
+  notoSerif: "--font-noto-serif",
+  robotoSlab: "--font-roboto-slab",
+  merriweather: "--font-merriweather",
+  lora: "--font-lora",
+  playfairDisplay: "--font-playfair-display",
+};
