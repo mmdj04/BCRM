@@ -127,6 +127,7 @@
     <div id="screen-offline">
       <div class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>Sem Conexão</title>
           <line x1="1" y1="1" x2="23" y2="23"></line>
           <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
           <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
@@ -138,7 +139,7 @@
       </div>
       <h1>Sem Conexão</h1>
       <p>Verifique sua conexão com a internet e tente novamente.</p>
-      <button class="retry-btn" id="retryBtn">Tentar Novamente</button>
+      <button type="button" class="retry-btn" id="retryBtn">Tentar Novamente</button>
       <p class="hint">O BCRM precisa de internet para funcionar.</p>
     </div>
     <div class="loading" id="screen-loading">
@@ -160,7 +161,7 @@
     }
     applyTheme();
 
-    document.getElementById('retryBtn').addEventListener('click', function() {
+    document.getElementById('retryBtn').addEventListener('click', () => {
       document.getElementById('screen-offline').style.display = 'none';
       document.getElementById('screen-loading').classList.add('active');
       window.location.href = SERVER_URL;

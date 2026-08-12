@@ -109,6 +109,7 @@
     }
   },
   "javascript": {
+    "globals": ["Capacitor"],
     "formatter": {
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",

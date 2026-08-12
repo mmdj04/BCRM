@@ -16,7 +16,7 @@ export async function GET(request: Request) {
       take: 20,
     });
 
-    const payments = invoices.map((inv) => ({
+    const payments = invoices.map((inv: { id: string; createdAt: Date; invoiceNumber: string; total: number; status: string }) => ({
       id: inv.id,
       createdAt: inv.createdAt,
       description: `Fatura ${inv.invoiceNumber}`,

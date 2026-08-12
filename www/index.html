@@ -29,7 +29,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
       height: 100dvh;
       gap: 32px;
       padding: 24px;
@@ -149,6 +148,7 @@
   <div class="screen" id="screen-offline">
     <div class="offline-icon">
       <svg viewBox="0 0 24 24">
+        <title>Sem Conexão</title>
         <line x1="1" y1="1" x2="23" y2="23"></line>
         <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
         <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
@@ -163,12 +163,13 @@
       Não foi possível conectar ao servidor.<br>
       Verifique sua conexão com a internet e tente novamente.
     </div>
-    <button class="offline-btn" onclick="retryConnection()">Tentar Novamente</button>
+    <button type="button" class="offline-btn" onclick="retryConnection()">Tentar Novamente</button>
     <div class="offline-version">BCRM v1.0.0</div>
   </div>
 
   <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
   <script>
+    /* global Capacitor */
     const SERVER_URL = 'https://bcrm-lilac.vercel.app';
     const STATUS_EL = document.getElementById('loading-status');
     const MAX_RETRIES = 3;
@@ -224,7 +225,7 @@
           const status = await Capacitor.Plugins.Network.getStatus();
           return status.connected;
         }
-      } catch (e) {}
+      } catch (_e) { /* network check failed */ }
       return navigator.onLine;
     }
 
@@ -232,7 +233,7 @@
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
-        const response = await fetch(SERVER_URL, {
+        await fetch(SERVER_URL, {
           method: 'HEAD',
           mode: 'no-cors',
           cache: 'no-store',
@@ -278,7 +279,7 @@
         if (typeof Capacitor !== 'undefined') {
           isCapacitor = true;
         }
-      } catch (e) {}
+      } catch (_e) { /* capacitor init failed */ }
 
       setTimeout(tryConnect, 2500);
     }
