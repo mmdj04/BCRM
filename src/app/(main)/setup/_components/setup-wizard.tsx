@@ -82,13 +82,15 @@ export function SetupWizard() {
       </div>
 
       {/* Right panel - Dashboard preview (hidden on mobile) */}
-      <div className="hidden w-[45%] items-center justify-center p-6 lg:flex">
-        <div className="relative w-full max-w-md">
-          {/* Decorative gradient */}
-          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent" />
+      <div className="hidden w-[45%] lg:flex">
+        <div className="sticky top-0 flex h-screen w-full items-center justify-center p-6">
+          <div className="relative w-full max-w-md">
+            {/* Decorative gradient */}
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent" />
 
-          {/* Dashboard preview */}
-          <DashboardPreview className="relative" />
+            {/* Dashboard preview */}
+            <DashboardPreview className="relative" />
+          </div>
         </div>
       </div>
     </div>
