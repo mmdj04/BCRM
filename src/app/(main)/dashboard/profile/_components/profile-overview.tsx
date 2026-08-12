@@ -3,10 +3,8 @@
 import { useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProfileEmploymentDetails } from "./profile-employment-details";
+import { EmploymentDetails, PersonalDetails, TimeOffDetails } from "./profile-details";
 import { ProfileDocuments } from "./profile-documents";
-import { ProfilePersonalDetails } from "./profile-personal-details";
-import { TimeOffDetails } from "./profile-time-off-details";
 
 import type { ProfileRecord } from "./profile-data";
 
@@ -27,11 +25,11 @@ export function ProfileOverview({ profile }: ProfileOverviewProps) {
       </TabsList>
 
       <TabsContent value="employment" className="mt-4">
-        <ProfileEmploymentDetails profile={profile} />
+        <EmploymentDetails profile={profile} />
       </TabsContent>
 
       <TabsContent value="personal" className="mt-4">
-        <ProfilePersonalDetails profile={profile} />
+        <PersonalDetails profile={profile} />
       </TabsContent>
 
       <TabsContent value="time-off" className="mt-4">

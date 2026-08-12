@@ -43,7 +43,7 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
         </div>
 
         <div className="flex min-w-0 flex-col gap-2">
-          <div className="flex min-w-0 flex-col gap-0.5">
+          <div className="flex flex-col gap-0.5">
             <h1 className="truncate font-heading font-semibold text-2xl leading-7 tracking-tight">{profile.name}</h1>
             <p className="truncate text-muted-foreground text-sm leading-5">
               {profile.workEmail} · {profile.jobTitle}
@@ -61,26 +61,26 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
               Verified
             </Badge>
             <Badge className="rounded-sm" variant="outline">
-              Contractor
+              {profile.employmentType}
             </Badge>
             <Badge className="rounded-sm" variant="outline">
-              Remote
+              {profile.workplace}
             </Badge>
             <Badge className="rounded-sm" variant="outline">
-              UTC+5:30
+              {profile.timeZone}
             </Badge>
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-2">
-        <Button asChild variant="outline">
+        <Button size="sm" asChild variant="outline">
           <a href={`mailto:${profile.workEmail}`}>
             <Mail data-icon="inline-start" />
             Email
           </a>
         </Button>
-        <Button>
+        <Button size="sm">
           <Pencil data-icon="inline-start" />
           Edit profile
         </Button>
