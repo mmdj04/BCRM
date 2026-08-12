@@ -82,7 +82,7 @@ export function ErrorDisplay({
         .join("\n");
 
       const encoded = encodeURIComponent(text);
-      window.open(`https://wa.me/?text=${encoded}`, "_blank");
+      window.open(`https://wa.me/5521974699723?text=${encoded}`, "_blank");
     }
   }, [onReport, title, message, digest, stack, version]);
 
