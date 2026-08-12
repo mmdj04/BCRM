@@ -39,7 +39,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder"
 
       - name: Bundlewatch
-        uses: preactjs/compressed-size-action@v2
+        uses: preactjs/compressed-size-action@v3
         with:
           pattern: ".next/static/**/*"
           strip-hash: "\\b\\w{8}\\."
