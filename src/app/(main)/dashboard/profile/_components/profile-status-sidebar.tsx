@@ -1,86 +1,48 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import { Calendar, Clock, FileText, AlertCircle } from "lucide-react";
+import { CalendarDays, CircleCheck, Clock3 } from "lucide-react";
+
+import { Separator } from "@/components/ui/separator";
 
 import type { ProfileRecord } from "./profile-data";
 
-interface ProfileStatusSidebarProps {
-  profile: ProfileRecord;
-}
-
-export function ProfileStatusSidebar({ profile }: ProfileStatusSidebarProps) {
-  const profileCompletion = 92;
-
+export function ProfileStatusSidebar({ profile }: { profile: ProfileRecord }) {
   return (
-    <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Profile Completion</CardTitle>
-          <CardDescription>Almost there! Complete your information.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="flex items-center justify-between text-sm">
-            <span>Progress</span>
-            <span className="font-medium">{profileCompletion}%</span>
+    <aside>
+      <div className="flex flex-col gap-4">
+        <h2 className="font-heading font-medium text-sm">Record status</h2>
+        <div className="flex items-start gap-2">
+          <CircleCheck aria-hidden="true" className="mt-0.5 size-4 text-muted-foreground" />
+          <div>
+            <p className="font-medium text-sm">Active contractor</p>
+            <p className="text-muted-foreground text-xs">Contract and access active</p>
           </div>
-          <Progress value={profileCompletion} className="h-2" />
-          <p className="text-muted-foreground text-xs">
-            Complete your profile to get access to all features.
-          </p>
-        </CardContent>
-      </Card>
+        </div>
+        <p className="text-muted-foreground text-xs">
+          Updated {profile.updatedAt} by {profile.updatedBy}
+        </p>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Summary</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-              <Calendar className="size-5 text-primary" />
-            </div>
-            <div>
-              <p className="font-medium">Next Leave</p>
-              <p className="text-muted-foreground text-sm">{profile.nextLeave}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-              <Clock className="size-5 text-primary" />
-            </div>
-            <div>
-              <p className="font-medium">Remaining Leave</p>
-              <p className="text-muted-foreground text-sm">{profile.remainingLeave}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-              <FileText className="size-5 text-primary" />
-            </div>
-            <div>
-              <p className="font-medium">Documents</p>
-              <p className="text-muted-foreground text-sm">{profile.documents.length} documents</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <Separator className="my-4" />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
-          <Button variant="outline" className="justify-start">
-            <FileText className="mr-2 size-4" />
-            Download Contract
-          </Button>
-          <Button variant="outline" className="justify-start">
-            <AlertCircle className="mr-2 size-4" />
-            Request Time Off
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+      <div className="flex flex-col gap-3">
+        <h2 className="font-heading font-medium text-sm">Upcoming events</h2>
+        <div className="flex flex-col">
+          <div className="flex gap-3 py-2.5">
+            <CalendarDays aria-hidden="true" className="mt-0.5 size-4 text-muted-foreground" />
+            <div>
+              <p className="font-medium text-sm">Time off</p>
+              <p className="text-muted-foreground text-xs">{profile.nextLeave}</p>
+            </div>
+          </div>
+          <Separator />
+          <div className="flex gap-3 py-2.5">
+            <Clock3 aria-hidden="true" className="mt-0.5 size-4 text-muted-foreground" />
+            <div>
+              <p className="font-medium text-sm">Last working day</p>
+              <p className="text-muted-foreground text-xs">{profile.lastWorkingDay}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
   );
 }
