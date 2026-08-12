@@ -12,7 +12,9 @@ export default function TestErrorPage() {
 
   const throwChunkError = () => {
     // Simulate a chunk loading error
-    const err = new Error("Loading chunk chunk-abc123 failed. (Missing: https://bcrm-lilac.vercel.app/_next/static/chunk-abc123.js)");
+    const err = new Error(
+      "Loading chunk chunk-abc123 failed. (Missing: https://bcrm-lilac.vercel.app/_next/static/chunk-abc123.js)",
+    );
     err.name = "ChunkError";
     throw err;
   };
@@ -34,6 +36,7 @@ export default function TestErrorPage() {
   };
 
   const triggerUnhandledRejection = () => {
+    // biome-ignore lint/nursery/noFloatingPromises: Intentional unhandled rejection for testing
     Promise.reject(new Error("Unhandled Promise Rejection de teste!"));
   };
 
@@ -50,14 +53,54 @@ export default function TestErrorPage() {
   };
 
   const buttons = [
-    { label: "React Error Boundary", description: "Erro capturado pelo error.tsx", action: throwReactError, color: "bg-red-600 hover:bg-red-500" },
-    { label: "Chunk Loading Error", description: "Falha ao carregar módulo dinâmico", action: throwChunkError, color: "bg-orange-600 hover:bg-orange-500" },
-    { label: "Network Error", description: "Falha de conexão com a internet", action: throwNetworkError, color: "bg-yellow-600 hover:bg-yellow-500" },
-    { label: "Auth Error (401)", description: "Sessão expirada / não autenticado", action: throwAuthError, color: "bg-purple-600 hover:bg-purple-500" },
-    { label: "Erro Genérico", description: "Erro qualquer para teste", action: throwGenericError, color: "bg-pink-600 hover:bg-pink-500" },
-    { label: "Promise Rejection", description: "Unhandled promise rejection", action: triggerUnhandledRejection, color: "bg-indigo-600 hover:bg-indigo-500" },
-    { label: "Console Error", description: "Apenas loga erro no console", action: triggerConsoleError, color: "bg-gray-600 hover:bg-gray-500" },
-    { label: "DOM Error", description: "Erro de manipulação do DOM", action: triggerDOMError, color: "bg-teal-600 hover:bg-teal-500" },
+    {
+      label: "React Error Boundary",
+      description: "Erro capturado pelo error.tsx",
+      action: throwReactError,
+      color: "bg-red-600 hover:bg-red-500",
+    },
+    {
+      label: "Chunk Loading Error",
+      description: "Falha ao carregar módulo dinâmico",
+      action: throwChunkError,
+      color: "bg-orange-600 hover:bg-orange-500",
+    },
+    {
+      label: "Network Error",
+      description: "Falha de conexão com a internet",
+      action: throwNetworkError,
+      color: "bg-yellow-600 hover:bg-yellow-500",
+    },
+    {
+      label: "Auth Error (401)",
+      description: "Sessão expirada / não autenticado",
+      action: throwAuthError,
+      color: "bg-purple-600 hover:bg-purple-500",
+    },
+    {
+      label: "Erro Genérico",
+      description: "Erro qualquer para teste",
+      action: throwGenericError,
+      color: "bg-pink-600 hover:bg-pink-500",
+    },
+    {
+      label: "Promise Rejection",
+      description: "Unhandled promise rejection",
+      action: triggerUnhandledRejection,
+      color: "bg-indigo-600 hover:bg-indigo-500",
+    },
+    {
+      label: "Console Error",
+      description: "Apenas loga erro no console",
+      action: triggerConsoleError,
+      color: "bg-gray-600 hover:bg-gray-500",
+    },
+    {
+      label: "DOM Error",
+      description: "Erro de manipulação do DOM",
+      action: triggerDOMError,
+      color: "bg-teal-600 hover:bg-teal-500",
+    },
   ];
 
   if (errorType === "react") {
@@ -81,8 +124,9 @@ export default function TestErrorPage() {
       </div>
 
       <h1 className="mb-2 font-semibold text-white text-xl">Teste de Erros</h1>
-      <p className="mb-8 text-center text-gray-400 text-sm max-w-md">
-        Clique em qualquer botão abaixo para disparar um erro proposital e ver como o sistema de exibição de erros funciona.
+      <p className="mb-8 max-w-md text-center text-gray-400 text-sm">
+        Clique em qualquer botão abaixo para disparar um erro proposital e ver como o sistema de exibição de erros
+        funciona.
       </p>
 
       {/* Error type grid */}
@@ -95,7 +139,7 @@ export default function TestErrorPage() {
             className={`rounded-lg px-4 py-3 text-left transition-all active:scale-[0.98] ${btn.color}`}
           >
             <div className="font-medium text-sm text-white">{btn.label}</div>
-            <div className="mt-1 text-xs text-white/70">{btn.description}</div>
+            <div className="mt-1 text-white/70 text-xs">{btn.description}</div>
           </button>
         ))}
       </div>
@@ -113,8 +157,8 @@ export default function TestErrorPage() {
       <div className="w-full max-w-2xl rounded-lg border border-gray-800 bg-[#111111] p-4">
         <h3 className="mb-2 font-medium text-sm text-white">Testar pelo Console</h3>
         <p className="mb-3 text-gray-400 text-xs">Abra o console do navegador (F12) e cole:</p>
-        <code className="block rounded bg-gray-900 p-2 font-mono text-green-400 text-xs whitespace-pre-wrap">
-{`// Forçar erro não capturado
+        <code className="block whitespace-pre-wrap rounded bg-gray-900 p-2 font-mono text-green-400 text-xs">
+          {`// Forçar erro não capturado
 throw new Error("Erro manual do console!");
 
 // Forçar promise rejection

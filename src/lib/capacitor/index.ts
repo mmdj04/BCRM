@@ -220,9 +220,11 @@ export function onAppStateChanged(callback: (state: "active" | "inactive" | "bac
   });
 
   return () => {
-    listener.then((handle) => handle.remove()).catch(() => {
-      // Ignore cleanup errors
-    });
+    listener
+      .then((handle) => handle.remove())
+      .catch(() => {
+        // Ignore cleanup errors
+      });
   };
 }
 
@@ -237,9 +239,11 @@ export function onBackButton(callback: () => void) {
   const listener = App.addListener("backButton", callback);
 
   return () => {
-    listener.then((handle) => handle.remove()).catch(() => {
-      // Ignore cleanup errors
-    });
+    listener
+      .then((handle) => handle.remove())
+      .catch(() => {
+        // Ignore cleanup errors
+      });
   };
 }
 
@@ -256,9 +260,11 @@ export function onDeepLink(callback: (url: string) => void) {
   });
 
   return () => {
-    listener.then((handle) => handle.remove()).catch(() => {
-      // Ignore cleanup errors
-    });
+    listener
+      .then((handle) => handle.remove())
+      .catch(() => {
+        // Ignore cleanup errors
+      });
   };
 }
 

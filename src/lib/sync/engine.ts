@@ -64,10 +64,7 @@ class SyncEngine {
           const cleanData = Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined));
 
           if (supabaseId) {
-            const { error } = await this.supabase
-              .from(`${table}s`)
-              .update(cleanData)
-              .eq("id", supabaseId);
+            const { error } = await this.supabase.from(`${table}s`).update(cleanData).eq("id", supabaseId);
 
             if (error) throw error;
           } else {

@@ -153,9 +153,11 @@ export function CapacitorProvider({ children }: { children: React.ReactNode }) {
         // Refresh network on app resume
         await App.addListener("appStateChange", ({ isActive }) => {
           if (isActive) {
-            Network.getStatus().then(setNetworkStatus).catch(() => {
-              // Ignore network status errors
-            });
+            Network.getStatus()
+              .then(setNetworkStatus)
+              .catch(() => {
+                // Ignore network status errors
+              });
           }
         });
       } catch {
