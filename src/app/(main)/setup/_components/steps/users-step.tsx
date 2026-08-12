@@ -186,7 +186,7 @@ export function UsersStep() {
                 Opcional
               </span>
               {teams.length > 0 && (
-                <span className="rounded bg-[#16a34a]/10 px-1.5 py-0.5 text-[#16a34a] text-xs">{teams.length}</span>
+                <span className="rounded bg-primary/10 px-1.5 py-0.5 text-primary text-xs">{teams.length}</span>
               )}
             </div>
           </AccordionTrigger>
@@ -341,9 +341,7 @@ export function UsersStep() {
                 Opcional
               </span>
               {customRoles.length > 0 && (
-                <span className="rounded bg-[#16a34a]/10 px-1.5 py-0.5 text-[#16a34a] text-xs">
-                  {customRoles.length}
-                </span>
+                <span className="rounded bg-primary/10 px-1.5 py-0.5 text-primary text-xs">{customRoles.length}</span>
               )}
             </div>
           </AccordionTrigger>
@@ -445,7 +443,7 @@ export function UsersStep() {
                     className={cn(
                       "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors",
                       selectedMigration === m.id
-                        ? "border-[#16a34a]/30 bg-[#16a34a]/5"
+                        ? "border-primary/30 bg-primary/5"
                         : "border-border/60 hover:border-border",
                     )}
                   >
@@ -690,7 +688,7 @@ export function UsersStep() {
                 type="button"
                 onClick={addUser}
                 disabled={!newName.trim() || !newEmail.trim()}
-                className="bg-[#16a34a] text-white hover:bg-[#15803d]"
+                className="bg-primary text-white hover:bg-primary/90"
               >
                 <Mail className="mr-2 size-4" /> Enviar Convite
               </Button>
@@ -716,7 +714,7 @@ export function UsersStep() {
               </div>
               <div className="flex items-center gap-2">
                 {user.team && (
-                  <span className="rounded-md bg-[#16a34a]/10 px-2 py-0.5 text-[#16a34a] text-xs">{user.team}</span>
+                  <span className="rounded-md bg-primary/10 px-2 py-0.5 text-primary text-xs">{user.team}</span>
                 )}
                 <span className="rounded-md bg-muted px-2 py-0.5 text-xs">{user.role}</span>
                 <Button type="button" variant="ghost" size="icon" className="size-8" onClick={() => removeUser(index)}>
@@ -732,7 +730,7 @@ export function UsersStep() {
         Usuários e equipes podem ser gerenciados depois em <strong>Configurações → Usuários</strong>.
       </div>
 
-      <Button size="lg" className="mt-6 w-full bg-[#16a34a] text-white hover:bg-[#15803d]" onClick={() => setStep(5)}>
+      <Button size="lg" className="mt-6 w-full bg-primary text-white hover:bg-primary/90" onClick={() => setStep(5)}>
         Continuar
       </Button>
     </div>

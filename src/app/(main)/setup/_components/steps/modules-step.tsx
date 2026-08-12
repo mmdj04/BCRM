@@ -182,7 +182,7 @@ export function ModulesStep() {
         <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">Módulos</h1>
         <p className="text-base text-muted-foreground">
           Escolha os módulos que deseja habilitar.
-          {enabledCount > 0 && <span className="ml-1 font-medium text-[#16a34a]"> {enabledCount} selecionado(s)</span>}
+          {enabledCount > 0 && <span className="ml-1 font-medium text-primary"> {enabledCount} selecionado(s)</span>}
         </p>
       </div>
 
@@ -199,13 +199,13 @@ export function ModulesStep() {
               className={cn(
                 "group flex items-center gap-4 rounded-xl border px-4 py-3 text-left transition-all",
                 isEnabled
-                  ? "border-[#16a34a]/30 bg-[#16a34a]/5"
+                  ? "border-primary/30 bg-primary/5"
                   : "border-border/60 bg-background/80 hover:border-border hover:bg-background",
               )}
             >
               <Checkbox checked={isEnabled} onCheckedChange={() => toggleModule(module.id)} />
               <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted/50">
-                <Icon className={cn("size-4", isEnabled ? "text-[#16a34a]" : "text-muted-foreground")} />
+                <Icon className={cn("size-4", isEnabled ? "text-primary" : "text-muted-foreground")} />
               </div>
               <div className="flex-1">
                 <span className="text-sm font-medium text-foreground">{module.label}</span>
@@ -219,7 +219,7 @@ export function ModulesStep() {
       {/* CTA */}
       <Button
         size="lg"
-        className="mt-6 w-full bg-[#16a34a] text-white hover:bg-[#15803d]"
+        className="mt-6 w-full bg-primary text-white hover:bg-primary/90"
         onClick={() => setStep(4)}
         disabled={!canProceed}
       >

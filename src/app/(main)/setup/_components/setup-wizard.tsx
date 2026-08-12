@@ -2,12 +2,12 @@
 
 import { ArrowLeft, Building2, Check, FileCheck, Globe, LayoutDashboard, Sparkles, Users } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { useSetup } from "@/contexts/setup-context";
 import { cn } from "@/lib/utils";
 
-import { Button } from "@/components/ui/button";
-import { CompanyStep } from "./steps/company-step";
 import { DashboardPreview } from "./dashboard-preview";
+import { CompanyStep } from "./steps/company-step";
 import { ModulesStep } from "./steps/modules-step";
 import { NotificationsStep } from "./steps/notifications-step";
 import { ProjectStep } from "./steps/project-step";
@@ -38,7 +38,7 @@ export function SetupWizard() {
         {/* Top bar */}
         <div className="flex items-center justify-between px-6 py-4 lg:px-10">
           <div className="flex items-center gap-2">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-[#16a34a] text-white">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
               <Sparkles className="size-4" />
             </div>
             <span className="text-lg font-bold text-foreground">BCRM</span>
@@ -53,11 +53,7 @@ export function SetupWizard() {
                 key={`segment-${i}`}
                 className={cn(
                   "h-1 flex-1 rounded-full transition-all duration-300",
-                  i < currentStep
-                    ? "bg-[#16a34a]"
-                    : i === currentStep
-                      ? "bg-[#16a34a]"
-                      : "bg-border",
+                  i < currentStep ? "bg-primary" : i === currentStep ? "bg-primary" : "bg-border",
                 )}
               />
             ))}
@@ -89,7 +85,7 @@ export function SetupWizard() {
       <div className="hidden w-[45%] items-center justify-center p-6 lg:flex">
         <div className="relative w-full max-w-md">
           {/* Decorative gradient */}
-          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#16a34a]/5 to-transparent" />
+          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent" />
 
           {/* Dashboard preview */}
           <DashboardPreview className="relative" />

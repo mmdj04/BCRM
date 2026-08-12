@@ -41,7 +41,7 @@ const steps = [
     icon: CreditCard,
     title: "Plano & Pagamento",
     tag: "Finalizar",
-    tagColor: "text-[#16a34a] bg-[#16a34a]/10",
+    tagColor: "text-primary bg-primary/10",
   },
 ];
 
@@ -78,13 +78,13 @@ export function WelcomeStep() {
       </div>
 
       {/* CTA */}
-      <Button size="lg" className="w-full bg-[#16a34a] text-white hover:bg-[#15803d]" onClick={() => setStep(1)}>
+      <Button size="lg" className="w-full bg-primary text-white hover:bg-primary/90" onClick={() => setStep(1)}>
         Continuar
       </Button>
 
       <p className="mt-4 text-center text-sm text-muted-foreground">
         Já tem uma conta?{" "}
-        <a href="/auth/v1/login" className="font-medium text-[#16a34a] hover:underline">
+        <a href="/auth/v1/login" className="font-medium text-primary hover:underline">
           Entrar
         </a>
       </p>

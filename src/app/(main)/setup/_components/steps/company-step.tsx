@@ -135,7 +135,7 @@ export function CompanyStep() {
       {/* CTA */}
       <Button
         size="lg"
-        className="mt-6 w-full bg-[#16a34a] text-white hover:bg-[#15803d]"
+        className="mt-6 w-full bg-primary text-white hover:bg-primary/90"
         onClick={() => setStep(2)}
         disabled={!canProceed}
       >

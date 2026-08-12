@@ -65,9 +65,7 @@ export function NotificationsStep() {
               htmlFor={`notif-${notif.id}`}
               className={cn(
                 "flex cursor-pointer items-center gap-4 rounded-xl border px-4 py-3.5 transition-all",
-                isEnabled
-                  ? "border-[#16a34a]/30 bg-[#16a34a]/5"
-                  : "border-border/60 bg-background/80 hover:border-border",
+                isEnabled ? "border-primary/30 bg-primary/5" : "border-border/60 bg-background/80 hover:border-border",
               )}
             >
               <Checkbox
@@ -76,7 +74,7 @@ export function NotificationsStep() {
                 onCheckedChange={() => toggleNotification(notif.id)}
               />
               <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted/50">
-                <Icon className={cn("size-4", isEnabled ? "text-[#16a34a]" : "text-muted-foreground")} />
+                <Icon className={cn("size-4", isEnabled ? "text-primary" : "text-muted-foreground")} />
               </div>
               <div className="flex-1">
                 <span className="text-sm font-medium text-foreground">{notif.label}</span>
@@ -88,7 +86,7 @@ export function NotificationsStep() {
       </div>
 
       {/* CTA */}
-      <Button size="lg" className="mt-6 w-full bg-[#16a34a] text-white hover:bg-[#15803d]" onClick={() => setStep(6)}>
+      <Button size="lg" className="mt-6 w-full bg-primary text-white hover:bg-primary/90" onClick={() => setStep(6)}>
         Continuar
       </Button>
     </div>

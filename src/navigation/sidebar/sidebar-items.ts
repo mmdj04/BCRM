@@ -21,6 +21,7 @@ import {
   Server,
   ShoppingBag,
   SquareArrowUpRight,
+  User,
   Users,
 } from "lucide-react";
 
@@ -194,6 +195,12 @@ export const sidebarItems: NavGroup[] = [
         title: "Funções",
         url: "/dashboard/roles",
         icon: Lock,
+      },
+      {
+        id: "profile",
+        title: "Perfil",
+        url: "/dashboard/profile",
+        icon: User,
       },
       {
         id: "authentication",

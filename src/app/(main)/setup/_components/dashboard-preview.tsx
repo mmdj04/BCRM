@@ -20,6 +20,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 const sidebarItems = [
@@ -37,7 +38,13 @@ const sidebarItems = [
 ];
 
 const cards = [
-  { title: "Receita Total", value: "R$ 12.450", change: "+18%", icon: CreditCard, color: "bg-emerald-500/10 text-emerald-600" },
+  {
+    title: "Receita Total",
+    value: "R$ 12.450",
+    change: "+18%",
+    icon: CreditCard,
+    color: "bg-emerald-500/10 text-emerald-600",
+  },
   { title: "Clientes Ativos", value: "1.842", change: "+12%", icon: Users, color: "bg-blue-500/10 text-blue-600" },
   { title: "Projetos", value: "34", change: "+5%", icon: FolderOpen, color: "bg-violet-500/10 text-violet-600" },
   { title: "Tarefas", value: "128", change: "+22%", icon: LayoutList, color: "bg-amber-500/10 text-amber-600" },
@@ -75,9 +82,7 @@ export function DashboardPreview({ className }: { className?: string }) {
                 key={item.label}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs",
-                  item.active
-                    ? "bg-primary/10 font-medium text-primary"
-                    : "text-muted-foreground hover:bg-muted/50",
+                  item.active ? "bg-primary/10 font-medium text-primary" : "text-muted-foreground hover:bg-muted/50",
                 )}
               >
                 <item.icon className="size-3.5" />
