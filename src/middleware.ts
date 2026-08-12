@@ -47,6 +47,11 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
+  // Block /test-error in production
+  if (request.nextUrl.pathname === "/test-error" && process.env.NODE_ENV === "production") {
+    return NextResponse.redirect(new URL("/dashboard/default", request.url));
+  }
+
   return response;
 }
 

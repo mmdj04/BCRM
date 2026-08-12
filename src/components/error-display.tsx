@@ -188,7 +188,7 @@ export function ErrorDisplay({
       <p className="mt-6 text-center text-gray-500 text-xs">
         Por favor, reporte este erro para a equipe do BCRM no{" "}
         <a
-          href="https://wa.me/"
+          href="https://wa.me/5521974699723"
           target="_blank"
           rel="noopener noreferrer"
           className="text-indigo-400 hover:text-indigo-300"
