@@ -1,0 +1,48 @@
+name: Label Issues
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+jobs:
+  label:
+    name: Auto Label
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label issues based on content
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.toLowerCase();
+            const body = (issue.body || '').toLowerCase();
+            
+            const labels = [];
+            
+            if (title.includes('bug') || title.includes('fix') || title.includes('error')) {
+              labels.push('bug');
+            }
+            if (title.includes('feature') || title.includes('enhancement') || title.includes('request')) {
+              labels.push('enhancement');
+            }
+            if (title.includes('docs') || title.includes('documentation')) {
+              labels.push('documentation');
+            }
+            if (title.includes('question') || title.includes('help')) {
+              labels.push('question');
+            }
+            if (title.includes('security') || title.includes('vulnerability')) {
+              labels.push('security');
+            }
+            if (title.includes('performance') || title.includes('slow')) {
+              labels.push('performance');
+            }
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labels
+              });
+            }
