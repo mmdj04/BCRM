@@ -4,8 +4,8 @@ import Link from "next/link";
 import { siX } from "simple-icons";
 import { SimpleIcon } from "@/components/simple-icon";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useI18n } from "@/lib/i18n/provider";
 import { navTranslations } from "@/lib/i18n/nav-translations";
+import { useI18n } from "@/lib/i18n/provider";
 
 export function SupportCard() {
   const { locale } = useI18n();
