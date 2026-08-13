@@ -25,5 +25,5 @@ jobs:
         with:
           check_filenames: true
           check_hidden: true
-          skip: "*.json,*.lock,package-lock.json,node_modules,.next,dist"
+          skip: "*.json,*.lock,package-lock.json,node_modules,.next,dist,changelog.md"
           ignore_words_list: "nda,iff,Tey,tey,IST,MapPin,FO"
