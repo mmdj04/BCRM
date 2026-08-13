@@ -30,7 +30,20 @@ function LocaleSwitcher() {
 
 function AuthV1Content({ mode, children }: Readonly<{ mode: "login" | "register"; children: React.ReactNode }>) {
   const { t } = useI18n();
-  const copy = mode === "login" ? t.auth.login : t.auth.register;
+  const copy =
+    mode === "login"
+      ? {
+          ...t.auth.login,
+          accountPrompt: t.auth.login.noAccount,
+          accountAction: t.auth.login.register,
+          accountHref: "register",
+        }
+      : {
+          ...t.auth.register,
+          accountPrompt: t.auth.register.alreadyAccount,
+          accountAction: t.auth.register.login,
+          accountHref: "login",
+        };
 
   return (
     <div className="relative flex h-dvh">
@@ -59,13 +72,9 @@ function AuthV1Content({ mode, children }: Readonly<{ mode: "login" | "register"
           <div className="space-y-4">
             {children}
             <p className="text-center text-muted-foreground text-xs">
-              {mode === "login" ? copy.noAccount : copy.alreadyAccount}{" "}
-              <Link
-                prefetch={false}
-                href={mode === "login" ? "register" : "login"}
-                className="text-primary"
-              >
-                {mode === "login" ? copy.register : copy.login}
+              {copy.accountPrompt}{" "}
+              <Link prefetch={false} href={copy.accountHref} className="text-primary">
+                {copy.accountAction}
               </Link>
             </p>
           </div>
