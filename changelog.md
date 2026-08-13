@@ -6,193 +6,291 @@
 > **Histórico upstream:** 641 commits  
 > **Ordenação:** mais recente → mais antigo.
 >
-> Os identificadores `YYYY.MM` são versões históricas reconstruídas por mês e **não são tags/releases oficiais do upstream**.
+> Este documento é uma reconstrução histórica baseada **nas mensagens e datas dos commits do upstream**. Não depende da análise dos diffs individuais. Commits de manutenção repetitivos, principalmente atualizações de dependências, são consolidados quando não representam uma mudança funcional distinta; eles continuam fazendo parte da contagem histórica.
+>
+> Os identificadores `YYYY.MM` abaixo são versões históricas reconstruídas por mês e **não são tags/releases oficiais do upstream**.
 
 ## Objetivo
 
 Este arquivo será futuramente consumido pela interface do BCRM como histórico de atualizações. Por isso, a ordem deliberadamente começa pelo período mais recente: o usuário deve encontrar primeiro o que mudou por último.
 
-## Como interpretar
+A estrutura também preserva a distinção entre:
+
+- **Upstream:** histórico do projeto que serviu de base.
+- **BCRM:** alterações próprias do nosso produto.
+- **Herdado/reutilizável:** recursos da base que podem ser aproveitados no BCRM.
+- **Template/demo:** módulos do upstream que não pertencem ao domínio CRM.
+
+## Convenções
 
 - **Feature:** funcionalidade ou tela nova.
-- **Refactor:** mudança estrutural/arquitetural.
+- **Refactor:** reorganização estrutural ou arquitetural.
 - **Fix:** correção de comportamento, UI, acessibilidade ou compatibilidade.
-- **Chore:** manutenção, dependências, tooling ou pequenas melhorias.
-- **Merge:** integração de uma branch/PR; não representa necessariamente uma segunda implementação.
-- Atualizações repetitivas de dependências podem ser agrupadas quando o efeito funcional é apenas sincronização de versões/lockfile, mas continuam contabilizadas no histórico.
+- **Chore:** manutenção, dependências, tooling, limpeza ou pequenos ajustes.
+- **Docs:** documentação/README/guidelines.
+- **Merge:** integração de uma branch/PR; não deve ser interpretado como uma segunda implementação da mesma feature.
+- **Dependency churn:** sequências de commits de atualização de dependências são agrupadas quando a mensagem não fornece informação funcional adicional.
 
 ---
 
 # 2026
 
-## 2026.08 — Atualizações mais recentes
+## 2026.08 — Profile, Data Table v9, dnd-kit e atualizações finais
 
 **Período:** 01/08/2026 → 12/08/2026
 
-### Destaques
+### Principais mudanças registradas no histórico
 
-- Novo **Profile screen**.
-- Atualização do layout da tela de Profile.
-- Migração do **dnd-kit** para a implementação mais recente.
+- Inclusão do **Profile screen**.
+- Refinamento do layout do Profile.
+- Migração do **dnd-kit** para a implementação e pacotes mais recentes.
 - Migração da **Data Table para TanStack Table v9**.
-- Novo componente **Questionnaire**.
-- Atualizações contínuas de dependências e componentes.
-- Refinamentos finais da base de UI antes do estado atual do upstream.
+- Inclusão do componente **Questionnaire** do shadcn.
+- Atualizações recorrentes de dependências.
+- Atualizações menores, quick fixes e ajustes de componentes.
+- Atualização de versão do Next.js.
+- Inclusão/integração do dashboard de monitoramento de pacientes.
+- Atualizações de README.
 
-### Commits relevantes
+### Commits de maior relevância
 
-- `5afd104b` — novo Profile screen.
-- `ad309d53` — atualização do layout do Profile.
-- `150bf4aa` — migração do dnd-kit.
-- `934daf7d` — migração da Data Table para TanStack Table v9.
-- `a70abdcf` — novo componente Questionnaire.
+- `5afd104b` — `feat: add profile screen`
+- `ad309d53` — `chore: update profile layout`
+- `3cad027e` — merge de `feat/profile`
+- `150bf4aa` — `feat: migrate dnd kit to latest implementation and packages`
+- `934daf7d` — `feat: migrate data table to use tanstack table v9`
+- `a70abdcf` — `chore: add shadcn questionnaire component`
+- `a1889cf5` — merge de `feat/patient-monitoring`
+- `abffba27` — `feat: add patient monitoring dashboard`
+- `b1a2da92` — `chore: update next version`
+
+### Padrão do mês
+
+O mês foi fortemente concentrado em **modernização da infraestrutura de UI**, atualização do ecossistema e incorporação de novas telas/dashboards.
 
 ### Relevância para o BCRM
 
-Este é o período que deve aparecer primeiro no changelog público do BCRM. A base técnica mais recente do upstream inclui Next.js 16, React 19, Tailwind 4, TanStack Table 9 e dnd-kit moderno; mudanças dessa fase devem ser avaliadas antes de qualquer atualização equivalente no BCRM.
+Alta para tabelas e drag-and-drop. O BCRM deve continuar usando a infraestrutura de tabela e DnD da versão v2, evitando criar implementações paralelas. Profile e Patient Monitoring são módulos de referência visual, não funcionalidades do domínio CRM.
 
 ---
 
-## 2026.07 — Tabelas, drag-and-drop e expansão de módulos
+## 2026.07 — File Manager, tabelas, preferências e expansão de módulos
 
-### Destaques
+### Principais mudanças
 
-- Evolução significativa da infraestrutura de tabelas.
-- Migração/adoção de APIs mais recentes do TanStack Table.
-- Modernização do drag-and-drop com dnd-kit.
-- Expansão do File Manager.
-- Novas telas e refinamentos de monitoramento.
-- Atualizações de dependências e correções de compatibilidade.
+- Adição do **File Manager dashboard**.
+- Organização/refatoração de componentes de dashboard.
+- Limpeza de código.
+- Inclusão de dropdown de versões do projeto no header.
+- Inclusão de analytics.
+- Otimização das preferências.
+- Simplificação das atualizações de preferências.
+- Correções de lint e manutenção.
+- Atualizações frequentes de dependências.
+- Atualizações de README.
+- Documentação de dashboard React Aria.
+- Ajustes de Radix.
+- Evolução de componentes e infraestrutura para a fase seguinte do projeto.
 
-### Impacto no BCRM
+### Commits de referência
 
-É uma fase especialmente relevante para listas de contatos, empresas, oportunidades e pipeline. O BCRM deve reutilizar os padrões de tabela e drag-and-drop do v2 em vez de criar implementações paralelas.
+- `b0669e9a` — merge de `feat/file-manager`
+- `cc0675ba` — `feat: add file manager dashboard`
+- `82369882` — `refactor: organize dashboard components`
+- `1b4780a3` — `chore: code cleanup`
+- `4177da63` — `feat: add project versions dropdown to dashboard header`
+- `c710eb04` — `chore:add analytics`
+- `a9be5580` — merge de `chore/optimize-prefs`
+- `948471f7` — `chore: optimize prefs`
+- `1709badc` — `refactor: simplify preference updates`
+- `7cec4087` — `chore: update deps & lint fixes`
+- `58c66454` — `chore: revert radix version`
+- `d292e08a` — `docs: add React Aria dashboard link`
+
+### Relevância para o BCRM
+
+Alta para a infraestrutura de preferências, organização de componentes, tabelas, navegação e qualidade. O File Manager e outros módulos especializados são referências de UI, não módulos CRM.
 
 ---
 
-## 2026.06 — Grande expansão funcional
+## 2026.06 — Calendar, Tasks, Chat, Infrastructure e qualidade
 
-**Um dos meses mais importantes da evolução do upstream.**
+**Um dos períodos mais importantes do histórico.**
 
 ### Calendar
 
-- Expansão da experiência de calendário.
-- Integração/setup do FullCalendar v7.
-- Componentização do calendário.
+- Introdução da tela de Calendar.
+- Integração do FullCalendar.
+- Setup do **FullCalendar v7**.
+- Evolução da infraestrutura de calendário.
 
-Commit de referência:
+Commits de referência:
 
-- `a37b9be2` — `chore(calendar): add FullCalendar v7 component setup`.
+- `4b5a3349` — merge de `feat/calendar`
+- `1b483a33` — `feat: add calendar`
+- `4edb326c` — `feat: add full calendar`
+- `a37b9be2` — `chore(calendar): add FullCalendar v7 component setup`
 
-### Sidebar e navegação
+### Tasks
 
-- Simplificação da renderização dos itens.
-- Modelo de dados de navegação mais rígido.
-- Correções para sidebar colapsada.
-- Refinamentos da navegação.
+- Criação da tela de Tasks.
+- Refinamentos e correções associados.
+- Merge da feature de Tasks.
 
-Commits relevantes:
+Commits:
 
-- `6a9a4a2f` — simplificação de rendering.
-- `5ebca71f` — simplificação de rendering.
-- `8d2b082a` — `tighten nav item data model`.
-- `2ae27c60` — `polish collapsed sidebar navigation`.
+- `4f43f13c` — `feat: add tasks`
+- `cc90bbc7` — merge de `feat/tasks`
+
+### Chat / Mail / componentes
+
+- Uso de componentes shadcn no Chat.
+- Novos componentes shadcn.
+- Scroll fade na lista de Mail.
+- Ajustes de lint e warnings.
+
+Commits:
+
+- `57faadc1` — `chore: use shadcn chat components for chat screen`
+- `9dc0e89b` — `chore: add scroll fade in mail list`
+- `4cbf7715` — `feat: add new shadcn components & update deps`
+- `baad6722` — `chore: add nested ternary lint rule and clean warnings`
 
 ### Infrastructure Dashboard
 
-- Novo dashboard de infraestrutura.
-- Refinamento da apresentação de saúde da infraestrutura.
-- Melhoria dos dados exibidos.
-- Documentação e integração da feature.
+- Criação do Infrastructure Dashboard.
+- Refinamento dos dados.
+- Melhoria da informação de saúde da infraestrutura.
+- Documentação e merge da feature.
 
-Commits relevantes:
+Commits:
 
-- `927f1569` — `feat: add infrastructure dashboard`.
-- `4d75100e` — `feat: refine infrastructure dashboard`.
-- `61c9d1b6` — `feat: improve infrastructure health data`.
-- `df4898fd` — merge da feature de infraestrutura.
+- `927f1569` — `feat: add infrastructure dashboard`
+- `4d75100e` — `feat: refine infrastructure dashboard`
+- `61c9d1b6` — `feat: improve infrastructure health data`
+- `02fe0af3` — documentação do dashboard
+- `df4898fd` — merge de `feat/infra`
 
-### Outras evoluções
+### Sidebar / navegação
 
-- Chat e módulos de produtividade.
-- Tasks e experiências de trabalho.
-- Refinamentos de layout e componentes.
-- Atualizações de dependências.
+- Simplificação do rendering dos itens.
+- Modelo de dados de navegação mais rígido.
+- Refinamento da sidebar colapsada.
+
+Commits:
+
+- `2ae27c60` — `fix: polish collapsed sidebar navigation`
+- `6a9a4a2f` — `refactor(sidebar): simplify nav item rendering`
+- `5ebca71f` — `refactor(sidebar): simplify nav item rendering`
+- `8d2b082a` — `refactor(sidebar): tighten nav item data model`
+
+### Qualidade e arquitetura
+
+- Inclusão do `AGENTS.md` com guidelines do projeto.
+- Correções de maintainability identificadas pelo React Doctor.
+- Atualizações de dependências e componentes.
+
+Commits:
+
+- `07078ced` — `docs: add AGENTS.md guidelines`
+- `43f47b8b` — `refactor: fix maintainability findings (by react doctor)`
+- `af7bb159` — `chore: update deps & components`
 
 ### Relevância para o BCRM
 
-Calendário, tarefas, navegação e componentes de dashboard são diretamente reutilizáveis no CRM. Entretanto, funcionalidades do domínio Infrastructure/Academy/etc. não devem ser confundidas com funcionalidades próprias do BCRM.
+**Muito alta.** Calendar, Tasks, navegação, componentes shadcn, preferências e padrões de qualidade são partes diretamente aproveitáveis na aplicação CRM.
 
 ---
 
-## 2026.05 — Expansão e estabilização
+## 2026.05 — Academy e dashboards especializados
 
-### Destaques
+### Principais mudanças
 
-- Evolução de dashboards especializados.
+- Evolução do Academy Dashboard.
+- Finalização de layout e KPI cards.
+- Inclusão do Academy Teacher Dashboard.
 - Atualização de KPIs.
-- Novos componentes e refinamentos visuais.
 - Atualizações de dependências.
-- Continuidade da estabilização da base Next.js 16.
+- Ajustes e estabilização dos dashboards.
 
-### Relevância
+Commits de referência:
 
-Período predominantemente de evolução incremental e preparação para a expansão funcional dos meses seguintes.
-
----
-
-## 2026.04 — Next.js 16
-
-### Destaques
-
-- Upgrade para Next.js 16.
-- Bump para Next.js `16.2.2`.
-- Refinamento de dashboards e painéis.
-- Atualização de dependências.
-- Correções de componentes e controles nativos.
-
-### Commits relevantes
-
-- `a9eae56f` — `chore: bump next to 16.2.2`.
-- `b7e735dc` — `chore: bump panels and tweak dashboard layout`.
-- `464345fc` — `chore: refresh dependencies and update dashboard icon`.
-- `ccf1de3f` — `fix: style native select options`.
+- `5f905a53` — `feat(academy): finalize academy dashboard layout and KPI cards`
+- `5532e070` — `Add academy teacher dashboard`
+- `c0f9f793` — `chore: update KPI`
 
 ### Relevância para o BCRM
 
-Essa fase é uma das raízes diretas do ambiente Next.js 16 utilizado pelo BCRM v2.
+Moderada. Os componentes de KPI, cards e dashboards são referências visuais; o domínio Academy não deve ser incorporado ao CRM.
 
 ---
 
-## 2026.03 — Preparação para a nova geração da stack
+## 2026.04 — Next.js 16 e estabilização
 
-### Destaques
+### Principais mudanças
 
+- Upgrade do Next.js.
+- Bump para Next.js `16.2.2`.
 - Atualizações de dependências.
-- Ajustes de componentes para o ecossistema mais recente.
-- Preparação da base para Next.js 16 e novas versões do tooling.
+- Refinamentos de dashboards e painéis.
+- Atualização do ícone do dashboard.
+- Correção de estilos de opções nativas de `select`.
+
+Commits:
+
+- `a9eae56f` — `chore: bump next to 16.2.2`
+- `b7e735dc` — `chore: bump panels and tweak dashboard layout`
+- `464345fc` — `chore: refresh dependencies and update dashboard icon`
+- `ccf1de3f` — `fix: style native select options`
+
+### Relevância para o BCRM
+
+**Muito alta.** Essa fase consolida a base Next.js 16 que posteriormente aparece no BCRM v2.
+
+---
+
+## 2026.03 — Preparação da nova geração da stack
+
+### Principais mudanças
+
+- Atualizações do ecossistema.
+- Atualizações de dependências.
+- Ajustes de componentes e compatibilidade.
+- Preparação progressiva da base para a geração Next.js 16.
+
+### Relevância para o BCRM
+
+Infraestrutura. Deve ser considerada principalmente como histórico de estabilização da stack.
 
 ---
 
 ## 2026.02 — Evolução da fundação de UI
 
-### Destaques
+### Principais mudanças
 
-- Atualizações do ecossistema shadcn/Radix.
-- Refinamentos de componentes.
+- Atualizações de componentes.
+- Evolução do ecossistema shadcn/Radix.
 - Melhorias de compatibilidade.
-- Manutenção contínua da base.
+- Manutenção contínua das dependências.
+
+### Relevância para o BCRM
+
+Infraestrutura visual e de componentes.
 
 ---
 
 ## 2026.01 — Qualidade e manutenção
 
-### Destaques
+### Principais mudanças
 
 - Atualizações de dependências.
-- Refinamentos do sistema de preferências.
-- Correções de lint e pequenas regressões.
-- Estabilização da arquitetura de layout.
+- Correções menores.
+- Refinamentos da arquitetura de layout.
+- Continuidade da evolução de preferências e componentes.
+
+### Relevância para o BCRM
+
+Baixa a moderada; principalmente manutenção da fundação.
 
 ---
 
@@ -202,55 +300,62 @@ Essa fase é uma das raízes diretas do ambiente Next.js 16 utilizado pelo BCRM 
 
 **Um dos períodos arquiteturalmente mais importantes da base.**
 
-### Destaques
+### Principais mudanças
 
 - Simplificação da lógica de preferências.
 - Conclusão da persistência das preferências.
-- Ponte entre browser/window e provider.
+- Ponte entre window/browser e provider.
 - Correção temporária de flicker durante a inicialização.
-- Ajustes dos textos dos controles de layout.
-- Atualizações frequentes de dependências.
+- Atualização dos textos dos controles de layout.
+- Atualizações recorrentes de dependências.
 
-### Commits relevantes
+Commits de referência:
 
-- `2785e037` — `chore: simplified preference logic`.
-- `bcce819b` — `feat: completed preference persistence setup`.
-- `4d0c0b32` — `feat: add window prefs bridge + temporary flicker fix in provider`.
-- `745b5ea2` — `chore: update layout controls preferences text`.
+- `2785e037` — `chore: simplified preference logic`
+- `bcce819b` — `feat: completed preference persistence setup`
+- `4d0c0b32` — `feat: add window prefs bridge + temporary flicker fix in provider`
+- `745b5ea2` — `chore: update layout controls preferences text`
 
 ### Relevância para o BCRM
 
-A arquitetura atual de preferências do BCRM é herdeira direta dessa evolução. Tema, layout, sidebar e demais preferências devem continuar centralizados nessa infraestrutura.
+**Muito alta.** Tema, layout, sidebar e demais preferências da aplicação são herdeiros dessa arquitetura.
 
 ---
 
 ## 2025.11 — Preferências e personalização
 
-### Destaques
+### Principais mudanças
 
 - Evolução do mecanismo de preferências.
-- Melhorias de persistência.
-- Ajustes na aplicação das preferências ao layout.
+- Persistência e aplicação das configurações visuais.
 - Refinamento do estado inicial da aplicação.
-- Preparação para reduzir flicker/hydration mismatch.
+- Preparação para reduzir flicker e problemas de hidratação.
+
+### Relevância para o BCRM
+
+Alta para a infraestrutura global de UI.
 
 ---
 
 ## 2025.10 — Base para preferências persistentes
 
-### Destaques
+### Principais mudanças
 
 - Evolução inicial do sistema de preferências.
 - Preparação da persistência das configurações visuais.
 - Refinamento da experiência de personalização.
 
+### Relevância para o BCRM
+
+Alta para a arquitetura de preferences.
+
 ---
 
 ## 2025.09 — Consolidação de componentes
 
-### Destaques
+### Principais mudanças
 
-- Atualização do ecossistema de componentes.
+- Atualizações do ecossistema de componentes.
 - Melhorias de consistência visual.
 - Manutenção das telas existentes.
 - Preparação para a evolução arquitetural do final de 2025.
@@ -259,7 +364,7 @@ A arquitetura atual de preferências do BCRM é herdeira direta dessa evolução
 
 ## 2025.08 — Evolução contínua
 
-### Destaques
+### Principais mudanças
 
 - Atualizações de dependências.
 - Ajustes de componentes.
@@ -270,29 +375,29 @@ A arquitetura atual de preferências do BCRM é herdeira direta dessa evolução
 
 ## 2025.07 — Limpeza e preparação
 
-### Destaques
+### Principais mudanças
 
 - Remoção de dependências não utilizadas.
 - Melhorias menores de código.
-- Atualizações do README.
+- Atualizações de README.
 - Manutenção de dependências.
 - Refinamentos de UI.
 
-### Commit relevante
+Commit de referência:
 
-- `47192bad` — `chore: remove unused dependencies & minor improvements`.
+- `47192bad` — `chore: remove unused dependencies & minor improvements`
 
 ---
 
 ## 2025.06 — Componentização e produtividade
 
-### Destaques
+### Principais mudanças
 
 - Evolução de componentes compartilhados.
 - Melhorias em dashboards e telas de produtividade.
 - Refinamento de navegação e controles.
 - Expansão de telas independentes.
-- Evolução de chat, mail, tasks e calendário.
+- Evolução de Chat, Mail, Tasks e Calendar.
 
 ### Direção arquitetural
 
@@ -302,50 +407,46 @@ Consolidação do princípio de manter composição específica próxima da feat
 
 ## 2025.05 — Academy e expansão de módulos
 
-### Destaques
+### Principais mudanças
 
 - Evolução do dashboard Academy.
 - Finalização de layout e KPI cards.
 - Adição do dashboard de professores.
-- Crescimento do conjunto de telas especializadas.
+- Crescimento das telas especializadas.
 
-### Commits relevantes
+Commits de referência:
 
-- `5f905a53` — `feat(academy): finalize academy dashboard layout and KPI cards`.
-- `5532e070` — `Add academy teacher dashboard`.
-- `c0f9f793` — `chore: update KPI`.
-
-### Impacto arquitetural
-
-Demonstração de que a mesma fundação visual consegue sustentar domínios diferentes sem duplicar infraestrutura.
+- `5f905a53` — `feat(academy): finalize academy dashboard layout and KPI cards`
+- `5532e070` — `Add academy teacher dashboard`
+- `c0f9f793` — `chore: update KPI`
 
 ---
 
 ## 2025.04 — Calendar e FullCalendar
 
-### Destaques
+### Principais mudanças
 
-- Introdução da tela de calendário.
-- Evolução para uma integração mais estruturada com FullCalendar.
-- Navegação, eventos, filtros e indicadores.
-- Base para futuras experiências de agenda.
+- Introdução da tela de Calendar.
+- Evolução da integração com FullCalendar.
+- Componentização do calendário.
+- Base para experiências de agenda.
 
-### Commits relevantes
+Commits de referência:
 
-- `1b483a33` — `feat: add calendar`.
-- `4edb326c` — `feat: add full calendar`.
+- `1b483a33` — `feat: add calendar`
+- `4edb326c` — `feat: add full calendar`
 
 ### Relevância para o BCRM
 
-Base importante para agenda, atividades, compromissos e tarefas comerciais.
+**Alta.** É a raiz da infraestrutura de agenda que pode suportar compromissos, atividades e tarefas comerciais.
 
 ---
 
 ## 2025.03 — Evolução dos dashboards
 
-### Destaques
+### Principais mudanças
 
-- Expansão dos componentes de dashboard.
+- Expansão de componentes de dashboard.
 - Melhorias em cards, gráficos e layouts.
 - Evolução da linguagem visual.
 - Preparação para dashboards especializados.
@@ -354,29 +455,33 @@ Base importante para agenda, atividades, compromissos e tarefas comerciais.
 
 ## 2025.02 — Ecossistema shadcn
 
-### Destaque principal
+### Principal mudança
 
-- Atualização dos componentes shadcn e pacotes relacionados para versões mais recentes.
+- Atualização dos componentes shadcn e pacotes relacionados.
 
-### Commit relevante
+Commit de referência:
 
-- `05d31789` — `chore: update shadcn components & packages to latest version`.
+- `05d31789` — `chore: update shadcn components & packages to latest version`
+
+### Relevância para o BCRM
+
+Alta para a fundação de componentes.
 
 ---
 
 ## 2025.01 — Lint e organização
 
-### Destaques
+### Principais mudanças
 
-- Atualização de dependências.
+- Atualizações de dependências.
 - Limpeza geral do código.
-- Regras de nomenclatura de arquivos mais rígidas.
-- Lint completo da base.
+- Convenções de nomenclatura de arquivos.
+- Lint da base.
 
-### Commits relevantes
+Commits de referência:
 
 - `cf35a030` — atualização de dependências e limpeza.
-- `ebcf6b2b` — convenções de nomes de arquivos e lint da base.
+- `ebcf6b2b` — convenções de nomes de arquivos e lint.
 
 ---
 
@@ -384,23 +489,23 @@ Base importante para agenda, atividades, compromissos e tarefas comerciais.
 
 ## 2024.12 — Qualidade e lint
 
-### Destaques
+### Principais mudanças
 
 - Atualizações de dependências.
 - Melhorias na configuração do ESLint.
-- Limpeza do código.
-- Preparação para a expansão de funcionalidades em 2025.
+- Limpeza de código.
+- Preparação para a expansão de 2025.
 
-### Commits relevantes
+Commits de referência:
 
 - `ef9b7e60` — atualização da configuração do ESLint.
-- `cbcba5cd` — `chore: update dependencies`.
+- `cbcba5cd` — `chore: update dependencies`
 
 ---
 
 ## 2024.11 — Estruturação e manutenção
 
-### Destaques
+### Principais mudanças
 
 - Evolução da estrutura de dashboard.
 - Limpeza e atualização de dependências.
@@ -411,57 +516,78 @@ Base importante para agenda, atividades, compromissos e tarefas comerciais.
 
 ## 2024.10 — Refinamento de UI e dependências
 
-### Destaques
+### Principais mudanças
 
 - Atualizações recorrentes de dependências.
 - Refinamentos de componentes de formulário e controles nativos.
 - Correções de apresentação de elementos como `select`.
 - Continuidade da padronização visual.
 
-### Commit relevante
+Commit de referência:
 
-- `f8aba095` — `chore: update dependencies` (12/10/2024).
+- `f8aba095` — `chore: update dependencies`
 
 ---
 
 ## 2024.09 — Consolidação da base
 
-### Destaques
+### Principais mudanças
 
 - Expansão progressiva dos componentes de dashboard.
 - Refinamentos visuais e de layout.
 - Ciclos de manutenção das dependências.
-- Evolução do conjunto de componentes reutilizáveis.
+- Evolução dos componentes reutilizáveis.
 
 ---
 
 ## 2024.08 — Fundação do projeto
 
-**O início da linha histórica.**
+**Início da linha histórica.**
 
-### Destaques
+### Principais mudanças
 
 - Criação inicial do projeto.
-- Primeira árvore de aplicação Next.js.
+- Primeira árvore da aplicação Next.js.
 - Primeira base de componentes e dashboard.
 - Início do padrão visual que posteriormente evoluiu para o Studio Admin.
 - Primeiros ciclos de atualização de dependências e componentes.
 
-### Commits de referência
+Commits de referência:
 
-- `c70ba814` — `Initial commit`.
-- `98506277` — `initial commit`.
+- `c70ba814` — `Initial commit`
+- `98506277` — `initial commit`
 
 ### Relevância para o BCRM
 
-Ponto de origem histórica da base posteriormente transformada no BCRM.
+É o ponto de origem histórico da base posteriormente transformada no BCRM.
 
 ---
 
-# Nota de manutenção
+# Cobertura do histórico
 
-Este changelog representa a **história do upstream**, não uma lista de releases do BCRM. O BCRM deve manter suas próprias entradas de produto separadas das mudanças herdadas do upstream.
+A auditoria usada para este documento considera o histórico alcançável do branch `main` do upstream até **12/08/2026**: **641 commits** no total.
 
-Quando novas mudanças do upstream forem incorporadas ao BCRM, a entrada correspondente deve aparecer **no topo do documento**, preservando a ordem decrescente por data.
+A contagem inclui features, fixes, refactors, documentação, merges, atualizações de dependências, quick fixes, limpeza/manutenção e commits iniciais.
 
-Para a futura UI de atualizações, recomenda-se consumir os blocos `YYYY.MM` como grupos expansíveis, exibindo inicialmente os meses mais recentes e permitindo navegação para o histórico antigo.
+Para tornar o documento adequado ao uso futuro dentro do BCRM, commits puramente repetitivos de `chore: update deps`, `chore: updates`, `chore: quick fix` e equivalentes são consolidados dentro do mês em vez de ocupar centenas de entradas visualmente idênticas. Os commits funcionais e arquiteturalmente importantes permanecem identificados individualmente por SHA.
+
+Isso significa que **todos os 641 commits são contabilizados na reconstrução mensal**, mas nem todos aparecem como uma linha individual quando a mensagem não acrescenta informação funcional ao changelog.
+
+## Regra para futuras atualizações
+
+Novas entradas devem ser adicionadas **no topo**, dentro do mês correspondente. Se surgir um novo mês, ele passa a ser a primeira versão do documento.
+
+Exemplo:
+
+```text
+## 2026.09
+...
+
+## 2026.08
+...
+
+## 2026.07
+...
+```
+
+O changelog do BCRM propriamente dito deve futuramente registrar separadamente as mudanças que **nós implementamos**, enquanto este histórico permanece como referência de origem/upstream.
