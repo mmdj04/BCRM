@@ -1,0 +1,58 @@
+# Labels for PR size
+size/XS:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.ts"
+          - "**/*.tsx"
+          - "**/*.css"
+
+size/S:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.ts"
+          - "**/*.tsx"
+          - "**/*.css"
+
+size/M:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.ts"
+          - "**/*.tsx"
+
+size/L:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.ts"
+          - "**/*.tsx"
+
+# Component labels
+area/ui:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/components/**"
+          - "src/app/**/page.tsx"
+          - "src/app/**/layout.tsx"
+
+area/lib:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/lib/**"
+
+area/store:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/store/**"
+
+area/config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.json"
+          - "*.mjs"
+          - "*.config.*"
+          - "tailwind.config.*"
+
+area/styles:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/**/*.css"
+          - "src/app/globals.css"
