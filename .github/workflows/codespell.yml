@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           persist-credentials: false
 
@@ -26,4 +26,4 @@ jobs:
           check_filenames: true
           check_hidden: true
           skip: "*.json,*.lock,package-lock.json,node_modules,.next,dist"
-          ignore_words_list: "nda,iff"
+          ignore_words_list: "nda,iff,Tey,tey,IST,MapPin"
