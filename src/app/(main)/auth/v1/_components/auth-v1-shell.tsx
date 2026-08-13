@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Command } from "lucide-react";
 
 import { LOCALE_LABELS, SUPPORTED_LOCALES } from "@/lib/i18n/config";
-import { I18nProvider, useI18n } from "@/lib/i18n/provider";
+import { useI18n } from "@/lib/i18n/provider";
 
 function LocaleSwitcher() {
   const { locale, setLocale, t } = useI18n();
@@ -99,9 +99,5 @@ function AuthV1Content({ mode, children }: Readonly<{ mode: "login" | "register"
 }
 
 export function AuthV1Shell({ mode, children }: Readonly<{ mode: "login" | "register"; children: React.ReactNode }>) {
-  return (
-    <I18nProvider>
-      <AuthV1Content mode={mode}>{children}</AuthV1Content>
-    </I18nProvider>
-  );
+  return <AuthV1Content mode={mode}>{children}</AuthV1Content>;
 }
