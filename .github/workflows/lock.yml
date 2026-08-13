@@ -1,0 +1,22 @@
+name: Lock
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/lock@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-lock-inactive-days: 60
+          issue-lock-reason: "stale"
+          pr-lock-inactive-days: 30
+          pr-lock-reason: "stale"

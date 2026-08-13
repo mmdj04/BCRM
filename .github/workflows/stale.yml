@@ -27,6 +27,8 @@ jobs:
           days-before-close: 7
           stale-issue-label: "stale"
           stale-pr-label: "stale"
-          exempt-issue-labels: "pinned,bug,enhancement,security"
-          exempt-pr-labels: "pinned,work-in-progress"
+          exempt-issue-labels: "pinned,bug,enhancement,security,good first issue,help wanted"
+          exempt-pr-labels: "pinned,work-in-progress,do-not-close"
           exempt-all-milestones: true
+          operations-per-run: 100
+          remove-stale-when-updated: true
