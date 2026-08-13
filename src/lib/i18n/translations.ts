@@ -35,6 +35,13 @@ export const translations = {
         passwordMismatch: "As senhas não coincidem.",
         submitted: "Os seguintes dados foram enviados",
       },
+      layout: {
+        tagline: "Projete. Construa. Lance. Repita.",
+        readyTitle: "Pronto para começar?",
+        readyDescription: "Clone o repositório, instale as dependências e tenha seu dashboard funcionando em poucos minutos.",
+        helpTitle: "Precisa de ajuda?",
+        helpDescription: "Consulte a documentação ou abra uma issue no GitHub. O suporte da comunidade está a apenas um clique de distância.",
+      },
       locale: {
         label: "Idioma",
       },
@@ -73,6 +80,13 @@ export const translations = {
         confirmPasswordMin: "Confirm password must be at least 6 characters.",
         passwordMismatch: "Passwords do not match.",
         submitted: "You submitted the following values",
+      },
+      layout: {
+        tagline: "Design. Build. Launch. Repeat.",
+        readyTitle: "Ready to launch?",
+        readyDescription: "Clone the repo, install dependencies, and your dashboard is live in minutes.",
+        helpTitle: "Need help?",
+        helpDescription: "Check out the docs or open an issue on GitHub, community support is just a click away.",
       },
       locale: {
         label: "Language",
