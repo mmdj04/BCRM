@@ -64,30 +64,9 @@ const PT_TRANSLATIONS: Record<string, string> = {
 const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 const MONTHS_SHORT_PT = ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."];
 const MONTH_LOOKUP: Record<string, number> = {
-  jan: 0,
-  january: 0,
-  feb: 1,
-  february: 1,
-  mar: 2,
-  march: 2,
-  apr: 3,
-  april: 3,
-  may: 4,
-  jun: 5,
-  june: 5,
-  jul: 6,
-  july: 6,
-  aug: 7,
-  august: 7,
-  sep: 8,
-  sept: 8,
-  september: 8,
-  oct: 9,
-  october: 9,
-  nov: 10,
-  november: 10,
-  dec: 11,
-  december: 11,
+  jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
+  may: 4, jun: 5, june: 5, jul: 6, july: 6, aug: 7, august: 7, sep: 8,
+  sept: 8, september: 8, oct: 9, october: 9, nov: 10, november: 10, dec: 11, december: 11,
 };
 
 function formatUsdAsBrl(value: string) {
@@ -101,7 +80,6 @@ function formatEnglishDate(value: string) {
   const long = value.match(/^(\d+)\s+([A-Za-z]+)\s+(\d{4})$/);
   const us = value.match(/^([A-Za-z]+)\s+(\d+),\s+(\d{4})$/);
   const short = value.match(/^([A-Za-z]{3})\s+(\d{1,2})$/);
-
   const match = ordinal ?? long ?? us;
   if (match) {
     const [, a, b, c] = match;
@@ -111,12 +89,10 @@ function formatEnglishDate(value: string) {
     const month = MONTH_LOOKUP[monthName.toLowerCase()];
     if (month !== undefined) return `${day} de ${MONTHS_PT[month]} de ${year}`;
   }
-
   if (short) {
     const month = MONTH_LOOKUP[short[1].toLowerCase()];
     if (month !== undefined) return `${Number(short[2])} de ${MONTHS_SHORT_PT[month]}`;
   }
-
   return value;
 }
 
@@ -159,19 +135,17 @@ export function DefaultDashboardI18n({ children }: { children: React.ReactNode }
         textNode = textWalker.nextNode();
       }
 
-      if (root instanceof Element || root instanceof Document) {
-        const elements = root instanceof Document ? root.querySelectorAll("*") : root.querySelectorAll("*");
-        elements.forEach((element) => {
-          const attrs = originalAttributes.get(element) ?? new Map<string, string>();
-          for (const name of ["aria-label", "title", "placeholder"]) {
-            const value = element.getAttribute(name);
-            if (value !== null && !attrs.has(name)) attrs.set(name, value);
-            const original = attrs.get(name);
-            if (original !== undefined) element.setAttribute(name, translateText(original, locale));
-          }
-          originalAttributes.set(element, attrs);
-        });
-      }
+      const elements = root instanceof Element || root instanceof Document ? root.querySelectorAll("*") : [];
+      elements.forEach((element) => {
+        const attrs = originalAttributes.get(element) ?? new Map<string, string>();
+        for (const name of ["aria-label", "title", "placeholder"]) {
+          const value = element.getAttribute(name);
+          if (value !== null && !attrs.has(name)) attrs.set(name, value);
+          const original = attrs.get(name);
+          if (original !== undefined) element.setAttribute(name, translateText(original, locale));
+        }
+        originalAttributes.set(element, attrs);
+      });
     };
 
     apply(document.body);
@@ -183,7 +157,7 @@ export function DefaultDashboardI18n({ children }: { children: React.ReactNode }
             originalTexts.set(text, text.textContent ?? "");
             text.textContent = translateText(text.textContent ?? "", locale);
           } else if (node.nodeType === Node.ELEMENT_NODE) {
-            apply(node);
+            apply(node as Element);
           }
         });
       }
