@@ -149,7 +149,7 @@ export function RolesTable({ table }: { table: ReactTable<DataTableFeatures, Rol
               table.setPageSize(Number(v));
             }}
           >
-            <SelectTrigger size="sm" className="w-32">
+            <SelectTrigger size="sm" className="w-32" aria-label="Rows per page">
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="end" side="top">

@@ -78,8 +78,8 @@ export function TransactionsOverviewCard() {
         <CardTitle className="font-normal">Spending Overview</CardTitle>
         <CardAction>
           <Select defaultValue="weekly">
-            <SelectTrigger className="w-28" size="sm">
-              <SelectValue />
+            <SelectTrigger className="w-28" size="sm" aria-label="Select period">
+              <SelectValue placeholder="Weekly" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
