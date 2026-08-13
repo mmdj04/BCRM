@@ -11,10 +11,13 @@ jobs:
   no-response:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/first-interaction/close-response@v1
+      - uses: actions/stale@v9
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue-message: >
-            Closing this issue because it has not had any activity since being labeled
-            `needs-more-info`. Feel free to reopen if this is still relevant.
-          close-issue-label: "closed-by-bot"
+          days-before-stale: -1
+          days-before-close: 7
+          stale-issue-label: "needs-more-info"
+          close-issue-message: >
+            Closing this issue because it has not had any response since being
+            labeled `needs-more-info`. Feel free to reopen if still relevant.
+          exempt-issue-labels: "pinned,bug,enhancement,security"
+          operations-per-run: 50
