@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { APP_CONFIG } from "@/config/app-config";
+import { I18nProvider } from "@/lib/i18n/provider";
 import { fontVars } from "@/lib/fonts/registry";
 import { PREFERENCE_DEFAULTS } from "@/lib/preferences/preferences-config";
 import { ThemeBootScript } from "@/scripts/theme-boot";
@@ -40,8 +41,10 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className={`${fontVars} min-h-dvh antialiased`}>
         <TooltipProvider>
           <PreferencesStoreProvider initialValues={PREFERENCE_DEFAULTS}>
-            {children}
-            <Toaster />
+            <I18nProvider>
+              {children}
+              <Toaster />
+            </I18nProvider>
           </PreferencesStoreProvider>
         </TooltipProvider>
         {/* Used for this project's hosted demo. Feel free to remove it; it is not required for template functionality. */}
