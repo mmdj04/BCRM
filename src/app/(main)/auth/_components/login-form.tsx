@@ -9,31 +9,29 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-
-const formSchema = z.object({
-  email: z.email({ message: "Please enter a valid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
-  remember: z.boolean().optional(),
-});
-
-function onSubmit(data: z.infer<typeof formSchema>) {
-  toast("You submitted the following values", {
-    description: (
-      <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-      </pre>
-    ),
-  });
-}
+import { useI18n } from "@/lib/i18n/provider";
 
 export function LoginForm() {
+  const { t } = useI18n();
+  const formSchema = z.object({
+    email: z.email({ message: t.auth.form.invalidEmail }),
+    password: z.string().min(6, { message: t.auth.form.passwordMin }),
+    remember: z.boolean().optional(),
+  });
+
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    toast(t.auth.form.submitted, {
+      description: (
+        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      remember: false,
-    },
+    defaultValues: { email: "", password: "", remember: false },
   });
 
   return (
@@ -44,15 +42,8 @@ export function LoginForm() {
           name="email"
           render={({ field, fieldState }) => (
             <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="login-email">Email Address</FieldLabel>
-              <Input
-                {...field}
-                id="login-email"
-                type="email"
-                placeholder="you@example.com"
-                autoComplete="email"
-                aria-invalid={fieldState.invalid}
-              />
+              <FieldLabel htmlFor="login-email">{t.auth.form.email}</FieldLabel>
+              <Input {...field} id="login-email" type="email" placeholder={t.auth.form.emailPlaceholder} autoComplete="email" aria-invalid={fieldState.invalid} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -62,15 +53,8 @@ export function LoginForm() {
           name="password"
           render={({ field, fieldState }) => (
             <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="login-password">Password</FieldLabel>
-              <Input
-                {...field}
-                id="login-password"
-                type="password"
-                placeholder="••••••••"
-                autoComplete="current-password"
-                aria-invalid={fieldState.invalid}
-              />
+              <FieldLabel htmlFor="login-password">{t.auth.form.password}</FieldLabel>
+              <Input {...field} id="login-password" type="password" placeholder="••••••••" autoComplete="current-password" aria-invalid={fieldState.invalid} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -80,26 +64,16 @@ export function LoginForm() {
           name="remember"
           render={({ field, fieldState }) => (
             <Field orientation="horizontal" data-invalid={fieldState.invalid}>
-              <Checkbox
-                id="login-remember"
-                name={field.name}
-                checked={field.value}
-                onCheckedChange={(checked) => field.onChange(Boolean(checked))}
-                aria-invalid={fieldState.invalid}
-              />
+              <Checkbox id="login-remember" name={field.name} checked={field.value} onCheckedChange={(checked) => field.onChange(Boolean(checked))} aria-invalid={fieldState.invalid} />
               <FieldContent>
-                <FieldLabel htmlFor="login-remember" className="font-normal">
-                  Remember me for 30 days
-                </FieldLabel>
+                <FieldLabel htmlFor="login-remember" className="font-normal">{t.auth.form.remember}</FieldLabel>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </FieldContent>
             </Field>
           )}
         />
       </FieldGroup>
-      <Button className="w-full" type="submit">
-        Login
-      </Button>
+      <Button className="w-full" type="submit">{t.auth.form.login}</Button>
     </form>
   );
 }
