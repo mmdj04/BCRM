@@ -218,14 +218,12 @@ function RiskViewSelect() {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-controls={listId}
-          aria-expanded={open}
-          className="w-54 justify-between"
-        >
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            aria-expanded={open}
+            className="w-54 justify-between"
+          >
           <div className="flex items-center gap-2">
             <div
               className="size-2 rounded-full bg-primary"

@@ -76,13 +76,13 @@ export function Calendar() {
             </SelectContent>
           </Select>
           <ButtonGroup>
-            <Button size="icon" variant="outline" onClick={() => controller.prev()}>
+            <Button size="icon" variant="outline" aria-label="Previous" onClick={() => controller.prev()}>
               <ChevronLeft />
             </Button>
             <Button variant="outline" onClick={() => controller.today()}>
               Today
             </Button>
-            <Button size="icon" variant="outline" onClick={() => controller.next()}>
+            <Button size="icon" variant="outline" aria-label="Next" onClick={() => controller.next()}>
               <ChevronRight />
             </Button>
           </ButtonGroup>
