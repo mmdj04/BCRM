@@ -34,7 +34,7 @@ jobs:
         run: npm run lint
 
   format:
-    name: Format check
+    name: Format check (Biome)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -43,14 +43,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Biome format check
-        run: npx biome format --write .
-      - name: Check format result
-        run: |
-          if ! git diff --quiet; then
-            echo "::warning::Biome formatted files during CI. The working tree differs from the committed formatting."
-            git diff --stat
-          fi
+      - name: Verify formatting
+        run: npx biome format . --error-on-warnings
 
   typecheck:
     name: Typecheck
